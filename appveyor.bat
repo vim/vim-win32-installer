@@ -8,6 +8,43 @@ if /i "%appveyor_repo_tag%"=="false" (
   exit 0
 )
 
+:: ----------------------------------------------------------------------
+:: Download URLs and versions
+:: Lua
+set LUA_VER=53
+set LUA32_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win32_dllw4_lib.zip
+set LUA64_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4_lib.zip
+:: Perl
+set PERL_VER=522
+set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x86-64int-299195.zip
+set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x64-299195.zip
+:: Python2
+set PYTHON_VER=27
+:: Python3
+set PYTHON3_VER=34
+:: Racket
+set RACKET_VER=3m_9z0ds0
+set RACKET32_URL=https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-i386-win32.exe
+set RACKET64_URL=https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-x86_64-win32.exe
+set MZSCHEME_VER=%RACKET_VER%
+:: Ruby
+set RUBY_VER=22
+set RUBY_VER_LONG=2.2.0
+set RUBY_BRANCH=ruby_2_2
+:: Tcl
+set TCL_VER_LONG=8.6
+set TCL_VER=%TCL_VER_LONG:.=%
+set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe
+set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe
+:: Gettext
+set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe
+set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe
+:: NSIS
+set NSIS_URL=http://downloads.sourceforge.net/nsis/nsis-2.50.zip
+:: UPX
+set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
+:: ----------------------------------------------------------------------
+
 if /I "%1"=="" (
   set target=build
 ) else (
@@ -28,46 +65,46 @@ reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7
 git submodule update --init
 
 :: Lua
-curl -f -L http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win32_dllw4_lib.zip -o lua.zip || exit 1
+curl -f -L %LUA32_URL% -o lua.zip || exit 1
 7z x lua.zip -oC:\Lua > nul
 :: Perl
-curl -f -L http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x86-64int-299195.zip -o perl.zip || exit 1
+curl -f -L %PERL32_URL% -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
-for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl522
+for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
 :: Tcl
-curl -f -L http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe -o tcl.exe || exit 1
+curl -f -L %TCL32_URL% -o tcl.exe || exit 1
 start /wait tcl.exe --directory C:\Tcl
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
-git clone https://github.com/ruby/ruby.git -b ruby_2_2 --depth 1 -q ../ruby
+git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 pushd ..\ruby
 call win32\configure.bat
 echo on
 nmake .config.h.time
-xcopy /s .ext\include C:\Ruby22\include\ruby-2.2.0
+xcopy /s .ext\include C:\Ruby%RUBY_VER%\include\ruby-%RUBY_VER_LONG%
 popd
 :: Racket
-curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-i386-win32.exe -o racket.exe || exit 1
+curl -f -L %RACKET32_URL% -o racket.exe || exit 1
 start /wait racket.exe /S
 
 if /i "%appveyor_repo_tag%"=="true" (
   :: Install binary diff.exe and libintl.dll and iconv.dll
   :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
   :: 7z e gvim74.exe $0\diff.exe -o.
-  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe" -o gettext.exe || exit 1
+  curl -f -L %GETTEXT32_URL% -o gettext.exe || exit 1
   start /wait gettext.exe /verysilent /dir=c:\gettext
   :: Install NSIS
-  curl -f -L http://downloads.sourceforge.net/nsis/nsis-2.50.zip -o nsis.zip || exit 1
+  curl -f -L %NSIS_URL% -o nsis.zip || exit 1
   7z x nsis.zip -oC:\ > nul
   for /d %%i in (C:\nsis*) do move %%i C:\nsis
   :: Install UPX
-  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip || exit 1
+  curl -f -L %UPX_URL% -o upx.zip || exit 1
   7z e upx.zip *\upx.exe -ovim\nsis > nul
 )
 
 :: Update PATH
-path C:\Perl522\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby22\bin;C:\Program Files (x86)\Racket;C:\Program Files (x86)\Racket\lib
+path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%\bin;%PROGRAMFILES(X86)%\Racket;%PROGRAMFILES(X86)%\Racket\lib
 
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
@@ -85,48 +122,48 @@ reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7
 git submodule update --init
 
 :: Lua
-curl -f -L http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4_lib.zip -o lua.zip || exit 1
+curl -f -L %LUA64_URL% -o lua.zip || exit 1
 7z x lua.zip -oC:\Lua > nul
 :: Perl
-curl -f -L http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x64-299195.zip -o perl.zip || exit 1
+curl -f -L %PERL64_URL% -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
-for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl522
+for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
 :: Tcl
-curl -f -L http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe -o tcl.exe || exit 1
+curl -f -L %TCL64_URL% -o tcl.exe || exit 1
 start /wait tcl.exe --directory C:\Tcl
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
-git clone https://github.com/ruby/ruby.git -b ruby_2_2 --depth 1 -q ../ruby
+git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 pushd ..\ruby
 call win32\configure.bat
 echo on
 nmake .config.h.time
-xcopy /s .ext\include C:\Ruby22-x64\include\ruby-2.2.0
+xcopy /s .ext\include C:\Ruby%RUBY_VER%-x64\include\ruby-%RUBY_VER_LONG%
 popd
 :: Racket
-curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-x86_64-win32.exe -o racket.exe || exit 1
+curl -f -L %RACKET64_URL% -o racket.exe || exit 1
 start /wait racket.exe /S
 
 if /i "%appveyor_repo_tag%"=="true" (
   :: Install binary diff.exe and libintl.dll and iconv.dll
   :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
   :: 7z e gvim74.exe $0\diff.exe -o.
-  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe" -o gettext.exe || exit 1
+  curl -f -L %GETTEXT64_URL% -o gettext.exe || exit 1
   start /wait gettext.exe /verysilent /dir=c:\gettext
   :: libwinpthread is needed on Win64 for localizing messages
   ::copy c:\gettext\libwinpthread-1.dll ..\runtime
   :: Install NSIS
-  curl -f -L http://downloads.sourceforge.net/nsis/nsis-2.50.zip -o nsis.zip || exit 1
+  curl -f -L %NSIS_URL% -o nsis.zip || exit 1
   7z x nsis.zip -oC:\ > nul
   for /d %%i in (C:\nsis*) do move %%i C:\nsis
   :: Install UPX
-  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip || exit 1
+  curl -f -L %UPX_URL% -o upx.zip || exit 1
   7z e upx.zip *\upx.exe -ovim\nsis > nul
 )
 
 :: Update PATH
-path C:\Perl522\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby22-x64\bin;C:\Program Files\Racket;C:\Program Files\Racket\lib
+path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%-x64\bin;%PROGRAMFILES%\Racket;%PROGRAMFILES%\Racket\lib
 
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
@@ -141,32 +178,30 @@ cd vim\src
 :: Remove progress bar from the build log
 sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
-nmake -f Make_mvc2.mak CPU=i386 ^
+nmake -f Make_mvc2.mak ^
 	GUI=yes OLE=yes DIRECTX=yes ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	PERL_VER=522 DYNAMIC_PERL=yes PERL=C:\Perl522\perl ^
-	PYTHON_VER=27 DYNAMIC_PYTHON=yes PYTHON=C:\Python27 ^
-	PYTHON3_VER=34 DYNAMIC_PYTHON3=yes PYTHON3=C:\Python34 ^
-	LUA_VER=53 DYNAMIC_LUA=yes LUA=C:\Lua ^
-	TCL_VER=86 TCL_VER_LONG=8.6 DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	RUBY=C:\Ruby22 DYNAMIC_RUBY=yes RUBY_VER=22 RUBY_VER_LONG=2.2.0 ^
-	RUBY_MSVCRT_NAME=msvcrt ^
-	"MZSCHEME=C:\Program Files (x86)\Racket" DYNAMIC_MZSCHEME=yes MZSCHEME_VER=3m_9z0ds0 ^
+	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
+	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER% ^
+	DYNAMIC_LUA=yes LUA=C:\Lua ^
+	DYNAMIC_TCL=yes TCL=C:\Tcl ^
+	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER% RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES(X86)%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
 @if /i "%appveyor_repo_tag%"=="false" goto check_executable
 :: Build CUI version
-nmake -f Make_mvc2.mak CPU=i386 ^
+nmake -f Make_mvc2.mak ^
 	GUI=no OLE=no DIRECTX=no ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	PERL_VER=522 DYNAMIC_PERL=yes PERL=C:\Perl522\perl ^
-	PYTHON_VER=27 DYNAMIC_PYTHON=yes PYTHON=C:\Python27 ^
-	PYTHON3_VER=34 DYNAMIC_PYTHON3=yes PYTHON3=C:\Python34 ^
-	LUA_VER=53 DYNAMIC_LUA=yes LUA=C:\Lua ^
-	TCL_VER=86 TCL_VER_LONG=8.6 DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	RUBY=C:\Ruby22 DYNAMIC_RUBY=yes RUBY_VER=22 RUBY_VER_LONG=2.2.0 ^
-	RUBY_MSVCRT_NAME=msvcrt ^
-	"MZSCHEME=C:\Program Files (x86)\Racket" DYNAMIC_MZSCHEME=yes MZSCHEME_VER=3m_9z0ds0 ^
+	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
+	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER% ^
+	DYNAMIC_LUA=yes LUA=C:\Lua ^
+	DYNAMIC_TCL=yes TCL=C:\Tcl ^
+	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER% RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES(X86)%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
 :: Build translations
@@ -186,32 +221,30 @@ cd vim\src
 :: Remove progress bar from the build log
 sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
-nmake -f Make_mvc2.mak CPU=AMD64 ^
+nmake -f Make_mvc2.mak ^
 	GUI=yes OLE=yes DIRECTX=yes ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	PERL_VER=522 DYNAMIC_PERL=yes PERL=C:\Perl522\perl ^
-	PYTHON_VER=27 DYNAMIC_PYTHON=yes PYTHON=C:\Python27-x64 ^
-	PYTHON3_VER=34 DYNAMIC_PYTHON3=yes PYTHON3=C:\Python34-x64 ^
-	LUA_VER=53 DYNAMIC_LUA=yes LUA=C:\Lua ^
-	TCL_VER=86 TCL_VER_LONG=8.6 DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	RUBY=C:\Ruby22-x64 DYNAMIC_RUBY=yes RUBY_VER=22 RUBY_VER_LONG=2.2.0 ^
-	RUBY_MSVCRT_NAME=msvcrt ^
-	"MZSCHEME=C:\Program Files\Racket" DYNAMIC_MZSCHEME=yes MZSCHEME_VER=3m_9z0ds0 ^
+	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
+	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER%-x64 ^
+	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER%-x64 ^
+	DYNAMIC_LUA=yes LUA=C:\Lua ^
+	DYNAMIC_TCL=yes TCL=C:\Tcl ^
+	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER%-x64 RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
 @if /i "%appveyor_repo_tag%"=="false" goto check_executable
 :: Build CUI version
-nmake -f Make_mvc2.mak CPU=AMD64 ^
+nmake -f Make_mvc2.mak ^
 	GUI=no OLE=no DIRECTX=no ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	PERL_VER=522 DYNAMIC_PERL=yes PERL=C:\Perl522\perl ^
-	PYTHON_VER=27 DYNAMIC_PYTHON=yes PYTHON=C:\Python27-x64 ^
-	PYTHON3_VER=34 DYNAMIC_PYTHON3=yes PYTHON3=C:\Python34-x64 ^
-	LUA_VER=53 DYNAMIC_LUA=yes LUA=C:\Lua ^
-	TCL_VER=86 TCL_VER_LONG=8.6 DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	RUBY=C:\Ruby22-x64 DYNAMIC_RUBY=yes RUBY_VER=22 RUBY_VER_LONG=2.2.0 ^
-	RUBY_MSVCRT_NAME=msvcrt ^
-	"MZSCHEME=C:\Program Files\Racket" DYNAMIC_MZSCHEME=yes MZSCHEME_VER=3m_9z0ds0 ^
+	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
+	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER%-x64 ^
+	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER%-x64 ^
+	DYNAMIC_LUA=yes LUA=C:\Lua ^
+	DYNAMIC_TCL=yes TCL=C:\Tcl ^
+	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER%-x64 RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
 :: Build translations
