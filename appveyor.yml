@@ -18,17 +18,16 @@ build:
 
 before_build:
   - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%ARCH% /release'
-  - src\appveyor.bat install
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
-  - cd src
-  - appveyor.bat build
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" build'
 
 after_build:
-  - appveyor.bat package
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" package'
 
 test_script:
-  - appveyor.bat test
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
 
 artifacts:
   - path: gvim_x86.zip

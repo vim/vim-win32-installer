@@ -1,7 +1,9 @@
 @echo off
 :: Batch file for building/testing Vim on AppVeyor
 
-if /i "%ARCH%.%appveyor_repo_tag%"=="x86.false" (
+cd %APPVEYOR_BUILD_FOLDER%
+
+if /i "%appveyor_repo_tag%"=="false" (
   echo Skip this build.
   exit 0
 )
@@ -21,16 +23,19 @@ exit 1
 @echo on
 :: Work around for Python 2.7.11
 reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:32
+
+:: Get Vim source code
+git submodule update --init
+
 :: Lua
-:: Appveyor command doesn't seem to work well when downloading from sf.net.
-curl -f -L "http://downloads.sourceforge.net/project/luabinaries/5.3.2/Windows%%20Libraries/Dynamic/lua-5.3.2_Win32_dllw4_lib.zip" -o lua.zip
+curl -f -L http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win32_dllw4_lib.zip -o lua.zip || exit 1
 7z x lua.zip -oC:\Lua > nul
 :: Perl
-appveyor DownloadFile http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x86-64int-299195.zip -FileName perl.zip
+curl -f -L http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x86-64int-299195.zip -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
 for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl522
 :: Tcl
-appveyor DownloadFile http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe -FileName tcl.exe
+curl -f -L http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe -o tcl.exe || exit 1
 start /wait tcl.exe --directory C:\Tcl
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
@@ -43,21 +48,22 @@ nmake .config.h.time
 xcopy /s .ext\include C:\Ruby22\include\ruby-2.2.0
 popd
 :: Racket
-:: Need a patch to install gvim with dynamic racket
-curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-i386-win32.exe -o racket.exe
+curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-i386-win32.exe -o racket.exe || exit 1
 start /wait racket.exe /S
 
 if /i "%appveyor_repo_tag%"=="true" (
   :: Install binary diff.exe and libintl.dll and iconv.dll
-  curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
-  7z e gvim74.exe $0\diff.exe -o..
-  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe" -o gettext.exe
+  :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
+  :: 7z e gvim74.exe $0\diff.exe -o.
+  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe" -o gettext.exe || exit 1
   start /wait gettext.exe /verysilent /dir=c:\gettext
-  :: Install NSIS and UPX
-  curl -f -L -O http://downloads.sourceforge.net/project/nsis/NSIS%%202/2.50/nsis-2.50.zip
-  7z x nsis-2.50.zip -oc:\ > nul
-  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip
-  7z e upx.zip *\upx.exe -onsis > nul
+  :: Install NSIS
+  curl -f -L http://downloads.sourceforge.net/nsis/nsis-2.50.zip -o nsis.zip || exit 1
+  7z x nsis.zip -oC:\ > nul
+  for /d %%i in (C:\nsis*) do move %%i C:\nsis
+  :: Install UPX
+  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip || exit 1
+  7z e upx.zip *\upx.exe -ovim\nsis > nul
 )
 
 :: Update PATH
@@ -74,16 +80,19 @@ goto :eof
 @echo on
 :: Work around for Python 2.7.11
 reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:64
+
+:: Get Vim source code
+git submodule update --init
+
 :: Lua
-:: Appveyor command doesn't seem to work well when downloading from sf.net.
-curl -f -L "http://downloads.sourceforge.net/project/luabinaries/5.3.2/Windows%%20Libraries/Dynamic/lua-5.3.2_Win64_dllw4_lib.zip" -o lua.zip
+curl -f -L http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4_lib.zip -o lua.zip || exit 1
 7z x lua.zip -oC:\Lua > nul
 :: Perl
-appveyor DownloadFile http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x64-299195.zip -FileName perl.zip
+curl -f -L http://downloads.activestate.com/ActivePerl/releases/5.22.0.2200/ActivePerl-5.22.0.2200-MSWin32-x64-299195.zip -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
 for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl522
 :: Tcl
-appveyor DownloadFile http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe -FileName tcl.exe
+curl -f -L http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe -o tcl.exe || exit 1
 start /wait tcl.exe --directory C:\Tcl
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
@@ -96,23 +105,24 @@ nmake .config.h.time
 xcopy /s .ext\include C:\Ruby22-x64\include\ruby-2.2.0
 popd
 :: Racket
-:: Need a patch to install gvim with dynamic racket
-curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-x86_64-win32.exe -o racket.exe
+curl -f -L https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-x86_64-win32.exe -o racket.exe || exit 1
 start /wait racket.exe /S
 
 if /i "%appveyor_repo_tag%"=="true" (
   :: Install binary diff.exe and libintl.dll and iconv.dll
-  curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
-  7z e gvim74.exe $0\diff.exe -o..
-  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe" -o gettext.exe
+  :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
+  :: 7z e gvim74.exe $0\diff.exe -o.
+  curl -f -L "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe" -o gettext.exe || exit 1
   start /wait gettext.exe /verysilent /dir=c:\gettext
   :: libwinpthread is needed on Win64 for localizing messages
   ::copy c:\gettext\libwinpthread-1.dll ..\runtime
-  :: Install NSIS and UPX
-  curl -f -L -O http://downloads.sourceforge.net/project/nsis/NSIS%%202/2.50/nsis-2.50.zip
-  7z x nsis-2.50.zip -oc:\ > nul
-  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip
-  7z e upx.zip *\upx.exe -onsis > nul
+  :: Install NSIS
+  curl -f -L http://downloads.sourceforge.net/nsis/nsis-2.50.zip -o nsis.zip || exit 1
+  7z x nsis.zip -oC:\ > nul
+  for /d %%i in (C:\nsis*) do move %%i C:\nsis
+  :: Install UPX
+  curl -f -L http://upx.sourceforge.net/download/upx391w.zip -o upx.zip || exit 1
+  7z e upx.zip *\upx.exe -ovim\nsis > nul
 )
 
 :: Update PATH
@@ -127,6 +137,7 @@ goto :eof
 :build_x86
 :: ----------------------------------------------------------------------
 @echo on
+cd vim\src
 :: Remove progress bar from the build log
 sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
@@ -171,6 +182,7 @@ goto :eof
 :build_x64
 :: ----------------------------------------------------------------------
 @echo on
+cd vim\src
 :: Remove progress bar from the build log
 sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
@@ -226,6 +238,7 @@ goto :eof
 :: ----------------------------------------------------------------------
 if /i "%appveyor_repo_tag%"=="false" goto :eof
 @echo on
+cd vim\src
 
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
 start /wait cmd /c "setenv /x64 && cd GvimExt && nmake clean all"
@@ -236,27 +249,28 @@ copy /Y ..\README.txt ..\runtime
 copy /Y ..\vimtutor.bat ..\runtime
 copy /Y *.exe ..\runtime\
 copy /Y xxd\*.exe ..\runtime
+copy /Y tee\*.exe ..\runtime
 mkdir ..\runtime\GvimExt
 copy /Y GvimExt\gvimext*.dll ..\runtime\GvimExt\
 copy /Y GvimExt\README.txt   ..\runtime\GvimExt\
 copy /Y GvimExt\*.inf        ..\runtime\GvimExt\
 copy /Y GvimExt\*.reg        ..\runtime\GvimExt\
-copy /Y c:\projects\diff.exe ..\runtime\
+copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
 :: libwinpthread is needed on Win64 for localizing messages
 if exist c:\gettext\libwinpthread-1.dll copy /Y c:\gettext\libwinpthread-1.dll ..\runtime\
-7z a ..\gvim_%ARCH%.zip ..\runtime\*
+7z a ..\..\gvim_%ARCH%.zip ..\runtime\*
 
-:: Create x86 installer
+:: Create x86 installer (Skip x64 installer)
 if /i "%ARCH%"=="x64" goto :eof
-c:\cygwin\bin\bash -lc "cd /cygdrive/c/projects/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
+c:\cygwin\bin\bash -lc "cd `cygpath '%APPVEYOR_BUILD_FOLDER%'`/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
 copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
-pushd ..\nsis && c:\nsis-2.50\makensis /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\gvim_%ARCH%.exe" && popd
+pushd ..\nsis && c:\nsis\makensis /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%ARCH%.exe" && popd
 
 @echo off
 goto :eof
@@ -266,7 +280,7 @@ goto :eof
 :test_x64
 :: ----------------------------------------------------------------------
 @echo on
-cd testdir
+cd vim\src\testdir
 nmake -f Make_dos.mak VIMPROG=..\gvim || exit 1
 if /i "%appveyor_repo_tag%"=="true" (
   nmake -f Make_dos.mak clean
