@@ -31,13 +31,13 @@ test_script:
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
 
 artifacts:
-  - path: gvim_x86.zip
+  - path: gvim_*_x86.zip
     name: gVim_x86
-  - path: gvim_x64.zip
+  - path: gvim_*_x64.zip
     name: gVim_x64
-  - path: gvim_x86.exe
+  - path: gvim_*_x86.exe
     name: gVim_x86_installer
-  - path: gvim_x64.exe
+  - path: gvim_*_x64.exe
     name: gVim_x64_installer
 
 deploy:

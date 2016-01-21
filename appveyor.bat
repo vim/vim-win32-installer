@@ -293,7 +293,7 @@ copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
 :: libwinpthread is needed on Win64 for localizing messages
 if exist c:\gettext\libwinpthread-1.dll copy /Y c:\gettext\libwinpthread-1.dll ..\runtime\
-7z a ..\..\gvim_%ARCH%.zip ..\runtime\*
+7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.zip ..\runtime\*
 
 :: Create x86 installer (Skip x64 installer)
 if /i "%ARCH%"=="x64" goto :eof
@@ -303,7 +303,9 @@ copy vim.exe vimw32.exe
 copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
-pushd ..\nsis && c:\nsis\makensis /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%ARCH%.exe" && popd
+pushd ..\nsis
+c:\nsis\makensis /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.exe"
+popd
 
 @echo off
 goto :eof
