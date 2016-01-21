@@ -1,0 +1,53 @@
+version: "{build}"
+
+# comment out this line, once this is merged to main Vim
+#skip_tags: true
+
+environment:
+  matrix:
+    - ARCH: x64
+    - ARCH: x86
+
+matrix:
+  fast_finish: true
+
+shallow_clone: true
+
+build:
+  verbosity: minimal
+
+before_build:
+  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%ARCH% /release'
+  - src\appveyor.bat install
+
+build_script:
+  - cd src
+  - appveyor.bat build
+
+after_build:
+  - appveyor.bat package
+
+test_script:
+  - appveyor.bat test
+
+artifacts:
+  - path: gvim_x86.zip
+    name: gVim_x86
+  - path: gvim_x64.zip
+    name: gVim_x64
+  - path: gvim_x86.exe
+    name: gVim_x86_installer
+  - path: gvim_x64.exe
+    name: gVim_x64_installer
+
+deploy:
+  - provider: GitHub
+    description: 'Nightly Vim Windows build snapshots'
+    auth_token:
+      # Update the following key, once this is merged to Vim main repository:
+      secure: ZfZRBCokF4rGIlyS0Nmgcn3g30vhz48ZKvIsF4ZGTv5HYVVPvldOtNQt3ZhtVUEl
+    artifact: /gVim/
+    draft: false
+    prerelease: false
+    on:
+      appveyor_repo_tag: true
