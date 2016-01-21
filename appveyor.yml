@@ -1,7 +1,7 @@
 version: "{build}"
 
-# comment out this line, once this is merged to main Vim
-#skip_tags: true
+# Build only on tags
+skip_non_tags: true
 
 environment:
   matrix:
