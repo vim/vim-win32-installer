@@ -88,20 +88,16 @@ popd
 curl -f -L %RACKET32_URL% -o racket.exe || exit 1
 start /wait racket.exe /S
 
-if /i "%appveyor_repo_tag%"=="true" (
-  :: Install binary diff.exe and libintl.dll and iconv.dll
-  :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
-  :: 7z e gvim74.exe $0\diff.exe -o.
-  curl -f -L %GETTEXT32_URL% -o gettext.exe || exit 1
-  start /wait gettext.exe /verysilent /dir=c:\gettext
-  :: Install NSIS
-  curl -f -L %NSIS_URL% -o nsis.zip || exit 1
-  7z x nsis.zip -oC:\ > nul
-  for /d %%i in (C:\nsis*) do move %%i C:\nsis
-  :: Install UPX
-  curl -f -L %UPX_URL% -o upx.zip || exit 1
-  7z e upx.zip *\upx.exe -ovim\nsis > nul
-)
+:: Install libintl.dll and iconv.dll
+curl -f -L %GETTEXT32_URL% -o gettext.exe || exit 1
+start /wait gettext.exe /verysilent /dir=c:\gettext
+:: Install NSIS
+curl -f -L %NSIS_URL% -o nsis.zip || exit 1
+7z x nsis.zip -oC:\ > nul
+for /d %%i in (C:\nsis*) do move %%i C:\nsis
+:: Install UPX
+curl -f -L %UPX_URL% -o upx.zip || exit 1
+7z e upx.zip *\upx.exe -ovim\nsis > nul
 
 :: Update PATH
 path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%\bin;%PROGRAMFILES(X86)%\Racket;%PROGRAMFILES(X86)%\Racket\lib
@@ -145,22 +141,18 @@ popd
 curl -f -L %RACKET64_URL% -o racket.exe || exit 1
 start /wait racket.exe /S
 
-if /i "%appveyor_repo_tag%"=="true" (
-  :: Install binary diff.exe and libintl.dll and iconv.dll
-  :: curl -f -L -O ftp://ftp.vim.org/pub/vim/pc/gvim74.exe
-  :: 7z e gvim74.exe $0\diff.exe -o.
-  curl -f -L %GETTEXT64_URL% -o gettext.exe || exit 1
-  start /wait gettext.exe /verysilent /dir=c:\gettext
-  :: libwinpthread is needed on Win64 for localizing messages
-  ::copy c:\gettext\libwinpthread-1.dll ..\runtime
-  :: Install NSIS
-  curl -f -L %NSIS_URL% -o nsis.zip || exit 1
-  7z x nsis.zip -oC:\ > nul
-  for /d %%i in (C:\nsis*) do move %%i C:\nsis
-  :: Install UPX
-  curl -f -L %UPX_URL% -o upx.zip || exit 1
-  7z e upx.zip *\upx.exe -ovim\nsis > nul
-)
+:: Install libintl.dll and iconv.dll
+curl -f -L %GETTEXT64_URL% -o gettext.exe || exit 1
+start /wait gettext.exe /verysilent /dir=c:\gettext
+:: libwinpthread is needed on Win64 for localizing messages
+::copy c:\gettext\libwinpthread-1.dll ..\runtime
+:: Install NSIS
+curl -f -L %NSIS_URL% -o nsis.zip || exit 1
+7z x nsis.zip -oC:\ > nul
+for /d %%i in (C:\nsis*) do move %%i C:\nsis
+:: Install UPX
+curl -f -L %UPX_URL% -o upx.zip || exit 1
+7z e upx.zip *\upx.exe -ovim\nsis > nul
 
 :: Update PATH
 path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%-x64\bin;%PROGRAMFILES%\Racket;%PROGRAMFILES%\Racket\lib
@@ -190,7 +182,6 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES(X86)%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
-@if /i "%appveyor_repo_tag%"=="false" goto check_executable
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
 	GUI=no OLE=no DIRECTX=no ^
@@ -233,7 +224,6 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES%\Racket" ^
 	WINVER=0x500 ^
 	|| exit 1
-@if /i "%appveyor_repo_tag%"=="false" goto check_executable
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
 	GUI=no OLE=no DIRECTX=no ^
@@ -259,9 +249,7 @@ goto check_executable
 .\gvim -silent -register
 .\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
 type ver.txt
-if /i "%appveyor_repo_tag%"=="true" (
-  .\vim --version
-)
+.\vim --version
 @echo off
 goto :eof
 
@@ -269,7 +257,6 @@ goto :eof
 :package_x86
 :package_x64
 :: ----------------------------------------------------------------------
-if /i "%appveyor_repo_tag%"=="false" goto :eof
 @echo on
 cd vim\src
 
@@ -317,10 +304,8 @@ goto :eof
 @echo on
 cd vim\src\testdir
 nmake -f Make_dos.mak VIMPROG=..\gvim || exit 1
-if /i "%appveyor_repo_tag%"=="true" (
-  nmake -f Make_dos.mak clean
-  nmake -f Make_dos.mak VIMPROG=..\vim || exit 1
-)
+nmake -f Make_dos.mak clean
+nmake -f Make_dos.mak VIMPROG=..\vim || exit 1
 
 @echo off
 goto :eof
