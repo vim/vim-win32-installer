@@ -42,7 +42,17 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    description: 'Nightly Vim Windows build snapshots'
+    description: |
+      Nightly Vim Windows build snapshots
+
+      Current dependencies:
+      * ActivePerl 5.22
+      * ActiveTcl 8.6
+      * LuaBinaries 5.3
+      * Python 2.7
+      * Python 3.4
+      * Racket 6.3
+      * RubyInstaller 2.2
     auth_token:
       # Update the following key, once this is merged to Vim main repository:
       secure: ZfZRBCokF4rGIlyS0Nmgcn3g30vhz48ZKvIsF4ZGTv5HYVVPvldOtNQt3ZhtVUEl
