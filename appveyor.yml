@@ -45,6 +45,8 @@ deploy:
     description: |
       Nightly Vim Windows build snapshots
 
+      Note: in case you don't have a preference, download the "gvim_\*_x86.exe" and run it.
+
       Current dependencies:
       * ActivePerl 5.22
       * ActiveTcl 8.6
