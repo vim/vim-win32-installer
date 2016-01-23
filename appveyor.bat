@@ -1,6 +1,7 @@
 @echo off
 :: Batch file for building/testing Vim on AppVeyor
 
+setlocal ENABLEDELAYEDEXPANSION
 cd %APPVEYOR_BUILD_FOLDER%
 
 if /i "%appveyor_repo_tag%"=="false" (
@@ -8,37 +9,63 @@ if /i "%appveyor_repo_tag%"=="false" (
   exit 0
 )
 
+if /I "%ARCH%"=="x64" (
+  set BIT=64
+) else (
+  set BIT=32
+)
+
 :: ----------------------------------------------------------------------
-:: Download URLs and versions
+:: Download URLs, local dirs and versions
 :: Lua
 set LUA_VER=53
 set LUA32_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win32_dllw4_lib.zip
 set LUA64_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4_lib.zip
+set LUA_URL=!LUA%BIT%_URL!
+set LUA_DIR=C:\Lua
 :: Perl
 set PERL_VER=522
 set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.1.2201/ActivePerl-5.22.1.2201-MSWin32-x86-64int-299574.zip
 set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.1.2201/ActivePerl-5.22.1.2201-MSWin32-x64-299574.zip
+set PERL_URL=!PERL%BIT%_URL!
+set PERL_DIR=C:\Perl%PERL_VER%\perl
 :: Python2
 set PYTHON_VER=27
+set PYTHON_32_DIR=C:\python%PYTHON_VER%
+set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
+set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=34
+set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
+set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
+set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
 set RACKET_VER=3m_9z0ds0
 set RACKET32_URL=https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-i386-win32.exe
 set RACKET64_URL=https://mirror.racket-lang.org/releases/6.3/installers/racket-minimal-6.3-x86_64-win32.exe
+set RACKET_URL=!RACKET%BIT%_URL!
+set RACKET32_DIR=%PROGRAMFILES(X86)%\Racket
+set RACKET64_DIR=%PROGRAMFILES%\Racket
+set RACKET_DIR=!RACKET%BIT%_DIR!
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=22
 set RUBY_VER_LONG=2.2.0
 set RUBY_BRANCH=ruby_2_2
+set RUBY32_DIR=C:\Ruby%RUBY_VER%
+set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
+set RUBY_DIR=!RUBY%BIT%_DIR!
 :: Tcl
 set TCL_VER_LONG=8.6
 set TCL_VER=%TCL_VER_LONG:.=%
 set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe
 set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe
+set TCL_URL=!TCL%BIT%_URL!
+set TCL_DIR=C:\Tcl
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe
+set GETTEXT_URL=!GETTEXT%BIT%_URL!
 :: NSIS
 set NSIS_URL=http://downloads.sourceforge.net/nsis/nsis-2.50.zip
 :: UPX
@@ -56,77 +83,26 @@ exit 1
 
 
 :install_x86
-:: ----------------------------------------------------------------------
-@echo on
-:: Work around for Python 2.7.11
-reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:32
-
-:: Get Vim source code
-git submodule update --init
-
-:: Lua
-curl -f -L %LUA32_URL% -o lua.zip || exit 1
-7z x lua.zip -oC:\Lua > nul
-:: Perl
-curl -f -L %PERL32_URL% -o perl.zip || exit 1
-7z x perl.zip -oC:\ > nul
-for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
-:: Tcl
-curl -f -L %TCL32_URL% -o tcl.exe || exit 1
-start /wait tcl.exe --directory C:\Tcl
-:: Ruby
-:: RubyInstaller is built by MinGW, so we cannot use header files from it.
-:: Download the source files and generate config.h for MSVC.
-git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
-pushd ..\ruby
-call win32\configure.bat
-echo on
-nmake .config.h.time
-xcopy /s .ext\include C:\Ruby%RUBY_VER%\include\ruby-%RUBY_VER_LONG%
-popd
-:: Racket
-curl -f -L %RACKET32_URL% -o racket.exe || exit 1
-start /wait racket.exe /S
-
-:: Install libintl.dll and iconv.dll
-curl -f -L %GETTEXT32_URL% -o gettext.exe || exit 1
-start /wait gettext.exe /verysilent /dir=c:\gettext
-:: Install NSIS
-curl -f -L %NSIS_URL% -o nsis.zip || exit 1
-7z x nsis.zip -oC:\ > nul
-for /d %%i in (C:\nsis*) do move %%i C:\nsis
-:: Install UPX
-curl -f -L %UPX_URL% -o upx.zip || exit 1
-7z e upx.zip *\upx.exe -ovim\nsis > nul
-
-:: Update PATH
-path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%\bin;%PROGRAMFILES(X86)%\Racket;%PROGRAMFILES(X86)%\Racket\lib
-
-:: Install additional packages for Racket
-raco pkg install --auto r5rs-lib
-@echo off
-goto :eof
-
-
 :install_x64
 :: ----------------------------------------------------------------------
 @echo on
 :: Work around for Python 2.7.11
+reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:32
 reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:64
 
 :: Get Vim source code
 git submodule update --init
 
 :: Lua
-curl -f -L %LUA64_URL% -o lua.zip || exit 1
-7z x lua.zip -oC:\Lua > nul
+curl -f -L %LUA_URL% -o lua.zip || exit 1
+7z x lua.zip -o%LUA_DIR% > nul
 :: Perl
-curl -f -L %PERL64_URL% -o perl.zip || exit 1
+curl -f -L %PERL_URL% -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
-for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
+for /d %%i in (C:\ActivePerl*) do move %%i %PERL_DIR%
 :: Tcl
-curl -f -L %TCL64_URL% -o tcl.exe || exit 1
-start /wait tcl.exe --directory C:\Tcl
+curl -f -L %TCL_URL% -o tcl.exe || exit 1
+start /wait tcl.exe --directory %TCL_DIR%
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
@@ -135,14 +111,14 @@ pushd ..\ruby
 call win32\configure.bat
 echo on
 nmake .config.h.time
-xcopy /s .ext\include C:\Ruby%RUBY_VER%-x64\include\ruby-%RUBY_VER_LONG%
+xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG%
 popd
 :: Racket
-curl -f -L %RACKET64_URL% -o racket.exe || exit 1
+curl -f -L %RACKET_URL% -o racket.exe || exit 1
 start /wait racket.exe /S
 
 :: Install libintl.dll and iconv.dll
-curl -f -L %GETTEXT64_URL% -o gettext.exe || exit 1
+curl -f -L %GETTEXT_URL% -o gettext.exe || exit 1
 start /wait gettext.exe /verysilent /dir=c:\gettext
 :: libwinpthread is needed on Win64 for localizing messages
 ::copy c:\gettext\libwinpthread-1.dll ..\runtime
@@ -155,7 +131,7 @@ curl -f -L %UPX_URL% -o upx.zip || exit 1
 7z e upx.zip *\upx.exe -ovim\nsis > nul
 
 :: Update PATH
-path C:\Perl%PERL_VER%\perl\bin;%path%;C:\Lua;C:\Tcl\bin;C:\Ruby%RUBY_VER%-x64\bin;%PROGRAMFILES%\Racket;%PROGRAMFILES%\Racket\lib
+path %PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RACKET_DIR%;%RACKET_DIR%\lib
 
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
@@ -164,47 +140,6 @@ goto :eof
 
 
 :build_x86
-:: ----------------------------------------------------------------------
-@echo on
-cd vim\src
-:: Remove progress bar from the build log
-sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
-:: Build GUI version
-nmake -f Make_mvc2.mak ^
-	GUI=yes OLE=yes DIRECTX=yes ^
-	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
-	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER% ^
-	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER% ^
-	DYNAMIC_LUA=yes LUA=C:\Lua ^
-	DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES(X86)%\Racket" ^
-	WINVER=0x500 ^
-	|| exit 1
-:: Build CUI version
-nmake -f Make_mvc2.mak ^
-	GUI=no OLE=no DIRECTX=no ^
-	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
-	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER% ^
-	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER% ^
-	DYNAMIC_LUA=yes LUA=C:\Lua ^
-	DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES(X86)%\Racket" ^
-	WINVER=0x500 ^
-	|| exit 1
-:: Build translations
-pushd po
-nmake -f Make_mvc.mak GETTEXT_PATH=C:\cygwin\bin VIMRUNTIME=..\..\runtime install-all || exit 1
-popd
-goto check_executable
-
-@echo off
-goto :eof
-
-
 :build_x64
 :: ----------------------------------------------------------------------
 @echo on
@@ -215,34 +150,32 @@ sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > 
 nmake -f Make_mvc2.mak ^
 	GUI=yes OLE=yes DIRECTX=yes ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
-	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER%-x64 ^
-	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER%-x64 ^
-	DYNAMIC_LUA=yes LUA=C:\Lua ^
-	DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER%-x64 RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES%\Racket" ^
+	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
+	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
+	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
+	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
+	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	WINVER=0x500 ^
 	|| exit 1
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
 	GUI=no OLE=no DIRECTX=no ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
-	DYNAMIC_PERL=yes PERL=C:\Perl%PERL_VER%\perl ^
-	DYNAMIC_PYTHON=yes PYTHON=C:\Python%PYTHON_VER%-x64 ^
-	DYNAMIC_PYTHON3=yes PYTHON3=C:\Python%PYTHON3_VER%-x64 ^
-	DYNAMIC_LUA=yes LUA=C:\Lua ^
-	DYNAMIC_TCL=yes TCL=C:\Tcl ^
-	DYNAMIC_RUBY=yes RUBY=C:\Ruby%RUBY_VER%-x64 RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%PROGRAMFILES%\Racket" ^
+	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
+	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
+	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
+	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
+	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
+	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	WINVER=0x500 ^
 	|| exit 1
 :: Build translations
 pushd po
 nmake -f Make_mvc.mak GETTEXT_PATH=C:\cygwin\bin VIMRUNTIME=..\..\runtime install-all || exit 1
 popd
-goto check_executable
-
 
 :check_executable
 :: ----------------------------------------------------------------------
