@@ -99,7 +99,7 @@ curl -f -L %LUA_URL% -o lua.zip || exit 1
 :: Perl
 curl -f -L %PERL_URL% -o perl.zip || exit 1
 7z x perl.zip -oC:\ > nul
-for /d %%i in (C:\ActivePerl*) do move %%i %PERL_DIR%
+for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
 :: Tcl
 curl -f -L %TCL_URL% -o tcl.exe || exit 1
 start /wait tcl.exe --directory %TCL_DIR%
