@@ -63,3 +63,5 @@ deploy:
     prerelease: false
     on:
       appveyor_repo_tag: true
+
+# vim: ts=2 sw=2 et
