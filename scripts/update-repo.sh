@@ -13,15 +13,20 @@ if [ ! -f appveyor.yml ]; then
 	exit 1
 fi
 
+git pull --no-edit
+
 if [ ! -d vim/src ]; then
-	git submodule update --init
+	git submodule init
 fi
+git submodule update
 
 # Get the latest vim source code
 cd vim
+vimoldver=$(git rev-parse HEAD)
 git checkout master
 git pull
 vimver=$(git describe --tags --abbrev=0)
+vimlog=$(git log --oneline $vimoldver..HEAD)
 cd -
 
 # Check if it is updated
@@ -31,6 +36,6 @@ if git diff --exit-code > /dev/null; then
 fi
 
 # Commit the change and push it
-git commit -a -m "vim: Import $vimver"
+git commit -a -m "vim: Import $vimver" -m "$vimlog"
 git tag $vimver
 git push origin master --tags
