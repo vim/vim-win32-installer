@@ -45,16 +45,19 @@ deploy:
     description: |
       Nightly Vim Windows build snapshots
 
-      Note: in case you don't have a preference, download the "gvim_\*_x86.exe" and run it.
+      Download and execute the most recent gvim_7.X.X_x86.exe file to install Vim.
 
-      Current dependencies:
-      * ActivePerl 5.22
-      * ActiveTcl 8.6
-      * LuaBinaries 5.3
-      * Python 2.7
-      * Python 3.4
-      * Racket 6.3
-      * RubyInstaller 2.2
+      Vim will work without the following. However, if the specified version for a language is also installed, Vim can use it to provide extra features.
+
+      * [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.22
+      * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6
+      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
+      * [Python](https://www.python.org/downloads/) 2.7
+      * [Python](https://www.python.org/downloads/) 3.4
+      * [Racket](https://download.racket-lang.org/) 6.3
+      * [RubyInstaller](http://rubyinstaller.org/downloads/) 2.2
+
+      Make sure that you install x86 (32-bit) versions when you use gvim_7.X.X_x86.exe.
     auth_token:
       # Update the following key, once this is merged to Vim main repository:
       secure: ZfZRBCokF4rGIlyS0Nmgcn3g30vhz48ZKvIsF4ZGTv5HYVVPvldOtNQt3ZhtVUEl
