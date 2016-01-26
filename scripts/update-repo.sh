@@ -31,7 +31,16 @@ git checkout master
 git pull
 vimver=$(git describe --tags --abbrev=0)
 #vimlog=$(git log --oneline $vimoldver..HEAD | sed -e 's/^\S\+ //')
-vimlog=$(git log --pretty=format:%s $vimoldver..HEAD)
+# pretty print the shortlog:
+# - squeeze spaces
+# - drop 'patch '
+# - drop 'Problem: '
+# - format to 100 chars
+vimlog=$(git log --decorate --graph --pretty=format:%s $vimoldver..HEAD |sed \
+    -e 's/^\(. \)patch /\1/' \
+    -e 's/ \+/ /g' \
+    -e 's/\([0-9]\+ \)Problem: \+/\1/' \
+    -e 's/\(.\{100\}\).*/\1/g')
 cd -
 
 # Check if it is updated
