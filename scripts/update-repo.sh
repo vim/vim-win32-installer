@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 # Work directory of this repository.
 if [ "$1" != "" ]; then
@@ -29,7 +30,8 @@ vimoldver=$(git rev-parse HEAD)
 git checkout master
 git pull
 vimver=$(git describe --tags --abbrev=0)
-vimlog=$(git log --oneline $vimoldver..HEAD)
+#vimlog=$(git log --oneline $vimoldver..HEAD | sed -e 's/^\S\+ //')
+vimlog=$(git log --pretty=format:%s $vimoldver..HEAD)
 cd -
 
 # Check if it is updated
