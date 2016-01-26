@@ -60,7 +60,7 @@ deploy:
       Make sure that you install x86 (32-bit) versions when you use gvim_7.X.X_x86.exe.
     auth_token:
       # Update the following key, once this is merged to Vim main repository:
-      secure: ZfZRBCokF4rGIlyS0Nmgcn3g30vhz48ZKvIsF4ZGTv5HYVVPvldOtNQt3ZhtVUEl
+      secure: kH0D/3t+1Mc8OChKhe+voKlMO0aMwnlUr64QoZOJC6BaVwy+Us3ZHq9Oo+aBzjYc
     artifact: /gVim/
     draft: false
     prerelease: false
