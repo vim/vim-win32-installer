@@ -43,7 +43,7 @@ artifacts:
 deploy:
   - provider: GitHub
     description: |
-      Nightly Vim Windows build snapshots
+      Nightly Vim Windows build snapshots [more information](http://vim.wikia.com/wiki/Where_to_download_Vim).
 
       Download and execute the most recent gvim_7.X.X_x86.exe file to install Vim.
 
