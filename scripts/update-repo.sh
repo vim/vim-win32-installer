@@ -13,7 +13,10 @@ if [ ! -f appveyor.yml ]; then
 	exit 1
 fi
 
-git pull --no-edit
+# older git does not know about --no-edit for git-pull
+# e.g. 1.7.9.5
+# git pull --no-edit
+git pull
 
 if [ ! -d vim/src ]; then
 	git submodule init
