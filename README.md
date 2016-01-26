@@ -1,4 +1,4 @@
-(TODO: Add AppVeyor badge here)
+[![Build status](https://ci.appveyor.com/api/projects/status/4cj75ax2wcwybukq?svg=true)](https://ci.appveyor.com/project/chrisbra/vim-win32-installer)
 
 # Vim Win32 Installer
 
