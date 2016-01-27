@@ -1,4 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/4cj75ax2wcwybukq?svg=true)](https://ci.appveyor.com/project/chrisbra/vim-win32-installer)
+[![Build status](https://ci.appveyor.com/api/projects/status/rfwbh4lju8a6umfl?svg=true)](https://ci.appveyor.com/project/chrisbra/vim-win32-installer-lw4pj)
+
 
 # Vim Win32 Installer
 
