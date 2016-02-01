@@ -51,7 +51,7 @@ deploy:
       the archive and update your PATH variable. The installer will do that
       automatically and provide some additional extensions (e.g. Edit with Vim menu).
 
-      If you need a dynamic interface to Perl, Python2, Python3, TCL, Lua or Racket/MzScheme,
+      If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or Racket/MzScheme,
       make sure you also install the following. Vim will work without it, but some Plugin
       might need this additional dependency. (e.g. Gundo needs a working Pyhton2 installation,
       Command-T needs a working Ruby installation and Neocomplete needs a working Lua
