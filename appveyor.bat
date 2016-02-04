@@ -213,7 +213,10 @@ copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
 :: libwinpthread is needed on Win64 for localizing messages
 if exist c:\gettext\libwinpthread-1.dll copy /Y c:\gettext\libwinpthread-1.dll ..\runtime\
-7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.zip ..\runtime\*
+set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
+mkdir ..\vim\%dir%
+xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
+7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.zip ..\vim
 
 :: Create x86 installer (Skip x64 installer)
 if /i "%ARCH%"=="x64" goto :eof
