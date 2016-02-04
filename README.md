@@ -5,11 +5,12 @@
 
 This is a project for building Nightly Vim Windows build snapshots automatically ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
 
-Download and execute the most recent `gvim_7.4.X_x86.exe` file to install Vim.
-The exe file contains the (32bit) installer while the .zip files contain an
-archive of the 32bit (`_x86`) or 64bit versions (`_x64`). To install it,
-extract the archive and update your PATH variable. The installer will do that
-automatically and provide some additional extensions (e.g. Edit with Vim menu).
+[Download](https://github.com/vim/vim-win32-installer/releases) and execute the
+most recent `gvim_7.4.X_x86.exe` file to install Vim. The exe file contains the
+(32bit) installer while the .zip files contain an archive of the 32bit (`_x86`)
+or 64bit versions (`_x64`). To install it, extract the archive and update your
+PATH variable. The installer will do that automatically and provide some
+additional extensions (e.g. Edit with Vim menu).
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
