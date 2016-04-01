@@ -25,7 +25,7 @@ won't be able to use that feature! You can find those interperters here:
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python](https://www.python.org/downloads/) 3.4
-* [Racket](https://download.racket-lang.org/) 6.3
+* [Racket](https://download.racket-lang.org/) 6.4
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 2.2
 
 Make sure that you install the same architecture (32bit/64bit) that matches
