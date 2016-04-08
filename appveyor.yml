@@ -40,10 +40,18 @@ artifacts:
   - path: gvim_*_x64.exe
     name: gVim_x64_installer
 
+before_deploy:
+  - set /p GITLOG=<gitlog.txt
+
+after_deploy:
+  - echo > gitlog.txt
+
 deploy:
   - provider: GitHub
     description: |
       Nightly Vim Windows build snapshots ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
+
+      $(GITLOG)
 
       Download and execute the most recent gvim_7.._x86.exe file to install Vim.
       The exe file contains the (32bit) installer while the .zip files contain an

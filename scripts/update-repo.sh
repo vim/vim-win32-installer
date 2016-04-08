@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+#set -x
 
 # Work directory of this repository.
 if [ "$1" != "" ]; then
@@ -50,6 +50,8 @@ if git diff --exit-code > /dev/null; then
 fi
 
 # Commit the change and push it
+# replace newline by \n
+echo "$vimlog" | sed ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
 git commit -a -m "vim: Import $vimver" -m "$vimlog"
 git tag $vimver
 git push origin master --tags
