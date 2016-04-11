@@ -1,1 +1,1 @@
-* Updated runtime files.
+* 7.4.1724 Tabline test fails in GUI. Solution: Remove 'e' from 'guioptions'.\n* 7.4.1723 When using try/catch in 'tabline' it is still considered an error and the tabline will be\n* 7.4.1722 Crash when calling garbagecollect() after starting a job. Solution: Set the copyID on job
