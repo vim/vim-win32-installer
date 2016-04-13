@@ -1,1 +1,1 @@
-* 7.4.1725 Compiler errors for non-ANSI compilers. Solution: Remove // comment. Remove comma at end \n* Updated runtime files.
+* 7.4.1726 ANSI compiler complains about string length. Solution: Split long string in two parts. (M
