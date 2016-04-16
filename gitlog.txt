@@ -1,1 +1,1 @@
-* 7.4.1747 Coverity: missing check for NULL pointer. Solution: Check for out of memory.\n* 7.4.1746 Memory leak in Perl. Solution: Decrement the reference count. Add a test. (Damien)\n* 7.4.1745 README file is not clear about where to get Vim. Solution: Add links to github, releases \n* 7.4.1744 Python: Converting a sequence may leak memory. Solution: Decrement a reference. (Nikolay 
+* Add missing test file.\n* 7.4.1748 "gD" does not find match in first column of first line. (Gary Johnson) Solution: Accept m
