@@ -1,1 +1,1 @@
-* Add missing test file.\n* 7.4.1748 "gD" does not find match in first column of first line. (Gary Johnson) Solution: Accept m
+* 7.4.1749 When using GTK 3.20 there are a few warnings. Solution: Use new functions when available.
