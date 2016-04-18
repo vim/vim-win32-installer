@@ -1,1 +1,1 @@
-* 7.4.1749 When using GTK 3.20 there are a few warnings. Solution: Use new functions when available.
+* Add missing test file.\n* 7.4.1752 When adding to the quickfix list the current position is reset. Solution: Do not reset th\n* 7.4.1751 Crash when 'tagstack' is off. (Dominique Pelle) Solution: Fix it. (Hirohito Higashi)\n* 7.4.1750 When a buffer gets updated while in command line mode, the screen may be messed up. Solut
