@@ -1,1 +1,1 @@
-* Add missing test file.\n* 7.4.1752 When adding to the quickfix list the current position is reset. Solution: Do not reset th\n* 7.4.1751 Crash when 'tagstack' is off. (Dominique Pelle) Solution: Fix it. (Hirohito Higashi)\n* 7.4.1750 When a buffer gets updated while in command line mode, the screen may be messed up. Solut
+* [7.4.1753](https://github.com/vim/vim/releases/tag/v7.4.1753) "noinsert" in 'completeopt' is sometimes ignored. Solution: Set the variables when the 'c
