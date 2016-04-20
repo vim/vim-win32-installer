@@ -51,7 +51,9 @@ fi
 
 # Commit the change and push it
 # replace newline by \n
-echo "$vimlog" | sed ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
+echo "$vimlog" | sed \
+    -e 's#^\* *\([0-9]\.[0-9]\.[0-9]\+\) #* [\1](https://github.com/vim/vim/releases/tag/v\1) #g' | sed \
+    -e ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
 git commit -a -m "vim: Import $vimver" -m "$vimlog"
 git tag $vimver
 git push origin master --tags

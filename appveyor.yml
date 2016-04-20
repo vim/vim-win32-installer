@@ -41,7 +41,7 @@ artifacts:
     name: gVim_x64_installer
 
 before_deploy:
-  - set /p GITLOG=<gitlog.txt
+  - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
 
 deploy:
   - provider: GitHub
