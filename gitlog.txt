@@ -1,1 +1,1 @@
-* [7.4.1796](https://github.com/vim/vim/releases/tag/v7.4.1796) Colors are wrong on MS-Windows. (Christian Robinson) Solution: Use existing RGB macro if 
+* [7.4.1797](https://github.com/vim/vim/releases/tag/v7.4.1797) Warning from Windows 64 bit compiler. Solution: Change int to size_t. (Mike Williams)
