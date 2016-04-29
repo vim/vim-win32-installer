@@ -1,1 +1,1 @@
-* [7.4.1797](https://github.com/vim/vim/releases/tag/v7.4.1797) Warning from Windows 64 bit compiler. Solution: Change int to size_t. (Mike Williams)
+* [7.4.1799](https://github.com/vim/vim/releases/tag/v7.4.1799) 'guicolors' is a confusing option name. Solution: Use 'termguicolors' instead. (Hirohito \n* [7.4.1798](https://github.com/vim/vim/releases/tag/v7.4.1798) Still compiler warning for unused return value. (Charles Campbell) Solution: Assign to ig
