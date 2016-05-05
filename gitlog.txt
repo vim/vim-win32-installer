@@ -1,1 +1,1 @@
-* [7.4.1817](https://github.com/vim/vim/releases/tag/v7.4.1817) The screen is not updated if a callback is invoked when closing a channel. Solution: Invo
+* [7.4.1819](https://github.com/vim/vim/releases/tag/v7.4.1819) Compiler warnings when sprintf() is a macro. Solution: Don't interrupt sprintf() with an \n* [7.4.1818](https://github.com/vim/vim/releases/tag/v7.4.1818) Help completion adds @en to all matches except the first one. Solution: Remove "break", g
