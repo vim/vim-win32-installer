@@ -201,6 +201,7 @@ start /wait cmd /c "setenv /x86 && cd GvimExt && nmake clean all"
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\vimtutor.bat ..\runtime
 copy /Y *.exe ..\runtime\
+copy /Y *.pdb ..\runtime\
 copy /Y xxd\*.exe ..\runtime
 copy /Y tee\*.exe ..\runtime
 mkdir ..\runtime\GvimExt
