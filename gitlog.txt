@@ -1,1 +1,1 @@
-* [7.4.1830](https://github.com/vim/vim/releases/tag/v7.4.1830) non-antialiased misnamed. Solution: Use NONANTIALIASED and NONANTIALIASED_QUALITY. (Kim B
+* [7.4.1831](https://github.com/vim/vim/releases/tag/v7.4.1831) When timer_stop() is called with a string there is no proper error message. Solution: Req
