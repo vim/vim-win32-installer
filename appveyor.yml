@@ -33,8 +33,12 @@ test_script:
 artifacts:
   - path: gvim_*_x86.zip
     name: gVim_x86
+  - path: gvim_*_x86_pdb.zip
+    name: gVim_x86_pdb
   - path: gvim_*_x64.zip
     name: gVim_x64
+  - path: gvim_*_x64_pdb.zip
+    name: gVim_x64_pdb
   - path: gvim_*_x86.exe
     name: gVim_x86_installer
   - path: gvim_*_x64.exe
@@ -57,6 +61,7 @@ deploy:
       archive of the 32bit (_x86) or 64bit versions (_x64). To install it, extract
       the archive and update your PATH variable. The installer will do that
       automatically and provide some additional extensions (e.g. Edit with Vim menu).
+      The gvim...pdb.zip file include pdb files for debugging the binaries.
 
       If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or Racket/MzScheme,
       make sure you also install the following. Vim will work without it, but some Plugin
