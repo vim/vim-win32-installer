@@ -61,7 +61,7 @@ deploy:
       archive of the 32bit (_x86) or 64bit versions (_x64). To install it, extract
       the archive and update your PATH variable. The installer will do that
       automatically and provide some additional extensions (e.g. Edit with Vim menu).
-      The gvim...pdb.zip file include pdb files for debugging the binaries.
+      The gvim...pdb.zip file only contains the corresponding pdb files for debugging the binaries.
 
       If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or Racket/MzScheme,
       make sure you also install the following. Vim will work without it, but some Plugin
