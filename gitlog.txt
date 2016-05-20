@@ -1,1 +1,1 @@
-* [7.4.1832](https://github.com/vim/vim/releases/tag/v7.4.1832) Memory leak in debug commands. Solution: Free memory before overwriting the pointer. (hin
+* Updated runtime files.
