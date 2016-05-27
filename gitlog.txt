@@ -1,1 +1,1 @@
-* [7.4.1848](https://github.com/vim/vim/releases/tag/v7.4.1848) Can't build with Strawberry Perl 5.24. Solution: Define S_SvREFCNT_dec() if needed. (Dami
+* [7.4.1849](https://github.com/vim/vim/releases/tag/v7.4.1849) Still trying to read from channel that is going to be closed. (Ramel Eshed) Solution: Che
