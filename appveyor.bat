@@ -72,6 +72,9 @@ set NSIS_URL=http://downloads.sourceforge.net/nsis/nsis-2.50.zip
 set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
 :: ----------------------------------------------------------------------
 
+:: Update PATH
+path %PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RACKET_DIR%;%RACKET_DIR%\lib
+
 if /I "%1"=="" (
   set target=build
 ) else (
@@ -130,8 +133,8 @@ for /d %%i in (C:\nsis*) do move %%i C:\nsis
 curl -f -L %UPX_URL% -o upx.zip || exit 1
 7z e upx.zip *\upx.exe -ovim\nsis > nul
 
-:: Update PATH
-path %PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RACKET_DIR%;%RACKET_DIR%\lib
+:: Show PATH for debugging
+path
 
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
@@ -179,10 +182,13 @@ popd
 
 :check_executable
 :: ----------------------------------------------------------------------
-.\gvim -silent -register
-.\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
+start /wait .\gvim -silent -register
+start /wait .\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
 type ver.txt
 .\vim --version
+:: Print interface versions
+start /wait .\gvim -S ..\..\if_ver.vim -c quit
+type if_ver.txt
 @echo off
 goto :eof
 
