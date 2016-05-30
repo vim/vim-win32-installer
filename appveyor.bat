@@ -179,12 +179,12 @@ popd
 
 :check_executable
 :: ----------------------------------------------------------------------
-.\gvim -silent -register
-.\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
+start /wait .\gvim -silent -register
+start /wait .\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
 type ver.txt
 .\vim --version
 :: Print interface versions
-.\gvim -S ..\..\if_ver.vim -c quit
+start /wait .\gvim -S ..\..\if_ver.vim -c quit
 type if_ver.txt
 @echo off
 goto :eof
