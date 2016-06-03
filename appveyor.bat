@@ -66,8 +66,6 @@ set TCL_DIR=C:\Tcl
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe
 set GETTEXT_URL=!GETTEXT%BIT%_URL!
-:: NSIS
-set NSIS_URL=http://downloads.sourceforge.net/nsis/nsis-2.50.zip
 :: UPX
 set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
 :: ----------------------------------------------------------------------
@@ -125,10 +123,6 @@ curl -f -L %GETTEXT_URL% -o gettext.exe || exit 1
 start /wait gettext.exe /verysilent /dir=c:\gettext
 :: libwinpthread is needed on Win64 for localizing messages
 ::copy c:\gettext\libwinpthread-1.dll ..\runtime
-:: Install NSIS
-curl -f -L %NSIS_URL% -o nsis.zip || exit 1
-7z x nsis.zip -oC:\ > nul
-for /d %%i in (C:\nsis*) do move %%i C:\nsis
 :: Install UPX
 curl -f -L %UPX_URL% -o upx.zip || exit 1
 7z e upx.zip *\upx.exe -ovim\nsis > nul
@@ -234,7 +228,7 @@ copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
 pushd ..\nsis
-c:\nsis\makensis /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.exe"
+"C:\Program Files (x86)\NSIS\makensis" /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.exe"
 popd
 
 @echo off
