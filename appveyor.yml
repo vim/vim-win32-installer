@@ -88,4 +88,7 @@ deploy:
     on:
       appveyor_repo_tag: true
 
+cache:
+  - downloads -> appveyor.bat
+
 # vim: ts=2 sw=2 et
