@@ -78,6 +78,7 @@ if /I "%1"=="" (
 ) else (
   set target=%1
 )
+
 goto %target%_%ARCH%
 echo Unknown build target.
 exit 1
@@ -94,16 +95,21 @@ reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7
 :: Get Vim source code
 git submodule update --init
 
+if not exist downloads mkdir downloads
+
 :: Lua
-curl -f -L %LUA_URL% -o lua.zip || exit 1
-7z x lua.zip -o%LUA_DIR% > nul
+call :downloadfile %LUA_URL% downloads\lua.zip
+7z x downloads\lua.zip -o%LUA_DIR% > nul || exit 1
+
 :: Perl
-curl -f -L %PERL_URL% -o perl.zip || exit 1
-7z x perl.zip -oC:\ > nul
+call :downloadfile %PERL_URL% downloads\perl.zip
+7z x downloads\perl.zip -oC:\ > nul || exit 1
 for /d %%i in (C:\ActivePerl*) do move %%i C:\Perl%PERL_VER%
+
 :: Tcl
-curl -f -L %TCL_URL% -o tcl.exe || exit 1
-start /wait tcl.exe --directory %TCL_DIR%
+call :downloadfile %TCL_URL% downloads\tcl.exe
+start /wait downloads\tcl.exe --directory %TCL_DIR%
+
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
@@ -114,18 +120,20 @@ echo on
 nmake .config.h.time
 xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG%
 popd
+
 :: Racket
-curl -f -L %RACKET_URL% -o racket.exe || exit 1
-start /wait racket.exe /S
+call :downloadfile %RACKET_URL% downloads\racket.exe
+start /wait downloads\racket.exe /S
 
 :: Install libintl.dll and iconv.dll
-curl -f -L %GETTEXT_URL% -o gettext.exe || exit 1
-start /wait gettext.exe /verysilent /dir=c:\gettext
+call :downloadfile %GETTEXT_URL% downloads\gettext.exe
+start /wait downloads\gettext.exe /verysilent /dir=c:\gettext
 :: libwinpthread is needed on Win64 for localizing messages
 ::copy c:\gettext\libwinpthread-1.dll ..\runtime
+
 :: Install UPX
-curl -f -L %UPX_URL% -o upx.zip || exit 1
-7z e upx.zip *\upx.exe -ovim\nsis > nul
+call :downloadfile %UPX_URL% downloads\upx.zip
+7z e downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
 
 :: Show PATH for debugging
 path
@@ -245,4 +253,13 @@ nmake -f Make_dos.mak clean
 nmake -f Make_dos.mak VIMPROG=..\vim || exit 1
 
 @echo off
+goto :eof
+
+
+:downloadfile
+:: ----------------------------------------------------------------------
+:: call :downloadfile <URL> <localfile>
+if not exist %2 (
+  curl -f -L %1 -o %2 || exit 1
+)
 goto :eof
