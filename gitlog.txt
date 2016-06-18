@@ -1,1 +1,1 @@
-* [7.4.1943](https://github.com/vim/vim/releases/tag/v7.4.1943) Coverity warns for unreachable code. Solution: Remove the code that won't do anything.\n* [7.4.1942](https://github.com/vim/vim/releases/tag/v7.4.1942) Background is not drawn properly when 'termguicolors' is set. Solution: Check cterm_norma\n* Updated runtime files.
+* [7.4.1944](https://github.com/vim/vim/releases/tag/v7.4.1944) Win32: Cannot compile with XPM feature using VC2015 Solution: Add XPM libraries compiled 
