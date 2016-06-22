@@ -90,6 +90,11 @@ reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7
 :: Get Vim source code
 git submodule update --init
 
+:: Apply experimental patches
+pushd vim
+for %%i in (..\patch\*.patch) do git apply -v %%i
+popd
+
 if not exist downloads mkdir downloads
 
 :: Lua
