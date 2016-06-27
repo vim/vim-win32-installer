@@ -33,4 +33,6 @@ your Vim installation.
 
 Note: The zip archive might be considered unsecure in Windows, causing Windows to display a dialog box "These files might be harmful to your computer...". If you want to disable this warning, you need to "unblock" the zip file. Do that in the properties dialog of the zip file, first tab General and look for the security section and click on "Unblock".
 
+Note: If you want to test some patches, place them in the patch directory with the extension `.patch`. They will be applied before building Vim and the binary will then be tested against the test suite.
+
 See: https://github.com/vim/vim
