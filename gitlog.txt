@@ -1,1 +1,1 @@
-* [7.4.1965](https://github.com/vim/vim/releases/tag/v7.4.1965) When using a job in raw mode to append to a buffer garbage characters are added. Solution
+* [7.4.1967](https://github.com/vim/vim/releases/tag/v7.4.1967) Falling back from NFA to old regexp engine does not work properly. (fritzophrenic) Soluti\n* [7.4.1966](https://github.com/vim/vim/releases/tag/v7.4.1966) Coverity reports a resource leak. Solution: Close "fd" also when bailing out.
