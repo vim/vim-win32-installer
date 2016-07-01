@@ -19,9 +19,9 @@ set LUA64_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4
 set LUA_URL=!LUA%BIT%_URL!
 set LUA_DIR=C:\Lua
 :: Perl
-set PERL_VER=522
-set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.1.2201/ActivePerl-5.22.1.2201-MSWin32-x86-64int-299574.zip
-set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.22.1.2201/ActivePerl-5.22.1.2201-MSWin32-x64-299574.zip
+set PERL_VER=524
+set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x86-64int-300558.zip
+set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x64-300558.zip
 set PERL_URL=!PERL%BIT%_URL!
 set PERL_DIR=C:\Perl%PERL_VER%\perl
 :: Python2
