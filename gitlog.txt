@@ -1,1 +1,1 @@
-* [7.4.1988](https://github.com/vim/vim/releases/tag/v7.4.1988) When updating viminfo with file marks there is no time order. Solution: Remember the time
+* [7.4.1989](https://github.com/vim/vim/releases/tag/v7.4.1989) filter() and map() only accept a string argument. Solution: Implement using a Funcref arg
