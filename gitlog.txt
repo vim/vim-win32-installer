@@ -1,1 +1,1 @@
-* [7.4.1989](https://github.com/vim/vim/releases/tag/v7.4.1989) filter() and map() only accept a string argument. Solution: Implement using a Funcref arg
+* [7.4.1990](https://github.com/vim/vim/releases/tag/v7.4.1990) Cscope items are not sorted. Solution: Put the new "a" command first. (Ken Takata)
