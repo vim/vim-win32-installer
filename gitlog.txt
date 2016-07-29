@@ -1,1 +1,1 @@
-* [7.4.2113](https://github.com/vim/vim/releases/tag/v7.4.2113) Test for undo is flaky. Solution: Turn it into a new style test. Use test_settime() to av
+* [7.4.2114](https://github.com/vim/vim/releases/tag/v7.4.2114) Tiny build fails. Solution: Always include vim_time().
