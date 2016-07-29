@@ -189,7 +189,7 @@ start /wait .\gvim -u NONE -c "redir @a | ver | 0put a | wq!" ver.txt
 type ver.txt
 .\vim --version
 :: Print interface versions
-start /wait .\gvim -S ..\..\if_ver.vim -c quit
+start /wait .\gvim -u NONE -S ..\..\if_ver.vim -c quit
 type if_ver.txt
 @echo off
 goto :eof
