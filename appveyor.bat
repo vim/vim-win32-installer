@@ -20,7 +20,7 @@ set LUA_URL=!LUA%BIT%_URL!
 set LUA_DIR=C:\Lua
 :: Perl
 set PERL_VER=524
-set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x86-64int-300558.zip
+set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x86-64int-300560.zip
 set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x64-300558.zip
 set PERL_URL=!PERL%BIT%_URL!
 set PERL_DIR=C:\Perl%PERL_VER%\perl
