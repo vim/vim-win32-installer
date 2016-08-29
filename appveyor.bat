@@ -232,6 +232,7 @@ if /i "%ARCH%"=="x64" goto :eof
 c:\cygwin\bin\bash -lc "cd `cygpath '%APPVEYOR_BUILD_FOLDER%'`/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
+copy tee\tee.exe teew32.exe
 copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
