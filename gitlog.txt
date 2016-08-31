@@ -1,1 +1,1 @@
-* Updated runtime files. Remove version checks for Vim older than 6.0.\n* [7.4.2295](https://github.com/vim/vim/releases/tag/v7.4.2295) Cscope test fails. Solution: Avoid checking for specific line and column numbers.
+* Updated runtime files. Remove HiLink commands.\n* [7.4.2296](https://github.com/vim/vim/releases/tag/v7.4.2296) No tests for :undolist and "U" command. Solution: Add tests. (Dominique Pelle)
