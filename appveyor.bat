@@ -30,7 +30,7 @@ set PYTHON_32_DIR=C:\python%PYTHON_VER%
 set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
-set PYTHON3_VER=34
+set PYTHON3_VER=35
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
@@ -66,7 +66,7 @@ set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
 :: ----------------------------------------------------------------------
 
 :: Update PATH
-path %PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RACKET_DIR%;%RACKET_DIR%\lib
+path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RACKET_DIR%;%RACKET_DIR%\lib
 
 if /I "%1"=="" (
   set target=build
