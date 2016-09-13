@@ -56,7 +56,7 @@ deploy:
 
       $(GITLOG)
 
-      Download and execute the most recent gvim_7.._x86.exe file to install Vim.
+      Download and execute the most recent gvim_8.._x86.exe file to install Vim.
       The exe file contains the (32bit) installer while the .zip files contain an
       archive of the 32bit (_x86) or 64bit versions (_x64). To install it, extract
       the archive and update your PATH variable. The installer will do that
