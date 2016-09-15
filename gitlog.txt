@@ -1,1 +1,1 @@
-* [8.0.0004](https://github.com/vim/vim/releases/tag/v8.0.0004) A string argument for function() that is not a function name results in an error message 
+* [8.0.0005](https://github.com/vim/vim/releases/tag/v8.0.0005) Netbeans test fails with Python 3. (Jonathonf) Solution: Encode the string before sending
