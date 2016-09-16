@@ -83,9 +83,6 @@ exit 1
 :install_x64
 :: ----------------------------------------------------------------------
 @echo on
-:: Work around for Python 2.7.11
-reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:32
-reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:64
 
 :: Get Vim source code
 git submodule update --init
