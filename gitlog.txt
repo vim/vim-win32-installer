@@ -1,1 +1,1 @@
-* Updated runtime files.
+* [8.0.0006](https://github.com/vim/vim/releases/tag/v8.0.0006) ":lb" is interpreted as ":lbottom" while the documentation says it means ":lbuffer". Solu
