@@ -1,1 +1,1 @@
-* [8.0.0007](https://github.com/vim/vim/releases/tag/v8.0.0007) Vim 7.4 is still mentioned in a few places. Solution: Update to Vim 8. (Uncle Bill, close
+* Updated runtime files.\n* [8.0.0008](https://github.com/vim/vim/releases/tag/v8.0.0008) Popup complete test is disabled. Solution: Enable the test and change the assert. (Hirohi
