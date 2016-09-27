@@ -1,1 +1,1 @@
-* [8.0.0016](https://github.com/vim/vim/releases/tag/v8.0.0016) Build fails. Solution: Include missing change.\n* [8.0.0015](https://github.com/vim/vim/releases/tag/v8.0.0015) Can't tell which part of a channel has "buffered" status. Solution: Add an optional argum\n* [8.0.0014](https://github.com/vim/vim/releases/tag/v8.0.0014) Crypt tests are old style. Solution: Convert to new style.
+* Missing part of patch 8.0.0014\n* [8.0.0017](https://github.com/vim/vim/releases/tag/v8.0.0017) Cannot get the number of the current quickfix or location list. Solution: Use the current
