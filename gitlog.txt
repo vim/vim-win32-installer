@@ -1,1 +1,1 @@
-* [8.0.0019](https://github.com/vim/vim/releases/tag/v8.0.0019) Test_command_count is old style. Solution: Turn it into a new style test. (Naruhiko Nishi\n* [8.0.0018](https://github.com/vim/vim/releases/tag/v8.0.0018) When using ":sleep" channel input is not handled. Solution: When there is a channel check
+* Updated runtime files.
