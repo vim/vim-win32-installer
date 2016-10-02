@@ -1,1 +1,1 @@
-* Updated runtime files.
+* [8.0.0021](https://github.com/vim/vim/releases/tag/v8.0.0021) In the GUI when redrawing the cursor it may be on the second half of a double byte charac\n* [8.0.0020](https://github.com/vim/vim/releases/tag/v8.0.0020) The regexp engines are not reentrant. Solution: Add regexec_T and save/restore the state 
