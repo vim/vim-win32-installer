@@ -1,1 +1,1 @@
-* [8.0.0022](https://github.com/vim/vim/releases/tag/v8.0.0022) If a channel in NL mode is missing the NL at the end the remaining characters are dropped
+* [8.0.0023](https://github.com/vim/vim/releases/tag/v8.0.0023) "gd" and "gD" may find a match in a comment or string. Solution: Ignore matches in commen
