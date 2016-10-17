@@ -1,1 +1,1 @@
-* [8.0.0041](https://github.com/vim/vim/releases/tag/v8.0.0041) When using Insert mode completion but not actually inserting anything an undo item is sti\n* [8.0.0040](https://github.com/vim/vim/releases/tag/v8.0.0040) Whole line highlighting with matchaddpos() does not work. Solution: Check for zero length
+* [8.0.0042](https://github.com/vim/vim/releases/tag/v8.0.0042) When using Insert mode completion with 'completeopt' containing "noinsert" change is not 
