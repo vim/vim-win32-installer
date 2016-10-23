@@ -1,1 +1,1 @@
-* [8.0.0046](https://github.com/vim/vim/releases/tag/v8.0.0046) Using NUL instead of NULL. Solution: Change to NULL. (Dominique Pelle)
+* Updated runtime files.
