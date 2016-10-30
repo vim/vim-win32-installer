@@ -1,1 +1,1 @@
-* [8.0.0054](https://github.com/vim/vim/releases/tag/v8.0.0054) On Windows job_stop() stops cmd.exe, not the processes it runs. (Linwei) Solution: Iterat\n* [8.0.0053](https://github.com/vim/vim/releases/tag/v8.0.0053) No test for what 8.0.0047 fixes. Solution: Add a test. (Hirohito Higashi)
+* [8.0.0055](https://github.com/vim/vim/releases/tag/v8.0.0055) Minor comment and style deficiencies. Solution: Update comments and fix style.\n* Runtime file updates.
