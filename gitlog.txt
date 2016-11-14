@@ -1,1 +1,1 @@
-* [8.0.0084](https://github.com/vim/vim/releases/tag/v8.0.0084) Using freed memory when adding to a quickfix list. (Domenique Pelle) Solution: Clear the \n* [8.0.0083](https://github.com/vim/vim/releases/tag/v8.0.0083) Using freed memory with win_getid(). (Domenique Pelle) Solution: For the current tab use 
+* [8.0.0085](https://github.com/vim/vim/releases/tag/v8.0.0085) Using freed memory with recursive function call. (Dominique Pelle) Solution: Make a copy 
