@@ -1,1 +1,1 @@
-* [8.0.0094](https://github.com/vim/vim/releases/tag/v8.0.0094) When vimrun.exe is not found the error message is not properly encoded. Solution: Use utf\n* [8.0.0093](https://github.com/vim/vim/releases/tag/v8.0.0093) Not using multiprocess build feature. Solution: Enable multiprocess build with MSVC 10. (
+* [8.0.0095](https://github.com/vim/vim/releases/tag/v8.0.0095) Problems with GTK 3.22.2 fixed in 3.22.4. Solution: Adjust the #ifdefs. (Kazunobu Kuriyam
