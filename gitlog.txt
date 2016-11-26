@@ -1,1 +1,1 @@
-* [8.0.0102](https://github.com/vim/vim/releases/tag/v8.0.0102) Cannot set 'dictionary' to a path. Solution: Allow for slash and backslash. Add a test (p
+* [8.0.0104](https://github.com/vim/vim/releases/tag/v8.0.0104) Value of 'thesaurus' option not checked properly. Solution: Add P_NDNAME flag. (Daisuke S\n* [8.0.0103](https://github.com/vim/vim/releases/tag/v8.0.0103) May not process channel readahead. (skywind) Solution: If there is readahead don't block 
