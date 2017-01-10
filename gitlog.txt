@@ -1,1 +1,1 @@
-* 8.0.0163: cannot build with Ruby 2.4\n* 8.0.0162: build error on Fedora 23\n* 8.0.0161: can't build with small features
+* 8.0.0170: crash in channel test\n* 8.0.0169: json_decode() may run out of stack space\n* 8.0.0168: not all float functionality is tested\n* 8.0.0167: str2nr()/str2float() fail with negative values\n* 8.0.0166: JSON with a duplicate key gives an internal error\n* 8.0.0165: ubsan warns for integer overflow\n* 8.0.0164: outdated and misplaced comments\n* Updated runtime files.
