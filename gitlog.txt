@@ -1,1 +1,1 @@
-* 8.0.0170: crash in channel test\n* 8.0.0169: json_decode() may run out of stack space\n* 8.0.0168: not all float functionality is tested\n* 8.0.0167: str2nr()/str2float() fail with negative values\n* 8.0.0166: JSON with a duplicate key gives an internal error\n* 8.0.0165: ubsan warns for integer overflow\n* 8.0.0164: outdated and misplaced comments\n* Updated runtime files.
+* 8.0.0172: command line window does not work\n* 8.0.0171: JS style JSON does not support single quotes
