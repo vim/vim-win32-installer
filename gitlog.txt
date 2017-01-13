@@ -1,1 +1,1 @@
-* 8.0.0176: cannot use :change inside a function definition\n* 8.0.0175: setting language on MS-Windows does not always work\n* 8.0.0174: executing "locale -a" on MS-Windows needlessly\n* 8.0.0173: build fails with EBCDIC defined
+* 8.0.0178: command count test fails on MS-Windows\n* 8.0.0177: BufEnter autocommand not fired for a directory
