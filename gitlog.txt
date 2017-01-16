@@ -1,1 +1,1 @@
-* 8.0.0194: profile tests fails if total and self time are equal\n* 8.0.0193: accidentally removed #ifdef\n* 8.0.0192: cannot build with tiny features\n* 8.0.0191: can't build with Ruby on some systems\n* 8.0.0190: finding duplicate tags uses a slow linear search\n* 8.0.0189: profile commands are not tested\n* 8.0.0188: redrawing for 'cursorbind' is inefficient
+* 8.0.0197: system() test skips some parts for MS-Windows\n* 8.0.0196: profile test is slo and does not work on MS-Windows\n* 8.0.0195: fail to jump to static tag in current file
