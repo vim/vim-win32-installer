@@ -1,1 +1,1 @@
-* 8.0.0208: internally used commands end up in history\n* 8.0.0207: leaking file descriptor when system() fails
+* 8.0.0211: cannot build without the multi-byte feature\n* 8.0.0210: no support for bracketed paste\n* 8.0.0209: cursor binding does not work with :substitute
