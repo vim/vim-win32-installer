@@ -1,1 +1,1 @@
-* 8.0.0238: bracketed paste does not disable autoindent
+* 8.0.0243: tolower() does not work if the byte count changes\n* 8.0.0242: no tests for user command completion\n* 8.0.0241: fallback implementation of mch_memmove is unused\n* 8.0.0240: failure with one build on CI\n* 8.0.0239: no CI with an address sanitizer
