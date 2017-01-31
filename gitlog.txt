@@ -1,1 +1,1 @@
-* 8.0.0273: dead code detected by Coverity\n* 8.0.0272: crash on exit is not detected when running tests
+* 8.0.0275: the screen may be updated at the wrong time\n* 8.0.0274: possible recursive screen updating causes trouble
