@@ -1,1 +1,1 @@
-* [8.0.0297](https://github.com/vim/vim/releases/tag/v8.0.0297) : double free on exit when using a closure\n* [8.0.0296](https://github.com/vim/vim/releases/tag/v8.0.0296) : bracketed paste can only append, not insert
+* [8.0.0300](https://github.com/vim/vim/releases/tag/v8.0.0300): cannot stop diffing hidden buffers\n* [8.0.0299](https://github.com/vim/vim/releases/tag/v8.0.0299): a window resize is sometimes not taking effect\n* [8.0.0298](https://github.com/vim/vim/releases/tag/v8.0.0298): Ex command range with repeated search does not work
