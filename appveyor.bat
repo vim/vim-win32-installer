@@ -100,11 +100,9 @@ call :downloadfile %LUA_URL% downloads\lua.zip
 
 :: Perl
 call :downloadfile %PERL_URL% downloads\perl.exe
-mkdir c:\ActivePerl
-start /wait downloads\perl.exe /extract:c:\ActivePerl /exenoui /exenoupdates /quiet /norestart
-pushd c:\ActivePerl
-for /d %%i in (*) do for /d %%j in (%%i\*) do move %%j c:\ActivePerl
-popd
+mkdir c:\ActivePerlTemp
+start /wait downloads\perl.exe /extract:c:\ActivePerlTemp /exenoui /exenoupdates /quiet /norestart
+for /d %%i in (c:\ActivePerlTemp\*) do move %%i %PERL_DIR%
 
 :: Tcl
 call :downloadfile %TCL_URL% downloads\tcl.exe
