@@ -216,6 +216,7 @@ copy /Y GvimExt\*.reg        ..\runtime\GvimExt\
 copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
+if exist c:\gettext\libgcc_s_sjlj-1.dll copy /Y c:\gettext\libgcc_s_sjlj-1.dll ..\runtime\
 set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
