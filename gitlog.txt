@@ -1,1 +1,1 @@
-* [8.0.0326](https://github.com/vim/vim/releases/tag/v8.0.0326): packadd test uses wrong directory name\n* [8.0.0325](https://github.com/vim/vim/releases/tag/v8.0.0325): packadd test does not clean up symlink
+* [8.0.0329](https://github.com/vim/vim/releases/tag/v8.0.0329): xfontset and guifontwide are not tested\n* [8.0.0328](https://github.com/vim/vim/releases/tag/v8.0.0328): the "zero count" error doesn't have a number\n* [8.0.0327](https://github.com/vim/vim/releases/tag/v8.0.0327): error message in cmdline window is not translated
