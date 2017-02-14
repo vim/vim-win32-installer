@@ -65,7 +65,7 @@ deploy:
 
       If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or Racket/MzScheme,
       make sure you also install the following. Vim will work without it, but some Plugin
-      might need this additional dependency. (e.g. Gundo needs a working Pyhton2 installation,
+      might need this additional dependency. (e.g. Gundo needs a working Python2 installation,
       Command-T needs a working Ruby installation and Neocomplete needs a working Lua
       installation). This means, those interpreters have to be installed in addition to Vim.
       Without it Vim won't be able to use that feature! You can find those interperters here:
