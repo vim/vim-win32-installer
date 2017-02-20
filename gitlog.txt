@@ -1,1 +1,1 @@
-* [8.0.0342](https://github.com/vim/vim/releases/tag/v8.0.0342): double free with EXITFREE and setting 'ttytype'\n* [8.0.0341](https://github.com/vim/vim/releases/tag/v8.0.0341): undo does not work properly when using completion\n* [8.0.0340](https://github.com/vim/vim/releases/tag/v8.0.0340): not checking return valud of dict_add()
+* [8.0.0344](https://github.com/vim/vim/releases/tag/v8.0.0344): unlet command leaks memory\n* [8.0.0343](https://github.com/vim/vim/releases/tag/v8.0.0343): b:changedtick can be unlocked
