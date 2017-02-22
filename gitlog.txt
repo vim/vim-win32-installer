@@ -1,1 +1,1 @@
-* [8.0.0347](https://github.com/vim/vim/releases/tag/v8.0.0347): when using completion comment leader wont work\n* [8.0.0346](https://github.com/vim/vim/releases/tag/v8.0.0346): Vim relies on limits.h to be included indirectly\n* [8.0.0345](https://github.com/vim/vim/releases/tag/v8.0.0345): islocked('d.changedtick') does not work
+* [8.0.0348](https://github.com/vim/vim/releases/tag/v8.0.0348): using shadow dir on Mac lack +clipboard
