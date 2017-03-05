@@ -58,8 +58,8 @@ set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/Active
 set TCL_URL=!TCL%BIT%_URL!
 set TCL_DIR=C:\Tcl
 :: Gettext
-set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-32.exe
-set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-shared-64.exe
+set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
+set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
 set GETTEXT_URL=!GETTEXT%BIT%_URL!
 :: UPX
 set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
@@ -124,8 +124,8 @@ call :downloadfile %RACKET_URL% downloads\racket.exe
 start /wait downloads\racket.exe /S
 
 :: Install libintl.dll and iconv.dll
-call :downloadfile %GETTEXT_URL% downloads\gettext.exe
-start /wait downloads\gettext.exe /verysilent /dir=c:\gettext
+call :downloadfile %GETTEXT_URL% downloads\gettext.zip
+7z e -y downloads\gettext.zip -oc:\gettext
 
 :: Install UPX
 call :downloadfile %UPX_URL% downloads\upx.zip
@@ -216,8 +216,7 @@ copy /Y GvimExt\*.reg        ..\runtime\GvimExt\
 copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
-:: libwinpthread is needed on Win64 for localizing messages
-if exist c:\gettext\libwinpthread-1.dll copy /Y c:\gettext\libwinpthread-1.dll ..\runtime\
+if exist c:\gettext\libgcc_s_sjlj-1.dll copy /Y c:\gettext\libgcc_s_sjlj-1.dll ..\runtime\
 set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
