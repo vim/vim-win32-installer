@@ -1,1 +1,1 @@
-* [8.0.0427](https://github.com/vim/vim/releases/tag/v8.0.0427): 'makeencoding' missing from the options window\n* [8.0.0426](https://github.com/vim/vim/releases/tag/v8.0.0426): insufficient testing for statusline
+* [8.0.0429](https://github.com/vim/vim/releases/tag/v8.0.0429): options test does not always test everything\n* [8.0.0428](https://github.com/vim/vim/releases/tag/v8.0.0428): git and hg see new files after running tests
