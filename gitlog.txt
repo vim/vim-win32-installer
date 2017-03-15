@@ -1,1 +1,1 @@
-* [8.0.0458](https://github.com/vim/vim/releases/tag/v8.0.0458): potential crash if adding list or dict to dict fails\n* [8.0.0457](https://github.com/vim/vim/releases/tag/v8.0.0457): using :move messes up manual folds
+* [8.0.0459](https://github.com/vim/vim/releases/tag/v8.0.0459): old fix for :move and folding no longer needed
