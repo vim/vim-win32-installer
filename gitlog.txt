@@ -1,1 +1,1 @@
-* [8.0.0514](https://github.com/vim/vim/releases/tag/v8.0.0514): script for creating cmdidxs can be improved\n* [8.0.0513](https://github.com/vim/vim/releases/tag/v8.0.0513): getting name of cleared highlight group is wrong
+* [8.0.0515](https://github.com/vim/vim/releases/tag/v8.0.0515): ml_get errors in silent Ex mode
