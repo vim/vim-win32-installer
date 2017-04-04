@@ -1,1 +1,1 @@
-* [8.0.0542](https://github.com/vim/vim/releases/tag/v8.0.0542): getpos() can return a negative line number\n* [8.0.0541](https://github.com/vim/vim/releases/tag/v8.0.0541): compiler warning on MS-Windows
+* [8.0.0543](https://github.com/vim/vim/releases/tag/v8.0.0543): test_edit causes older xfce4-terminal to close
