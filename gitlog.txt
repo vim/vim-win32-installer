@@ -1,1 +1,1 @@
-* [8.0.0562](https://github.com/vim/vim/releases/tag/v8.0.0562): not enough test coverage for syntax commands\n* [8.0.0561](https://github.com/vim/vim/releases/tag/v8.0.0561): undefined behavior when using backslash after empty line\n* [8.0.0560](https://github.com/vim/vim/releases/tag/v8.0.0560): :windo allows for ! but it's not supported
+* [8.0.0563](https://github.com/vim/vim/releases/tag/v8.0.0563): crash when getting the window position in tmux
