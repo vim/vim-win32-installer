@@ -1,1 +1,1 @@
-* [8.0.0586](https://github.com/vim/vim/releases/tag/v8.0.0586): no test for mapping timing out\n* [8.0.0585](https://github.com/vim/vim/releases/tag/v8.0.0585): test_options fails when run in the GUI\n* Updated runtime files.\n* [8.0.0584](https://github.com/vim/vim/releases/tag/v8.0.0584): memory leak when executing quickfix tests\n* [8.0.0583](https://github.com/vim/vim/releases/tag/v8.0.0583): fold test hangs on MS-Windows
+* Runtime file updates\n* [8.0.0587](https://github.com/vim/vim/releases/tag/v8.0.0587): configure check for return value of tgetent skipped
