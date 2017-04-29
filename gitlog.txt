@@ -1,1 +1,1 @@
-* Runtime file updates\n* [8.0.0587](https://github.com/vim/vim/releases/tag/v8.0.0587): configure check for return value of tgetent skipped
+* [8.0.0589](https://github.com/vim/vim/releases/tag/v8.0.0589): :simalt still does not work\n* [8.0.0588](https://github.com/vim/vim/releases/tag/v8.0.0588): job_stop() often assumes the channel will be closed
