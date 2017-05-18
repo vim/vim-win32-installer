@@ -1,1 +1,1 @@
-* [8.0.0599](https://github.com/vim/vim/releases/tag/v8.0.0599): diff mode is insufficiently tested\n* [8.0.0598](https://github.com/vim/vim/releases/tag/v8.0.0598): building with gcc 7.1 yields new warnings
+* [8.0.0600](https://github.com/vim/vim/releases/tag/v8.0.0600): test_recover fails on some systems
