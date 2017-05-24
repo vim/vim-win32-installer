@@ -1,1 +1,1 @@
-* [8.0.0601](https://github.com/vim/vim/releases/tag/v8.0.0601): no test coverage for :spellrepall
+* [8.0.0604](https://github.com/vim/vim/releases/tag/v8.0.0604): gF test fails still on MS-Windows\n* [8.0.0603](https://github.com/vim/vim/releases/tag/v8.0.0603): gF test fails on MS-Windows\n* [8.0.0602](https://github.com/vim/vim/releases/tag/v8.0.0602): when gF fails to edit the file the cursor still moves
