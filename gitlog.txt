@@ -1,1 +1,1 @@
-* [8.0.0647](https://github.com/vim/vim/releases/tag/v8.0.0647): syntax highlighting can make cause a freeze
+* [8.0.0648](https://github.com/vim/vim/releases/tag/v8.0.0648): possible use of NULL pointer
