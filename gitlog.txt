@@ -1,1 +1,1 @@
-* [8.0.0728](https://github.com/vim/vim/releases/tag/v8.0.0728): the terminal structure is never freed
+* [8.0.0730](https://github.com/vim/vim/releases/tag/v8.0.0730): terminal feature only supports Unix-like systems\n* [8.0.0729](https://github.com/vim/vim/releases/tag/v8.0.0729): the help for the terminal configure option is wrong
