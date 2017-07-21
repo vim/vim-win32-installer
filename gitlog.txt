@@ -1,1 +1,1 @@
-* [8.0.0739](https://github.com/vim/vim/releases/tag/v8.0.0739): terminal resizing doesn't work well.
+* [8.0.0740](https://github.com/vim/vim/releases/tag/v8.0.0740): cannot resize a terminal window by the command
