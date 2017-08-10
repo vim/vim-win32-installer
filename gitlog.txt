@@ -1,1 +1,1 @@
-* [8.0.0895](https://github.com/vim/vim/releases/tag/v8.0.0895): filetype test fails on MS-Windows\n* [8.0.0894](https://github.com/vim/vim/releases/tag/v8.0.0894): there is no test for runtime filetype detection
+* [8.0.0896](https://github.com/vim/vim/releases/tag/v8.0.0896): cannot close a terminal window when the job ends
