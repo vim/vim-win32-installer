@@ -36,7 +36,10 @@ libraries that matches your Vim installation.
 
 Additionally the binaries include the new terminal feature for Vim and
 therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
-the [winpty repository](ttps://github.com/rprichard/winpty).
+the [winpty repository](https://github.com/rprichard/winpty). This feature is
+currently considered experimental. Read the help at [:h
+terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
+information.
 
 Note: The zip archive might be considered unsecure in Windows, causing Windows
 to display a dialog box "These files might be harmful to your computer...". If
