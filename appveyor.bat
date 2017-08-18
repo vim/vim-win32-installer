@@ -61,6 +61,8 @@ set TCL_DIR=C:\Tcl
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
 set GETTEXT_URL=!GETTEXT%BIT%_URL!
+:: winpty
+set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
 set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
 :: ----------------------------------------------------------------------
@@ -128,6 +130,17 @@ start /wait downloads\racket.exe /S
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT_URL% downloads\gettext.zip
 7z e -y downloads\gettext.zip -oc:\gettext
+
+:: Install winpty
+call :downloadfile %WINPTY_URL% downloads\winpty.zip
+7z x -y downloads\winpty.zip -oc:\winpty
+if /i "%ARCH%"=="x64" (
+	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
+	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
+) else (
+	copy /Y c:\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
+	copy /Y c:\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
+)
 
 :: Install UPX
 call :downloadfile %UPX_URL% downloads\upx.zip
@@ -226,6 +239,7 @@ copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext\libiconv*.dll ..\runtime\
 copy /Y c:\gettext\libintl-8.dll ..\runtime\
 if exist c:\gettext\libgcc_s_sjlj-1.dll copy /Y c:\gettext\libgcc_s_sjlj-1.dll ..\runtime\
+copy /Y winpty* ..\runtime\
 set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
