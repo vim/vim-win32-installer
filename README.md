@@ -3,9 +3,10 @@
 [![GitHub tag](https://img.shields.io/github/tag/vim/vim-win32-installer.svg?maxAge=2592000)](https://github.com/vim/vim-win32-installer)
 
 
-# Vim Win32 Installer and Archives (Win32 and Win64)
+# Vim Installer and Archives (Win32 and Win64)
 
-This is a project for building Nightly Vim Windows build snapshots automatically ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
+This is a project for building Nightly Vim Windows build snapshots
+automatically ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
 
 [Download](https://github.com/vim/vim-win32-installer/releases) and execute the
 most recent `gvim_8.0.X_x86.exe` file to install Vim. The exe file contains the
@@ -30,11 +31,21 @@ won't be able to use that feature! You can find those interperters here:
 * [Racket](https://download.racket-lang.org/) 6.6
 * [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
 
-Make sure that you install the same architecture (32bit/64bit) that matches
-your Vim installation.
+Make sure that you install the same architecture (32bit/64bit) for those
+libraries that matches your Vim installation.
 
-Note: The zip archive might be considered unsecure in Windows, causing Windows to display a dialog box "These files might be harmful to your computer...". If you want to disable this warning, you need to "unblock" the zip file. Do that in the properties dialog of the zip file, first tab General and look for the security section and click on "Unblock".
+Additionally the binaries include the new terminal feature for Vim and
+therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
+the [winpty repository](ttps://github.com/rprichard/winpty).
 
-Note: If you want to test some patches, place them in the patch directory with the extension `.patch`. They will be applied before building Vim and the binary will then be tested against the test suite.
+Note: The zip archive might be considered unsecure in Windows, causing Windows
+to display a dialog box "These files might be harmful to your computer...". If
+you want to disable this warning, you need to "unblock" the zip file. Do that
+in the properties dialog of the zip file, first tab General and look for the
+security section and click on "Unblock".
 
-See: https://github.com/vim/vim
+Note: If you want to test some patches, place them in the patch directory with
+the extension `.patch`. They will be applied before building Vim and the binary
+will then be tested against the test suite.
+
+See: [Vim Repository](https://github.com/vim/vim) for the Vim source.
