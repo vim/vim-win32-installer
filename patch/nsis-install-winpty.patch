@@ -1,0 +1,16 @@
+# HG changeset patch
+# Parent  46fcbd15e1d4304f3a246da42bca6b512c5fff62
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -198,6 +198,9 @@ Section "Vim executables and runtime fil
+ 	File ${VIMRT}\*.vim
+ 	File ${VIMRT}\rgb.txt
+ 
++	File ${VIMRT}\winpty32.dll
++	File ${VIMRT}\winpty-agent.exe
++
+ 	SetOutPath $0\colors
+ 	File ${VIMRT}\colors\*.*
+ 
