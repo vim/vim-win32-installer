@@ -44,17 +44,17 @@ set RACKET64_DIR=%PROGRAMFILES%\Racket
 set RACKET_DIR=!RACKET%BIT%_DIR!
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
-set RUBY_VER=22
-set RUBY_VER_LONG=2.2.0
-set RUBY_BRANCH=ruby_2_2
+set RUBY_VER=24
+set RUBY_VER_LONG=2.4.0
+set RUBY_BRANCH=ruby_2_4
 set RUBY32_DIR=C:\Ruby%RUBY_VER%
 set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
 set RUBY_DIR=!RUBY%BIT%_DIR!
 :: Tcl
 set TCL_VER_LONG=8.6
 set TCL_VER=%TCL_VER_LONG:.=%
-set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe
-set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe
+set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8607/ActiveTcl-8.6.6.8607-MSWin32-x86-403667.exe
+set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8606/ActiveTcl-8.6.6.8606-MSWin32-x64-401995.exe
 set TCL_URL=!TCL%BIT%_URL!
 set TCL_DIR=C:\Tcl
 :: Gettext
@@ -106,7 +106,9 @@ for /d %%i in (c:\ActivePerlTemp\*) do move %%i %PERL_DIR%
 
 :: Tcl
 call :downloadfile %TCL_URL% downloads\tcl.exe
-start /wait downloads\tcl.exe --directory %TCL_DIR%
+mkdir c:\ActiveTclTemp
+start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
+for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
 
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
@@ -136,6 +138,13 @@ path
 
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
+
+:: Setting for targeting Windows XP
+set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
+set INCLUDE=%WinSdk71%\Include;%INCLUDE%
+set LIB=%WinSdk71%\Lib;%LIB%
+set CL=/D_USING_V110_SDK71_
+
 @echo off
 goto :eof
 
@@ -158,7 +167,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes WINVER=0x500 ^
+	TERMINAL=yes SUBSYSTEM_VER=5.01 ^
 	|| exit 1
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
@@ -171,7 +180,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes WINVER=0x500 ^
+	TERMINAL=yes SUBSYSTEM_VER=5.01 ^
 	|| exit 1
 :: Build translations
 pushd po
@@ -198,9 +207,9 @@ goto :eof
 cd vim\src
 
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c "setenv /x64 && cd GvimExt && nmake clean all"
+start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake clean all"
 move GvimExt\gvimext.dll GvimExt\gvimext64.dll
-start /wait cmd /c "setenv /x86 && cd GvimExt && nmake clean all"
+start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake clean all"
 :: Create zip packages
 7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%_pdb.zip *.pdb
 copy /Y ..\README.txt ..\runtime

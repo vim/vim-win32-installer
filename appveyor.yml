@@ -1,5 +1,7 @@
 version: "{build}"
 
+image: Visual Studio 2015
+
 # Build only on tags
 skip_non_tags: true
 
@@ -18,7 +20,7 @@ build:
   verbosity: minimal
 
 before_build:
-  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%ARCH% /release'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
