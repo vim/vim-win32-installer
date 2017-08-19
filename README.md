@@ -17,11 +17,13 @@ additional extensions (e.g. Edit with Vim menu).
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
-without it, but some Plugin might need this additional dependency. (e.g. Gundo
-needs a working Python2 installation, Command-T needs a working Ruby
-installation and Neocomplete needs a working Lua installation). This means,
-those interpreters have to be installed in addition to Vim. Without it Vim
-won't be able to use that feature! You can find those interperters here:
+without it, but some Plugin might need this additional dependency. (e.g.
+[Gundo](https://github.com/sjl/gundo.vim) needs a working Python2 installation,
+[Command-T](https://github.com/wincent/command-t) needs a working Ruby
+installation and [Neocomplete](https://github.com/Shougo/neocomplete.vim) needs
+a working Lua installation). This means, those interpreters have to be
+installed in addition to Vim. Without it Vim won't be able to use that feature!
+You can find those interperters here:
 
 * [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.24
 * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6
