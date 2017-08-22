@@ -64,7 +64,7 @@ set GETTEXT_URL=!GETTEXT%BIT%_URL!
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
-set UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
+set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ----------------------------------------------------------------------
 
 :: Update PATH
