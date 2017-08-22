@@ -152,12 +152,6 @@ path
 :: Install additional packages for Racket
 raco pkg install --auto r5rs-lib
 
-:: Setting for targeting Windows XP
-set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
-set INCLUDE=%WinSdk71%\Include;%INCLUDE%
-set LIB=%WinSdk71%\Lib;%LIB%
-set CL=/D_USING_V110_SDK71_
-
 @echo off
 goto :eof
 
@@ -167,6 +161,17 @@ goto :eof
 :: ----------------------------------------------------------------------
 @echo on
 cd vim\src
+
+:: Setting for targeting Windows XP
+set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
+set INCLUDE=%WinSdk71%\Include;%INCLUDE%
+if /i "%ARCH%"=="x64" (
+	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
+) else (
+	set "LIB=%WinSdk71%\Lib;%LIB%"
+)
+set CL=/D_USING_V110_SDK71_
+
 :: Remove progress bar from the build log
 sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
