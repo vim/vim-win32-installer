@@ -1,1 +1,1 @@
-* [8.0.1010](https://github.com/vim/vim/releases/tag/v8.0.1010): build failure without termresponse feature\n* [8.0.1009](https://github.com/vim/vim/releases/tag/v8.0.1009): Xterm cursor blinking status may be inverted
+* [8.0.1013](https://github.com/vim/vim/releases/tag/v8.0.1013): terminal window behaves different from a buffer with changes\n* [8.0.1012](https://github.com/vim/vim/releases/tag/v8.0.1012): MS-Windows: problem with $HOME when is was set internally\n* [8.0.1011](https://github.com/vim/vim/releases/tag/v8.0.1011): terminal test fails with Athena and Motif
