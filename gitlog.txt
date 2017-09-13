@@ -1,1 +1,1 @@
-* [8.0.1098](https://github.com/vim/vim/releases/tag/v8.0.1098): build failure if libvterm installed
+* [8.0.1101](https://github.com/vim/vim/releases/tag/v8.0.1101): channel write fails if writing to log fails\n* [8.0.1100](https://github.com/vim/vim/releases/tag/v8.0.1100): stuck in redraw loop when 'lazyredraw' is set\n* [8.0.1099](https://github.com/vim/vim/releases/tag/v8.0.1099): warnings for GDK calls
