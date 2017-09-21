@@ -60,7 +60,6 @@ set TCL_DIR=C:\Tcl
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
-set GETTEXT_URL=!GETTEXT%BIT%_URL!
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
@@ -133,8 +132,10 @@ call :downloadfile %RACKET_URL% downloads\racket.exe
 start /wait downloads\racket.exe /S
 
 :: Install libintl.dll and iconv.dll
-call :downloadfile %GETTEXT_URL% downloads\gettext.zip
-7z e -y downloads\gettext.zip -oc:\gettext
+call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
+7z e -y downloads\gettext32.zip -oc:\gettext32
+call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
+7z e -y downloads\gettext64.zip -oc:\gettext64
 
 :: Install winpty
 call :downloadfile %WINPTY_URL% downloads\winpty.zip
@@ -229,32 +230,47 @@ goto :eof
 @echo on
 cd vim\src
 
+mkdir GvimExt64
+mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
 start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake clean all"
-move GvimExt\gvimext.dll GvimExt\gvimext64.dll
+copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
+move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
+copy /Y GvimExt\README.txt GvimExt64\
+copy /Y GvimExt\*.inf      GvimExt64\
+copy /Y GvimExt\*.reg      GvimExt64\
 start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake clean all"
+copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
+copy /Y GvimExt\README.txt GvimExt32\
+copy /Y GvimExt\*.inf      GvimExt32\
+copy /Y GvimExt\*.reg      GvimExt32\
+
 :: Create zip packages
-7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%_pdb.zip *.pdb
+7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%_pdb.zip *.pdb
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\vimtutor.bat ..\runtime
 copy /Y *.exe ..\runtime\
 copy /Y xxd\*.exe ..\runtime
 copy /Y tee\*.exe ..\runtime
-mkdir ..\runtime\GvimExt
-copy /Y GvimExt\gvimext*.dll ..\runtime\GvimExt\
-copy /Y GvimExt\README.txt   ..\runtime\GvimExt\
-copy /Y GvimExt\*.inf        ..\runtime\GvimExt\
-copy /Y GvimExt\*.reg        ..\runtime\GvimExt\
+mkdir ..\runtime\GvimExt64
+mkdir ..\runtime\GvimExt32
+copy /Y GvimExt64\*.*                    ..\runtime\GvimExt64\
+copy /Y c:\gettext64\libiconv-2.dll      ..\runtime\GvimExt64\
+copy /Y c:\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
+copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
+copy /Y c:\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
+copy /Y c:\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
+copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
 copy /Y ..\..\diff.exe ..\runtime\
-copy /Y c:\gettext\libiconv*.dll ..\runtime\
-copy /Y c:\gettext\libintl-8.dll ..\runtime\
-if exist c:\gettext\libgcc_s_sjlj-1.dll copy /Y c:\gettext\libgcc_s_sjlj-1.dll ..\runtime\
+copy /Y c:\gettext%BIT%\libiconv-2.dll   ..\runtime\
+copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
+if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
 set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
-7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.zip ..\vim
+7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip ..\vim
 
 :: Create x86 installer (Skip x64 installer)
 if /i "%ARCH%"=="x64" goto :eof
@@ -266,7 +282,7 @@ copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
 pushd ..\nsis
-"C:\Program Files (x86)\NSIS\makensis" /DVIMRT=..\runtime gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:v=%_%ARCH%.exe"
+"C:\Program Files (x86)\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.exe"
 popd
 
 @echo off
