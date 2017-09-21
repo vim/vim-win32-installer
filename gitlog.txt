@@ -1,1 +1,1 @@
-* [8.0.1130](https://github.com/vim/vim/releases/tag/v8.0.1130): the qf_jump() function is still too long\n* Add back terminal.c
+* [8.0.1132](https://github.com/vim/vim/releases/tag/v8.0.1132): #if condition is not portable\n* [8.0.1131](https://github.com/vim/vim/releases/tag/v8.0.1131): not easy to trigger an autocommand for new terminal window
