@@ -45,7 +45,7 @@ set RACKET_DIR=!RACKET%BIT%_DIR!
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=24
-set RUBY_VER_LONG=2.4.0
+set RUBY_API_VER_LONG=2.4.0
 set RUBY_BRANCH=ruby_2_4
 set RUBY32_DIR=C:\Ruby%RUBY_VER%
 set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
@@ -65,6 +65,11 @@ set GETTEXT_URL=!GETTEXT%BIT%_URL!
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
 set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
+
+:: Subsystem version (targeting Windows XP)
+set SUBSYSTEM_VER32=5.01
+set SUBSYSTEM_VER64=5.02
+set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
 :: ----------------------------------------------------------------------
 
 :: Update PATH
@@ -120,7 +125,7 @@ pushd ..\ruby
 call win32\configure.bat
 echo on
 nmake .config.h.time
-xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG%
+xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
 :: Racket
@@ -185,7 +190,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes SUBSYSTEM_VER=5.01 ^
+	TERMINAL=yes ^
 	|| exit 1
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
@@ -198,7 +203,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes SUBSYSTEM_VER=5.01 ^
+	TERMINAL=yes ^
 	|| exit 1
 :: Build translations
 pushd po
