@@ -45,7 +45,7 @@ set RACKET_DIR=!RACKET%BIT%_DIR!
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=24
-set RUBY_VER_LONG=2.4.0
+set RUBY_API_VER_LONG=2.4.0
 set RUBY_BRANCH=ruby_2_4
 set RUBY32_DIR=C:\Ruby%RUBY_VER%
 set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
@@ -120,7 +120,7 @@ pushd ..\ruby
 call win32\configure.bat
 echo on
 nmake .config.h.time
-xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG%
+xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
 :: Racket
