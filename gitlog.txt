@@ -1,1 +1,1 @@
-* [8.0.1144](https://github.com/vim/vim/releases/tag/v8.0.1144): using wrong #ifdef for computing length\n* [8.0.1143](https://github.com/vim/vim/releases/tag/v8.0.1143): macros always expand to the same thing
+* [8.0.1146](https://github.com/vim/vim/releases/tag/v8.0.1146): redraw when highlight is set with same names\n* [8.0.1145](https://github.com/vim/vim/releases/tag/v8.0.1145): warning when compiling with Perl
