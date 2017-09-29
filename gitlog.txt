@@ -1,1 +1,1 @@
-* [8.0.1159](https://github.com/vim/vim/releases/tag/v8.0.1159): typo in #ifdef\n* [8.0.1158](https://github.com/vim/vim/releases/tag/v8.0.1158): still old style tests
+* [8.0.1161](https://github.com/vim/vim/releases/tag/v8.0.1161): popup menu drawing problem when resizing terminal\n* [8.0.1160](https://github.com/vim/vim/releases/tag/v8.0.1160): getting tab-local variable fails after closing window
