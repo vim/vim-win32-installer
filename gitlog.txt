@@ -1,1 +1,1 @@
-* [8.0.1171](https://github.com/vim/vim/releases/tag/v8.0.1171): popup test is still a bit flaky\n* [8.0.1170](https://github.com/vim/vim/releases/tag/v8.0.1170): using termdebug results in 100% CPU time\n* [8.0.1169](https://github.com/vim/vim/releases/tag/v8.0.1169): highlignting one char too many with 'list' and 'cul'
+* [8.0.1173](https://github.com/vim/vim/releases/tag/v8.0.1173): terminal window is not redrawn after CTRL-L\n* [8.0.1172](https://github.com/vim/vim/releases/tag/v8.0.1172): when E734 is given option is still set
