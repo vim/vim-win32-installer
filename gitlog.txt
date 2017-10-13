@@ -1,1 +1,1 @@
-* [8.0.1187](https://github.com/vim/vim/releases/tag/v8.0.1187): building with lua fails for OSX on Travis\n* [8.0.1186](https://github.com/vim/vim/releases/tag/v8.0.1186): still quite a few old style tests\n* [8.0.1185](https://github.com/vim/vim/releases/tag/v8.0.1185): Ruby library includes minor version number
+* [8.0.1188](https://github.com/vim/vim/releases/tag/v8.0.1188): autocmd test fails on MS-Windows
