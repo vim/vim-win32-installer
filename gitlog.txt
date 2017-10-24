@@ -1,1 +1,1 @@
-* [8.0.1214](https://github.com/vim/vim/releases/tag/v8.0.1214): accessing freed memory when EXITFREE is set
+* [8.0.1216](https://github.com/vim/vim/releases/tag/v8.0.1216): tabline is not always updated for :file command\n* [8.0.1215](https://github.com/vim/vim/releases/tag/v8.0.1215): newer gcc warns for implicit fallthrough
