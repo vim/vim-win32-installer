@@ -30,7 +30,7 @@ You can find those interperters here:
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.5
-* [Racket](https://download.racket-lang.org/) 6.6
+* [Racket](https://download.racket-lang.org/) 6.10.1
 * [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
 
 Make sure that you install the same architecture (32bit/64bit) for those
