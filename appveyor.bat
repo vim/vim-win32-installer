@@ -58,6 +58,7 @@ set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8606/Act
 set TCL_URL=!TCL%BIT%_URL!
 set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
+set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
@@ -73,7 +74,7 @@ set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
 :: ----------------------------------------------------------------------
 
 :: Update PATH
-path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%TCL_DIR%\bin;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
+path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
 
 if /I "%1"=="" (
   set target=build
@@ -116,6 +117,7 @@ call :downloadfile %TCL_URL% downloads\tcl.exe
 mkdir c:\ActiveTclTemp
 start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
 for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
+copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
