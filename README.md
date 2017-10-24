@@ -26,7 +26,7 @@ installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
 * [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.24
-* [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6
+* [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.5

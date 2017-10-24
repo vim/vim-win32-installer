@@ -57,6 +57,7 @@ set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8607/Act
 set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8606/ActiveTcl-8.6.6.8606-MSWin32-x64-401995.exe
 set TCL_URL=!TCL%BIT%_URL!
 set TCL_DIR=C:\Tcl
+set TCL_DLL=tcl%TCL_VER%t.dll
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
