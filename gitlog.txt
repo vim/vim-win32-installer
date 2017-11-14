@@ -1,1 +1,1 @@
-* [8.0.1297](https://github.com/vim/vim/releases/tag/v8.0.1297): +autoservername does not show enabled on MS-Windows\n* [8.0.1296](https://github.com/vim/vim/releases/tag/v8.0.1296): checking the same condition twice
+* [8.0.1298](https://github.com/vim/vim/releases/tag/v8.0.1298): missing test file
