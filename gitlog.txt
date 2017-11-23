@@ -1,1 +1,1 @@
-* [8.0.1331](https://github.com/vim/vim/releases/tag/v8.0.1331): possible crash when window can be zero lines high
+* [8.0.1333](https://github.com/vim/vim/releases/tag/v8.0.1333): some tests are run twice\n* [8.0.1332](https://github.com/vim/vim/releases/tag/v8.0.1332): highlighting in quickfix window could be better
