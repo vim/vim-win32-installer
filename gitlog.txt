@@ -1,1 +1,1 @@
-* [8.0.1365](https://github.com/vim/vim/releases/tag/v8.0.1365): when one channel test fails others fail as well\n* [8.0.1364](https://github.com/vim/vim/releases/tag/v8.0.1364): there is no easy way to get the window position\n* [8.0.1363](https://github.com/vim/vim/releases/tag/v8.0.1363): recovering does not work when swap file ends in .stz
+* [8.0.1367](https://github.com/vim/vim/releases/tag/v8.0.1367)
