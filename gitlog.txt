@@ -1,1 +1,1 @@
-* [8.0.1386](https://github.com/vim/vim/releases/tag/v8.0.1386): cannot select modified buffers with getbufinfo()\n* [8.0.1385](https://github.com/vim/vim/releases/tag/v8.0.1385): Python 3.5 is getting old\n* [8.0.1384](https://github.com/vim/vim/releases/tag/v8.0.1384): not enough quickfix help; confusing winid
+* [8.0.1387](https://github.com/vim/vim/releases/tag/v8.0.1387): wordcount test is old style
