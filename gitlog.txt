@@ -1,1 +1,1 @@
-* [8.0.1389](https://github.com/vim/vim/releases/tag/v8.0.1389): getqflist() items are missing if not set\n* [8.0.1388](https://github.com/vim/vim/releases/tag/v8.0.1388): char not overwritten with ambiguous width char
+* move netrw back to the previous version\n* [8.0.1390](https://github.com/vim/vim/releases/tag/v8.0.1390): DirectX scrolling can be slow, vertical positioning is off
