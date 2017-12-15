@@ -1,1 +1,1 @@
-* move netrw back to the previous version\n* [8.0.1390](https://github.com/vim/vim/releases/tag/v8.0.1390): DirectX scrolling can be slow, vertical positioning is off
+* [8.0.1391](https://github.com/vim/vim/releases/tag/v8.0.1391): encoding empty string to JSON sometimes gives "null"
