@@ -1,1 +1,1 @@
-* [8.0.1420](https://github.com/vim/vim/releases/tag/v8.0.1420): accessing freed memory in vimgrep\n* [8.0.1419](https://github.com/vim/vim/releases/tag/v8.0.1419): cursor column is not updated after ]s
+* [8.0.1422](https://github.com/vim/vim/releases/tag/v8.0.1422): no fallback to underline when undercurl is not set\n* [8.0.1421](https://github.com/vim/vim/releases/tag/v8.0.1421): accessing invalid memory with overlong byte sequence
