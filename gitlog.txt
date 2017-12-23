@@ -1,1 +1,1 @@
-* [8.0.1422](https://github.com/vim/vim/releases/tag/v8.0.1422): no fallback to underline when undercurl is not set\n* [8.0.1421](https://github.com/vim/vim/releases/tag/v8.0.1421): accessing invalid memory with overlong byte sequence
+* [8.0.1424](https://github.com/vim/vim/releases/tag/v8.0.1424): the timer_pause test is flaky on Travis\n* [8.0.1423](https://github.com/vim/vim/releases/tag/v8.0.1423): error in return not caught by try/catch
