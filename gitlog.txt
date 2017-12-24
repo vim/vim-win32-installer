@@ -1,1 +1,1 @@
-* [8.0.1424](https://github.com/vim/vim/releases/tag/v8.0.1424): the timer_pause test is flaky on Travis\n* [8.0.1423](https://github.com/vim/vim/releases/tag/v8.0.1423): error in return not caught by try/catch
+* update a few runtime files
