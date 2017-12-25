@@ -1,1 +1,1 @@
-* update a few runtime files
+* [8.0.1426](https://github.com/vim/vim/releases/tag/v8.0.1426): "gf" and <cfile> don't accept ? and & in URL\n* [8.0.1425](https://github.com/vim/vim/releases/tag/v8.0.1425): execute() does not work in completion of user command
