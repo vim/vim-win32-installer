@@ -1,1 +1,1 @@
-* [8.0.1427](https://github.com/vim/vim/releases/tag/v8.0.1427): the :leftabove modifier doesn't work for :copen
+* [8.0.1428](https://github.com/vim/vim/releases/tag/v8.0.1428): compiler warning on 64 bit MS-Windows system
