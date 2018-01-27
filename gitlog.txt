@@ -1,1 +1,1 @@
-* [8.0.1431](https://github.com/vim/vim/releases/tag/v8.0.1431): MS-Windows: vimtutor fails if %TMP% has special chars\n* [8.0.1430](https://github.com/vim/vim/releases/tag/v8.0.1430): crash when term_start() fails\n* [8.0.1429](https://github.com/vim/vim/releases/tag/v8.0.1429): crash when calling term_start() with empty argument
+* [8.0.1433](https://github.com/vim/vim/releases/tag/v8.0.1433): illegal memory access after undo\n* [8.0.1432](https://github.com/vim/vim/releases/tag/v8.0.1432): after ":copen" can't get the window-ID of the quickfix window
