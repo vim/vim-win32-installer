@@ -1,1 +1,1 @@
-* [8.0.1437](https://github.com/vim/vim/releases/tag/v8.0.1437): pkg-config doesn't work with cross compiling\n* Update runtime files.\n* [8.0.1436](https://github.com/vim/vim/releases/tag/v8.0.1436): not enough information about what Python version may work\n* [8.0.1435](https://github.com/vim/vim/releases/tag/v8.0.1435): memory leak in test_arabic\n* [8.0.1434](https://github.com/vim/vim/releases/tag/v8.0.1434): GTK: :promtfind does not put focus on text input
+* [8.0.1438](https://github.com/vim/vim/releases/tag/v8.0.1438): filetype detection test not updated for change
