@@ -1,1 +1,1 @@
-* [8.0.1438](https://github.com/vim/vim/releases/tag/v8.0.1438): filetype detection test not updated for change
+* [8.0.1442](https://github.com/vim/vim/releases/tag/v8.0.1442): using pointer before it is set\n* [8.0.1441](https://github.com/vim/vim/releases/tag/v8.0.1441): using ":undo 0" leaves undo in wrong state\n* [8.0.1440](https://github.com/vim/vim/releases/tag/v8.0.1440): terminal window: some vterm responses are delayed\n* [8.0.1439](https://github.com/vim/vim/releases/tag/v8.0.1439): if cscope fails a search Vim may hang
