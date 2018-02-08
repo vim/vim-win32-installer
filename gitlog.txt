@@ -1,1 +1,1 @@
-* [8.0.1475](https://github.com/vim/vim/releases/tag/v8.0.1475): invalid memory access in read_redo()\n* [8.0.1474](https://github.com/vim/vim/releases/tag/v8.0.1474): Visual C 2017 has multiple MSVCVER numbers
+* [8.0.1478](https://github.com/vim/vim/releases/tag/v8.0.1478): unnecessary condition\n* [8.0.1477](https://github.com/vim/vim/releases/tag/v8.0.1477): redraw flicker when moving the mouse outside of terminal window\n* [8.0.1476](https://github.com/vim/vim/releases/tag/v8.0.1476): screen isn't always updated right away
