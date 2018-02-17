@@ -1,1 +1,1 @@
-* [8.0.1521](https://github.com/vim/vim/releases/tag/v8.0.1521): Shift-Tab does not work in a terminal window
+* [8.0.1522](https://github.com/vim/vim/releases/tag/v8.0.1522): popup menu is positioned in the wrong place
