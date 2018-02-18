@@ -1,1 +1,1 @@
-* [8.0.1522](https://github.com/vim/vim/releases/tag/v8.0.1522): popup menu is positioned in the wrong place
+* [8.0.1523](https://github.com/vim/vim/releases/tag/v8.0.1523): cannot write and read terminal screendumps
