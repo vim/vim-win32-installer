@@ -1,1 +1,1 @@
-* [8.0.1555](https://github.com/vim/vim/releases/tag/v8.0.1555): build error for some combination of features\n* [8.0.1554](https://github.com/vim/vim/releases/tag/v8.0.1554): custom plugins loaded with --clean
+* [8.0.1556](https://github.com/vim/vim/releases/tag/v8.0.1556): may not parse the t_RS response correctly
