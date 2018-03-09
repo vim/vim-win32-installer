@@ -1,1 +1,1 @@
-* [8.0.1591](https://github.com/vim/vim/releases/tag/v8.0.1591): MS-Windows: when reparsing the arguments 'wildignore' matters\n* [8.0.1590](https://github.com/vim/vim/releases/tag/v8.0.1590): padding in list type wastes memory
+* Update runtime files.\n* [8.0.1592](https://github.com/vim/vim/releases/tag/v8.0.1592): terminal windows in a session are not properly restored
