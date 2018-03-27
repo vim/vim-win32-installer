@@ -1,1 +1,1 @@
-* [8.0.1647](https://github.com/vim/vim/releases/tag/v8.0.1647): terminal API may call any user function\n* [8.0.1646](https://github.com/vim/vim/releases/tag/v8.0.1646): MS-Windows: executable contains unreferenced functions
+* [8.0.1648](https://github.com/vim/vim/releases/tag/v8.0.1648): resource fork tool doesn't work on Python 3
