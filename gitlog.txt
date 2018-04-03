@@ -1,1 +1,1 @@
-* Small runtime update
+* [8.0.1658](https://github.com/vim/vim/releases/tag/v8.0.1658): capitalize argument not available in long form\n* [8.0.1657](https://github.com/vim/vim/releases/tag/v8.0.1657): crash when reading a channel\n* [8.0.1656](https://github.com/vim/vim/releases/tag/v8.0.1656): no option to have xxd produce upper case variable names
