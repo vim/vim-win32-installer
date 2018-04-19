@@ -1,1 +1,1 @@
-* [8.0.1735](https://github.com/vim/vim/releases/tag/v8.0.1735): flexible array member feature not supported by HP-UX\n* [8.0.1734](https://github.com/vim/vim/releases/tag/v8.0.1734): package directory not added to 'rtp' if prefix matches
+* [8.0.1737](https://github.com/vim/vim/releases/tag/v8.0.1737): fchown() used when it is not supported\n* [8.0.1736](https://github.com/vim/vim/releases/tag/v8.0.1736): check for C99 features is incomplete
