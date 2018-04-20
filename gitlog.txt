@@ -1,1 +1,1 @@
-* [8.0.1737](https://github.com/vim/vim/releases/tag/v8.0.1737): fchown() used when it is not supported\n* [8.0.1736](https://github.com/vim/vim/releases/tag/v8.0.1736): check for C99 features is incomplete
+* [8.0.1740](https://github.com/vim/vim/releases/tag/v8.0.1740): warning for signed-unsigned incompatibility\n* Update runtime files.\n* [8.0.1739](https://github.com/vim/vim/releases/tag/v8.0.1739): MS-Windows with msys2 cannot build Ruby statically\n* [8.0.1738](https://github.com/vim/vim/releases/tag/v8.0.1738): ":args" output is hard to read
