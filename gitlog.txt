@@ -1,1 +1,1 @@
-* [8.0.1748](https://github.com/vim/vim/releases/tag/v8.0.1748): CmdlineEnter command uses backslash instead of slash
+* [8.0.1750](https://github.com/vim/vim/releases/tag/v8.0.1750): crash when clearing loccation list in autocommand\n* [8.0.1749](https://github.com/vim/vim/releases/tag/v8.0.1749): VMS: 100% CPU use, redefining mch_open() fails
