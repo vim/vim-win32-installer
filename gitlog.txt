@@ -1,1 +1,1 @@
-* [8.0.1765](https://github.com/vim/vim/releases/tag/v8.0.1765): CTRL-G j in Insert mode is incorrect when 'virtualedit' set\n* [8.0.1764](https://github.com/vim/vim/releases/tag/v8.0.1764): lgtm considers tutor.es to be EcmaScript
+* [8.0.1766](https://github.com/vim/vim/releases/tag/v8.0.1766): expanding abbreviation doesn't work
