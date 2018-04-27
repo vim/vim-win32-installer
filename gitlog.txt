@@ -1,1 +1,1 @@
-* [8.0.1766](https://github.com/vim/vim/releases/tag/v8.0.1766): expanding abbreviation doesn't work
+* [8.0.1768](https://github.com/vim/vim/releases/tag/v8.0.1768): SET_NO_HLSEARCH() used in a wrong way\n* [8.0.1767](https://github.com/vim/vim/releases/tag/v8.0.1767): with 'incsearch' text may jump up and down
