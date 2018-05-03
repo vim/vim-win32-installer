@@ -1,1 +1,1 @@
-* [8.0.1788](https://github.com/vim/vim/releases/tag/v8.0.1788): tool to check a color scheme is not installed
+* [8.0.1789](https://github.com/vim/vim/releases/tag/v8.0.1789): BufWinEnter does not work well for a terminal window
