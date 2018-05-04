@@ -1,1 +1,1 @@
-* [8.0.1789](https://github.com/vim/vim/releases/tag/v8.0.1789): BufWinEnter does not work well for a terminal window
+* [8.0.1790](https://github.com/vim/vim/releases/tag/v8.0.1790): 'winfixwidth' is not always respected by :close
