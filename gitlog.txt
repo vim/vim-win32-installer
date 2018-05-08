@@ -1,1 +1,1 @@
-* [8.0.1803](https://github.com/vim/vim/releases/tag/v8.0.1803): warning for uninitialized variable
+* [8.0.1806](https://github.com/vim/vim/releases/tag/v8.0.1806): InsertCharPre causes problems for autocomplete\n* [8.0.1805](https://github.com/vim/vim/releases/tag/v8.0.1805): qf_parse_line() is too long\n* [8.0.1804](https://github.com/vim/vim/releases/tag/v8.0.1804): using :normal in terminal window causes problems
