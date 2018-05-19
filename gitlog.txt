@@ -1,1 +1,1 @@
-* Runtime file and translation updates.
+* [8.1.0005](https://github.com/vim/vim/releases/tag/v8.1.0005): test for :compiler command fails on MS-Windows\n* [8.1.0004](https://github.com/vim/vim/releases/tag/v8.1.0004): test for :compiler command sometimes fails\n* [8.1.0003](https://github.com/vim/vim/releases/tag/v8.1.0003): the :compiler command is not tested\n* [8.1.0002](https://github.com/vim/vim/releases/tag/v8.1.0002): :stopinsert changes the message position
