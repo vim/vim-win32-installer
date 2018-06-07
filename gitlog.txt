@@ -1,1 +1,1 @@
-* [8.1.0037](https://github.com/vim/vim/releases/tag/v8.1.0037): cannot easily append lines to another buffer\n* [8.1.0036](https://github.com/vim/vim/releases/tag/v8.1.0036): not restoring Insert mode if leaving prompt buffer with mouse\n* [8.1.0035](https://github.com/vim/vim/releases/tag/v8.1.0035): not easy to switch between prompt buffer and other windows
+* [8.1.0039](https://github.com/vim/vim/releases/tag/v8.1.0039): cannot easily delete lines in another buffer\n* [8.1.0038](https://github.com/vim/vim/releases/tag/v8.1.0038): popup test causes Vim to exit
