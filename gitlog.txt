@@ -1,1 +1,1 @@
-* [8.1.0155](https://github.com/vim/vim/releases/tag/v8.1.0155): evim.man missing from the distribution\n* [8.1.0154](https://github.com/vim/vim/releases/tag/v8.1.0154): crash with "set smarttab shiftwidth=0 softtabstop=-1"\n* [8.1.0153](https://github.com/vim/vim/releases/tag/v8.1.0153): build with SHADOWDIR fails
+* [8.1.0157](https://github.com/vim/vim/releases/tag/v8.1.0157): old iTerm2 is not recognized, resulting in stray output\n* [8.1.0156](https://github.com/vim/vim/releases/tag/v8.1.0156): MS-Windows compiler warning
