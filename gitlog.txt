@@ -1,1 +1,1 @@
-* [8.1.0189](https://github.com/vim/vim/releases/tag/v8.1.0189): function defined in sandbox not tested\n* Update runtime files.\n* [8.1.0188](https://github.com/vim/vim/releases/tag/v8.1.0188): no test for ":cscope add"\n* [8.1.0187](https://github.com/vim/vim/releases/tag/v8.1.0187): getwininfo() and win_screenpos() return different numbers
+* [8.1.0191](https://github.com/vim/vim/releases/tag/v8.1.0191): Perl test fails in 24 line terminal\n* [8.1.0190](https://github.com/vim/vim/releases/tag/v8.1.0190): Perl refcounts are wrong
