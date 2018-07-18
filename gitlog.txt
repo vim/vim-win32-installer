@@ -1,1 +1,1 @@
-* [8.1.0193](https://github.com/vim/vim/releases/tag/v8.1.0193): terminal debugger buttons don't always work\n* [8.1.0192](https://github.com/vim/vim/releases/tag/v8.1.0192): executing regexp recursively fails with a crash
+* [8.1.0194](https://github.com/vim/vim/releases/tag/v8.1.0194): possibly use of NULL pointer
