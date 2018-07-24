@@ -1,1 +1,1 @@
-* [8.1.0207](https://github.com/vim/vim/releases/tag/v8.1.0207): need many menu translation files to cover regions\n* [8.1.0206](https://github.com/vim/vim/releases/tag/v8.1.0206): duplicate test function name\n* [8.1.0205](https://github.com/vim/vim/releases/tag/v8.1.0205): invalid memory access with invalid modeline
+* [8.1.0209](https://github.com/vim/vim/releases/tag/v8.1.0209): stderr output from Ruby messes up display\n* [8.1.0208](https://github.com/vim/vim/releases/tag/v8.1.0208): file left behind after running individual test
