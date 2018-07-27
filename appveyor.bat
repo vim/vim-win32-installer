@@ -20,8 +20,8 @@ set LUA_URL=!LUA%BIT%_URL!
 set LUA_DIR=C:\Lua
 :: Perl
 set PERL_VER=524
-set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x86-64int-401627.exe
-set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x64-401627.exe
+set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.2.2403/ActivePerl-5.24.2.2403-MSWin32-x86-64int-403863.exe
+set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.3.2404/ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe
 set PERL_URL=!PERL%BIT%_URL!
 set PERL_DIR=C:\ActivePerl
 :: Python2
