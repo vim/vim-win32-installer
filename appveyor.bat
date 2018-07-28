@@ -19,11 +19,11 @@ set LUA64_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4
 set LUA_URL=!LUA%BIT%_URL!
 set LUA_DIR=C:\Lua
 :: Perl
-set PERL_VER=524
-set PERL32_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.2.2403/ActivePerl-5.24.2.2403-MSWin32-x86-64int-403863.exe
-set PERL64_URL=http://downloads.activestate.com/ActivePerl/releases/5.24.3.2404/ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe
+set PERL_VER=528
+set PERL32_URL=http://strawberryperl.com/download/5.28.0.1/strawberry-perl-5.28.0.1-32bit-portable.zip
+set PERL64_URL=http://strawberryperl.com/download/5.28.0.1/strawberry-perl-5.28.0.1-64bit-portable.zip
 set PERL_URL=!PERL%BIT%_URL!
-set PERL_DIR=C:\ActivePerl
+set PERL_DIR=C:\Strawberry\perl
 :: Python2
 set PYTHON_VER=27
 set PYTHON_32_DIR=C:\python%PYTHON_VER%
@@ -107,10 +107,8 @@ call :downloadfile %LUA_URL% downloads\lua.zip
 7z x downloads\lua.zip -o%LUA_DIR% > nul || exit 1
 
 :: Perl
-call :downloadfile %PERL_URL% downloads\perl.exe
-mkdir c:\ActivePerlTemp
-start /wait downloads\perl.exe /extract:c:\ActivePerlTemp /exenoui /exenoupdates /quiet /norestart
-for /d %%i in (c:\ActivePerlTemp\*) do move %%i %PERL_DIR%
+call :downloadfile %PERL_URL% downloads\perl.zip
+7z x downloads\perl.zip -o%PERL_DIR%\.. > nul || exit 1
 
 :: Tcl
 call :downloadfile %TCL_URL% downloads\tcl.exe
