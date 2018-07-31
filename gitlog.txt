@@ -1,1 +1,1 @@
-* [8.1.0229](https://github.com/vim/vim/releases/tag/v8.1.0229): crash when dumping profiling data\n* [8.1.0228](https://github.com/vim/vim/releases/tag/v8.1.0228): dropping files is ignored while Vim is busy\n* [8.1.0227](https://github.com/vim/vim/releases/tag/v8.1.0227): spaces instead of tabs in makefile\n* [8.1.0226](https://github.com/vim/vim/releases/tag/v8.1.0226): too many #ifdefs\n* [8.1.0225](https://github.com/vim/vim/releases/tag/v8.1.0225): mode() does not indicate using CTRL-O from Insert mode\n* Update runtime files.
+* Update runtime files.
