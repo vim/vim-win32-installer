@@ -1,1 +1,1 @@
-* Update runtime files.
+* [8.1.0233](https://github.com/vim/vim/releases/tag/v8.1.0233): "safe" argument of call_vim_function() is always FALSE\n* [8.1.0232](https://github.com/vim/vim/releases/tag/v8.1.0232): Ruby error does not include backtrace\n* [8.1.0231](https://github.com/vim/vim/releases/tag/v8.1.0231): :help -? goes to help for -+\n* [8.1.0230](https://github.com/vim/vim/releases/tag/v8.1.0230): directly checking 'buftype' value
