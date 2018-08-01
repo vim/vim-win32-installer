@@ -9,7 +9,7 @@ This is a project for building Nightly Vim Windows build snapshots
 automatically ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
 
 [Download](https://github.com/vim/vim-win32-installer/releases) and execute the
-most recent `gvim_8.0.X_x86.exe` file to install Vim. The exe file contains the
+most recent `gvim_8.._x86.exe` file to install Vim. The exe file contains the
 (32bit) installer while the .zip files contain an archive of the 32bit (`_x86`)
 or 64bit versions (`_x64`). To install it, extract the archive and update your
 PATH variable. The installer will do that automatically and provide some
