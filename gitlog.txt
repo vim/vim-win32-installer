@@ -1,1 +1,1 @@
-* [8.1.0235](https://github.com/vim/vim/releases/tag/v8.1.0235): more help tags that jump to the wrong location\n* [8.1.0234](https://github.com/vim/vim/releases/tag/v8.1.0234): incorrect reference counting in Perl interface
+* [8.1.0236](https://github.com/vim/vim/releases/tag/v8.1.0236): Ruby build fails when ruby_intern is missing
