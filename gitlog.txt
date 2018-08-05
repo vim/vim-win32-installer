@@ -1,1 +1,1 @@
-* [8.1.0239](https://github.com/vim/vim/releases/tag/v8.1.0239): now Ruby build fails on other systems\n* [8.1.0238](https://github.com/vim/vim/releases/tag/v8.1.0238): 'buftype' is cleared when using ":term ++hidden cat"\n* [8.1.0237](https://github.com/vim/vim/releases/tag/v8.1.0237): Ruby on Cygwin doesn't always work
+* [8.1.0240](https://github.com/vim/vim/releases/tag/v8.1.0240): g:actual_curbuf set in wrong scope
