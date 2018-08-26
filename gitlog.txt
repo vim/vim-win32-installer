@@ -1,1 +1,1 @@
-* [8.1.0327](https://github.com/vim/vim/releases/tag/v8.1.0327): the "g CTRL-G" command isn't tested much\n* [8.1.0326](https://github.com/vim/vim/releases/tag/v8.1.0326): screen dump does not consider NUL and space equal
+* [8.1.0328](https://github.com/vim/vim/releases/tag/v8.1.0328): inputlist() doesn't work with a timer
