@@ -1,1 +1,1 @@
-* [8.1.0328](https://github.com/vim/vim/releases/tag/v8.1.0328): inputlist() doesn't work with a timer
+* [8.1.0329](https://github.com/vim/vim/releases/tag/v8.1.0329): using inputlist() during startup results in garbage
