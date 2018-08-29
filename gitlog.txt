@@ -1,1 +1,1 @@
-* [8.1.0332](https://github.com/vim/vim/releases/tag/v8.1.0332): get Gdk-Critical error on first balloon show\n* Update runtime files.\n* [8.1.0331](https://github.com/vim/vim/releases/tag/v8.1.0331): insufficient test coverage for :mkview and :loadview\n* [8.1.0330](https://github.com/vim/vim/releases/tag/v8.1.0330): the qf_add_entries() function is too long
+* [8.1.0333](https://github.com/vim/vim/releases/tag/v8.1.0333): :mkview does not restore cursor properly after "$"
