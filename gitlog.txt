@@ -1,1 +1,1 @@
-* [8.1.0347](https://github.com/vim/vim/releases/tag/v8.1.0347): some tests fail on Solaris
+* [8.1.0348](https://github.com/vim/vim/releases/tag/v8.1.0348): on Travis the slowest build is run last
