@@ -25,7 +25,7 @@ a working Lua installation). This means, those interpreters have to be
 installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
-* [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.24
+* [Strawberry Perl](http://strawberryperl.com/) 5.28
 * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
