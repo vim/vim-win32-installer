@@ -35,6 +35,7 @@ vimver=$(git describe --tags --abbrev=0)
 # - squeeze spaces
 # - drop 'patch '
 # - drop 'Problem: '
+# - escape backslashes
 # - format to 100 chars
 vimlog=$(git log --decorate --graph --pretty=format:%s $vimoldver..HEAD |sed \
     -e 's/^\(. \)patch /\1/' \
