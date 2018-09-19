@@ -128,7 +128,7 @@ move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
 echo on
-nmake .config.h.time
+nmake .config.h.time || exit 1
 xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
@@ -138,13 +138,13 @@ start /wait downloads\racket.exe /S
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
-7z e -y downloads\gettext32.zip -oc:\gettext32
+7z e -y downloads\gettext32.zip -oc:\gettext32 > nul || exit 1
 call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
-7z e -y downloads\gettext64.zip -oc:\gettext64
+7z e -y downloads\gettext64.zip -oc:\gettext64 > nul || exit 1
 
 :: Install winpty
 call :downloadfile %WINPTY_URL% downloads\winpty.zip
-7z x -y downloads\winpty.zip -oc:\winpty
+7z x -y downloads\winpty.zip -oc:\winpty > nul || exit 1
 if /i "%ARCH%"=="x64" (
 	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
 	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
@@ -313,4 +313,4 @@ goto :eof
 if not exist %2 (
   curl -f -L %1 -o %2 || exit 1
 )
-goto :eof
+@goto :eof
