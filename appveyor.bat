@@ -123,6 +123,8 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 call :downloadfile %RUBY_URL% downloads\ruby.zip
+:: Extract the files only we needed to reduce the building time.
+:: We need to use `^^` to escape `!` because we enable delayed expansion.
 7z x downloads\ruby.zip */bin */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
 move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
