@@ -47,6 +47,7 @@ set MZSCHEME_VER=%RACKET_VER%
 set RUBY_VER=24
 set RUBY_API_VER_LONG=2.4.0
 set RUBY_BRANCH=ruby_2_4
+set RUBY_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
 set RUBY32_DIR=C:\Ruby%RUBY_VER%
 set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
 set RUBY_DIR=!RUBY%BIT%_DIR!
@@ -120,11 +121,16 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
-git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
+rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
+call :downloadfile %RUBY_URL% downloads\ruby.zip
+:: Extract the files only we needed to reduce the building time.
+:: We need to use `^^` to escape `!` because we enable delayed expansion.
+7z x downloads\ruby.zip */bin */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
+move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
 echo on
-nmake .config.h.time
+nmake .config.h.time || exit 1
 xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
@@ -134,13 +140,13 @@ start /wait downloads\racket.exe /S
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
-7z e -y downloads\gettext32.zip -oc:\gettext32
+7z e -y downloads\gettext32.zip -oc:\gettext32 > nul || exit 1
 call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
-7z e -y downloads\gettext64.zip -oc:\gettext64
+7z e -y downloads\gettext64.zip -oc:\gettext64 > nul || exit 1
 
 :: Install winpty
 call :downloadfile %WINPTY_URL% downloads\winpty.zip
-7z x -y downloads\winpty.zip -oc:\winpty
+7z x -y downloads\winpty.zip -oc:\winpty > nul || exit 1
 if /i "%ARCH%"=="x64" (
 	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
 	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
@@ -309,4 +315,4 @@ goto :eof
 if not exist %2 (
   curl -f -L %1 -o %2 || exit 1
 )
-goto :eof
+@goto :eof
