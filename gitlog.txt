@@ -1,1 +1,1 @@
-* [8.1.0428](https://github.com/vim/vim/releases/tag/v8.1.0428): the :suspend command is not tested\n* [8.1.0427](https://github.com/vim/vim/releases/tag/v8.1.0427): MS-Windows GUI: using invalid encoded file name\n* [8.1.0426](https://github.com/vim/vim/releases/tag/v8.1.0426): accessing invalid memory in SmcOpenConnection()
+* [8.1.0429](https://github.com/vim/vim/releases/tag/v8.1.0429): no test for :lcd with 'shellslash'
