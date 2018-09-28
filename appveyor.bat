@@ -109,7 +109,8 @@ call :downloadfile %LUA_URL% downloads\lua.zip
 
 :: Perl
 call :downloadfile %PERL_URL% downloads\perl.zip
-7z x downloads\perl.zip -o%PERL_DIR%\.. > nul || exit 1
+:: Extract only the "perl" folder.
+7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
 
 :: Tcl
 call :downloadfile %TCL_URL% downloads\tcl.exe
