@@ -1,0 +1,25 @@
+From 58384e3f49119221845eeddc80f1bcd331857415 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 2 Oct 2018 22:24:42 +0900
+Subject: [PATCH 18/22] nsis: Remove "XPStyle on"
+
+This is automatically enabled in MUI2. No need to use explicitly.
+---
+ nsis/gvim.nsi | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 0989e0ecb..74bf89595 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -68,7 +68,6 @@ SetCompressorDictSize 64
+ ManifestDPIAware true
+ SetDatablockOptimize on
+ RequestExecutionLevel highest
+-XPStyle on
+ 
+ !ifdef HAVE_UPX
+   !packhdr temp.dat "upx --best --compress-icons=1 temp.dat"
+-- 
+2.17.0
+

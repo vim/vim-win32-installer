@@ -1,0 +1,53 @@
+From 50b334a228175eb761798bc44dca0fe62e7e1940 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Mon, 1 Oct 2018 07:06:40 +0900
+Subject: [PATCH 09/22] nsis: Use nsExec::Exec instead of ExecWait
+
+It doesn't show a noisy command prompt.
+---
+ nsis/gvim.nsi | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 759411989..be40a4003 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -113,7 +113,8 @@ Function .onInit
+   # run the install program to check for already installed versions
+   SetOutPath $TEMP
+   File /oname=install.exe ${VIMSRC}\installw32.exe
+-  ExecWait "$TEMP\install.exe -uninstall-check"
++  nsExec::Exec "$TEMP\install.exe -uninstall-check"
++  Pop $3
+   Delete $TEMP\install.exe
+ 
+   # We may have been put to the background when uninstall did something.
+@@ -490,7 +491,8 @@ SectionEnd
+ ##########################################################
+ Section -call_install_exe
+ 	SetOutPath $0
+-	ExecWait "$0\install.exe $1"
++	nsExec::Exec "$0\install.exe $1"
++	Pop $3
+ SectionEnd
+ 
+ ##########################################################
+@@ -570,11 +572,13 @@ Section Uninstall
+ 
+ 	# If VisVim was installed, unregister the DLL.
+ 	${If} ${FileExists} "$0\VisVim.dll"
+-	  ExecWait "regsvr32.exe /u /s $0\VisVim.dll"
++	  nsExec::Exec "regsvr32.exe /u /s $0\VisVim.dll"
++	  Pop $3
+ 	${EndIf}
+ 
+ 	# delete the context menu entry and batch files
+-	ExecWait "$0\uninstal.exe -nsis"
++	nsExec::Exec "$0\uninstal.exe -nsis"
++	Pop $3
+ 
+ 	# We may have been put to the background when uninstall did something.
+ 	BringToFront
+-- 
+2.17.0
+

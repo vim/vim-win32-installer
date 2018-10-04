@@ -1,0 +1,1897 @@
+From ab3132a2ce118eeed766c8e7b3c0b862f51d5675 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 2 Oct 2018 14:51:51 +0900
+Subject: [PATCH 12/22] nsis: Support translation
+
+Import most part from gpwen's work.
+---
+ nsis/gvim.nsi             | 140 ++++++++++++++-------
+ nsis/lang/dutch.nsi       | 243 ++++++++++++++++++++++++++++++++++++
+ nsis/lang/english.nsi     |  27 +++-
+ nsis/lang/german.nsi      | 243 ++++++++++++++++++++++++++++++++++++
+ nsis/lang/italian.nsi     | 252 ++++++++++++++++++++++++++++++++++++++
+ nsis/lang/japanese.nsi    | 238 +++++++++++++++++++++++++++++++++++
+ nsis/lang/simpchinese.nsi | 239 ++++++++++++++++++++++++++++++++++++
+ nsis/lang/tradchinese.nsi | 240 ++++++++++++++++++++++++++++++++++++
+ 8 files changed, 1571 insertions(+), 51 deletions(-)
+ create mode 100644 nsis/lang/dutch.nsi
+ create mode 100644 nsis/lang/german.nsi
+ create mode 100644 nsis/lang/italian.nsi
+ create mode 100644 nsis/lang/japanese.nsi
+ create mode 100644 nsis/lang/simpchinese.nsi
+ create mode 100644 nsis/lang/tradchinese.nsi
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index dbbad7d3d..a51b385e5 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -33,9 +33,12 @@ Unicode true
+ # Get it at https://upx.github.io/
+ !define HAVE_UPX
+ 
+-# comment the next line if you do not want to add Native Language Support
++# Comment the next line if you do not want to add Native Language Support
+ !define HAVE_NLS
+ 
++# Comment the following line to create a multilanguage installer:
++!define HAVE_MULTI_LANG
++
+ !include gvim_version.nsh	# for version number
+ 
+ # ----------- No configurable settings below this line -----------
+@@ -89,7 +92,7 @@ XPStyle on
+ !define MUI_UNICON "icons\vim_uninst_16c.ico"
+ 
+ # Show all languages, despite user's codepage:
+-#!define MUI_LANGDLL_ALLLANGUAGES
++!define MUI_LANGDLL_ALLLANGUAGES
+ 
+ !define MUI_WELCOMEFINISHPAGE_BITMAP       "icons\welcome.bmp"
+ !define MUI_UNWELCOMEFINISHPAGE_BITMAP     "icons\uninstall.bmp"
+@@ -97,6 +100,11 @@ XPStyle on
+ !define MUI_HEADERIMAGE_BITMAP             "icons\header.bmp"
+ !define MUI_HEADERIMAGE_UNBITMAP           "icons\un_header.bmp"
+ 
++!define MUI_WELCOMEFINISHPAGE_BITMAP_STRETCH    "AspectFitHeight"
++!define MUI_UNWELCOMEFINISHPAGE_BITMAP_STRETCH  "AspectFitHeight"
++!define MUI_HEADERIMAGE_BITMAP_STRETCH          "AspectFitHeight"
++!define MUI_HEADERIMAGE_UNBITMAP_STRETCH        "AspectFitHeight"
++
+ !define MUI_COMPONENTSPAGE_SMALLDESC
+ !define MUI_LICENSEPAGE_CHECKBOX
+ !define MUI_FINISHPAGE_RUN                 "$0\gvim.exe"
+@@ -157,6 +165,7 @@ Page custom SetCustom ValidateCustom
+     !include "lang\dutch.nsi"
+     !include "lang\german.nsi"
+     !include "lang\italian.nsi"
++    !include "lang\japanese.nsi"
+     !include "lang\simpchinese.nsi"
+     !include "lang\tradchinese.nsi"
+ !endif
+@@ -243,7 +252,7 @@ Function CheckOldVim
+   Exch $0 ; put $0 on top of stack, restore $0 to original value
+ FunctionEnd
+ 
+-Section "Uninstall old version of Vim" sec_old_vim_id
++Section "$(str_section_old_ver)" id_section_old_ver
+ 	SectionIn 1 2 3 RO
+ 
+ 	# run the install program to check for already installed versions
+@@ -269,9 +278,9 @@ Function .onInit
+   Pop $3
+   ${If} $3 == 0
+     # No old versions of Vim found. Unselect and hide the section.
+-    !insertmacro UnselectSection ${sec_old_vim_id}
+-    SectionSetInstTypes ${sec_old_vim_id} 0
+-    SectionSetText ${sec_old_vim_id} ""
++    !insertmacro UnselectSection ${id_section_old_ver}
++    SectionSetInstTypes ${id_section_old_ver} 0
++    SectionSetText ${id_section_old_ver} ""
+   ${EndIf}
+ 
+   # Install will have created a file for us that contains the directory where
+@@ -356,7 +365,7 @@ Function un.GetParent
+ FunctionEnd
+ 
+ ##########################################################
+-Section "Vim executables and runtime files" sec_main_id
++Section "$(str_section_exe)" id_section_exe
+ 	SectionIn 1 2 3 RO
+ 
+ 	# we need also this here if the user changes the instdir
+@@ -460,7 +469,7 @@ Section "Vim executables and runtime files" sec_main_id
+ SectionEnd
+ 
+ ##########################################################
+-Section "Vim console program (vim.exe)" sec_cons_id
++Section "$(str_section_console)" id_section_console
+ 	SectionIn 1 3
+ 
+ 	SetOutPath $0
+@@ -469,28 +478,29 @@ Section "Vim console program (vim.exe)" sec_cons_id
+ SectionEnd
+ 
+ ##########################################################
+-Section "Create .bat files for command line use"
++Section "$(str_section_batch)" id_section_batch
+ 	SectionIn 3
+ 
+ 	StrCpy $1 "$1 -create-batfiles $2"
+ SectionEnd
+ 
+ ##########################################################
+-Section "Create icons on the Desktop"
+-	SectionIn 1 3
++SectionGroup $(str_group_icons) id_group_icons
++	Section "$(str_section_desktop)" id_section_desktop
++		SectionIn 1 3
+ 
+-	StrCpy $1 "$1 -install-icons"
+-SectionEnd
++		StrCpy $1 "$1 -install-icons"
++	SectionEnd
+ 
+-##########################################################
+-Section "Add Vim to the Start Menu"
+-	SectionIn 1 3
++	Section "$(str_section_start_menu)" id_section_startmenu
++		SectionIn 1 3
+ 
+-	StrCpy $1 "$1 -add-start-menu"
+-SectionEnd
++		StrCpy $1 "$1 -add-start-menu"
++	SectionEnd
++SectionGroupEnd
+ 
+ ##########################################################
+-Section "Add an Edit-with-Vim context menu entry" sec_gvimext_id
++Section "$(str_section_edit_with)" id_section_editwith
+ 	SectionIn 1 3
+ 
+ 	# Be aware of this sequence of events:
+@@ -531,7 +541,7 @@ Section "Add an Edit-with-Vim context menu entry" sec_gvimext_id
+ SectionEnd
+ 
+ ##########################################################
+-Section "Create a _vimrc if it doesn't exist" sec_vimrc_id
++Section "$(str_section_vim_rc)" id_section_vimrc
+ 	SectionIn 1 3
+ 
+ 	StrCpy $1 "$1 -create-vimrc"
+@@ -562,21 +572,22 @@ Section "Create a _vimrc if it doesn't exist" sec_vimrc_id
+ SectionEnd
+ 
+ ##########################################################
+-Section "Create plugin directories in HOME or VIM"
+-	SectionIn 1 3
++SectionGroup $(str_group_plugin) id_group_plugin
++	Section "$(str_section_plugin_home)" id_section_pluginhome
++		SectionIn 1 3
+ 
+-	StrCpy $1 "$1 -create-directories home"
+-SectionEnd
++		StrCpy $1 "$1 -create-directories home"
++	SectionEnd
+ 
+-##########################################################
+-Section "Create plugin directories in VIM"
+-	SectionIn 3
++	Section "$(str_section_plugin_vim)" id_section_pluginvim
++		SectionIn 3
+ 
+-	StrCpy $1 "$1 -create-directories vim"
+-SectionEnd
++		StrCpy $1 "$1 -create-directories vim"
++	SectionEnd
++SectionGroupEnd
+ 
+ ##########################################################
+-Section "VisVim Extension for MS Visual Studio" sec_visvim_id
++Section "$(str_section_vis_vim)" id_section_visvim
+ 	SectionIn 3
+ 
+ 	SetOutPath $0
+@@ -586,7 +597,7 @@ SectionEnd
+ 
+ ##########################################################
+ !ifdef HAVE_NLS
+-Section "Native Language Support" sec_nls_id
++Section "$(str_section_nls)" id_section_nls
+ 	SectionIn 1 3
+ 
+ 	SetOutPath $0\lang
+@@ -608,7 +619,7 @@ Section "Native Language Support" sec_nls_id
+ 	    "$0\libgcc_s_sjlj-1.dll" "$0"
+   !endif
+ 
+-	${If} ${SectionIsSelected} ${sec_gvimext_id}
++	${If} ${SectionIsSelected} ${id_section_editwith}
+ 	  ${If} ${RunningX64}
+ 	    # Install DLLs for 64-bit gvimext.dll into the GvimExt64 directory.
+ 	    SetOutPath $0\GvimExt64
+@@ -653,21 +664,21 @@ SectionEnd
+ Section -post
+ 
+ 	# Get estimated install size
+-	SectionGetSize ${sec_main_id} $3
+-	${If} ${SectionIsSelected} ${sec_cons_id}
+-	  SectionGetSize ${sec_cons_id} $4
++	SectionGetSize ${id_section_exe} $3
++	${If} ${SectionIsSelected} ${id_section_console}
++	  SectionGetSize ${id_section_console} $4
+ 	  IntOp $3 $3 + $4
+ 	${EndIf}
+-	${If} ${SectionIsSelected} ${sec_gvimext_id}
+-	  SectionGetSize ${sec_gvimext_id} $4
++	${If} ${SectionIsSelected} ${id_section_editwith}
++	  SectionGetSize ${id_section_editwith} $4
+ 	  IntOp $3 $3 + $4
+ 	${EndIf}
+-	${If} ${SectionIsSelected} ${sec_visvim_id}
+-	  SectionGetSize ${sec_visvim_id} $4
++	${If} ${SectionIsSelected} ${id_section_visvim}
++	  SectionGetSize ${id_section_visvim} $4
+ 	  IntOp $3 $3 + $4
+ 	${EndIf}
+-	${If} ${SectionIsSelected} ${sec_nls_id}
+-	  SectionGetSize ${sec_nls_id} $4
++	${If} ${SectionIsSelected} ${id_section_nls}
++	  SectionGetSize ${id_section_nls} $4
+ 	  IntOp $3 $3 + $4
+ 	${EndIf}
+ 
+@@ -689,7 +700,7 @@ Function SetCustom
+ 	# Display the InstallOptions dialog
+ 
+ 	# Check if a _vimrc should be created
+-	${IfNot} ${SectionIsSelected} ${sec_vimrc_id}
++	${IfNot} ${SectionIsSelected} ${id_section_vimrc}
+ 	  Abort
+ 	${EndIf}
+ 
+@@ -789,7 +800,34 @@ Function ValidateCustom
+ FunctionEnd
+ 
+ ##########################################################
+-Section "un.$(str_unsection_register)"
++# Description for Installer Sections
++
++!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_old_ver}     $(str_desc_old_ver)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_exe}         $(str_desc_exe)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_console}     $(str_desc_console)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_batch}       $(str_desc_batch)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_group_icons}         $(str_desc_icons)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_desktop}     $(str_desc_desktop)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_startmenu}   $(str_desc_start_menu)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_editwith}    $(str_desc_edit_with)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_vimrc}       $(str_desc_vim_rc)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_group_plugin}        $(str_desc_plugin)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginhome}  $(str_desc_plugin_home)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginvim}   $(str_desc_plugin_vim)
++
++!ifdef HAVE_VIS_VIM
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_visvim}      $(str_desc_vis_vim)
++!endif
++
++!ifdef HAVE_NLS
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_section_nls}         $(str_desc_nls)
++!endif
++!insertmacro MUI_FUNCTION_DESCRIPTION_END
++
++
++##########################################################
++Section "un.$(str_unsection_register)" id_unsection_register
+ 	# Apparently $INSTDIR is set to the directory where the uninstaller is
+ 	# created.  Thus the "vim61" directory is included in it.
+ 	StrCpy $0 "$INSTDIR"
+@@ -808,7 +846,7 @@ Section "un.$(str_unsection_register)"
+ 	BringToFront
+ SectionEnd
+ 
+-Section "un.$(str_unsection_exe)"
++Section "un.$(str_unsection_exe)" id_unsection_exe
+ 
+ 	StrCpy $0 "$INSTDIR"
+ 
+@@ -887,7 +925,7 @@ Section "un.$(str_unsection_exe)"
+ 	RMDir $0
+ SectionEnd
+ 
+-Section "un.Remove vimfiles directory"
++Section "un.$(str_unsection_vimfiles)" id_unsection_vimfiles
+ 	# get the parent dir of the installation
+ 	Push $INSTDIR
+ 	Call un.GetParent
+@@ -908,7 +946,7 @@ Section "un.Remove vimfiles directory"
+ 	${EndIf}
+ SectionEnd
+ 
+-Section "un.Remove the Vim root directory (may contain your _vimrc)"
++Section "un.$(str_unsection_rootdir)" id_unsection_rootdir
+ 	# get the parent dir of the installation
+ 	Push $INSTDIR
+ 	Call un.GetParent
+@@ -926,3 +964,13 @@ Section "un.Remove the Vim root directory (may contain your _vimrc)"
+ 	#Call un.onUnInstSuccess
+ 
+ SectionEnd
++
++##########################################################
++# Description for Uninstaller Sections
++
++!insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_register} $(str_desc_unregister)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_exe}      $(str_desc_rm_exe)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_vimfiles} $(str_desc_rm_vimfiles)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_rootdir}  $(str_desc_rm_rootdir)
++!insertmacro MUI_UNFUNCTION_DESCRIPTION_END
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+new file mode 100644
+index 000000000..0e08d758a
+--- /dev/null
++++ b/nsis/lang/dutch.nsi
+@@ -0,0 +1,243 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# dutch.nsi : Dutch language strings for gvim NSIS installer.
++#
++# Locale ID    : 1043
++# Locale Name  : nl
++# fileencoding : UTF-8
++# Author       : Peter Odding <peter@peterodding.com>
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "Dutch" "nl"
++!insertmacro MUI_LANGUAGE "Dutch"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_DUTCH} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_DUTCH} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++LangString str_dest_folder          ${LANG_DUTCH} \
++    "Doelmap (moet eindigen op $\"vim$\")"
++
++LangString str_show_readme          ${LANG_DUTCH} \
++    "README weergeven na installatie"
++
++# Install types:
++LangString str_type_typical         ${LANG_DUTCH} \
++    "Gebruikelijk"
++
++LangString str_type_minimal         ${LANG_DUTCH} \
++    "Minimaal"
++
++LangString str_type_full            ${LANG_DUTCH} \
++    "Volledig"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_DUTCH} \
++    "Bestaande versie(s) de-installeren"
++LangString str_desc_old_ver         ${LANG_DUTCH} \
++    "Bestaande Vim versie(s) van je systeem verwijderen."
++
++LangString str_section_exe          ${LANG_DUTCH} \
++    "Vim GUI"
++LangString str_desc_exe             ${LANG_DUTCH} \
++    "Vim GUI uitvoerbare bestanden en runtime bestanden.  Dit component is vereist."
++
++LangString str_section_console      ${LANG_DUTCH} \
++    "Vim console programma"
++LangString str_desc_console         ${LANG_DUTCH} \
++    "Console versie van Vim (vim.exe)."
++
++LangString str_section_batch        ${LANG_DUTCH} \
++    "Creëer .bat bestanden"
++LangString str_desc_batch           ${LANG_DUTCH} \
++    "Creëer .bat bestanden voor Vim varianten in de Windows map voor \
++     commando regel gebruik."
++
++LangString str_group_icons          ${LANG_DUTCH} \
++    "Creëer pictogrammen for Vim"
++LangString str_desc_icons           ${LANG_DUTCH} \
++    "Creëer pictogrammen voor Vim op verschillende locaties voor gemakkelijke toegang."
++
++LangString str_section_desktop      ${LANG_DUTCH} \
++    "Op het bureaublad"
++LangString str_desc_desktop         ${LANG_DUTCH} \
++    "Creëer pictogrammen voor Vim uitvoerbare bestanden op het bureaublad."
++
++LangString str_section_start_menu   ${LANG_DUTCH} \
++    "In de Programma's map in het start menu"
++LangString str_desc_start_menu      ${LANG_DUTCH} \
++    "Voeg Vim toe aan de programma's map in het start menu.  \
++     Van toepassing op Windows 95 en later."
++
++LangString str_section_quick_launch ${LANG_DUTCH} \
++    "In de snel starten balk"
++LangString str_desc_quick_launch    ${LANG_DUTCH} \
++    "Voeg Vim snelkoppeling toe aan de snel starten balk."
++
++LangString str_section_edit_with    ${LANG_DUTCH} \
++    "Voeg Vim contextmenu toe"
++LangString str_desc_edit_with       ${LANG_DUTCH} \
++    "Voeg Vim toe aan de $\"Openen met...$\" contextmenu lijst."
++
++LangString str_section_edit_with32  ${LANG_DUTCH} \
++    "32-bit versie"
++LangString str_desc_edit_with32     ${LANG_DUTCH} \
++    "Voeg Vim toe aan de $\"Openen met...$\" contextmenu lijst \
++     voor 32-bit toepassingen."
++
++LangString str_section_edit_with64  ${LANG_DUTCH} \
++    "64-bit versie"
++LangString str_desc_edit_with64     ${LANG_DUTCH} \
++    "Voeg Vim toe aan de $\"Openen met...$\" contextmenu lijst \
++     voor 64-bit toepassingen."
++
++LangString str_section_vim_rc       ${LANG_DUTCH} \
++    "Creëer standaard configuratie"
++LangString str_desc_vim_rc          ${LANG_DUTCH} \
++    "Creëer een standaard configuratie bestand (_vimrc) als er nog geen bestaat."
++
++LangString str_group_plugin         ${LANG_DUTCH} \
++    "Creëer Plugin mappen"
++LangString str_desc_plugin          ${LANG_DUTCH} \
++    "Creëer plugin mappen.  Plugin mappen maken het mogelijk om \
++     Vim uit te breiden door een bestand in een map te plaatsen."
++
++LangString str_section_plugin_home  ${LANG_DUTCH} \
++    "Privé"
++LangString str_desc_plugin_home     ${LANG_DUTCH} \
++    "Creëer plugin mappen in HOME (als je deze gedefinieerd hebt) \
++     of Vim installatie map."
++
++LangString str_section_plugin_vim   ${LANG_DUTCH} \
++    "Gedeeld"
++LangString str_desc_plugin_vim      ${LANG_DUTCH} \
++    "Creëer plugin mappen in Vim installatie map, deze worden gebruikt \
++     voor iedereen op het systeem."
++
++LangString str_section_vis_vim      ${LANG_DUTCH} \
++    "VisVim extensie"
++LangString str_desc_vis_vim         ${LANG_DUTCH} \
++    "VisVim extensie voor Microsoft Visual Studio integratie."
++
++LangString str_section_nls          ${LANG_DUTCH} \
++    "Ondersteuning voor andere talen"
++LangString str_desc_nls             ${LANG_DUTCH} \
++    "Bestanden voor ondersteuning van andere talen dan Engels installeren."
++
++LangString str_unsection_register   ${LANG_DUTCH} \
++    "Vim afmelden"
++LangString str_desc_unregister      ${LANG_DUTCH} \
++    "Registratie van Vim in het systeem ongedaan maken."
++
++LangString str_unsection_exe        ${LANG_DUTCH} \
++    "Vim uitvoerbare/runtime bestanden verwijderen"
++LangString str_desc_rm_exe          ${LANG_DUTCH} \
++    "Verwijder alle Vim uitvoerbare bestanden en runtime bestanden."
++
++LangString str_unsection_vimfiles   ${LANG_DUTCH} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_DUTCH} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_DUTCH} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_DUTCH} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
++LangString str_vimrc_page_title     ${LANG_DUTCH} \
++    "Choose _vimrc settings"
++LangString str_vimrc_page_subtitle  ${LANG_DUTCH} \
++    "Choose the behavior of key remapping and mouse."
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_DUTCH} \
++    "Er zijn $vim_old_ver_count Vim versies op je systeem gevonden.$\r$\n\
++     Deze installatie kan omgaan met maximaal ${VIM_MAX_OLD_VER} versies.$\r$\n\
++     Verwijder a.u.b. wat versies en probeer het dan opnieuw."
++
++LangString str_msg_invalid_root  ${LANG_DUTCH} \
++    "Ongeldig installatiepad: $vim_install_root!$\r$\n\
++     Het moet eindelijk op $\"vim$\"."
++
++LangString str_msg_bin_mismatch  ${LANG_DUTCH} \
++    "Binair pad onjuist!$\r$\n$\r$\n\
++     Het binaire pad zou $\"$vim_bin_path$\" moeten zijn,$\r$\n\
++     maar het systeem geeft aan dat het binaire pad $\"$INSTDIR$\" is."
++
++LangString str_msg_vim_running   ${LANG_DUTCH} \
++    "Vim is nog actief op je systeem.$\r$\n\
++     Sluit a.u.b. alle instanties van Vim voordat je verder gaat."
++
++LangString str_msg_register_ole  ${LANG_DUTCH} \
++    "Bezig met proberen om Vim te registreren met OLE. \
++     Er is geen bericht dat aangeeft of deze operatie slaagt."
++
++LangString str_msg_unreg_ole     ${LANG_DUTCH} \
++    "Bezig met proberen om Vim te de-registreren met OLE. \
++     Er is geen bericht dat aangeeft of deze operatie slaagt."
++
++LangString str_msg_rm_start      ${LANG_DUTCH} \
++    "De volgende versies worden verwijderd:"
++
++LangString str_msg_rm_fail       ${LANG_DUTCH} \
++    "De volgende versies konden niet worden verwijderd:"
++
++LangString str_msg_no_rm_key     ${LANG_DUTCH} \
++    "Kan de uninstaller register sleutel niet vinden."
++
++LangString str_msg_no_rm_reg     ${LANG_DUTCH} \
++    "Kan de uninstaller niet vinden via het register."
++
++LangString str_msg_no_rm_exe     ${LANG_DUTCH} \
++    "Kan geen toegang krijgen tot de uninstaller."
++
++LangString str_msg_rm_copy_fail  ${LANG_DUTCH} \
++    "Kon de uninstaller niet naar een tijdelijke map kopiëren."
++
++LangString str_msg_rm_run_fail   ${LANG_DUTCH} \
++    "Kon de uninstaller niet uitvoeren."
++
++LangString str_msg_abort_install ${LANG_DUTCH} \
++    "Installatie wordt gestopt."
++
++LangString str_msg_install_fail  ${LANG_DUTCH} \
++    "Installatie is mislukt."
++
++LangString str_msg_rm_exe_fail   ${LANG_DUTCH} \
++    "Sommige bestanden in $vim_bin_path zijn niet verwijderd!$\r$\n\
++     Dit moet je handmatig doen."
++
++LangString str_msg_rm_root_fail  ${LANG_DUTCH} \
++    "WAARSCHUWING: Kan $\"$vim_install_root$\" niet verwijderen omdat het niet leeg is!"
++
++LangString str_msg_keymap_title   ${LANG_DUTCH} \
++    " Key remapping "
++LangString str_msg_keymap_default ${LANG_DUTCH} \
++    " Do not remap keys for Windows behavior (Default)"
++LangString str_msg_keymap_windows ${LANG_DUTCH} \
++    " Remap a few keys for Windows behavior$\n (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++
++LangString str_msg_mouse_title   ${LANG_DUTCH} \
++    " Mouse behavior "
++LangString str_msg_mouse_default ${LANG_DUTCH} \
++    " Default:$\n     Right button has a popup menu, left button starts visual mode"
++LangString str_msg_mouse_windows ${LANG_DUTCH} \
++    " Windows:$\n     Right button has a popup menu, left button starts select mode"
++LangString str_msg_mouse_unix    ${LANG_DUTCH} \
++    " Unix:$\n     Right button extends selection, left button starts visual mode"
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 3a2ddc122..8ef333eae 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -21,6 +21,13 @@
+ !insertmacro MUI_LANGUAGE "English"
+ 
+ 
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_ENGLISH} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_ENGLISH} \
++        "$(^Name) Uninstall"
++
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+ ##############################################################################
+@@ -46,13 +53,13 @@ LangString str_type_full            ${LANG_ENGLISH} \
+ # Section Titles & Description                                            {{{1
+ ##############################################################################
+ 
+-LangString str_group_old_ver        ${LANG_ENGLISH} \
++LangString str_section_old_ver      ${LANG_ENGLISH} \
+     "Uninstall Existing Version(s)"
+ LangString str_desc_old_ver         ${LANG_ENGLISH} \
+     "Uninstall existing Vim version(s) from your system."
+ 
+ LangString str_section_exe          ${LANG_ENGLISH} \
+-    "Vim GUI"
++    "Vim GUI and runtime files"
+ LangString str_desc_exe             ${LANG_ENGLISH} \
+     "Vim GUI executables and runtime files.  This component is required."
+ 
+@@ -80,15 +87,14 @@ LangString str_desc_desktop         ${LANG_ENGLISH} \
+ LangString str_section_start_menu   ${LANG_ENGLISH} \
+     "In the Start Menu Programs Folder"
+ LangString str_desc_start_menu      ${LANG_ENGLISH} \
+-    "Add Vim in the programs folder of the start menu.  \
+-     Applicable to Windows 95 and later."
++    "Add Vim in the programs folder of the start menu."
+ 
+ LangString str_section_quick_launch ${LANG_ENGLISH} \
+     "In the Quick Launch Bar"
+ LangString str_desc_quick_launch    ${LANG_ENGLISH} \
+     "Add Vim shortcut in the quick launch bar."
+ 
+-LangString str_group_edit_with      ${LANG_ENGLISH} \
++LangString str_section_edit_with    ${LANG_ENGLISH} \
+     "Add Vim Context Menu"
+ LangString str_desc_edit_with       ${LANG_ENGLISH} \
+     "Add Vim to the $\"Open With...$\" context menu list."
+@@ -148,11 +154,22 @@ LangString str_unsection_exe        ${LANG_ENGLISH} \
+ LangString str_desc_rm_exe          ${LANG_ENGLISH} \
+     "Remove all Vim executables and runtime files."
+ 
++LangString str_unsection_vimfiles   ${LANG_ENGLISH} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_ENGLISH} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_ENGLISH} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_ENGLISH} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
+ LangString str_vimrc_page_title     ${LANG_ENGLISH} \
+     "Choose _vimrc settings"
+ LangString str_vimrc_page_subtitle  ${LANG_ENGLISH} \
+     "Choose the behavior of key remapping and mouse."
+ 
++
+ ##############################################################################
+ # Messages                                                                {{{1
+ ##############################################################################
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+new file mode 100644
+index 000000000..61be2b665
+--- /dev/null
++++ b/nsis/lang/german.nsi
+@@ -0,0 +1,243 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# german.nsi : German language strings for gvim NSIS installer.
++#
++# Locale ID    : 1031
++# fileencoding : UTF-8
++# Author       : Christian Brabandt, tux
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "German" "de"
++!insertmacro MUI_LANGUAGE "German"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_GERMAN} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_GERMAN} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++LangString str_dest_folder          ${LANG_GERMAN} \
++    "Zielverzeichnis auswählen (muss auf $\"vim$\" enden)"
++
++LangString str_show_readme          ${LANG_GERMAN} \
++    "README-Datei nach der Installation anzeigen"
++
++# Install types:
++LangString str_type_typical         ${LANG_GERMAN} \
++    "Typisch"
++
++LangString str_type_minimal         ${LANG_GERMAN} \
++    "Minimal"
++
++LangString str_type_full            ${LANG_GERMAN} \
++    "Vollständig"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_GERMAN} \
++    "Vorherige Version deinstallieren"
++LangString str_desc_old_ver         ${LANG_GERMAN} \
++    "Vorherige installierte Versionen auf diesem System deinstallieren."
++
++LangString str_section_exe          ${LANG_GERMAN} \
++    "Vim GUI"
++LangString str_desc_exe             ${LANG_GERMAN} \
++    "Vim-GUI-Anwendung und Laufzeitdateien (Dieser Teil ist zwingend\
++     erforderlich)."
++
++LangString str_section_console      ${LANG_GERMAN} \
++    "Vim Konsolenanwendung"
++LangString str_desc_console         ${LANG_GERMAN} \
++    "Konsolenversion von Vim."
++
++LangString str_section_batch        ${LANG_GERMAN} \
++    ".bat-Dateien erstellen"
++LangString str_desc_batch           ${LANG_GERMAN} \
++    ".bat-Dateien erstellen, um Vim in der Konsole auszuführen."
++
++LangString str_group_icons          ${LANG_GERMAN} \
++    "Vim-Verknüpfungen erstellen"
++LangString str_desc_icons           ${LANG_GERMAN} \
++    "Verknüpfungen mit Vim für einfachen Aufruf erstellen."
++
++LangString str_section_desktop      ${LANG_GERMAN} \
++    "Auf dem Desktop"
++LangString str_desc_desktop         ${LANG_GERMAN} \
++    "Icons für GVim auf dem Desktop erstellen."
++
++LangString str_section_start_menu   ${LANG_GERMAN} \
++    "Im Startmenü"
++LangString str_desc_start_menu      ${LANG_GERMAN} \
++    "Vim im Programmverzeichnis des Startmenüs hinzufügen\
++     Windows 95 und höher."
++
++LangString str_section_quick_launch ${LANG_GERMAN} \
++    "In der Schnellstartleiste"
++LangString str_desc_quick_launch    ${LANG_GERMAN} \
++    "Verknüpfung zu Vim in der Schnellstartleiste ablegen."
++
++LangString str_section_edit_with    ${LANG_GERMAN} \
++    "Vim zum Kontextmenü hinzufügen"
++LangString str_desc_edit_with       ${LANG_GERMAN} \
++    "Vim in das $\"Öffnen mit...$\"-Kontextmenü einfügen."
++
++LangString str_section_edit_with32  ${LANG_GERMAN} \
++    "32-Bit-Version"
++LangString str_desc_edit_with32     ${LANG_GERMAN} \
++    "Vim in das $\"Öffnen mit...$\"-Kontextmenü \
++     für 32-Bit-Anwendungen integrieren."
++
++LangString str_section_edit_with64  ${LANG_GERMAN} \
++    "64-Bit-Version"
++LangString str_desc_edit_with64     ${LANG_GERMAN} \
++    "Vim in das $\"Öffnen mit...$\"-Kontextmenü \
++     für 64-Bit-Anwendungen integrieren."
++
++LangString str_section_vim_rc       ${LANG_GERMAN} \
++    "Standard-Konfigurationsdatei erstellen"
++LangString str_desc_vim_rc          ${LANG_GERMAN} \
++    "Eine Standard-Konfigurationsdatei (_vimrc) erstellen, \
++     falls noch keine existiert."
++
++LangString str_group_plugin         ${LANG_GERMAN} \
++    "Plugin-Verzeichnisse anlegen"
++LangString str_desc_plugin          ${LANG_GERMAN} \
++    "Plugin-Verzeichnisse anlegen.  Plugins erlauben es, Vim \
++     um zusätzliche Funktionen zu erweitern."
++
++LangString str_section_plugin_home  ${LANG_GERMAN} \
++    "Privat"
++LangString str_desc_plugin_home     ${LANG_GERMAN} \
++    "Plugin-Verzeichnis im Basisverzeichnis (falls es existiert) oder im \
++     Vim-Installationspfad erstellen."
++
++LangString str_section_plugin_vim   ${LANG_GERMAN} \
++    "Freigegeben"
++LangString str_desc_plugin_vim      ${LANG_GERMAN} \
++    "Plugin-Verzeichnisse im Vim-Installationspfad erstellen. Diese werden \
++     für alle Benutzer dieses Systems genutzt."
++
++LangString str_section_vis_vim      ${LANG_GERMAN} \
++    "VisVim-Erweiterung"
++LangString str_desc_vis_vim         ${LANG_GERMAN} \
++    "VisVim-Erweiterung zur Integration in Microsoft Visual Studio."
++
++LangString str_section_nls          ${LANG_GERMAN} \
++    "Unterstützung für andere Sprachen"
++LangString str_desc_nls             ${LANG_GERMAN} \
++    "Dateien zur Unterstützung anderer Sprachen als Englisch installieren."
++
++LangString str_unsection_register   ${LANG_GERMAN} \
++    "Vim deinstallieren"
++LangString str_desc_unregister      ${LANG_GERMAN} \
++    "Vim vom System entfernen."
++
++LangString str_unsection_exe        ${LANG_GERMAN} \
++    "Vim-Anwendung und Laufzeitdateien entfernen"
++LangString str_desc_rm_exe          ${LANG_GERMAN} \
++    "Alle Vim-Anwendungen und Laufzeitdateien von diesem System entfernen."
++
++LangString str_unsection_vimfiles   ${LANG_GERMAN} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_GERMAN} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_GERMAN} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_GERMAN} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
++LangString str_vimrc_page_title     ${LANG_GERMAN} \
++    "Choose _vimrc settings"
++LangString str_vimrc_page_subtitle  ${LANG_GERMAN} \
++    "Choose the behavior of key remapping and mouse."
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_GERMAN} \
++    "$vim_old_ver_count Vim-Versionen auf diesem System gefunden..$\r$\n\
++     Dieser Installer kann maximal ${VIM_MAX_OLD_VER} Versionen \
++     handhaben.$\r$\n\
++     Bitte alte Versionen entfernen und noch einmal probieren."
++
++LangString str_msg_invalid_root  ${LANG_GERMAN} \
++    "Nicht gültiges Installationsverzeichnis: $vim_install_root!$\r$\n\
++     Der Pfad muss auf $\"vim$\" enden."
++
++LangString str_msg_bin_mismatch  ${LANG_GERMAN} \
++    "Pfaddiskrepanz!$\r$\n$\r$\n\
++     Erwarte Anwendungsverzeichnis $\"$vim_bin_path$\",$\r$\n\
++     aber fand Anwendungspfad $\"$INSTDIR$\" vor."
++
++LangString str_msg_vim_running   ${LANG_GERMAN} \
++    "Laufender Vim-Prozess erkannt.$\r$\n\
++     Bitte alle laufenden Vim-Prozesse vor dem Fortfahren beenden."
++
++LangString str_msg_register_ole  ${LANG_GERMAN} \
++    "Versuche OLE-Registrierung durchzuführen."
++
++LangString str_msg_unreg_ole     ${LANG_GERMAN} \
++    "Versuche OLE-Registrierung zu löschen."
++
++LangString str_msg_rm_start      ${LANG_GERMAN} \
++    "Deinstalliere die folgende Version:"
++
++LangString str_msg_rm_fail       ${LANG_GERMAN} \
++    "Deinstallation der Version fehlgeschlagen:"
++
++LangString str_msg_no_rm_key     ${LANG_GERMAN} \
++    "Deinstallationsschlüssel in der Registrierungsdatenbank nicht gefunden."
++
++LangString str_msg_no_rm_reg     ${LANG_GERMAN} \
++    "Kein Uninstaller in der Registrierungsdatenbank gefunden."
++
++LangString str_msg_no_rm_exe     ${LANG_GERMAN} \
++    "Kein Zugriff auf den Uninstaller."
++
++LangString str_msg_rm_copy_fail  ${LANG_GERMAN} \
++    "Fehler beim Kopieren des Uninstallers in ein temporäres Verzeichnis."
++
++LangString str_msg_rm_run_fail   ${LANG_GERMAN} \
++    "Fehler beim Aufruf des Uninstallers."
++
++LangString str_msg_abort_install ${LANG_GERMAN} \
++    "Installation wird abgebrochen."
++
++LangString str_msg_install_fail  ${LANG_GERMAN} \
++    "Installation fehlerhaft beendet."
++
++LangString str_msg_rm_exe_fail   ${LANG_GERMAN} \
++    "Einige Dateien im Pfad $vim_bin_path konnten nicht gelöscht werden!$\r$\n\
++     Diese Dateien müssen manuell gelöscht werden."
++
++LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
++    "Achtung: Kann Verzeichnis $\"$vim_install_root$\" nicht entfernen, \
++     weil es nicht leer ist!"
++
++LangString str_msg_keymap_title   ${LANG_GERMAN} \
++    " Key remapping "
++LangString str_msg_keymap_default ${LANG_GERMAN} \
++    " Do not remap keys for Windows behavior (Default)"
++LangString str_msg_keymap_windows ${LANG_GERMAN} \
++    " Remap a few keys for Windows behavior$\n (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++
++LangString str_msg_mouse_title   ${LANG_GERMAN} \
++    " Mouse behavior "
++LangString str_msg_mouse_default ${LANG_GERMAN} \
++    " Default:$\n     Right button has a popup menu, left button starts visual mode"
++LangString str_msg_mouse_windows ${LANG_GERMAN} \
++    " Windows:$\n     Right button has a popup menu, left button starts select mode"
++LangString str_msg_mouse_unix    ${LANG_GERMAN} \
++    " Unix:$\n     Right button extends selection, left button starts visual mode"
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+new file mode 100644
+index 000000000..3ccf835ee
+--- /dev/null
++++ b/nsis/lang/italian.nsi
+@@ -0,0 +1,252 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# italian.nsi : Italian language strings for gvim NSIS installer.
++#
++# Locale ID    : 1040
++# Locale Name  : it
++# fileencoding : latin1
++# Author       : Antonio Colombo
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "Italian" "it"
++!insertmacro MUI_LANGUAGE "Italian"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_ITALIAN} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_ITALIAN} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++LangString str_dest_folder          ${LANG_ITALIAN} \
++    "Cartella d'installazione (il nome deve finire con $\"vim$\")"
++
++LangString str_show_readme          ${LANG_ITALIAN} \
++    "Visualizza README al termine dell'installazione"
++
++# Install types:
++LangString str_type_typical         ${LANG_ITALIAN} \
++    "Tipica"
++
++LangString str_type_minimal         ${LANG_ITALIAN} \
++    "Minima"
++
++LangString str_type_full            ${LANG_ITALIAN} \
++    "Completa"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_ITALIAN} \
++    "Disinstalla versione/i esistente/i"
++LangString str_desc_old_ver         ${LANG_ITALIAN} \
++    "Disinstalla versione/i esistente/i di Vim dal vostro sistema."
++
++LangString str_section_exe          ${LANG_ITALIAN} \
++    "Vim GUI (gvim.exe per Windows)"
++LangString str_desc_exe             ${LANG_ITALIAN} \
++    "Vim GUI programmi e file di supporto.  Questa componente è indispensabile."
++
++LangString str_section_console      ${LANG_ITALIAN} \
++    "Vim console (vim.exe per MS-DOS)"
++LangString str_desc_console         ${LANG_ITALIAN} \
++    "Versione console di Vim (vim.exe)."
++
++LangString str_section_batch        ${LANG_ITALIAN} \
++    "Crea file di invocazione (MS-DOS) .bat"
++LangString str_desc_batch           ${LANG_ITALIAN} \
++    "Crea file di invocazione .bat per varianti di Vim nella directory \
++     di Windows, da utilizzare da linea di comando (MS-DOS)."
++
++LangString str_group_icons          ${LANG_ITALIAN} \
++    "Crea icone per Vim"
++LangString str_desc_icons           ${LANG_ITALIAN} \
++    "Crea icone per Vim in vari posti, per rendere facile l'accesso."
++
++LangString str_section_desktop      ${LANG_ITALIAN} \
++    "Sul Desktop"
++LangString str_desc_desktop         ${LANG_ITALIAN} \
++    "Crea icone per programma gvim sul desktop."
++
++LangString str_section_start_menu   ${LANG_ITALIAN} \
++    "Nella cartella del menù START"
++LangString str_desc_start_menu      ${LANG_ITALIAN} \
++    "Aggiungi Vim alle cartelle del menù START.  \
++     Disponibile solo da Windows 95 in avanti."
++
++LangString str_section_quick_launch ${LANG_ITALIAN} \
++    "Nella barra di Avvio Veloce"
++LangString str_desc_quick_launch    ${LANG_ITALIAN} \
++    "Aggiungi un puntatore a Vim nella barra di Avvio Veloce."
++
++LangString str_section_edit_with    ${LANG_ITALIAN} \
++    "Aggiungi Vim al Menù Contestuale"
++LangString str_desc_edit_with       ${LANG_ITALIAN} \
++    "Aggiungi Vim alla lista contestuale $\"Apri con...$\"."
++
++LangString str_section_edit_with32  ${LANG_ITALIAN} \
++    "Versione a 32-bit"
++LangString str_desc_edit_with32     ${LANG_ITALIAN} \
++    "Aggiungi Vim alla lista contestuale $\"Apri con...$\" \
++     per applicazioni a 32-bit."
++
++LangString str_section_edit_with64  ${LANG_ITALIAN} \
++    "Versione a 64-bit"
++LangString str_desc_edit_with64     ${LANG_ITALIAN} \
++    "Aggiungi Vim alla lista contestuale $\"Apri con...$\" \
++     per applicazioni a 64-bit."
++
++LangString str_section_vim_rc       ${LANG_ITALIAN} \
++    "Crea Configurazione di default"
++LangString str_desc_vim_rc          ${LANG_ITALIAN} \
++    "Crea file configurazione di default (_vimrc) se non ne \
++     esiste già uno."
++
++LangString str_group_plugin         ${LANG_ITALIAN} \
++    "Crea Directory per Plugin"
++LangString str_desc_plugin          ${LANG_ITALIAN} \
++    "Crea Directory per Plugin.  Servono per aggiungere funzionalità \
++     a Vim aggiungendo file a una di queste directory."
++
++LangString str_section_plugin_home  ${LANG_ITALIAN} \
++    "Privato"
++LangString str_desc_plugin_home     ${LANG_ITALIAN} \
++    "Crea Directory Plugin in HOME (se definita) o nella \
++     directory di installazione di Vim."
++
++LangString str_section_plugin_vim   ${LANG_ITALIAN} \
++    "Condiviso"
++LangString str_desc_plugin_vim      ${LANG_ITALIAN} \
++    "Crea Directory Plugin nella directory di installazione di Vim \
++     per uso da parte di tutti gli utenti di questo sistema."
++
++LangString str_section_vis_vim      ${LANG_ITALIAN} \
++    "Estensione VisVim"
++LangString str_desc_vis_vim         ${LANG_ITALIAN} \
++    "Estensione VisVim per integrazione con Microsoft Visual Studio."
++
++LangString str_section_nls          ${LANG_ITALIAN} \
++    "Supporto Multilingue (NLS)"
++LangString str_desc_nls             ${LANG_ITALIAN} \
++    "Installa file per supportare messaggi in diverse lingue."
++
++LangString str_unsection_register   ${LANG_ITALIAN} \
++    "Togli Vim dal Registry"
++LangString str_desc_unregister      ${LANG_ITALIAN} \
++    "Togli Vim dal Registry di configurazione sistema."
++
++LangString str_unsection_exe        ${LANG_ITALIAN} \
++    "Cancella programmi/file_ausiliari Vim"
++LangString str_desc_rm_exe          ${LANG_ITALIAN} \
++    "Cancella tutti i programmi/file_ausiliari di Vim."
++
++LangString str_unsection_rc         ${LANG_ITALIAN} \
++    "Cancella file di configurazione di Vim"
++LangString str_desc_rm_rc           ${LANG_ITALIAN} \
++    "Cancella file di configurazione di Vim $vim_install_root\_vimrc. \
++     Da saltare se avete personalizzato il file di configurazione."
++
++LangString str_unsection_vimfiles   ${LANG_ITALIAN} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_ITALIAN} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_ITALIAN} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_ITALIAN} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
++LangString str_vimrc_page_title     ${LANG_ITALIAN} \
++    "Choose _vimrc settings"
++LangString str_vimrc_page_subtitle  ${LANG_ITALIAN} \
++    "Choose the behavior of key remapping and mouse."
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_ITALIAN} \
++    "Trovate $vim_old_ver_count versioni di Vim sul vostro sistema.$\r$\n\
++     Questo programma di installazione può gestirne solo \
++     ${VIM_MAX_OLD_VER}.$\r$\n\
++     Disinstallate qualche versione precedente e ricominciate."
++
++LangString str_msg_invalid_root  ${LANG_ITALIAN} \
++    "Nome di directory di installazione non valida: $vim_install_root!$\r$\n\
++     Dovrebbe terminare con $\"vim$\"."
++
++LangString str_msg_bin_mismatch  ${LANG_ITALIAN} \
++    "Incongruenza di installazione!$\r$\n$\r$\n\
++     Cartella di installazione dev'essere $\"$vim_bin_path$\",$\r$\n\
++     ma il sistema segnala invece $\"$INSTDIR$\"."
++
++LangString str_msg_vim_running   ${LANG_ITALIAN} \
++    "Vim ancora in esecuzione sul vostro sistema.$\r$\n\
++     Chiudete tutte le sessioni attive di Vim per continuare."
++
++LangString str_msg_register_ole  ${LANG_ITALIAN} \
++    "Tentativo di registrazione di Vim con OLE. \
++     Non ci sono messaggi che indicano se ha funzionato o no."
++
++LangString str_msg_unreg_ole     ${LANG_ITALIAN} \
++    "Tentativo di togliere da Registry  Vim con OLE. \
++     Non ci sono messaggi che indicano se ha funzionato o no."
++
++LangString str_msg_rm_start      ${LANG_ITALIAN} \
++    "Disinstallazione delle seguenti versioni:"
++
++LangString str_msg_rm_fail       ${LANG_ITALIAN} \
++    "Disinstallazione non riuscita per la seguente versione:"
++
++LangString str_msg_no_rm_key     ${LANG_ITALIAN} \
++    "Non riesco a trovare chiave di disinstallazione nel Registry."
++
++LangString str_msg_no_rm_reg     ${LANG_ITALIAN} \
++    "Non riesco a trovare programma disinstallazione nel Registry."
++
++LangString str_msg_no_rm_exe     ${LANG_ITALIAN} \
++    "Non riesco a utilizzare programma disinstallazione."
++
++LangString str_msg_rm_copy_fail  ${LANG_ITALIAN} \
++    "Non riesco a copiare programma disinstallazione a una \
++     directory temporanea."
++
++LangString str_msg_rm_run_fail   ${LANG_ITALIAN} \
++    "Non riesco a eseguire programma disinstallazione."
++
++LangString str_msg_abort_install ${LANG_ITALIAN} \
++    "Il programma di disinstallazione verrà chiuso senza aver fatto nulla."
++
++LangString str_msg_install_fail  ${LANG_ITALIAN} \
++    "Installazione non riuscita. Miglior fortuna alla prossima!"
++
++LangString str_msg_rm_exe_fail   ${LANG_ITALIAN} \
++    "Alcuni file in $vim_bin_path non sono stati cancellati!$\r$\n\
++     Dovreste cancellarli voi stessi."
++
++LangString str_msg_rm_root_fail  ${LANG_ITALIAN} \
++    "AVVISO: Non posso cancellare $\"$vim_install_root$\", non è vuota!"
++
++LangString str_msg_keymap_title   ${LANG_ITALIAN} \
++    " Key remapping "
++LangString str_msg_keymap_default ${LANG_ITALIAN} \
++    " Do not remap keys for Windows behavior (Default)"
++LangString str_msg_keymap_windows ${LANG_ITALIAN} \
++    " Remap a few keys for Windows behavior$\n (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++
++LangString str_msg_mouse_title   ${LANG_ITALIAN} \
++    " Mouse behavior "
++LangString str_msg_mouse_default ${LANG_ITALIAN} \
++    " Default:$\n     Right button has a popup menu, left button starts visual mode"
++LangString str_msg_mouse_windows ${LANG_ITALIAN} \
++    " Windows:$\n     Right button has a popup menu, left button starts select mode"
++LangString str_msg_mouse_unix    ${LANG_ITALIAN} \
++    " Unix:$\n     Right button extends selection, left button starts visual mode"
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+new file mode 100644
+index 000000000..93cae55ce
+--- /dev/null
++++ b/nsis/lang/japanese.nsi
+@@ -0,0 +1,238 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# japanese.nsi: Japanese language strings for gvim NSIS installer.
++#
++# Locale ID    : 1041
++# fileencoding : UTF-8
++# Author       : Ken Takata
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "Japanese" "ja"
++!insertmacro MUI_LANGUAGE "Japanese"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_JAPANESE} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_JAPANESE} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++#LangString str_dest_folder          ${LANG_JAPANESE} \
++#    "Destination Folder (Must end with $\"vim$\")"
++
++LangString str_show_readme          ${LANG_JAPANESE} \
++    "インストール完了後に README を表示する"
++
++# Install types:
++LangString str_type_typical         ${LANG_JAPANESE} \
++    "通常"
++
++LangString str_type_minimal         ${LANG_JAPANESE} \
++    "最小"
++
++LangString str_type_full            ${LANG_JAPANESE} \
++    "全て"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_JAPANESE} \
++    "既存のバージョンをアンインストール"
++LangString str_desc_old_ver         ${LANG_JAPANESE} \
++    "すでにインストールされている Vim をシステムから削除します。"
++
++LangString str_section_exe          ${LANG_JAPANESE} \
++    "Vim GUI とランタイムファイル"
++LangString str_desc_exe             ${LANG_JAPANESE} \
++    "Vim GUI 実行ファイルとラインタイムファイル。このコンポーネントは必須です。"
++
++LangString str_section_console      ${LANG_JAPANESE} \
++    "Vim コンソールプログラム"
++LangString str_desc_console         ${LANG_JAPANESE} \
++    "コンソール版の Vim (vim.exe)。"
++
++LangString str_section_batch        ${LANG_JAPANESE} \
++    ".bat ファイルを作成"
++LangString str_desc_batch           ${LANG_JAPANESE} \
++    "コマンドラインから Vim と関連コマンドを実行できるように、.bat ファイルを Windows ディレクトリに作成します。"
++
++LangString str_group_icons          ${LANG_JAPANESE} \
++    "Vim のアイコンを作成"
++LangString str_desc_icons           ${LANG_JAPANESE} \
++    "Vim を簡単に実行できるように、いくつかの場所にアイコンを作成します。"
++
++LangString str_section_desktop      ${LANG_JAPANESE} \
++    "デスクトップ上"
++LangString str_desc_desktop         ${LANG_JAPANESE} \
++    "gVim 実行ファイルのアイコンをデスクトップ上に作成します。"
++
++LangString str_section_start_menu   ${LANG_JAPANESE} \
++    "スタートメニューのプログラムフォルダー上"
++LangString str_desc_start_menu      ${LANG_JAPANESE} \
++    "Vim のアイコンをスタートメニューのプログラムフォルダー上に作成します。"
++
++LangString str_section_quick_launch ${LANG_JAPANESE} \
++    "In the Quick Launch Bar"
++LangString str_desc_quick_launch    ${LANG_JAPANESE} \
++    "Add Vim shortcut in the quick launch bar."
++
++LangString str_section_edit_with    ${LANG_JAPANESE} \
++    "Vim のコンテキストメニューを追加"
++LangString str_desc_edit_with       ${LANG_JAPANESE} \
++    "$\"Vimで編集する$\" をコンテキストメニューに追加します。"
++
++LangString str_section_edit_with32  ${LANG_JAPANESE} \
++    "32-bit Version"
++LangString str_desc_edit_with32     ${LANG_JAPANESE} \
++    "Add Vim to the $\"Open With...$\" context menu list \
++     for 32-bit applications."
++
++LangString str_section_edit_with64  ${LANG_JAPANESE} \
++    "64-bit Version"
++LangString str_desc_edit_with64     ${LANG_JAPANESE} \
++    "Add Vim to the $\"Open With...$\" context menu list \
++     for 64-bit applications."
++
++LangString str_section_vim_rc       ${LANG_JAPANESE} \
++    "既定のコンフィグを作成"
++LangString str_desc_vim_rc          ${LANG_JAPANESE} \
++    "もし無ければ、既定のコンフィグファイル (_vimrc) を作成します。"
++
++LangString str_group_plugin         ${LANG_JAPANESE} \
++    "プラグインディレクトリを作成"
++LangString str_desc_plugin          ${LANG_JAPANESE} \
++    "プラグインディレクトリを作成します。そこにプラグインファイルを置くことで Vim を拡張することができます。"
++
++LangString str_section_plugin_home  ${LANG_JAPANESE} \
++    "個人用"
++LangString str_desc_plugin_home     ${LANG_JAPANESE} \
++    "プラグインディレクトリを HOME (もし定義していれば)、または Vim のインストールディレクトリに作成します。"
++
++LangString str_section_plugin_vim   ${LANG_JAPANESE} \
++    "共用"
++LangString str_desc_plugin_vim      ${LANG_JAPANESE} \
++    "プラグインディレクトリを Vim のインストールディレクトリに作成します。システムの全員で共有されます。"
++
++LangString str_section_vis_vim      ${LANG_JAPANESE} \
++    "VisVim 拡張"
++LangString str_desc_vis_vim         ${LANG_JAPANESE} \
++    "Microsoft Visual Studio 統合用の VisVim 拡張。"
++
++LangString str_section_nls          ${LANG_JAPANESE} \
++    "多言語サポート"
++LangString str_desc_nls             ${LANG_JAPANESE} \
++    "多言語サポート用のファイルをインストールします。"
++
++LangString str_unsection_register   ${LANG_JAPANESE} \
++    "Vim を登録解除"
++LangString str_desc_unregister      ${LANG_JAPANESE} \
++    "Vim をシステムから登録解除します。"
++
++LangString str_unsection_exe        ${LANG_JAPANESE} \
++    "Vim の実行ファイル/ランタイムファイルを削除"
++LangString str_desc_rm_exe          ${LANG_JAPANESE} \
++    "全ての Vim の実行ファイルとランタイムファイルを削除します。"
++
++LangString str_unsection_vimfiles   ${LANG_JAPANESE} \
++    "vimfiles ディレクトリを削除"
++LangString str_desc_rm_vimfiles     ${LANG_JAPANESE} \
++    "vimfiles ディレクトリとその中の全てのファイルを削除します。"
++
++LangString str_unsection_rootdir    ${LANG_JAPANESE} \
++    "Vim のトップディレクトリを削除"
++LangString str_desc_rm_rootdir      ${LANG_JAPANESE} \
++    "Vim のトップディレクトリを削除します。あなたの Vim の設定ファイルも含まれていることに注意してください！"
++
++LangString str_vimrc_page_title     ${LANG_JAPANESE} \
++    "_vimrc の設定を選んでください"
++LangString str_vimrc_page_subtitle  ${LANG_JAPANESE} \
++    "キーのリマッピングとマウスの動作の設定を選んでください。"
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_JAPANESE} \
++    "Found $vim_old_ver_count Vim versions on your system.$\r$\n\
++     This installer can only handle ${VIM_MAX_OLD_VER} versions \
++     at most.$\r$\n\
++     Please remove some versions and start again."
++
++LangString str_msg_invalid_root  ${LANG_JAPANESE} \
++    "Invalid install path: $vim_install_root!$\r$\n\
++     It should end with $\"vim$\"."
++
++LangString str_msg_bin_mismatch  ${LANG_JAPANESE} \
++    "Binary path mismatch!$\r$\n$\r$\n\
++     Expect the binary path to be $\"$vim_bin_path$\",$\r$\n\
++     but system indicates the binary path is $\"$INSTDIR$\"."
++
++LangString str_msg_vim_running   ${LANG_JAPANESE} \
++    "Vim is still running on your system.$\r$\n\
++     Please close all instances of Vim before you continue."
++
++LangString str_msg_register_ole  ${LANG_JAPANESE} \
++    "Attempting to register Vim with OLE. \
++     There is no message indicates whether this works or not."
++
++LangString str_msg_unreg_ole     ${LANG_JAPANESE} \
++    "Attempting to unregister Vim with OLE. \
++     There is no message indicates whether this works or not."
++
++LangString str_msg_rm_start      ${LANG_JAPANESE} \
++    "Uninstalling the following version:"
++
++LangString str_msg_rm_fail       ${LANG_JAPANESE} \
++    "Fail to uninstall the following version:"
++
++LangString str_msg_no_rm_key     ${LANG_JAPANESE} \
++    "Cannot find uninstaller registry key."
++
++LangString str_msg_no_rm_reg     ${LANG_JAPANESE} \
++    "Cannot find uninstaller from registry."
++
++LangString str_msg_no_rm_exe     ${LANG_JAPANESE} \
++    "Cannot access uninstaller."
++
++LangString str_msg_rm_copy_fail  ${LANG_JAPANESE} \
++    "Fail to copy uninstaller to temporary directory."
++
++LangString str_msg_rm_run_fail   ${LANG_JAPANESE} \
++    "Fail to run uninstaller."
++
++LangString str_msg_abort_install ${LANG_JAPANESE} \
++    "Installer will abort."
++
++LangString str_msg_install_fail  ${LANG_JAPANESE} \
++    "Installation failed. Better luck next time."
++
++LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
++    "Some files in $vim_bin_path have not been deleted!$\r$\n\
++     You must do it manually."
++
++LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
++    "WARNING: Cannot remove $\"$vim_install_root$\", it is not empty!"
++
++LangString str_msg_keymap_title   ${LANG_JAPANESE} \
++    " キーのリマッピング "
++LangString str_msg_keymap_default ${LANG_JAPANESE} \
++    " Windows用にキーをリマップしない(既定)"
++LangString str_msg_keymap_windows ${LANG_JAPANESE} \
++    " Windowsの動作に合わせていくつかのキーをリマップする$\n (例: <C-V>, <C-C>, <C-A>, <C-S>, <C-F> など)"
++
++LangString str_msg_mouse_title   ${LANG_JAPANESE} \
++    " マウスの動作 "
++LangString str_msg_mouse_default ${LANG_JAPANESE} \
++    " 既定:$\n     右ボタンはポップアップメニュー、左ボタンはビジュアルモードを開始"
++LangString str_msg_mouse_windows ${LANG_JAPANESE} \
++    " Windows:$\n     右ボタンはポップアップメニュー、左ボタンは選択モードを開始"
++LangString str_msg_mouse_unix    ${LANG_JAPANESE} \
++    " Unix:$\n     右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+new file mode 100644
+index 000000000..b4c1e3d32
+--- /dev/null
++++ b/nsis/lang/simpchinese.nsi
+@@ -0,0 +1,239 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# simpchinese.nsi: Simplified Chinese language strings for gvim NSIS
++# installer.
++#
++# Locale ID    : 2052
++# fileencoding : UTF-8
++# Author       : Guopeng Wen
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "SimpChinese" "zh_CN"
++!insertmacro MUI_LANGUAGE "SimpChinese"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_SIMPCHINESE} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_SIMPCHINESE} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++LangString str_dest_folder          ${LANG_SIMPCHINESE} \
++    "安装路径 (必须以 vim 结尾)"
++
++LangString str_show_readme          ${LANG_SIMPCHINESE} \
++    "安装完成后显示 README 文件"
++
++# Install types:
++LangString str_type_typical         ${LANG_SIMPCHINESE} \
++    "典型安装"
++
++LangString str_type_minimal         ${LANG_SIMPCHINESE} \
++    "最小安装"
++
++LangString str_type_full            ${LANG_SIMPCHINESE} \
++    "完全安装"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_SIMPCHINESE} \
++    "卸载旧版本"
++LangString str_desc_old_ver         ${LANG_SIMPCHINESE} \
++    "卸载系统上旧版本的 Vim。"
++
++LangString str_section_exe          ${LANG_SIMPCHINESE} \
++    "安装 Vim 图形界面"
++LangString str_desc_exe             ${LANG_SIMPCHINESE} \
++    "安装 Vim 图形界面及脚本。此为必选安装。"
++
++LangString str_section_console      ${LANG_SIMPCHINESE} \
++    "安装 Vim 命令行程序"
++LangString str_desc_console         ${LANG_SIMPCHINESE} \
++    "安装 Vim 命令行程序 (vim.exe)。该程序在命令行窗口中运行。"
++
++LangString str_section_batch        ${LANG_SIMPCHINESE} \
++    "安装批处理文件"
++LangString str_desc_batch           ${LANG_SIMPCHINESE} \
++    "为 Vim 的各种变体创建批处理程序，以便在命令行下运行 Vim。"
++
++LangString str_group_icons          ${LANG_SIMPCHINESE} \
++    "创建 Vim 图标"
++LangString str_desc_icons           ${LANG_SIMPCHINESE} \
++    "为 Vim 创建若干图标，以方便使用 Vim。"
++
++LangString str_section_desktop      ${LANG_SIMPCHINESE} \
++    "在桌面上"
++LangString str_desc_desktop         ${LANG_SIMPCHINESE} \
++    "在桌面上为 Vim 创建若干图标，以方便启动 Vim。"
++
++LangString str_section_start_menu   ${LANG_SIMPCHINESE} \
++    "在启动菜单的程序菜单下"
++LangString str_desc_start_menu      ${LANG_SIMPCHINESE} \
++    "在启动菜单的程序菜单下添加 Vim 组。适用于 Windows 95 及以上版本。"
++
++LangString str_section_quick_launch ${LANG_SIMPCHINESE} \
++    "在快速启动启动栏中"
++LangString str_desc_quick_launch    ${LANG_SIMPCHINESE} \
++    "在快速启动栏中添加 Vim 图标。"
++
++LangString str_section_edit_with    ${LANG_SIMPCHINESE} \
++    "安装快捷菜单"
++LangString str_desc_edit_with       ${LANG_SIMPCHINESE} \
++    "将 Vim 添加到“打开方式”快捷菜单中。"
++
++LangString str_section_edit_with32  ${LANG_SIMPCHINESE} \
++    "32 位版本"
++LangString str_desc_edit_with32     ${LANG_SIMPCHINESE} \
++    "将 Vim 添加到 32 位程序的“打开方式”快捷菜单中。"
++
++LangString str_section_edit_with64  ${LANG_SIMPCHINESE} \
++    "64 位版本"
++LangString str_desc_edit_with64     ${LANG_SIMPCHINESE} \
++    "将 Vim 添加到 64 位程序的“打开方式”快捷菜单中。"
++
++LangString str_section_vim_rc       ${LANG_SIMPCHINESE} \
++    "创建缺省配置文件"
++LangString str_desc_vim_rc          ${LANG_SIMPCHINESE} \
++    "在安装目录下生成缺省的 Vim 配置文件(_vimrc)。\
++     如果该文件已经存在，则略过此项。"
++
++LangString str_group_plugin         ${LANG_SIMPCHINESE} \
++    "创建插件目录"
++LangString str_desc_plugin          ${LANG_SIMPCHINESE} \
++    "创建(空的)插件目录结构。插件目录用于安装 Vim 扩展插件，\
++     只要将文件复制到相关的子目录中即可。"
++
++LangString str_section_plugin_home  ${LANG_SIMPCHINESE} \
++    "私有插件目录"
++LangString str_desc_plugin_home     ${LANG_SIMPCHINESE} \
++    "在 HOME 目录下创建(空的)插件目录结构。若您未设置 HOME 目录，会在安装\
++     目录下创建该目录结构。"
++
++LangString str_section_plugin_vim   ${LANG_SIMPCHINESE} \
++    "公共插件目录"
++LangString str_desc_plugin_vim      ${LANG_SIMPCHINESE} \
++    "在 Vim 安装目录下创建(空的)插件目录结构，系统上所有用户都能使用安装在\
++     该目录下的扩展插件。"
++
++LangString str_section_vis_vim      ${LANG_SIMPCHINESE} \
++    "安装 VisVim 插件"
++LangString str_desc_vis_vim         ${LANG_SIMPCHINESE} \
++    "安装用于与微软 Microsoft Visual Studio 进行集成的 VisVim 插件。"
++
++LangString str_section_nls          ${LANG_SIMPCHINESE} \
++    "安装多语言支持"
++LangString str_desc_nls             ${LANG_SIMPCHINESE} \
++    "安装用于多语言支持的文件。"
++
++LangString str_unsection_register   ${LANG_SIMPCHINESE} \
++    "删除 Vim 系统配置"
++LangString str_desc_unregister      ${LANG_SIMPCHINESE} \
++    "删除和 Vim 相关的系统配置。"
++
++LangString str_unsection_exe        ${LANG_SIMPCHINESE} \
++    "删除 Vim 执行文件以及脚本"
++LangString str_desc_rm_exe          ${LANG_SIMPCHINESE} \
++    "删除 Vim 的所有执行文件及脚本。"
++
++LangString str_unsection_vimfiles   ${LANG_SIMPCHINESE} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_SIMPCHINESE} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_SIMPCHINESE} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_SIMPCHINESE} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
++LangString str_vimrc_page_title     ${LANG_SIMPCHINESE} \
++    "Choose _vimrc settings"
++LangString str_vimrc_page_subtitle  ${LANG_SIMPCHINESE} \
++    "Choose the behavior of key remapping and mouse."
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_SIMPCHINESE} \
++    "您的系统上安装了 $vim_old_ver_count 个不同版本的 Vim，$\r$\n\
++     但本安装程序最多只能处理 ${VIM_MAX_OLD_VER} 个版本。$\r$\n\
++     请您手工删除一些旧版本以后再运行本安装程序。"
++
++LangString str_msg_invalid_root  ${LANG_SIMPCHINESE} \
++    "安装路径“$vim_install_root”无效！$\r$\n\
++     该路径必须以 vim 结尾。"
++
++LangString str_msg_bin_mismatch  ${LANG_SIMPCHINESE} \
++    "Vim 执行程序安装路径异常！$\r$\n$\r$\n\
++     该版本 Vim 的执行程序安装路径应该是“$vim_bin_path”,$\r$\n\
++     而系统却指示该路径为“$INSTDIR”。"
++
++LangString str_msg_vim_running   ${LANG_SIMPCHINESE} \
++    "您的系统上仍有 Vim 在运行，$\r$\n\
++     请您在执行后续步骤前退出这些 Vim。"
++
++LangString str_msg_register_ole  ${LANG_SIMPCHINESE} \
++    "试图注册 Vim OLE 服务器。请注意无论成功与否都不再显示进一步的信息。"
++
++LangString str_msg_unreg_ole     ${LANG_SIMPCHINESE} \
++    "试图注销 Vim OLE 服务器。请注意无论成功与否都不再显示进一步的信息。"
++
++LangString str_msg_rm_start      ${LANG_SIMPCHINESE} \
++    "开始卸载以下版本："
++
++LangString str_msg_rm_fail       ${LANG_SIMPCHINESE} \
++    "以下版本卸载失败："
++
++LangString str_msg_no_rm_key     ${LANG_SIMPCHINESE} \
++    "找不到卸载程序的注册表键。"
++
++LangString str_msg_no_rm_reg     ${LANG_SIMPCHINESE} \
++    "在注册表中未找到卸载程序路径。"
++
++LangString str_msg_no_rm_exe     ${LANG_SIMPCHINESE} \
++    "找不到卸载程序。"
++
++LangString str_msg_rm_copy_fail  ${LANG_SIMPCHINESE} \
++    "无法将卸载程序复制到临时目录。"
++
++LangString str_msg_rm_run_fail   ${LANG_SIMPCHINESE} \
++    "执行卸载程序失败。"
++
++LangString str_msg_abort_install ${LANG_SIMPCHINESE} \
++    "安装程序将退出。"
++
++LangString str_msg_install_fail  ${LANG_SIMPCHINESE} \
++    "安装失败。祝您下次好运。"
++
++LangString str_msg_rm_exe_fail   ${LANG_SIMPCHINESE} \
++    "目录“$vim_bin_path”下有部分文件删除失败！$\r$\n\
++     您只能手工删除该目录。"
++
++LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
++    "警告：无法删除 Vim 安装目录“$vim_install_root”，\
++     该目录下仍有其他文件。"
++
++LangString str_msg_keymap_title   ${LANG_SIMPCHINESE} \
++    " Key remapping "
++LangString str_msg_keymap_default ${LANG_SIMPCHINESE} \
++    " Do not remap keys for Windows behavior (Default)"
++LangString str_msg_keymap_windows ${LANG_SIMPCHINESE} \
++    " Remap a few keys for Windows behavior$\n (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++
++LangString str_msg_mouse_title   ${LANG_SIMPCHINESE} \
++    " Mouse behavior "
++LangString str_msg_mouse_default ${LANG_SIMPCHINESE} \
++    " Default:$\n     Right button has a popup menu, left button starts visual mode"
++LangString str_msg_mouse_windows ${LANG_SIMPCHINESE} \
++    " Windows:$\n     Right button has a popup menu, left button starts select mode"
++LangString str_msg_mouse_unix    ${LANG_SIMPCHINESE} \
++    " Unix:$\n     Right button extends selection, left button starts visual mode"
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+new file mode 100644
+index 000000000..b1a938189
+--- /dev/null
++++ b/nsis/lang/tradchinese.nsi
+@@ -0,0 +1,240 @@
++﻿# vi:set ts=8 sts=4 sw=4 et fdm=marker:
++#
++# tradchinese.nsi: Traditional Chinese language strings for gvim NSIS
++# installer.
++#
++# Locale ID    : 1028
++# fileencoding : UTF-8
++# Author       : Guopeng Wen
++
++#!include "script\helper_util.nsh"
++#${VimAddLanguage} "TradChinese" "zh_TW"
++!insertmacro MUI_LANGUAGE "TradChinese"
++
++
++# Overwite the default translation.
++# These string should be always English.  Otherwise dosinst.c fails.
++LangString ^SetupCaption     ${LANG_TRADCHINESE} \
++        "$(^Name) Setup"
++LangString ^UninstallCaption ${LANG_TRADCHINESE} \
++        "$(^Name) Uninstall"
++
++##############################################################################
++# MUI Configuration Strings                                               {{{1
++##############################################################################
++
++LangString str_dest_folder          ${LANG_TRADCHINESE} \
++    "安裝資料夾 (必須以 vim 結尾)"
++
++LangString str_show_readme          ${LANG_TRADCHINESE} \
++    "安裝完成後顯示 README 檔案"
++
++# Install types:
++LangString str_type_typical         ${LANG_TRADCHINESE} \
++    "典型安裝"
++
++LangString str_type_minimal         ${LANG_TRADCHINESE} \
++    "最小安裝"
++
++LangString str_type_full            ${LANG_TRADCHINESE} \
++    "完全安裝"
++
++
++##############################################################################
++# Section Titles & Description                                            {{{1
++##############################################################################
++
++LangString str_section_old_ver      ${LANG_TRADCHINESE} \
++    "移除舊版本"
++LangString str_desc_old_ver         ${LANG_TRADCHINESE} \
++    "移除閣下電腦上舊版本的 Vim。"
++
++LangString str_section_exe          ${LANG_TRADCHINESE} \
++    "安裝 Vim 圖形界面程式"
++LangString str_desc_exe             ${LANG_TRADCHINESE} \
++    "安裝 Vim 圖形界面程式及腳本。此為必選安裝。"
++
++LangString str_section_console      ${LANG_TRADCHINESE} \
++    "安裝 Vim 命令行程式"
++LangString str_desc_console         ${LANG_TRADCHINESE} \
++    "安裝 Vim 命令行程式 (vim.exe)。該程式在控制臺窗口中運行。"
++
++LangString str_section_batch        ${LANG_TRADCHINESE} \
++    "安裝批次檔案"
++LangString str_desc_batch           ${LANG_TRADCHINESE} \
++    "為 Vim 的各種變體創建批次檔，以便在命令行下啟動 Vim。"
++
++LangString str_group_icons          ${LANG_TRADCHINESE} \
++    "建立 Vim 圖示"
++LangString str_desc_icons           ${LANG_TRADCHINESE} \
++    "建立若干 Vim 圖示，以便于使用 Vim。"
++
++LangString str_section_desktop      ${LANG_TRADCHINESE} \
++    "於桌面"
++LangString str_desc_desktop         ${LANG_TRADCHINESE} \
++    "建立若干 Vim 圖示於桌面上，以方便啟動 Vim。"
++
++LangString str_section_start_menu   ${LANG_TRADCHINESE} \
++    "於「開始」功能表的「程式」集"
++LangString str_desc_start_menu      ${LANG_TRADCHINESE} \
++    "在「開始」功能表的「程式」集中建立 Vim 啟動組。\
++     適用于 Windows 95 及以上版本。"
++
++LangString str_section_quick_launch ${LANG_TRADCHINESE} \
++    "於快速啟動列"
++LangString str_desc_quick_launch    ${LANG_TRADCHINESE} \
++    "在快速啟動列中建立 Vim 圖示。"
++
++LangString str_section_edit_with    ${LANG_TRADCHINESE} \
++    "安裝快捷選單"
++LangString str_desc_edit_with       ${LANG_TRADCHINESE} \
++    "在「打開方式」快捷選單中添加 Vim 項。"
++
++LangString str_section_edit_with32  ${LANG_TRADCHINESE} \
++    "32 位元版本"
++LangString str_desc_edit_with32     ${LANG_TRADCHINESE} \
++    "在 32 位元程式的「打開方式」快捷選單中添加 Vim 項。"
++
++LangString str_section_edit_with64  ${LANG_TRADCHINESE} \
++    "64 位元版本"
++LangString str_desc_edit_with64     ${LANG_TRADCHINESE} \
++    "在 64 位元程式的「打開方式」快捷選單中添加 Vim 項。"
++
++LangString str_section_vim_rc       ${LANG_TRADCHINESE} \
++    "建立默認設定檔"
++LangString str_desc_vim_rc          ${LANG_TRADCHINESE} \
++    "在安裝資料夾下建立默認的 Vim 設定檔(_vimrc)。\
++     若該設定檔已經存在，則略過此項。"
++
++LangString str_group_plugin         ${LANG_TRADCHINESE} \
++    "建立插件資料夾"
++LangString str_desc_plugin          ${LANG_TRADCHINESE} \
++    "建立(空的)插件資料夾結構。插件資料夾用于安裝 Vim 的擴展插件，\
++     只要將檔案復制到相關的子資料夾中即可。"
++
++LangString str_section_plugin_home  ${LANG_TRADCHINESE} \
++    "建立插件資料夾"
++LangString str_desc_plugin_home     ${LANG_TRADCHINESE} \
++    "在 HOME 資料夾下建立(空的)插件資料夾結構。若閣下未設定 HOME 資料夾，會\
++     在安裝資料夾下建立該資料夾結構。"
++
++LangString str_section_plugin_vim   ${LANG_TRADCHINESE} \
++    "建立共享插件資料夾"
++LangString str_desc_plugin_vim      ${LANG_TRADCHINESE} \
++    "在 Vim 安裝資料夾下建立(空的)插件資料夾結構，電腦上所有用戶都能使用安裝\
++     在該資料夾里的擴展插件。"
++
++LangString str_section_vis_vim      ${LANG_TRADCHINESE} \
++    "安裝 VisVim 插件"
++LangString str_desc_vis_vim         ${LANG_TRADCHINESE} \
++    "VisVim 是用于與微軟 Microsoft Visual Studio 軟體進行整合的插件。"
++
++LangString str_section_nls          ${LANG_TRADCHINESE} \
++    "安裝本地語言支持"
++LangString str_desc_nls             ${LANG_TRADCHINESE} \
++    "安裝用于支持本地語言的檔案。"
++
++LangString str_unsection_register   ${LANG_TRADCHINESE} \
++    "移除 Vim 系統設定"
++LangString str_desc_unregister      ${LANG_TRADCHINESE} \
++    "移除與 Vim 相關的系統設定。"
++
++LangString str_unsection_exe        ${LANG_TRADCHINESE} \
++    "移除 Vim 程式及腳本"
++LangString str_desc_rm_exe          ${LANG_TRADCHINESE} \
++    "移除所有的 Vim 程式及腳本。"
++
++LangString str_unsection_vimfiles   ${LANG_TRADCHINESE} \
++    "Remove vimfiles directory"
++LangString str_desc_rm_vimfiles     ${LANG_TRADCHINESE} \
++    "Remove all files in your vimfiles directory."
++
++LangString str_unsection_rootdir    ${LANG_TRADCHINESE} \
++    "Remove the Vim root directory"
++LangString str_desc_rm_rootdir      ${LANG_TRADCHINESE} \
++    "Remove the Vim root directory. It contains your Vim configuration files!"
++
++LangString str_vimrc_page_title     ${LANG_TRADCHINESE} \
++    "Choose _vimrc settings"
++LangString str_vimrc_page_subtitle  ${LANG_TRADCHINESE} \
++    "Choose the behavior of key remapping and mouse."
++
++
++##############################################################################
++# Messages                                                                {{{1
++##############################################################################
++
++LangString str_msg_too_many_ver  ${LANG_TRADCHINESE} \
++    "閣下的電腦上安裝了 $vim_old_ver_count 個不同版本的 Vim，$\r$\n\
++     但是本安裝程式最多只能處理 ${VIM_MAX_OLD_VER} 個版本。$\r$\n\
++     煩請閣下手工移除一些版本以后再運行本安裝程式。"
++
++LangString str_msg_invalid_root  ${LANG_TRADCHINESE} \
++    "安裝資料夾「$vim_install_root」無效！$\r$\n\
++     該資料夾必須以「vim」結尾。"
++
++LangString str_msg_bin_mismatch  ${LANG_TRADCHINESE} \
++    "Vim 執行程式安裝路徑異常！$\r$\n$\r$\n\
++     該版本 Vim 的執行程式安裝路徑應該是「$vim_bin_path」,$\r$\n\
++     而系統卻指示該路徑為「$INSTDIR」。"
++
++LangString str_msg_vim_running   ${LANG_TRADCHINESE} \
++    "閣下的電腦上尚有正在運行之 Vim，$\r$\n\
++     煩請閣下在執行后續步驟前將其全部退出。"
++
++LangString str_msg_register_ole  ${LANG_TRADCHINESE} \
++    "試圖注冊 Vim OLE 伺服程式。請注意不論成功與否都不再顯示進一步的信息。"
++
++LangString str_msg_unreg_ole     ${LANG_TRADCHINESE} \
++    "試圖注銷 Vim OLE 伺服程式。請注意不論成功與否都不再顯示進一步的信息。"
++
++LangString str_msg_rm_start      ${LANG_TRADCHINESE} \
++    "正移除如下版本："
++
++LangString str_msg_rm_fail       ${LANG_TRADCHINESE} \
++    "以下版本移除失敗："
++
++LangString str_msg_no_rm_key     ${LANG_TRADCHINESE} \
++    "找不到反安裝程式的登錄檔入口。"
++
++LangString str_msg_no_rm_reg     ${LANG_TRADCHINESE} \
++    "在登錄檔中未找到反安裝程式路徑。"
++
++LangString str_msg_no_rm_exe     ${LANG_TRADCHINESE} \
++    "找不到反安裝程式。"
++
++LangString str_msg_rm_copy_fail  ${LANG_TRADCHINESE} \
++    "無法將法將反安裝程式复制到臨時目錄。"
++
++LangString str_msg_rm_run_fail   ${LANG_TRADCHINESE} \
++    "執行反安裝程式失敗。"
++
++LangString str_msg_abort_install ${LANG_TRADCHINESE} \
++    "安裝程式將退出。"
++
++LangString str_msg_install_fail  ${LANG_TRADCHINESE} \
++    "安裝失敗。預祝下次好運。"
++
++LangString str_msg_rm_exe_fail   ${LANG_TRADCHINESE} \
++    "資料夾「$vim_bin_path」下有部分檔案未能移除！$\r$\n\
++     閣下只能手工移除該資料夾。"
++
++LangString str_msg_rm_root_fail  ${LANG_TRADCHINESE} \
++    "警告：無法刪除 Vim 安裝資料夾「$vim_install_root」，\
++     該資料夾下仍有其他檔案。"
++
++LangString str_msg_keymap_title   ${LANG_TRADCHINESE} \
++    " Key remapping "
++LangString str_msg_keymap_default ${LANG_TRADCHINESE} \
++    " Do not remap keys for Windows behavior (Default)"
++LangString str_msg_keymap_windows ${LANG_TRADCHINESE} \
++    " Remap a few keys for Windows behavior$\n (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++
++LangString str_msg_mouse_title   ${LANG_TRADCHINESE} \
++    " Mouse behavior "
++LangString str_msg_mouse_default ${LANG_TRADCHINESE} \
++    " Default:$\n     Right button has a popup menu, left button starts visual mode"
++LangString str_msg_mouse_windows ${LANG_TRADCHINESE} \
++    " Windows:$\n     Right button has a popup menu, left button starts select mode"
++LangString str_msg_mouse_unix    ${LANG_TRADCHINESE} \
++    " Unix:$\n     Right button extends selection, left button starts visual mode"
+-- 
+2.17.0
+
