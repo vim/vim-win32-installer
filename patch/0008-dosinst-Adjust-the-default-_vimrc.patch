@@ -1,0 +1,29 @@
+From 15f3140e3b5abc9f7cc14d008c02130ee281a23d Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Mon, 1 Oct 2018 07:05:35 +0900
+Subject: [PATCH 08/24] dosinst: Adjust the default _vimrc
+
+Don't set 'diffexpr' if the internal diff is supported.
+---
+ src/dosinst.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/dosinst.c b/src/dosinst.c
+index 1c96305a9..344d62be3 100644
+--- a/src/dosinst.c
++++ b/src/dosinst.c
+@@ -1191,8 +1191,9 @@ install_vimrc(int idx)
+     {
+ 	/* Use the diff.exe that comes with the self-extracting gvim.exe. */
+ 	fclose(tfd);
+-	fprintf(fd, "\n");
+-	fprintf(fd, "set diffexpr=MyDiff()\n");
++	fprintf(fd, "if &diffopt !~# 'internal'\n");
++	fprintf(fd, "  set diffexpr=MyDiff()\n");
++	fprintf(fd, "endif\n");
+ 	fprintf(fd, "function MyDiff()\n");
+ 	fprintf(fd, "  let opt = '-a --binary '\n");
+ 	fprintf(fd, "  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif\n");
+-- 
+2.17.0
+

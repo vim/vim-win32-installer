@@ -1,0 +1,27 @@
+From 2c0212b81c4384ac79234d00ea4d2dedc091878a Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Mon, 1 Oct 2018 07:00:18 +0900
+Subject: [PATCH 06/24] nsis: Adjust some settings
+
+* Use 64 MB dictionary for better compression.
+* Support HiDPI.
+---
+ nsis/gvim.nsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 69e2ab3e3..759411989 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -49,6 +49,8 @@ Name "${PRODUCT}"
+ OutFile gvim${VER_MAJOR}${VER_MINOR}.exe
+ CRCCheck force
+ SetCompressor /SOLID lzma
++SetCompressorDictSize 64
++ManifestDPIAware true
+ SetDatablockOptimize on
+ RequestExecutionLevel highest
+ XPStyle on
+-- 
+2.17.0
+

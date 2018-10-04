@@ -43,8 +43,12 @@ artifacts:
     name: gVim_x64_pdb
   - path: gvim_*_x86.exe
     name: gVim_x86_installer
+  - path: gvim_*_x86-mui2.exe
+    name: gVim_x86_mui2_installer
   - path: gvim_*_x64.exe
     name: gVim_x64_installer
+  - path: gvim_*_x64-mui2.exe
+    name: gVim_x64_mui2_installer
 
 before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
@@ -58,8 +62,12 @@ deploy:
 
       $(GITLOG)
 
-      Download and execute the most recent gvim_8.._x86.exe file to install Vim.
-      The exe file contains the (32bit) installer while the .zip files contain an
+      Download and execute the most recent gvim_x.y.pppp_x86.exe file to install Vim
+      (where x.y is the release version and pppp is the patch number).
+      You can also download the gvim_x.y.pppp_x86-mui2.exe file. This has a
+      modern interface (MUI2) but it is still in a experimental phase.
+
+      The exe files contain the (32bit) installer while the .zip files contain an
       archive of the 32bit (_x86) or 64bit versions (_x64). To install it, extract
       the archive and update your PATH variable. The installer will do that
       automatically and provide some additional extensions (e.g. Edit with Vim menu).

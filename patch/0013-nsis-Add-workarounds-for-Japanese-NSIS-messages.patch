@@ -1,0 +1,32 @@
+From 038a13359b1490fca59966fdf038ff9ccc60bc98 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 2 Oct 2018 15:18:16 +0900
+Subject: [PATCH 13/24] nsis: Add workarounds for Japanese NSIS messages
+
+Some messages are too long and not shown properly.
+These should be fixed by the NSIS upstream, I think.
+---
+ nsis/lang/japanese.nsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index 93cae55ce..23cda0e8e 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -18,6 +18,13 @@ LangString ^SetupCaption     ${LANG_JAPANESE} \
+ LangString ^UninstallCaption ${LANG_JAPANESE} \
+         "$(^Name) Uninstall"
+ 
++# Workarounds for NSIS Japanese translation. The messages are too long.
++# These should be better to be fixed by the NSIS upstream.
++LangString ^SpaceAvailable   ${LANG_JAPANESE} \
++        "利用可能なディスク容量："
++LangString ^SpaceRequired ${LANG_JAPANESE} \
++        "必要なディスク容量："
++
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+ ##############################################################################
+-- 
+2.17.0
+
