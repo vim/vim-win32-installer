@@ -43,8 +43,12 @@ artifacts:
     name: gVim_x64_pdb
   - path: gvim_*_x86.exe
     name: gVim_x86_installer
+  - path: gvim_*_x86-mui2.exe
+    name: gVim_x86_mui2_installer
   - path: gvim_*_x64.exe
     name: gVim_x64_installer
+  - path: gvim_*_x64-mui2.exe
+    name: gVim_x64_mui2_installer
 
 before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
