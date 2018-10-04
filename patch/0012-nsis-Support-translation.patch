@@ -1,7 +1,7 @@
 From ab3132a2ce118eeed766c8e7b3c0b862f51d5675 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 14:51:51 +0900
-Subject: [PATCH 12/22] nsis: Support translation
+Subject: [PATCH 12/24] nsis: Support translation
 
 Import most part from gpwen's work.
 ---

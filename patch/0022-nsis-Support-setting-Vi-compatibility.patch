@@ -1,7 +1,7 @@
 From 875c23886555f824fd0b3afaaaaa788b0a496e2b Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 09:51:38 +0900
-Subject: [PATCH 22/22] nsis: Support setting Vi compatibility
+Subject: [PATCH 22/24] nsis: Support setting Vi compatibility
 
 ---
  nsis/gvim.nsi             | 88 +++++++++++++++++++++++++++++++++++----

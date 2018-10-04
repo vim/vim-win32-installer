@@ -1,7 +1,7 @@
 From e850ab16deadc272e1792c990b83696e226887e4 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 06:47:48 +0900
-Subject: [PATCH 01/22] installer: Use LogicLib
+Subject: [PATCH 01/24] installer: Use LogicLib
 
 Currently we use low level syntax of NSIS; labels and jump commands.
 LogicLib provides higher level syntax. (E.g. ${If} ... ${EndIf})

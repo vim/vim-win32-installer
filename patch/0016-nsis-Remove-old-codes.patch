@@ -1,7 +1,7 @@
 From 318e5ed816383241e922e352d4170b1a4b01ded8 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 17:03:55 +0900
-Subject: [PATCH 16/22] nsis: Remove old codes
+Subject: [PATCH 16/24] nsis: Remove old codes
 
 ---
  nsis/gvim.nsi | 87 ++-------------------------------------------------

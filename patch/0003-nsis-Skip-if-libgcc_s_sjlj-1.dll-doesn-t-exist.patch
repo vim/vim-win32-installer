@@ -1,7 +1,7 @@
 From d0a2fd64404f1b4b3e41d77f75cf8220da8bd479 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 06:51:20 +0900
-Subject: [PATCH 03/22] nsis: Skip if libgcc_s_sjlj-1.dll doesn't exist
+Subject: [PATCH 03/24] nsis: Skip if libgcc_s_sjlj-1.dll doesn't exist
 
 Next release of mlocati/gettext-iconv-windows might remove the
 dependency on the DLL.

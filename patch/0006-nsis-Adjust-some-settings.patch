@@ -1,7 +1,7 @@
 From 2c0212b81c4384ac79234d00ea4d2dedc091878a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:00:18 +0900
-Subject: [PATCH 06/22] nsis: Adjust some settings
+Subject: [PATCH 06/24] nsis: Adjust some settings
 
 * Use 64 MB dictionary for better compression.
 * Support HiDPI.

@@ -1,7 +1,7 @@
 From 58384e3f49119221845eeddc80f1bcd331857415 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 22:24:42 +0900
-Subject: [PATCH 18/22] nsis: Remove "XPStyle on"
+Subject: [PATCH 18/24] nsis: Remove "XPStyle on"
 
 This is automatically enabled in MUI2. No need to use explicitly.
 ---

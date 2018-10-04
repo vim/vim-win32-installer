@@ -1,7 +1,7 @@
 From 56f4a634987edaa11b02cc39646155b062add1a7 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Wed, 3 Oct 2018 22:28:40 +0900
-Subject: [PATCH 21/22] nsis: Add uninstallation check
+Subject: [PATCH 21/24] nsis: Add uninstallation check
 
 TODO: Should we run uninstaller again if it seems to be failed?
 ---

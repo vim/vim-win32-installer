@@ -1,7 +1,7 @@
 From 01ad5d7804175987e87ed8aae32a31e4a774e189 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:20:04 +0900
-Subject: [PATCH 14/22] nsis: Fix some !ifdef conditions
+Subject: [PATCH 14/24] nsis: Fix some !ifdef conditions
 
 ---
  nsis/gvim.nsi | 13 +++++++++++++

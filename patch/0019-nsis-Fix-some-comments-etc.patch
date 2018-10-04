@@ -1,7 +1,7 @@
 From c0ad78b19a09a492176294669f403f5de36ac658 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 22:26:06 +0900
-Subject: [PATCH 19/22] nsis: Fix some comments, etc.
+Subject: [PATCH 19/24] nsis: Fix some comments, etc.
 
 ---
  nsis/gvim.nsi          | 8 ++++----

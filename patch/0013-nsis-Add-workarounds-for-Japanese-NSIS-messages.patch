@@ -1,7 +1,7 @@
 From 038a13359b1490fca59966fdf038ff9ccc60bc98 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:18:16 +0900
-Subject: [PATCH 13/22] nsis: Add workarounds for Japanese NSIS messages
+Subject: [PATCH 13/24] nsis: Add workarounds for Japanese NSIS messages
 
 Some messages are too long and not shown properly.
 These should be fixed by the NSIS upstream, I think.

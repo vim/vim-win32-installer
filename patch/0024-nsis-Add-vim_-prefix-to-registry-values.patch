@@ -1,0 +1,58 @@
+From b9509621dbf1c932c36a5ca80c649d8fa8d1f5ed Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 4 Oct 2018 14:36:31 +0900
+Subject: [PATCH 24/24] nsis: Add "vim_" prefix to registry values
+
+It might be better to add a prefix to avoid conflicts with the system
+values.
+---
+ nsis/gvim.nsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index b462b8db8..b4cd47a76 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -512,9 +512,9 @@ Section "$(str_section_vim_rc)" id_section_vimrc
+ 	${If} ${RunningX64}
+ 	  SetRegView 64
+ 	${EndIf}
+-	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "compat" "$vim_compat_stat"
+-	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "keyremap" "$vim_keymap_stat"
+-	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "mouse" "$vim_mouse_stat"
++	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "vim_compat" "$vim_compat_stat"
++	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "vim_keyremap" "$vim_keymap_stat"
++	WriteRegStr HKLM "${UNINST_REG_KEY_VIM}" "vim_mouse" "$vim_mouse_stat"
+ 	${If} ${RunningX64}
+ 	  SetRegView lastused
+ 	${EndIf}
+@@ -717,7 +717,7 @@ Function SetCustom
+ 
+ 	# Default selection
+ 	${If} $vim_compat_stat == ""
+-	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "compat"
++	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "vim_compat"
+ 	${Else}
+ 	  StrCpy $3 $vim_compat_stat
+ 	${EndIf}
+@@ -746,7 +746,7 @@ Function SetCustom
+ 
+ 	# Default selection
+ 	${If} $vim_keymap_stat == ""
+-	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "keyremap"
++	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "vim_keyremap"
+ 	${Else}
+ 	  StrCpy $3 $vim_keymap_stat
+ 	${EndIf}
+@@ -772,7 +772,7 @@ Function SetCustom
+ 
+ 	# Default selection
+ 	${If} $vim_mouse_stat == ""
+-	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "mouse"
++	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "vim_mouse"
+ 	${Else}
+ 	  StrCpy $3 $vim_mouse_stat
+ 	${EndIf}
+-- 
+2.17.0
+

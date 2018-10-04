@@ -1,7 +1,7 @@
 From 7677964a9636faecfdcb008b74d95fba50ba5d05 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:08:08 +0900
-Subject: [PATCH 10/22] nsis: Use MUI2
+Subject: [PATCH 10/24] nsis: Use MUI2
 
 Mostly based on the @gpwen's work in vim-installer-mui2.
 

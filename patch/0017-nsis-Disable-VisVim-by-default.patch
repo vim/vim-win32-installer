@@ -1,7 +1,7 @@
 From a6b232022d0c708e0bba47b0f1f1fae5b842ee7a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 17:09:49 +0900
-Subject: [PATCH 17/22] nsis: Disable VisVim by default
+Subject: [PATCH 17/24] nsis: Disable VisVim by default
 
 VisVim is for VC 6.0.  Does anyone still use it?
 ---

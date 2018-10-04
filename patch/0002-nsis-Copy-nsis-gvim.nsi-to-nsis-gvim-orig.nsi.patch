@@ -1,7 +1,7 @@
 From a2bd6f21a9b1adeba15a911ba6db7a1db836e906 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Wed, 3 Oct 2018 11:24:52 +0900
-Subject: [PATCH 02/22] nsis: Copy nsis/gvim.nsi to nsis/gvim-orig.nsi
+Subject: [PATCH 02/24] nsis: Copy nsis/gvim.nsi to nsis/gvim-orig.nsi
 
 ---
  nsis/gvim-orig.nsi | 595 +++++++++++++++++++++++++++++++++++++++++++++
