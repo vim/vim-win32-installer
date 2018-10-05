@@ -1,0 +1,60 @@
+From e79c26f5c6f1210cb5d4201dbacedceabeee2cd8 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Fri, 5 Oct 2018 15:06:18 +0900
+Subject: [PATCH 25/25] Revert some icons
+
+They were unexpectedly reverted to the older version when importing
+gpwen's works.
+Pointed at: https://github.com/vim/vim/pull/3501#issuecomment-427168345
+---
+ nsis/icons/vim_16c.ico        | Bin 766 -> 766 bytes
+ nsis/icons/vim_uninst_16c.ico | Bin 766 -> 766 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+diff --git a/nsis/icons/vim_16c.ico b/nsis/icons/vim_16c.ico
+index 220b850a0071a11fe265e9e6cefc40435de4dc44..de18d1d96fd33a6fec38b24bb2fd52f70f3756c2 100644
+GIT binary patch
+literal 766
+zcmbVKu};G<5WS>Hx>TxJSaB_ej+Uyj67>s$qT5;8Z(t*zmW|)&$jHc0VcxTyf-*30
+z*7@$;d%n9y6)AA6HMlEzFGX%eWDB?O7S8%#Hju<M47h^GIF1qmlK)#_W^aoh+<Ou2
+zRB$>}8{LVG2$hI?@9Hj{h;>&2J+YE-?~&<^O2+7b2DHR$Uu!%QuO1)6f`m2Hby_;-
+z%nWaUtH`U6r{F-mSL_7aNacth6g#nCGCpR3NqT=u0yK>Me3Jwm$oJkx0p}&`qTsrZ
+zcTqq(^GWavUj?xrRzc*Kl?D29IlD&$2E;(;YJ@)jeC?b)vJQNrm9AxY<^bB^KE>&-
+z+9{jG@bwzP<uP1dR&SqP79S!@IOF6+&RJid!H?hu{w=dHA5lA}w`=I`sD)3x3UJh9
+Komp}wXMY1w=z16c
+
+literal 766
+zcmZvaJx&8L5QX3Vh^(SWNrmXJtQ3eUH^2o4;Rx=M4i}Nu$B1&0Eh5o!15%`*q)358
+zgn2XGuz(ov*z?Ui%~;j~1(z{1h`pA;CC?kWp*wnknmdiP|1ALg5JEn<Go%M}UB^Pw
+z4=G7R=aQ6c|6A?;<m-W355y3`6(k#%FiOlQx861(FXgx_No&buZat%TA9+t&jO@S$
+zVm-G_)OD^$&&M!Qq=_!X(pu{TfAE|%?i)$nI$$fjio6qTj<FT?99c@j_1yFVm-U_^
+z5wM~5^T-1B(|O*gK;~t(DsTg<KvCz}EEwu`5XgOa73$<=F(S)svyykw_9|$YZ_ga8
+z5zY_JWNA0t2ix8bu|(s|Z~mtA`Iyq_E}d4Br}qV_BQHRg^Xx?*OMZG_eaG6Gzhzwm
+s^#!o5Q0$6O9newpFg;>%eZ&>d3AwJ`sNK__(G)MI>Bk<kk<66YUk;_K)&Kwi
+
+diff --git a/nsis/icons/vim_uninst_16c.ico b/nsis/icons/vim_uninst_16c.ico
+index 6b11f288d78034c3579783e3054e50bc5ca11254..8196e68740f7eac528faa71eb1dab16418392566 100644
+GIT binary patch
+literal 766
+zcma)4Jx{|x40SJ%h^^{?#CCc}DPyV=GZCs_Md}|2QRNviG;4nXKPel3qa$NShDzbt
+zEu{+xpM3GNpTCq78S%t8=6xm~LF7_IZm5x3Q_cUEtUWl0&{(f|(d_$PhJnWa1UTiv
+z<>&#TjKYy(hBhjQ+K>}4mr8|a&p^4XQ{M2jusBrb8PRhN!(pnrtn)^6f)E)llmt&N
+zm6aVYb7i*XkPt1dwNxB}=ztpyNNIe6ah=jEM4UU{!zoRGh2aN9Oq3ar3_rG*XXg0E
+zKD1-!-}}(c_j;JFIJDLC{w=D`wqifWEM6GlFi(p*If3)qJ}8;$1mBN~5j%l6Oi>!P
+zxmvC$IP|VK^xSZ1`=^v^i={|macxqyVqGQfUeR?~dg?IkUdXo!adG?ezszCcvBPyl
+z!|rYv`fS*Vynj}bZCR0O-)uwe`TVHa8^6?xwLQmQ#A3#wUiJH2ud$_nL#5Aa(Jri~
+G_5K2fTY`)L
+
+literal 766
+zcmZuvy-veG40e8`-k}am2)5|d0WtLfkm%aC;1RL~#BxKWI9r4|#2f09WT?c-6Cef#
+zMg|6kO5wB976yE=ec$;z+m}0{1fwWUN#!FYI)lH27SIJWp&S;1*#8oV@KKDTgT)jY
+zsqcFP2K#6jbOy!HB{idn9A@gp<hUZzQtpqG23(Fz(sBgHOGO0}#>i;9x(qI2G@@}~
+zu2P_t6UDw|u1gn*m*QK5i9xXK9V4^h+A(&s6VNrzB^77_XpbX%31RUE%VP*L-^z*c
+zEgZtq%SQ1XOB*0Fk)XJ2q)K(+fJK`&Z2Ws`+W3}FT8E}JpVe=qK$a>+J;O*&O4#?)
+zNEwWv-QzscVXG1Bd^i}e5rENhr&#-Ha76rkO$`E?t`v9La0rf@rryUnhQc8)1LFel
+zGQtz?LlFe`wYmDeFI`X>gQGp7VRthOeKzcfp1<dmeG*N+$b9w=zs2)|W@~t;U%}_7
+s2c;awROd-dSJZ=Z>(?~D*wQ)nPLU(moXH#Xg<SG_J$=A@qBXVl58bfQ4gdfE
+
+-- 
+2.17.0
+
