@@ -1,0 +1,193 @@
+From fad9f48afce11d268276c5d6b26abc387abeeb1a Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Sat, 6 Oct 2018 00:44:58 +0900
+Subject: [PATCH 28/28] nsis: Make uninstalling more precise
+
+* Use UninstallLib to delete gettext and iconv DLLs.
+* Delete GvimExt{32,64} and pack directories explicitly.
+* Delete the vimfiles directory only if it is empty.
+  * Also update the messages.
+* Delete the top directory non-recursively.
+---
+ nsis/gvim.nsi             | 32 ++++++++++++++++++++++++++++++--
+ nsis/lang/dutch.nsi       |  2 +-
+ nsis/lang/english.nsi     |  2 +-
+ nsis/lang/german.nsi      |  2 +-
+ nsis/lang/italian.nsi     |  2 +-
+ nsis/lang/japanese.nsi    |  2 +-
+ nsis/lang/simpchinese.nsi |  2 +-
+ nsis/lang/tradchinese.nsi |  2 +-
+ 8 files changed, 37 insertions(+), 9 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index d9c3b78d8..cf4bc4e99 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -874,6 +874,21 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 
+ 	StrCpy $0 "$INSTDIR"
+ 
++	# Delete gettext and iconv DLLs
++	${If} ${FileExists} "$0\libiconv-2.dll"
++	  !insertmacro UninstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
++	      "$0\libiconv-2.dll"
++	${EndIf}
++	${If} ${FileExists} "$0\libintl-8.dll"
++	  !insertmacro UninstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
++	      "$0\libintl-8.dll"
++	${EndIf}
++	${If} ${FileExists} "$0\libgcc_s_sjlj-1.dll"
++	  !insertmacro UninstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
++	      "$0\libgcc_s_sjlj-1.dll"
++	${EndIf}
++
++	# Delete other DLLs
+ 	Delete /REBOOTOK $0\*.dll
+ 
+ 	# Delete 64-bit GvimExt
+@@ -896,6 +911,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 		"$0\GvimExt64\libwinpthread-1.dll"
+ 	  ${EndIf}
+ 	  !undef LIBRARY_X64
++	  RMDir /r $0\GvimExt64
+ 	${EndIf}
+ 
+ 	# Delete 32-bit GvimExt
+@@ -915,6 +931,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 	  !insertmacro UninstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+ 	      "$0\GvimExt32\libgcc_s_sjlj-1.dll"
+ 	${EndIf}
++	RMDir /r $0\GvimExt32
+ 
+ 	ClearErrors
+ 	# Remove everything but *.dll files.  Avoids that
+@@ -926,6 +943,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 	RMDir /r $0\ftplugin
+ 	RMDir /r $0\indent
+ 	RMDir /r $0\macros
++	RMDir /r $0\pack
+ 	RMDir /r $0\plugin
+ 	RMDir /r $0\spell
+ 	RMDir /r $0\syntax
+@@ -965,7 +983,16 @@ Section "un.$(str_unsection_vimfiles)" id_unsection_vimfiles
+ 
+ 	${If} $1 != ""
+ 	${AndIf} ${FileExists} $1\vimfiles
+-	  RMDir /r $1\vimfiles
++	  RMDir $1\vimfiles\colors
++	  RMDir $1\vimfiles\compiler
++	  RMDir $1\vimfiles\doc
++	  RMDir $1\vimfiles\ftdetect
++	  RMDir $1\vimfiles\ftplugin
++	  RMDir $1\vimfiles\indent
++	  RMDir $1\vimfiles\keymap
++	  RMDir $1\vimfiles\plugin
++	  RMDir $1\vimfiles\syntax
++	  RMDir $1\vimfiles
+ 	${EndIf}
+ SectionEnd
+ 
+@@ -975,7 +1002,8 @@ Section "un.$(str_unsection_rootdir)" id_unsection_rootdir
+ 	Call un.GetParent
+ 	Pop $0
+ 
+-	RMDir /r $0
++	Delete $0\_vimrc
++	RMDir $0
+ SectionEnd
+ 
+ ##########################################################
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index 2539106c4..3628c3445 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -149,7 +149,7 @@ LangString str_desc_rm_exe          ${LANG_DUTCH} \
+ LangString str_unsection_vimfiles   ${LANG_DUTCH} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_DUTCH} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_DUTCH} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index f0d696afe..7acbfe990 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -157,7 +157,7 @@ LangString str_desc_rm_exe          ${LANG_ENGLISH} \
+ LangString str_unsection_vimfiles   ${LANG_ENGLISH} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_ENGLISH} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_ENGLISH} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index 0a1d5d8ad..a828d183a 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -149,7 +149,7 @@ LangString str_desc_rm_exe          ${LANG_GERMAN} \
+ LangString str_unsection_vimfiles   ${LANG_GERMAN} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_GERMAN} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_GERMAN} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index 3207f8828..7b63ba627 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -156,7 +156,7 @@ LangString str_desc_rm_rc           ${LANG_ITALIAN} \
+ LangString str_unsection_vimfiles   ${LANG_ITALIAN} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_ITALIAN} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_ITALIAN} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index dc4f65f3a..0393aa757 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -150,7 +150,7 @@ LangString str_desc_rm_exe          ${LANG_JAPANESE} \
+ LangString str_unsection_vimfiles   ${LANG_JAPANESE} \
+     "vimfiles ディレクトリを削除"
+ LangString str_desc_rm_vimfiles     ${LANG_JAPANESE} \
+-    "vimfiles ディレクトリとその中の全てのファイルを削除します。"
++    "vimfiles ディレクトリが空であればそれを削除します。"
+ 
+ LangString str_unsection_rootdir    ${LANG_JAPANESE} \
+     "Vim のトップディレクトリを削除"
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index 5fd38d081..38b98df6a 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -146,7 +146,7 @@ LangString str_desc_rm_exe          ${LANG_SIMPCHINESE} \
+ LangString str_unsection_vimfiles   ${LANG_SIMPCHINESE} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_SIMPCHINESE} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_SIMPCHINESE} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index f6767d5e2..b5a4c7c8a 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -147,7 +147,7 @@ LangString str_desc_rm_exe          ${LANG_TRADCHINESE} \
+ LangString str_unsection_vimfiles   ${LANG_TRADCHINESE} \
+     "Remove vimfiles directory"
+ LangString str_desc_rm_vimfiles     ${LANG_TRADCHINESE} \
+-    "Remove all files in your vimfiles directory."
++    "Remove your vimfiles directory if it is empty."
+ 
+ LangString str_unsection_rootdir    ${LANG_TRADCHINESE} \
+     "Remove the Vim root directory"
+-- 
+2.17.0
+
