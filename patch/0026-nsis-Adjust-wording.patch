@@ -1,0 +1,249 @@
+From f2f47deacfeeb1fe58df4d5b37f49c97f8b0a9e1 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Fri, 5 Oct 2018 19:08:35 +0900
+Subject: [PATCH 26/28] nsis: Adjust wording
+
+---
+ nsis/lang/dutch.nsi       | 8 ++++----
+ nsis/lang/english.nsi     | 8 ++++----
+ nsis/lang/german.nsi      | 8 ++++----
+ nsis/lang/italian.nsi     | 8 ++++----
+ nsis/lang/japanese.nsi    | 8 ++++----
+ nsis/lang/simpchinese.nsi | 8 ++++----
+ nsis/lang/tradchinese.nsi | 8 ++++----
+ 7 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index 009d7a097..2539106c4 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -232,7 +232,7 @@ LangString str_vimrc_page_subtitle ${LANG_DUTCH} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_DUTCH} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_DUTCH} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_DUTCH} \
+@@ -245,16 +245,16 @@ LangString str_msg_compat_all      ${LANG_DUTCH} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_DUTCH} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_DUTCH} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_DUTCH} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_DUTCH} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_DUTCH} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_DUTCH} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_DUTCH} \
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 2bf970c73..f0d696afe 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -241,7 +241,7 @@ LangString str_vimrc_page_subtitle ${LANG_ENGLISH} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_ENGLISH} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_ENGLISH} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_ENGLISH} \
+@@ -254,16 +254,16 @@ LangString str_msg_compat_all      ${LANG_ENGLISH} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_ENGLISH} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_ENGLISH} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_ENGLISH} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_ENGLISH} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_ENGLISH} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_ENGLISH} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_ENGLISH} \
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index dea33d284..0a1d5d8ad 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -232,7 +232,7 @@ LangString str_vimrc_page_subtitle ${LANG_GERMAN} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_GERMAN} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_GERMAN} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_GERMAN} \
+@@ -245,16 +245,16 @@ LangString str_msg_compat_all      ${LANG_GERMAN} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_GERMAN} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_GERMAN} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_GERMAN} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_GERMAN} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_GERMAN} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_GERMAN} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_GERMAN} \
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index 4ce669cbf..3207f8828 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -241,7 +241,7 @@ LangString str_vimrc_page_subtitle ${LANG_ITALIAN} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_ITALIAN} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_ITALIAN} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_ITALIAN} \
+@@ -254,16 +254,16 @@ LangString str_msg_compat_all      ${LANG_ITALIAN} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_ITALIAN} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_ITALIAN} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_ITALIAN} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_ITALIAN} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_ITALIAN} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_ITALIAN} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_ITALIAN} \
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index cb3b5e973..dc4f65f3a 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -234,7 +234,7 @@ LangString str_vimrc_page_subtitle ${LANG_JAPANESE} \
+     "拡張やキーボード、マウスの設定を選んでください。"
+ 
+ LangString str_msg_compat_title    ${LANG_JAPANESE} \
+-    " Vi との互換性 "
++    " Vi / Vim の動作 "
+ LangString str_msg_compat_desc     ${LANG_JAPANESE} \
+     "互換性と拡張(&C)"
+ LangString str_msg_compat_vi       ${LANG_JAPANESE} \
+@@ -247,16 +247,16 @@ LangString str_msg_compat_all      ${LANG_JAPANESE} \
+     " Vim 独自と全ての拡張 (既定)"
+ 
+ LangString str_msg_keymap_title   ${LANG_JAPANESE} \
+-    " Windows用のキーのリマッピング "
++    " マッピング "
+ LangString str_msg_keymap_desc    ${LANG_JAPANESE} \
+-    "いくつかのキーをリマップする(&R) (例: <C-V>, <C-C>, <C-A>, <C-S>, <C-F> など)"
++    "いくつかのキーをリマップする(&R) (例: Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F など)"
+ LangString str_msg_keymap_default ${LANG_JAPANESE} \
+     " リマップしない (既定)"
+ LangString str_msg_keymap_windows ${LANG_JAPANESE} \
+     " リマップする"
+ 
+ LangString str_msg_mouse_title   ${LANG_JAPANESE} \
+-    " マウスの動作 "
++    " マウス "
+ LangString str_msg_mouse_desc    ${LANG_JAPANESE} \
+     "右ボタンと左ボタンの動作(&B)"
+ LangString str_msg_mouse_default ${LANG_JAPANESE} \
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index 3d99636b1..5fd38d081 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -228,7 +228,7 @@ LangString str_vimrc_page_subtitle ${LANG_SIMPCHINESE} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_SIMPCHINESE} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_SIMPCHINESE} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_SIMPCHINESE} \
+@@ -241,16 +241,16 @@ LangString str_msg_compat_all      ${LANG_SIMPCHINESE} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_SIMPCHINESE} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_SIMPCHINESE} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_SIMPCHINESE} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_SIMPCHINESE} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_SIMPCHINESE} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_SIMPCHINESE} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_SIMPCHINESE} \
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index c9eef097d..f6767d5e2 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -229,7 +229,7 @@ LangString str_vimrc_page_subtitle ${LANG_TRADCHINESE} \
+     "Choose the settings for enhancement, keyboard and mouse."
+ 
+ LangString str_msg_compat_title    ${LANG_TRADCHINESE} \
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
+ LangString str_msg_compat_desc     ${LANG_TRADCHINESE} \
+     "&Compatibility and enhancements"
+ LangString str_msg_compat_vi       ${LANG_TRADCHINESE} \
+@@ -242,16 +242,16 @@ LangString str_msg_compat_all      ${LANG_TRADCHINESE} \
+     "Vim with all enhancements (Default)"
+ 
+ LangString str_msg_keymap_title   ${LANG_TRADCHINESE} \
+-    " Key remapping for Windows behavior "
++    " Mappings "
+ LangString str_msg_keymap_desc    ${LANG_TRADCHINESE} \
+-    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_TRADCHINESE} \
+     " Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_TRADCHINESE} \
+     " Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_TRADCHINESE} \
+-    " Mouse behavior "
++    " Mouse "
+ LangString str_msg_mouse_desc    ${LANG_TRADCHINESE} \
+     "&Behavior of right and left buttons"
+ LangString str_msg_mouse_default ${LANG_TRADCHINESE} \
+-- 
+2.17.0
+
