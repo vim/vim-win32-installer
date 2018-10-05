@@ -52,6 +52,8 @@ artifacts:
 
 before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
+  # Remove the first 'v' from the tag name.
+  - set VIMVER=%APPVEYOR_REPO_TAG_NAME:~1%
 
 deploy:
   - provider: GitHub
@@ -64,20 +66,18 @@ deploy:
 
       ### Files:
 
-      * `gvim_x.y.pppp_x64.zip`<br/>
+      * `gvim_$(VIMVER)_x64.zip`<br/>
         64-bit zip archive
-      * `gvim_x.y.pppp_x64_pdb.zip`<br/>
+      * `gvim_$(VIMVER)_x64_pdb.zip`<br/>
         pdb files for debugging the corresponding 64-bit executable
-      * `gvim_x.y.pppp_x86.exe`<br/>
+      * `gvim_$(VIMVER)_x86.exe`<br/>
         32-bit installer
-      * `gvim_x.y.pppp_x86-mui2.exe`<br/>
+      * `gvim_$(VIMVER)_x86-mui2.exe`<br/>
         **Experimental**: 32-bit installer with the modern interface (MUI2)
-      * `gvim_x.y.pppp_x86.zip`<br/>
+      * `gvim_$(VIMVER)_x86.zip`<br/>
         32-bit zip archive
-      * `gvim_x.y.pppp_x86_pdb.zip`<br/>
+      * `gvim_$(VIMVER)_x86_pdb.zip`<br/>
         pdb files for debugging the corresponding 32-bit executable
-
-      (Where `x.y` is the release version and `pppp` is the patch level.)
 
       ### Compiled with:
 
