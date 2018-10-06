@@ -1,1 +1,1 @@
-* [8.1.0451](https://github.com/vim/vim/releases/tag/v8.1.0451): Win32 console: keypad keys don't work
+* [8.1.0454](https://github.com/vim/vim/releases/tag/v8.1.0454): resolve() was not tested with a symlink cycle\n* [8.1.0453](https://github.com/vim/vim/releases/tag/v8.1.0453): MS-Windows: executable() is not reliable\n* [8.1.0452](https://github.com/vim/vim/releases/tag/v8.1.0452): MS-Windows: not finding intl.dll
