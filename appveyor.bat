@@ -280,8 +280,7 @@ mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
 7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip ..\vim
 
-:: Create x86 installer (Skip x64 installer)
-if /i "%ARCH%"=="x64" goto :eof
+:: Create installer
 c:\cygwin\bin\bash -lc "cd `cygpath '%APPVEYOR_BUILD_FOLDER%'`/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
@@ -290,8 +289,13 @@ copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstal.exe uninstalw32.exe
 pushd ..\nsis
-"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: gvim-orig.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.exe"
-"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%-mui2.exe"
+if /i "%ARCH%"=="x64" (
+	rem Create only MUI2 installer
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DWIN64=1 gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%-mui2.exe"
+) else (
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: gvim-orig.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%-mui2.exe"
+)
 popd
 
 @echo off
