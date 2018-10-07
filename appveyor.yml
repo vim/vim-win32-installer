@@ -66,14 +66,16 @@ deploy:
 
       ### Files:
 
+      * `gvim_$(VIMVER)_x64-mui2.exe`
+        **Experimental**: 64-bit installer with the modern interface (MUI2)
       * `gvim_$(VIMVER)_x64.zip`
         64-bit zip archive
       * `gvim_$(VIMVER)_x64_pdb.zip`
         pdb files for debugging the corresponding 64-bit executable
-      * `gvim_$(VIMVER)_x86.exe`
-        32-bit installer
       * `gvim_$(VIMVER)_x86-mui2.exe`
         **Experimental**: 32-bit installer with the modern interface (MUI2)
+      * `gvim_$(VIMVER)_x86.exe`
+        **Recommended**: 32-bit installer
       * `gvim_$(VIMVER)_x86.zip`
         32-bit zip archive
       * `gvim_$(VIMVER)_x86_pdb.zip`
