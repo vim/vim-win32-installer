@@ -54,6 +54,7 @@ before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
   # Remove the first 'v' from the tag name.
   - set VIMVER=%APPVEYOR_REPO_TAG_NAME:~1%
+  - set URL=https://%APPVEYOR_REPO_NAME%/releases/download
 
 deploy:
   - provider: GitHub
@@ -66,19 +67,19 @@ deploy:
 
       ### Files:
 
-      * `gvim_$(VIMVER)_x64-mui2.exe`
+      * [gvim_$(VIMVER)_x64-mui2.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64-mui2.exe)
         **Experimental**: 64-bit installer with the modern interface (MUI2)
-      * `gvim_$(VIMVER)_x64.zip`
+      * [gvim_$(VIMVER)_x64.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip)
         64-bit zip archive
-      * `gvim_$(VIMVER)_x64_pdb.zip`
+      * [gvim_$(VIMVER)_x64_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
         pdb files for debugging the corresponding 64-bit executable
-      * `gvim_$(VIMVER)_x86-mui2.exe`
+      * [gvim_$(VIMVER)_x86-mui2.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86-mui2.exe)
         **Experimental**: 32-bit installer with the modern interface (MUI2)
-      * `gvim_$(VIMVER)_x86.exe`
+      * [gvim_$(VIMVER)_x86.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
         **Recommended**: 32-bit installer
-      * `gvim_$(VIMVER)_x86.zip`
+      * [gvim_$(VIMVER)_x86.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip)
         32-bit zip archive
-      * `gvim_$(VIMVER)_x86_pdb.zip`
+      * [gvim_$(VIMVER)_x86_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip)
         pdb files for debugging the corresponding 32-bit executable
 
       ### Compiled with:
