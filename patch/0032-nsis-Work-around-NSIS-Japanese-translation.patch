@@ -1,0 +1,27 @@
+From c6d8b52327233ff698c27b55414777ab692e3470 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 9 Oct 2018 12:53:19 +0900
+Subject: [PATCH 32/33] nsis: Work around NSIS Japanese translation
+
+The access key was missing in the message.
+---
+ nsis/lang/japanese.nsi | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index 67078a0df..faa0bcec3 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -24,6 +24,9 @@ LangString ^SpaceAvailable   ${LANG_JAPANESE} \
+         "利用可能なディスク容量："
+ LangString ^SpaceRequired    ${LANG_JAPANESE} \
+         "必要なディスク容量："
++# Fix another NSIS Japanese translation. The access key was missing.
++LangString ^InstallBtn       ${LANG_JAPANESE} \
++        "インストール(&I)"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+-- 
+2.17.0
+
