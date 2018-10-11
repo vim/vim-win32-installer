@@ -1,0 +1,27 @@
+From c8c70acf32eb113425ec80d1d5169927bac5cfab Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 11 Oct 2018 21:23:45 +0900
+Subject: [PATCH 38/38] nsis: No need to use nsExec for regsvr32
+
+regsvg32.exe is a GUI program. Using ExecWait is enough.
+---
+ nsis/gvim.nsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index a23c4ae42..a4cd27ccb 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -875,8 +875,7 @@ Section "un.$(str_unsection_register)" id_unsection_register
+ !ifdef HAVE_VIS_VIM
+ 	# If VisVim was installed, unregister the DLL.
+ 	${If} ${FileExists} "$0\VisVim.dll"
+-	  nsExec::Exec "regsvr32.exe /u /s $0\VisVim.dll"
+-	  Pop $3
++	  ExecWait "regsvr32.exe /u /s $0\VisVim.dll"
+ 	${EndIf}
+ !endif
+ 
+-- 
+2.17.0
+
