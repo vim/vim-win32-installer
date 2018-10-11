@@ -1,7 +1,7 @@
-From 2246085ae554cea03862710d084a16b0fa9e3a49 Mon Sep 17 00:00:00 2001
+From 6995c5e2fbb1b7f5a1cc165387d18ba77f6657e1 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 9 Oct 2018 16:41:14 +0900
-Subject: [PATCH 33/33] dosinst: Remove needless sleeps
+Subject: [PATCH 26/28] dosinst: Remove needless sleeps
 
 EnumWindows() is not an asynchronous function. No need to sleep after
 the function.

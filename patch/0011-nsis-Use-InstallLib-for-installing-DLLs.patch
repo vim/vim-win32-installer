@@ -1,7 +1,7 @@
-From 4b2f4056f90e3b4ec10ee2277d5cf2b99ded3556 Mon Sep 17 00:00:00 2001
+From bc32fbc38080c68b5e39718dea736ea1c6eabadd Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:16:11 +0900
-Subject: [PATCH 11/24] nsis: Use InstallLib for installing DLLs
+Subject: [PATCH 11/28] nsis: Use InstallLib for installing DLLs
 
 It is more reliable and easier to read than the current implementation.
 ---
@@ -9,7 +9,7 @@ It is more reliable and easier to read than the current implementation.
  1 file changed, 76 insertions(+), 64 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index d09b9eb4e..dbbad7d3d 100644
+index c4f6b05c3..306184cb7 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -502,37 +502,28 @@ Section "Add an Edit-with-Vim context menu entry" sec_gvimext_id
@@ -153,7 +153,7 @@ index d09b9eb4e..dbbad7d3d 100644
  	${EndIf}
  SectionEnd
  !endif
-@@ -837,9 +813,45 @@ Section "un.$(str_unsection_exe)"
+@@ -840,9 +816,45 @@ Section "un.$(str_unsection_exe)"
  	StrCpy $0 "$INSTDIR"
  
  	Delete /REBOOTOK $0\*.dll

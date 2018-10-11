@@ -1,7 +1,7 @@
-From 2950ac125888507113faaff13d97c7d32c08f11b Mon Sep 17 00:00:00 2001
+From bbc8e517eee29584a18cca47040b3d0477cb4c4e Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:01:56 +0900
-Subject: [PATCH 07/24] dosinst: Register some more information in installer
+Subject: [PATCH 07/28] dosinst: Register some more information in installer
 
 Register the following items:
 * DisplayIcon

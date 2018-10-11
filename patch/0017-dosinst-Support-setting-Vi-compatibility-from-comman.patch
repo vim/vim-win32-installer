@@ -1,7 +1,7 @@
-From 435208e985a8a4ea01d903e866815a8b854945d2 Mon Sep 17 00:00:00 2001
+From 3e5256177a533230b786fd262b2b38baa7823e65 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Wed, 3 Oct 2018 13:39:57 +0900
-Subject: [PATCH 20/24] dosinst: Support setting Vi compatibility from command
+Subject: [PATCH 17/28] dosinst: Support setting Vi compatibility from command
  line
 
 Also add nocp setting.

@@ -1,7 +1,7 @@
-From 7677964a9636faecfdcb008b74d95fba50ba5d05 Mon Sep 17 00:00:00 2001
+From 77a59015f4aa7587ece9e42130f28f49ffa7f18d Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:08:08 +0900
-Subject: [PATCH 10/24] nsis: Use MUI2
+Subject: [PATCH 10/28] nsis: Use MUI2
 
 Mostly based on the @gpwen's work in vim-installer-mui2.
 
@@ -11,18 +11,16 @@ nsis script.
 
 Enable the unicode flag for translation.
 ---
- nsis/gvim.nsi                 | 436 +++++++++++++++++++++++++++-------
- nsis/icons/header.bmp         | Bin 0 -> 102654 bytes
- nsis/icons/header.svg         | 265 +++++++++++++++++++++
- nsis/icons/un_header.bmp      | Bin 0 -> 102654 bytes
- nsis/icons/uninstall.bmp      | Bin 0 -> 618006 bytes
- nsis/icons/vim_16c.ico        | Bin 766 -> 766 bytes
- nsis/icons/vim_uninst_16c.ico | Bin 766 -> 766 bytes
- nsis/icons/welcome.bmp        | Bin 0 -> 618006 bytes
- nsis/icons/welcome.svg        | 268 +++++++++++++++++++++
- nsis/lang/english.nsi         | 235 ++++++++++++++++++
- src/dosinst.c                 |   2 +-
- 11 files changed, 1115 insertions(+), 91 deletions(-)
+ nsis/gvim.nsi            | 438 +++++++++++++++++++++++++++++++--------
+ nsis/icons/header.bmp    | Bin 0 -> 102654 bytes
+ nsis/icons/header.svg    | 265 +++++++++++++++++++++++
+ nsis/icons/un_header.bmp | Bin 0 -> 102654 bytes
+ nsis/icons/uninstall.bmp | Bin 0 -> 618006 bytes
+ nsis/icons/welcome.bmp   | Bin 0 -> 618006 bytes
+ nsis/icons/welcome.svg   | 268 ++++++++++++++++++++++++
+ nsis/lang/english.nsi    | 235 +++++++++++++++++++++
+ src/dosinst.c            |   2 +-
+ 9 files changed, 1117 insertions(+), 91 deletions(-)
  create mode 100644 nsis/icons/header.bmp
  create mode 100644 nsis/icons/header.svg
  create mode 100644 nsis/icons/un_header.bmp
@@ -32,7 +30,7 @@ Enable the unicode flag for translation.
  create mode 100644 nsis/lang/english.nsi
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index be40a4003..d09b9eb4e 100644
+index 774cd4dd9..c4f6b05c3 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -1,7 +1,9 @@
@@ -410,7 +408,7 @@ index be40a4003..d09b9eb4e 100644
  SectionEnd
  
  ##########################################################
-@@ -522,7 +700,7 @@ Section -post
+@@ -524,7 +702,7 @@ Section -post
  	${If} ${RunningX64}
  	  SetRegView 64
  	${EndIf}
@@ -419,7 +417,7 @@ index be40a4003..d09b9eb4e 100644
  	${If} ${RunningX64}
  	  SetRegView lastused
  	${EndIf}
-@@ -539,33 +717,103 @@ Function SetCustom
+@@ -541,33 +719,105 @@ Function SetCustom
  	  Abort
  	${EndIf}
  
@@ -533,10 +531,12 @@ index be40a4003..d09b9eb4e 100644
  ##########################################################
 -Section Uninstall
 +Section "un.$(str_unsection_register)"
++	SectionIn RO
++
  	# Apparently $INSTDIR is set to the directory where the uninstaller is
  	# created.  Thus the "vim61" directory is included in it.
  	StrCpy $0 "$INSTDIR"
-@@ -582,11 +830,11 @@ Section Uninstall
+@@ -583,11 +833,11 @@ Section Uninstall
  
  	# We may have been put to the background when uninstall did something.
  	BringToFront
@@ -552,7 +552,7 @@ index be40a4003..d09b9eb4e 100644
  
  	Delete /REBOOTOK $0\*.dll
  	Delete /REBOOTOK $0\GvimExt32\*.dll
-@@ -625,13 +873,13 @@ Section Uninstall
+@@ -626,13 +876,13 @@ Section Uninstall
  	# No error message if the "vim62" directory can't be removed, the
  	# gvimext.dll may still be there.
  	RMDir $0
@@ -569,7 +569,7 @@ index be40a4003..d09b9eb4e 100644
  
  	# if a plugin dir was created at installation ask the user to remove it
  	# first look in the root of the installation then in HOME
-@@ -641,20 +889,28 @@ Section Uninstall
+@@ -642,20 +892,28 @@ Section Uninstall
  
  	${If} $1 != ""
  	${AndIf} ${FileExists} $1\vimfiles
@@ -2399,50 +2399,6 @@ qXG5t#m;%XlnAF)&DiEeXavdghHk1m4DUe);Nu3R)0$~aiuKydlP=Sg7
 
 literal 0
 HcmV?d00001
-
-diff --git a/nsis/icons/vim_16c.ico b/nsis/icons/vim_16c.ico
-index de18d1d96fd33a6fec38b24bb2fd52f70f3756c2..220b850a0071a11fe265e9e6cefc40435de4dc44 100644
-GIT binary patch
-literal 766
-zcmZvaJx&8L5QX3Vh^(SWNrmXJtQ3eUH^2o4;Rx=M4i}Nu$B1&0Eh5o!15%`*q)358
-zgn2XGuz(ov*z?Ui%~;j~1(z{1h`pA;CC?kWp*wnknmdiP|1ALg5JEn<Go%M}UB^Pw
-z4=G7R=aQ6c|6A?;<m-W355y3`6(k#%FiOlQx861(FXgx_No&buZat%TA9+t&jO@S$
-zVm-G_)OD^$&&M!Qq=_!X(pu{TfAE|%?i)$nI$$fjio6qTj<FT?99c@j_1yFVm-U_^
-z5wM~5^T-1B(|O*gK;~t(DsTg<KvCz}EEwu`5XgOa73$<=F(S)svyykw_9|$YZ_ga8
-z5zY_JWNA0t2ix8bu|(s|Z~mtA`Iyq_E}d4Br}qV_BQHRg^Xx?*OMZG_eaG6Gzhzwm
-s^#!o5Q0$6O9newpFg;>%eZ&>d3AwJ`sNK__(G)MI>Bk<kk<66YUk;_K)&Kwi
-
-literal 766
-zcmbVKu};G<5WS>Hx>TxJSaB_ej+Uyj67>s$qT5;8Z(t*zmW|)&$jHc0VcxTyf-*30
-z*7@$;d%n9y6)AA6HMlEzFGX%eWDB?O7S8%#Hju<M47h^GIF1qmlK)#_W^aoh+<Ou2
-zRB$>}8{LVG2$hI?@9Hj{h;>&2J+YE-?~&<^O2+7b2DHR$Uu!%QuO1)6f`m2Hby_;-
-z%nWaUtH`U6r{F-mSL_7aNacth6g#nCGCpR3NqT=u0yK>Me3Jwm$oJkx0p}&`qTsrZ
-zcTqq(^GWavUj?xrRzc*Kl?D29IlD&$2E;(;YJ@)jeC?b)vJQNrm9AxY<^bB^KE>&-
-z+9{jG@bwzP<uP1dR&SqP79S!@IOF6+&RJid!H?hu{w=dHA5lA}w`=I`sD)3x3UJh9
-Komp}wXMY1w=z16c
-
-diff --git a/nsis/icons/vim_uninst_16c.ico b/nsis/icons/vim_uninst_16c.ico
-index 8196e68740f7eac528faa71eb1dab16418392566..6b11f288d78034c3579783e3054e50bc5ca11254 100644
-GIT binary patch
-literal 766
-zcmZuvy-veG40e8`-k}am2)5|d0WtLfkm%aC;1RL~#BxKWI9r4|#2f09WT?c-6Cef#
-zMg|6kO5wB976yE=ec$;z+m}0{1fwWUN#!FYI)lH27SIJWp&S;1*#8oV@KKDTgT)jY
-zsqcFP2K#6jbOy!HB{idn9A@gp<hUZzQtpqG23(Fz(sBgHOGO0}#>i;9x(qI2G@@}~
-zu2P_t6UDw|u1gn*m*QK5i9xXK9V4^h+A(&s6VNrzB^77_XpbX%31RUE%VP*L-^z*c
-zEgZtq%SQ1XOB*0Fk)XJ2q)K(+fJK`&Z2Ws`+W3}FT8E}JpVe=qK$a>+J;O*&O4#?)
-zNEwWv-QzscVXG1Bd^i}e5rENhr&#-Ha76rkO$`E?t`v9La0rf@rryUnhQc8)1LFel
-zGQtz?LlFe`wYmDeFI`X>gQGp7VRthOeKzcfp1<dmeG*N+$b9w=zs2)|W@~t;U%}_7
-s2c;awROd-dSJZ=Z>(?~D*wQ)nPLU(moXH#Xg<SG_J$=A@qBXVl58bfQ4gdfE
-
-literal 766
-zcma)4Jx{|x40SJ%h^^{?#CCc}DPyV=GZCs_Md}|2QRNviG;4nXKPel3qa$NShDzbt
-zEu{+xpM3GNpTCq78S%t8=6xm~LF7_IZm5x3Q_cUEtUWl0&{(f|(d_$PhJnWa1UTiv
-z<>&#TjKYy(hBhjQ+K>}4mr8|a&p^4XQ{M2jusBrb8PRhN!(pnrtn)^6f)E)llmt&N
-zm6aVYb7i*XkPt1dwNxB}=ztpyNNIe6ah=jEM4UU{!zoRGh2aN9Oq3ar3_rG*XXg0E
-zKD1-!-}}(c_j;JFIJDLC{w=D`wqifWEM6GlFi(p*If3)qJ}8;$1mBN~5j%l6Oi>!P
-zxmvC$IP|VK^xSZ1`=^v^i={|macxqyVqGQfUeR?~dg?IkUdXo!adG?ezszCcvBPyl
-z!|rYv`fS*Vynj}bZCR0O-)uwe`TVHa8^6?xwLQmQ#A3#wUiJH2ud$_nL#5Aa(Jri~
-G_5K2fTY`)L
 
 diff --git a/nsis/icons/welcome.bmp b/nsis/icons/welcome.bmp
 new file mode 100644

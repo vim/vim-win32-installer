@@ -1,7 +1,7 @@
-From b9509621dbf1c932c36a5ca80c649d8fa8d1f5ed Mon Sep 17 00:00:00 2001
+From ccb231deb9cd9c85792c194ad41a67a420e44136 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:36:31 +0900
-Subject: [PATCH 24/24] nsis: Add "vim_" prefix to registry values
+Subject: [PATCH 21/28] nsis: Add "vim_" prefix to registry values
 
 It might be better to add a prefix to avoid conflicts with the system
 values.
@@ -10,10 +10,10 @@ values.
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index b462b8db8..b4cd47a76 100644
+index a8a095372..9e24c2bd5 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
-@@ -512,9 +512,9 @@ Section "$(str_section_vim_rc)" id_section_vimrc
+@@ -508,9 +508,9 @@ Section "$(str_section_vim_rc)" id_section_vimrc
  	${If} ${RunningX64}
  	  SetRegView 64
  	${EndIf}
@@ -26,7 +26,7 @@ index b462b8db8..b4cd47a76 100644
  	${If} ${RunningX64}
  	  SetRegView lastused
  	${EndIf}
-@@ -717,7 +717,7 @@ Function SetCustom
+@@ -713,7 +713,7 @@ Function SetCustom
  
  	# Default selection
  	${If} $vim_compat_stat == ""
@@ -35,7 +35,7 @@ index b462b8db8..b4cd47a76 100644
  	${Else}
  	  StrCpy $3 $vim_compat_stat
  	${EndIf}
-@@ -746,7 +746,7 @@ Function SetCustom
+@@ -742,7 +742,7 @@ Function SetCustom
  
  	# Default selection
  	${If} $vim_keymap_stat == ""
@@ -44,7 +44,7 @@ index b462b8db8..b4cd47a76 100644
  	${Else}
  	  StrCpy $3 $vim_keymap_stat
  	${EndIf}
-@@ -772,7 +772,7 @@ Function SetCustom
+@@ -768,7 +768,7 @@ Function SetCustom
  
  	# Default selection
  	${If} $vim_mouse_stat == ""

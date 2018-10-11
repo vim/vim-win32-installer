@@ -1,7 +1,7 @@
-From 875c23886555f824fd0b3afaaaaa788b0a496e2b Mon Sep 17 00:00:00 2001
+From 57f0b7f51dffb123d63606c03ac0a06607d22b1e Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 09:51:38 +0900
-Subject: [PATCH 22/24] nsis: Support setting Vi compatibility
+Subject: [PATCH 19/28] nsis: Support setting Vi compatibility
 
 ---
  nsis/gvim.nsi             | 88 +++++++++++++++++++++++++++++++++++----
@@ -15,7 +15,7 @@ Subject: [PATCH 22/24] nsis: Support setting Vi compatibility
  8 files changed, 268 insertions(+), 86 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 82e41d3c5..0985d67ba 100644
+index b360089ac..eea123cdd 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -153,11 +153,16 @@ Page custom SetCustom ValidateCustom
@@ -35,7 +35,7 @@ index 82e41d3c5..0985d67ba 100644
  Var vim_keymap_stat
  Var vim_mouse_stat
  
-@@ -513,12 +518,23 @@ Section "$(str_section_vim_rc)" id_section_vimrc
+@@ -509,12 +514,23 @@ Section "$(str_section_vim_rc)" id_section_vimrc
  	${If} ${RunningX64}
  	  SetRegView 64
  	${EndIf}
@@ -59,7 +59,7 @@ index 82e41d3c5..0985d67ba 100644
  	${If} $vim_keymap_stat == "default"
  	  StrCpy $1 "$1 -vimrc-remap no"
  	${Else}
-@@ -691,17 +707,53 @@ Function SetCustom
+@@ -687,17 +703,53 @@ Function SetCustom
  	GetFunctionAddress $3 ValidateCustom
  	nsDialogs::OnBack $3
  
@@ -117,7 +117,7 @@ index 82e41d3c5..0985d67ba 100644
  	${If} $vim_keymap_stat == ""
  	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "keyremap"
  	${Else}
-@@ -714,20 +766,21 @@ Function SetCustom
+@@ -710,20 +762,21 @@ Function SetCustom
  	${EndIf}
  
  
@@ -144,7 +144,7 @@ index 82e41d3c5..0985d67ba 100644
  	${If} $vim_mouse_stat == ""
  	  ReadRegStr $3 HKLM "${UNINST_REG_KEY_VIM}" "mouse"
  	${Else}
-@@ -749,6 +802,23 @@ Function SetCustom
+@@ -745,6 +798,23 @@ Function SetCustom
  FunctionEnd
  
  Function ValidateCustom
@@ -417,10 +417,10 @@ index 3ccf835ee..c29d1ef7f 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index d4a88c5bd..ab7eeaa89 100644
+index cc6282143..3594c9f5e 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
-@@ -157,11 +157,6 @@ LangString str_unsection_rootdir    ${LANG_JAPANESE} \
+@@ -160,11 +160,6 @@ LangString str_unsection_rootdir    ${LANG_JAPANESE} \
  LangString str_desc_rm_rootdir      ${LANG_JAPANESE} \
      "Vim のトップディレクトリを削除します。あなたの Vim の設定ファイルも含まれていることに注意してください！"
  
@@ -432,7 +432,7 @@ index d4a88c5bd..ab7eeaa89 100644
  
  ##############################################################################
  # Messages                                                                {{{1
-@@ -228,18 +223,39 @@ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
+@@ -231,18 +226,39 @@ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
  LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
      "WARNING: Cannot remove $\"$vim_install_root$\", it is not empty!"
  

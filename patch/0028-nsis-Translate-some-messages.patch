@@ -1,0 +1,139 @@
+From da585f4e41e8a88d42894401220395f5c8533b39 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 11 Oct 2018 21:18:02 +0900
+Subject: [PATCH 28/28] nsis: Translate some messages
+
+---
+ nsis/gvim.nsi             | 5 ++---
+ nsis/lang/dutch.nsi       | 2 +-
+ nsis/lang/english.nsi     | 2 +-
+ nsis/lang/german.nsi      | 2 +-
+ nsis/lang/italian.nsi     | 2 +-
+ nsis/lang/japanese.nsi    | 6 +++---
+ nsis/lang/simpchinese.nsi | 2 +-
+ nsis/lang/tradchinese.nsi | 2 +-
+ 8 files changed, 11 insertions(+), 12 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index b9a98ae68..a4cd27ccb 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -349,7 +349,7 @@ Function .onInstSuccess
+ FunctionEnd
+ 
+ Function .onInstFailed
+-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installation failed. Better luck next time."
++  MessageBox MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
+ FunctionEnd
+ 
+ ##########################################################
+@@ -978,8 +978,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 	Delete $0\*.txt
+ 
+ 	${If} ${Errors}
+-	  MessageBox MB_OK|MB_ICONEXCLAMATION \
+-	      "Some files in $0 have not been deleted!$\nYou must do it manually."
++	  MessageBox MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail)
+ 	${EndIf}
+ 
+ 	# No error message if the "vim62" directory can't be removed, the
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index 64f8cd851..23300c06b 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -215,7 +215,7 @@ LangString str_msg_install_fail  ${LANG_DUTCH} \
+     "Installatie is mislukt."
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_DUTCH} \
+-    "Sommige bestanden in $vim_bin_path zijn niet verwijderd!$\r$\n\
++    "Sommige bestanden in $0 zijn niet verwijderd!$\r$\n\
+      Dit moet je handmatig doen."
+ 
+ LangString str_msg_rm_root_fail  ${LANG_DUTCH} \
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 159e4ab85..3668afe26 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -224,7 +224,7 @@ LangString str_msg_install_fail  ${LANG_ENGLISH} \
+     "Installation failed. Better luck next time."
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_ENGLISH} \
+-    "Some files in $vim_bin_path have not been deleted!$\r$\n\
++    "Some files in $0 have not been deleted!$\r$\n\
+      You must do it manually."
+ 
+ LangString str_msg_rm_root_fail  ${LANG_ENGLISH} \
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index ffa3897d8..c432d987a 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -214,7 +214,7 @@ LangString str_msg_install_fail  ${LANG_GERMAN} \
+     "Installation fehlerhaft beendet."
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_GERMAN} \
+-    "Einige Dateien im Pfad $vim_bin_path konnten nicht gelöscht werden!$\r$\n\
++    "Einige Dateien im Pfad $0 konnten nicht gelöscht werden!$\r$\n\
+      Diese Dateien müssen manuell gelöscht werden."
+ 
+ LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index 5aa10454f..23444219d 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -224,7 +224,7 @@ LangString str_msg_install_fail  ${LANG_ITALIAN} \
+     "Installazione non riuscita. Miglior fortuna alla prossima!"
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_ITALIAN} \
+-    "Alcuni file in $vim_bin_path non sono stati cancellati!$\r$\n\
++    "Alcuni file in $0 non sono stati cancellati!$\r$\n\
+      Dovreste cancellarli voi stessi."
+ 
+ LangString str_msg_rm_root_fail  ${LANG_ITALIAN} \
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index faa0bcec3..40cbd6461 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -217,11 +217,11 @@ LangString str_msg_abort_install ${LANG_JAPANESE} \
+     "Installer will abort."
+ 
+ LangString str_msg_install_fail  ${LANG_JAPANESE} \
+-    "Installation failed. Better luck next time."
++    "インストールに失敗しました。次はうまくいくことを祈ります。"
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
+-    "Some files in $vim_bin_path have not been deleted!$\r$\n\
+-     You must do it manually."
++    "$0 内の一部のファイルは削除できませんでした!$\r$\n\
++     手動で削除する必要があります。"
+ 
+ LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
+     "WARNING: Cannot remove $\"$vim_install_root$\", it is not empty!"
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index a4e2c990a..80ab0792c 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -210,7 +210,7 @@ LangString str_msg_install_fail  ${LANG_SIMPCHINESE} \
+     "安装失败。祝您下次好运。"
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_SIMPCHINESE} \
+-    "目录“$vim_bin_path”下有部分文件删除失败！$\r$\n\
++    "目录“$0”下有部分文件删除失败！$\r$\n\
+      您只能手工删除该目录。"
+ 
+ LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index 63eea8438..8ff094fce 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -211,7 +211,7 @@ LangString str_msg_install_fail  ${LANG_TRADCHINESE} \
+     "安裝失敗。預祝下次好運。"
+ 
+ LangString str_msg_rm_exe_fail   ${LANG_TRADCHINESE} \
+-    "資料夾「$vim_bin_path」下有部分檔案未能移除！$\r$\n\
++    "資料夾「$0」下有部分檔案未能移除！$\r$\n\
+      閣下只能手工移除該資料夾。"
+ 
+ LangString str_msg_rm_root_fail  ${LANG_TRADCHINESE} \
+-- 
+2.17.0
+

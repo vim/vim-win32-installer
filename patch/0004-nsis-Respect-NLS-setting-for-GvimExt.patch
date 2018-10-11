@@ -1,7 +1,7 @@
 From 58328665f06251aade9df43c7e3a3515c225d8d6 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 06:55:27 +0900
-Subject: [PATCH 04/24] nsis: Respect NLS setting for GvimExt
+Subject: [PATCH 04/28] nsis: Respect NLS setting for GvimExt
 
 Don't install gettext and iconv for GvimExt if NLS setting is off.
 ---

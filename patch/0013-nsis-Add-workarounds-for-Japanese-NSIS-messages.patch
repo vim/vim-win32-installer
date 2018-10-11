@@ -1,19 +1,20 @@
-From 038a13359b1490fca59966fdf038ff9ccc60bc98 Mon Sep 17 00:00:00 2001
+From 836d79ed0e775de6969e42158aff324fc8c7b228 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:18:16 +0900
-Subject: [PATCH 13/24] nsis: Add workarounds for Japanese NSIS messages
+Subject: [PATCH 13/28] nsis: Add workarounds for Japanese NSIS messages
 
 Some messages are too long and not shown properly.
+Also the access key was missing in a message.
 These should be fixed by the NSIS upstream, I think.
 ---
- nsis/lang/japanese.nsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ nsis/lang/japanese.nsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index 93cae55ce..23cda0e8e 100644
+index 93cae55ce..cc6282143 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
-@@ -18,6 +18,13 @@ LangString ^SetupCaption     ${LANG_JAPANESE} \
+@@ -18,6 +18,16 @@ LangString ^SetupCaption     ${LANG_JAPANESE} \
  LangString ^UninstallCaption ${LANG_JAPANESE} \
          "$(^Name) Uninstall"
  
@@ -21,8 +22,11 @@ index 93cae55ce..23cda0e8e 100644
 +# These should be better to be fixed by the NSIS upstream.
 +LangString ^SpaceAvailable   ${LANG_JAPANESE} \
 +        "利用可能なディスク容量："
-+LangString ^SpaceRequired ${LANG_JAPANESE} \
++LangString ^SpaceRequired    ${LANG_JAPANESE} \
 +        "必要なディスク容量："
++# Fix another NSIS Japanese translation. The access key was missing.
++LangString ^InstallBtn       ${LANG_JAPANESE} \
++        "インストール(&I)"
 +
  ##############################################################################
  # MUI Configuration Strings                                               {{{1
