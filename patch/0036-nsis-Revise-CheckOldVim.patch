@@ -1,0 +1,92 @@
+From c3449ae1226db7fbe0a56c3621c749c94f4ebd87 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 11 Oct 2018 19:58:29 +0900
+Subject: [PATCH 36/36] nsis: Revise CheckOldVim
+
+Returning only one value is enough.
+---
+ nsis/gvim.nsi | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index fdf1f87f3..d8c3db688 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -210,8 +210,7 @@ FunctionEnd
+ !insertmacro GetParent "un."
+ 
+ # Check if Vim is already installed.
+-# return: Stack #0: Status. 1: installed. 0: not installed.
+-#         Stack #1: Installed directory.
++# return: Installed directory. If not found, it will be empty.
+ Function CheckOldVim
+   Push $0
+   Push $R0
+@@ -223,7 +222,7 @@ Function CheckOldVim
+   ${EndIf}
+ 
+   ClearErrors
+-  StrCpy $0 0     # Found flag
++  StrCpy $0  ""   # Installed directory
+   StrCpy $R0 0    # Sub-key index
+   StrCpy $R1 ""   # Sub-key
+   ${Do}
+@@ -258,11 +257,11 @@ Function CheckOldVim
+       ${Continue}
+     ${EndIf}
+ 
+-    StrCpy $0 1   # Found
++    # Found
+     Push $R2
+     call GetParent
+     call GetParent
+-    Pop $R0   # Vim directory
++    Pop $0   # Vim directory
+     ${ExitDo}
+ 
+   ${Loop}
+@@ -273,8 +272,7 @@ Function CheckOldVim
+ 
+   Pop $R2
+   Pop $R1
+-  Exch $R0 # put $R0 on top of stack, restore $R0 to original value
+-  Exch
++  Pop $R0
+   Exch $0  # put $0 on top of stack, restore $0 to original value
+ FunctionEnd
+ 
+@@ -291,9 +289,8 @@ Section "$(str_section_old_ver)" id_section_old_ver
+ 	  Pop $3
+ 
+ 	  call CheckOldVim
+-	  Pop $3  # status
+-	  Pop $4  # Vim directory
+-	  ${If} $3 == 0
++	  Pop $3
++	  ${If} $3 == ""
+ 	    ${ExitDo}
+ 	  ${Else}
+ 	    # It seems that the old version is still remaining.
+@@ -315,16 +312,15 @@ Function .onInit
+   ReadEnvStr $INSTDIR "VIM"
+ 
+   call CheckOldVim
+-  Pop $3  # status
+-  Pop $4  # Vim directory
+-  ${If} $3 == 0
++  Pop $3
++  ${If} $3 == ""
+     # No old versions of Vim found. Unselect and hide the section.
+     !insertmacro UnselectSection ${id_section_old_ver}
+     SectionSetInstTypes ${id_section_old_ver} 0
+     SectionSetText ${id_section_old_ver} ""
+   ${Else}
+     ${If} $INSTDIR == ""
+-      StrCpy $INSTDIR $4
++      StrCpy $INSTDIR $3
+     ${EndIf}
+   ${EndIf}
+ 
+-- 
+2.17.0
+
