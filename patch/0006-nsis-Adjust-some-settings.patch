@@ -1,7 +1,7 @@
-From 2c0212b81c4384ac79234d00ea4d2dedc091878a Mon Sep 17 00:00:00 2001
+From 6ba848c7ddc354cff51bbbb73712ac840f57365a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:00:18 +0900
-Subject: [PATCH 06/24] nsis: Adjust some settings
+Subject: [PATCH 06/28] nsis: Adjust some settings
 
 * Use 64 MB dictionary for better compression.
 * Support HiDPI.
@@ -10,7 +10,7 @@ Subject: [PATCH 06/24] nsis: Adjust some settings
  1 file changed, 2 insertions(+)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 69e2ab3e3..759411989 100644
+index 897ffcb5e..41faf2c8a 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -49,6 +49,8 @@ Name "${PRODUCT}"

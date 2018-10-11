@@ -1,94 +1,46 @@
-From cdf80e62e230dad25b676f2dd12d6f328304b507 Mon Sep 17 00:00:00 2001
+From 1e93bba039376610759520f184b8bdce00841820 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 8 Oct 2018 11:59:48 +0900
-Subject: [PATCH 30/30] nsis: Improve some messages
+Subject: [PATCH 24/28] nsis: Improve some messages
 
 Show a message while waiting the uninstall of old version, or while
 executing install.exe or uninstal.exe.
 ---
- nsis/gvim.nsi             | 44 +++++++++++++++++++++++++++++++++++++++
- nsis/lang/dutch.nsi       |  9 ++++++++
- nsis/lang/english.nsi     |  9 ++++++++
- nsis/lang/german.nsi      |  9 ++++++++
- nsis/lang/italian.nsi     |  9 ++++++++
- nsis/lang/japanese.nsi    |  9 ++++++++
- nsis/lang/simpchinese.nsi |  9 ++++++++
- nsis/lang/tradchinese.nsi |  9 ++++++++
- 8 files changed, 107 insertions(+)
+ nsis/gvim.nsi             | 3 +++
+ nsis/lang/dutch.nsi       | 9 +++++++++
+ nsis/lang/english.nsi     | 9 +++++++++
+ nsis/lang/german.nsi      | 9 +++++++++
+ nsis/lang/italian.nsi     | 9 +++++++++
+ nsis/lang/japanese.nsi    | 9 +++++++++
+ nsis/lang/simpchinese.nsi | 9 +++++++++
+ nsis/lang/tradchinese.nsi | 9 +++++++++
+ 8 files changed, 66 insertions(+)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 1e93c733f..3a61a9652 100644
+index 0aa456b43..b9a98ae68 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
-@@ -183,6 +183,47 @@ ReserveFile ${VIMSRC}\installw32.exe
- ##########################################################
- # Functions
- 
-+# Update the message in the (un)install files page
-+# Based on http://nsis.sourceforge.net/DetailUpdate
-+!macro _DetailUpdate un
-+Function ${un}DetailUpdate
-+  Exch $R0
-+  Push $R1
-+  Push $R2
-+  Push $R3
-+
-+  FindWindow $R2 `#32770` `` $HWNDPARENT
-+  GetDlgItem $R1 $R2 1006
-+  SendMessage $R1 ${WM_SETTEXT} 0 `STR:$R0`
-+  GetDlgItem $R1 $R2 1016
-+
-+  System::Call *(&t${NSIS_MAX_STRLEN}R0)i.R2
-+  System::Call *(i0,i0,i0,i0,i0,iR2,i${NSIS_MAX_STRLEN},i0,i0)i.R3
-+
-+  !define /ifndef LVM_GETITEMCOUNT 0x1004
-+  !define /ifndef LVM_SETITEMTEXT 0x102E
-+  SendMessage $R1 ${LVM_GETITEMCOUNT} 0 0 $R0
-+  IntOp $R0 $R0 - 1
-+  System::Call user32::SendMessage(iR1,i${LVM_SETITEMTEXT},iR0,iR3)
-+
-+  System::Free $R3
-+  System::Free $R2
-+
-+  Pop $R3
-+  Pop $R2
-+  Pop $R1
-+  Pop $R0
-+FunctionEnd
-+!macroend
-+!insertmacro _DetailUpdate ""
-+!insertmacro _DetailUpdate "un."
-+!macro DetailUpdate un Text
-+  Push `${Text}`
-+  Call ${un}DetailUpdate
-+!macroend
-+!define DetailUpdate `!insertmacro DetailUpdate ""`
-+!define un.DetailUpdate `!insertmacro DetailUpdate "un."`
-+
- # Get parent directory
- # Share this function both on installer and uninstaller
- !macro GetParent un
-@@ -285,6 +326,7 @@ Section "$(str_section_old_ver)" id_section_old_ver
+@@ -283,6 +283,7 @@ Section "$(str_section_old_ver)" id_section_old_ver
  	# run the install program to check for already installed versions
  	SetOutPath $TEMP
  	File /oname=install.exe ${VIMSRC}\installw32.exe
-+	${DetailUpdate} "$(str_msg_wait_uninst)"
++	DetailPrint "$(str_msg_wait_uninst)"
  	${Do}
  	  nsExec::Exec "$TEMP\install.exe -uninstall-check"
  	  Pop $3
-@@ -652,6 +694,7 @@ SectionEnd
+@@ -648,6 +649,7 @@ SectionEnd
  ##########################################################
  Section -call_install_exe
  	SetOutPath $0
-+	${DetailUpdate} "$(str_msg_registering)"
++	DetailPrint "$(str_msg_registering)"
  	nsExec::Exec "$0\install.exe $1"
  	Pop $3
  SectionEnd
-@@ -883,6 +926,7 @@ Section "un.$(str_unsection_register)" id_unsection_register
+@@ -878,6 +880,7 @@ Section "un.$(str_unsection_register)" id_unsection_register
  !endif
  
  	# delete the context menu entry and batch files
-+	${un.DetailUpdate} "$(str_msg_unregistering)"
++	DetailPrint "$(str_msg_unregistering)"
  	nsExec::Exec "$0\uninstal.exe -nsis"
  	Pop $3
  
@@ -173,10 +125,10 @@ index 7b63ba627..5aa10454f 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index 0393aa757..67078a0df 100644
+index aa3d03046..faa0bcec3 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
-@@ -223,6 +223,15 @@ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
+@@ -226,6 +226,15 @@ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
  LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
      "WARNING: Cannot remove $\"$vim_install_root$\", it is not empty!"
  

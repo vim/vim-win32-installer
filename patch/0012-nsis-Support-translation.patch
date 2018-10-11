@@ -1,7 +1,7 @@
-From ab3132a2ce118eeed766c8e7b3c0b862f51d5675 Mon Sep 17 00:00:00 2001
+From 766e2b524dd4496e89771c645da85da06dd7c762 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 14:51:51 +0900
-Subject: [PATCH 12/24] nsis: Support translation
+Subject: [PATCH 12/28] nsis: Support translation
 
 Import most part from gpwen's work.
 ---
@@ -22,7 +22,7 @@ Import most part from gpwen's work.
  create mode 100644 nsis/lang/tradchinese.nsi
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index dbbad7d3d..a51b385e5 100644
+index 306184cb7..9be7d3fb0 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -33,9 +33,12 @@ Unicode true
@@ -209,7 +209,7 @@ index dbbad7d3d..a51b385e5 100644
  	  ${If} ${RunningX64}
  	    # Install DLLs for 64-bit gvimext.dll into the GvimExt64 directory.
  	    SetOutPath $0\GvimExt64
-@@ -653,21 +664,21 @@ SectionEnd
+@@ -653,22 +664,22 @@ SectionEnd
  Section -post
  
  	# Get estimated install size
@@ -233,14 +233,15 @@ index dbbad7d3d..a51b385e5 100644
 +	  SectionGetSize ${id_section_visvim} $4
  	  IntOp $3 $3 + $4
  	${EndIf}
+ !ifdef HAVE_NLS
 -	${If} ${SectionIsSelected} ${sec_nls_id}
 -	  SectionGetSize ${sec_nls_id} $4
 +	${If} ${SectionIsSelected} ${id_section_nls}
 +	  SectionGetSize ${id_section_nls} $4
  	  IntOp $3 $3 + $4
  	${EndIf}
- 
-@@ -689,7 +700,7 @@ Function SetCustom
+ !endif
+@@ -691,7 +702,7 @@ Function SetCustom
  	# Display the InstallOptions dialog
  
  	# Check if a _vimrc should be created
@@ -249,7 +250,7 @@ index dbbad7d3d..a51b385e5 100644
  	  Abort
  	${EndIf}
  
-@@ -789,7 +800,34 @@ Function ValidateCustom
+@@ -791,7 +802,34 @@ Function ValidateCustom
  FunctionEnd
  
  ##########################################################
@@ -282,10 +283,10 @@ index dbbad7d3d..a51b385e5 100644
 +
 +##########################################################
 +Section "un.$(str_unsection_register)" id_unsection_register
+ 	SectionIn RO
+ 
  	# Apparently $INSTDIR is set to the directory where the uninstaller is
- 	# created.  Thus the "vim61" directory is included in it.
- 	StrCpy $0 "$INSTDIR"
-@@ -808,7 +846,7 @@ Section "un.$(str_unsection_register)"
+@@ -811,7 +849,7 @@ Section "un.$(str_unsection_register)"
  	BringToFront
  SectionEnd
  
@@ -294,7 +295,7 @@ index dbbad7d3d..a51b385e5 100644
  
  	StrCpy $0 "$INSTDIR"
  
-@@ -887,7 +925,7 @@ Section "un.$(str_unsection_exe)"
+@@ -890,7 +928,7 @@ Section "un.$(str_unsection_exe)"
  	RMDir $0
  SectionEnd
  
@@ -303,7 +304,7 @@ index dbbad7d3d..a51b385e5 100644
  	# get the parent dir of the installation
  	Push $INSTDIR
  	Call un.GetParent
-@@ -908,7 +946,7 @@ Section "un.Remove vimfiles directory"
+@@ -911,7 +949,7 @@ Section "un.Remove vimfiles directory"
  	${EndIf}
  SectionEnd
  
@@ -312,7 +313,7 @@ index dbbad7d3d..a51b385e5 100644
  	# get the parent dir of the installation
  	Push $INSTDIR
  	Call un.GetParent
-@@ -926,3 +964,13 @@ Section "un.Remove the Vim root directory (may contain your _vimrc)"
+@@ -929,3 +967,13 @@ Section "un.Remove the Vim root directory (may contain your _vimrc)"
  	#Call un.onUnInstSuccess
  
  SectionEnd

@@ -1,10 +1,10 @@
-From 08d8fd5802035e16836497a409bbcec5cc17742c Mon Sep 17 00:00:00 2001
+From da585f4e41e8a88d42894401220395f5c8533b39 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 11 Oct 2018 21:18:02 +0900
-Subject: [PATCH 37/38] nsis: Translate some messages
+Subject: [PATCH 28/28] nsis: Translate some messages
 
 ---
- nsis/gvim.nsi             | 3 +--
+ nsis/gvim.nsi             | 5 ++---
  nsis/lang/dutch.nsi       | 2 +-
  nsis/lang/english.nsi     | 2 +-
  nsis/lang/german.nsi      | 2 +-
@@ -12,13 +12,22 @@ Subject: [PATCH 37/38] nsis: Translate some messages
  nsis/lang/japanese.nsi    | 6 +++---
  nsis/lang/simpchinese.nsi | 2 +-
  nsis/lang/tradchinese.nsi | 2 +-
- 8 files changed, 10 insertions(+), 11 deletions(-)
+ 8 files changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index d8c3db688..a23c4ae42 100644
+index b9a98ae68..a4cd27ccb 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
-@@ -979,8 +979,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+@@ -349,7 +349,7 @@ Function .onInstSuccess
+ FunctionEnd
+ 
+ Function .onInstFailed
+-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installation failed. Better luck next time."
++  MessageBox MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
+ FunctionEnd
+ 
+ ##########################################################
+@@ -978,8 +978,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
  	Delete $0\*.txt
  
  	${If} ${Errors}

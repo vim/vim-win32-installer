@@ -1,22 +1,23 @@
-From 931e696939fe2fbf12f8ef24857b097804af0061 Mon Sep 17 00:00:00 2001
+From 99036b68409393542f08621f1619e450d102d320 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:24:51 +0900
-Subject: [PATCH 23/24] nsis: Use DropLists instead of RadioButtons
+Subject: [PATCH 20/28] nsis: Use DropLists instead of RadioButtons
 
 The _vimrc setting screen was too noisy.
+Also adjust wording.
 ---
  nsis/gvim.nsi             | 136 +++++++++++++++++---------------------
- nsis/lang/dutch.nsi       |  24 ++++---
- nsis/lang/english.nsi     |  24 ++++---
- nsis/lang/german.nsi      |  24 ++++---
- nsis/lang/italian.nsi     |  24 ++++---
- nsis/lang/japanese.nsi    |  16 +++--
- nsis/lang/simpchinese.nsi |  24 ++++---
- nsis/lang/tradchinese.nsi |  24 ++++---
- 8 files changed, 160 insertions(+), 136 deletions(-)
+ nsis/lang/dutch.nsi       |  30 +++++----
+ nsis/lang/english.nsi     |  30 +++++----
+ nsis/lang/german.nsi      |  30 +++++----
+ nsis/lang/italian.nsi     |  30 +++++----
+ nsis/lang/japanese.nsi    |  22 +++---
+ nsis/lang/simpchinese.nsi |  30 +++++----
+ nsis/lang/tradchinese.nsi |  30 +++++----
+ 8 files changed, 181 insertions(+), 157 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 0985d67ba..b462b8db8 100644
+index eea123cdd..a8a095372 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -153,15 +153,9 @@ Page custom SetCustom ValidateCustom
@@ -38,7 +39,7 @@ index 0985d67ba..b462b8db8 100644
  Var vim_compat_stat
  Var vim_keymap_stat
  Var vim_mouse_stat
-@@ -709,90 +703,87 @@ Function SetCustom
+@@ -705,90 +699,87 @@ Function SetCustom
  
  
  	# 1st group - Compatibility
@@ -171,7 +172,7 @@ index 0985d67ba..b462b8db8 100644
  
  	${If} ${RunningX64}
  	  SetRegView lastused
-@@ -802,40 +793,31 @@ Function SetCustom
+@@ -798,40 +789,31 @@ Function SetCustom
  FunctionEnd
  
  Function ValidateCustom
@@ -227,7 +228,7 @@ index 0985d67ba..b462b8db8 100644
  FunctionEnd
  
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 86de7d703..009d7a097 100644
+index 86de7d703..2539106c4 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -229,31 +229,37 @@ LangString str_msg_rm_root_fail  ${LANG_DUTCH} \
@@ -238,7 +239,8 @@ index 86de7d703..009d7a097 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_DUTCH} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_DUTCH} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_DUTCH} \
@@ -255,9 +257,10 @@ index 86de7d703..009d7a097 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_DUTCH} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_DUTCH} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_DUTCH} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_DUTCH} \
@@ -265,7 +268,8 @@ index 86de7d703..009d7a097 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_DUTCH} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_DUTCH} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_DUTCH} \
@@ -278,7 +282,7 @@ index 86de7d703..009d7a097 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index f340e6e1d..2bf970c73 100644
+index f340e6e1d..f0d696afe 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -238,31 +238,37 @@ LangString str_msg_rm_root_fail  ${LANG_ENGLISH} \
@@ -289,7 +293,8 @@ index f340e6e1d..2bf970c73 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_ENGLISH} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_ENGLISH} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_ENGLISH} \
@@ -306,9 +311,10 @@ index f340e6e1d..2bf970c73 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_ENGLISH} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_ENGLISH} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_ENGLISH} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_ENGLISH} \
@@ -316,7 +322,8 @@ index f340e6e1d..2bf970c73 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_ENGLISH} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_ENGLISH} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_ENGLISH} \
@@ -329,7 +336,7 @@ index f340e6e1d..2bf970c73 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index 3d43e6340..dea33d284 100644
+index 3d43e6340..0a1d5d8ad 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -229,31 +229,37 @@ LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
@@ -340,7 +347,8 @@ index 3d43e6340..dea33d284 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_GERMAN} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_GERMAN} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_GERMAN} \
@@ -357,9 +365,10 @@ index 3d43e6340..dea33d284 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_GERMAN} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_GERMAN} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_GERMAN} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_GERMAN} \
@@ -367,7 +376,8 @@ index 3d43e6340..dea33d284 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_GERMAN} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_GERMAN} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_GERMAN} \
@@ -380,7 +390,7 @@ index 3d43e6340..dea33d284 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index c29d1ef7f..4ce669cbf 100644
+index c29d1ef7f..3207f8828 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -238,31 +238,37 @@ LangString str_msg_rm_root_fail  ${LANG_ITALIAN} \
@@ -391,7 +401,8 @@ index c29d1ef7f..4ce669cbf 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_ITALIAN} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_ITALIAN} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_ITALIAN} \
@@ -408,9 +419,10 @@ index c29d1ef7f..4ce669cbf 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_ITALIAN} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_ITALIAN} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_ITALIAN} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_ITALIAN} \
@@ -418,7 +430,8 @@ index c29d1ef7f..4ce669cbf 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_ITALIAN} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_ITALIAN} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_ITALIAN} \
@@ -431,10 +444,10 @@ index c29d1ef7f..4ce669cbf 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index ab7eeaa89..cb3b5e973 100644
+index 3594c9f5e..e1114ae5a 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
-@@ -231,10 +231,12 @@ LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
+@@ -234,10 +234,12 @@ LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
  LangString str_vimrc_page_title    ${LANG_JAPANESE} \
      "_vimrc の設定を選んでください"
  LangString str_vimrc_page_subtitle ${LANG_JAPANESE} \
@@ -442,18 +455,21 @@ index ab7eeaa89..cb3b5e973 100644
 +    "拡張やキーボード、マウスの設定を選んでください。"
  
  LangString str_msg_compat_title    ${LANG_JAPANESE} \
-     " Vi との互換性 "
+-    " Vi との互換性 "
++    " Vi / Vim の動作 "
 +LangString str_msg_compat_desc     ${LANG_JAPANESE} \
 +    "互換性と拡張(&C)"
  LangString str_msg_compat_vi       ${LANG_JAPANESE} \
      " Vi 互換"
  LangString str_msg_compat_vim      ${LANG_JAPANESE} \
-@@ -246,16 +248,20 @@ LangString str_msg_compat_all      ${LANG_JAPANESE} \
+@@ -248,17 +250,21 @@ LangString str_msg_compat_all      ${LANG_JAPANESE} \
+     " Vim 独自と全ての拡張 (既定)"
  
  LangString str_msg_keymap_title   ${LANG_JAPANESE} \
-     " Windows用のキーのリマッピング "
+-    " Windows用のキーのリマッピング "
++    " マッピング "
 +LangString str_msg_keymap_desc    ${LANG_JAPANESE} \
-+    "いくつかのキーをリマップする(&R) (例: <C-V>, <C-C>, <C-A>, <C-S>, <C-F> など)"
++    "いくつかのキーをリマップする(&R) (例: Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F など)"
  LangString str_msg_keymap_default ${LANG_JAPANESE} \
      " リマップしない (既定)"
  LangString str_msg_keymap_windows ${LANG_JAPANESE} \
@@ -461,7 +477,8 @@ index ab7eeaa89..cb3b5e973 100644
 +    " リマップする"
  
  LangString str_msg_mouse_title   ${LANG_JAPANESE} \
-     " マウスの動作 "
+-    " マウスの動作 "
++    " マウス "
 +LangString str_msg_mouse_desc    ${LANG_JAPANESE} \
 +    "右ボタンと左ボタンの動作(&B)"
  LangString str_msg_mouse_default ${LANG_JAPANESE} \
@@ -474,7 +491,7 @@ index ab7eeaa89..cb3b5e973 100644
 -    " Unix:       右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
 +    "右：選択を拡張、左：ビジュアルモード (Unix)"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index 4cc495ea2..3d99636b1 100644
+index 4cc495ea2..5fd38d081 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -225,31 +225,37 @@ LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
@@ -485,7 +502,8 @@ index 4cc495ea2..3d99636b1 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_SIMPCHINESE} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_SIMPCHINESE} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_SIMPCHINESE} \
@@ -502,9 +520,10 @@ index 4cc495ea2..3d99636b1 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_SIMPCHINESE} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_SIMPCHINESE} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_SIMPCHINESE} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_SIMPCHINESE} \
@@ -512,7 +531,8 @@ index 4cc495ea2..3d99636b1 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_SIMPCHINESE} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_SIMPCHINESE} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_SIMPCHINESE} \
@@ -525,7 +545,7 @@ index 4cc495ea2..3d99636b1 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index f7299ba46..c9eef097d 100644
+index f7299ba46..f6767d5e2 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -226,31 +226,37 @@ LangString str_msg_rm_root_fail  ${LANG_TRADCHINESE} \
@@ -536,7 +556,8 @@ index f7299ba46..c9eef097d 100644
 +    "Choose the settings for enhancement, keyboard and mouse."
  
  LangString str_msg_compat_title    ${LANG_TRADCHINESE} \
-     " Vi Compatibility "
+-    " Vi Compatibility "
++    " Vi / Vim behavior "
 +LangString str_msg_compat_desc     ${LANG_TRADCHINESE} \
 +    "&Compatibility and enhancements"
  LangString str_msg_compat_vi       ${LANG_TRADCHINESE} \
@@ -553,9 +574,10 @@ index f7299ba46..c9eef097d 100644
 +    "Vim with all enhancements (Default)"
  
  LangString str_msg_keymap_title   ${LANG_TRADCHINESE} \
-     " Key remapping for Windows behavior "
+-    " Key remapping for Windows behavior "
++    " Mappings "
 +LangString str_msg_keymap_desc    ${LANG_TRADCHINESE} \
-+    "&Remap a few keys (<C-V>, <C-C>, <C-A>, <C-S>, <C-F>, etc)"
++    "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
  LangString str_msg_keymap_default ${LANG_TRADCHINESE} \
      " Do not remap keys (Default)"
  LangString str_msg_keymap_windows ${LANG_TRADCHINESE} \
@@ -563,7 +585,8 @@ index f7299ba46..c9eef097d 100644
 +    " Remap a few keys"
  
  LangString str_msg_mouse_title   ${LANG_TRADCHINESE} \
-     " Mouse behavior "
+-    " Mouse behavior "
++    " Mouse "
 +LangString str_msg_mouse_desc    ${LANG_TRADCHINESE} \
 +    "&Behavior of right and left buttons"
  LangString str_msg_mouse_default ${LANG_TRADCHINESE} \

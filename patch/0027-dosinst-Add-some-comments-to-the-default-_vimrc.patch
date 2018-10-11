@@ -1,7 +1,7 @@
-From d1da147a8ea27ed25c45976d44821a34444922ee Mon Sep 17 00:00:00 2001
+From b25a1f52d12724e04d4a600a647429b2247c19a8 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 9 Oct 2018 20:31:44 +0900
-Subject: [PATCH 34/34] dosinst: Add some comments to the default _vimrc
+Subject: [PATCH 27/28] dosinst: Add some comments to the default _vimrc
 
 ---
  src/dosinst.c | 13 +++++++++++++

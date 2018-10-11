@@ -1,15 +1,15 @@
-From 73fec6bf3ae04c73346f6aef75ca2e11fb600176 Mon Sep 17 00:00:00 2001
+From e63312e187e465719c71b03f6f0660924a0e2208 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 06:58:49 +0900
-Subject: [PATCH 05/24] nsis: Register "EstimatedSize"
+Subject: [PATCH 05/28] nsis: Register "EstimatedSize"
 
 Show the estimated size in the control panel.
 ---
- nsis/gvim.nsi | 43 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 38 insertions(+), 5 deletions(-)
+ nsis/gvim.nsi | 45 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 40 insertions(+), 5 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 6f6246d5e..69e2ab3e3 100644
+index 6f6246d5e..897ffcb5e 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -42,7 +42,10 @@
@@ -60,7 +60,7 @@ index 6f6246d5e..69e2ab3e3 100644
  	SectionIn 1 3
  
  	SetOutPath $0\lang
-@@ -490,6 +493,36 @@ SectionEnd
+@@ -490,6 +493,38 @@ SectionEnd
  
  ##########################################################
  Section -post
@@ -79,10 +79,12 @@ index 6f6246d5e..69e2ab3e3 100644
 +	  SectionGetSize ${sec_visvim_id} $4
 +	  IntOp $3 $3 + $4
 +	${EndIf}
++!ifdef HAVE_NLS
 +	${If} ${SectionIsSelected} ${sec_nls_id}
 +	  SectionGetSize ${sec_nls_id} $4
 +	  IntOp $3 $3 + $4
 +	${EndIf}
++!endif
 +
 +	# Register EstimatedSize.
 +	# Other information will be set by the install.exe.
