@@ -1,4 +1,4 @@
-From 77a59015f4aa7587ece9e42130f28f49ffa7f18d Mon Sep 17 00:00:00 2001
+From e7c6538c86ddb0c4d469665e5d2b74c58e923f28 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:08:08 +0900
 Subject: [PATCH 10/28] nsis: Use MUI2
@@ -3855,7 +3855,7 @@ index 000000000..3a2ddc122
 +LangString str_msg_mouse_unix    ${LANG_ENGLISH} \
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/src/dosinst.c b/src/dosinst.c
-index 344d62be3..d8b8af08c 100644
+index d9405b577..126352b65 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
 @@ -442,7 +442,7 @@ window_cb(HWND hwnd, LPARAM lparam)

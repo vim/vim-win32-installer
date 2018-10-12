@@ -1,4 +1,4 @@
-From ac1577a7f45863147cd65d5dc06d600017bb211a Mon Sep 17 00:00:00 2001
+From 42a1c4ead608a2d81623ea9e43f141080806fcb9 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sat, 6 Oct 2018 00:44:58 +0900
 Subject: [PATCH 22/28] nsis: Make uninstalling more precise

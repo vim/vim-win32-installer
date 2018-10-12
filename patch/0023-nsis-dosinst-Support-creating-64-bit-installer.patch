@@ -1,4 +1,4 @@
-From c12608d0cf685fc6b7009542a3f4990a44344c80 Mon Sep 17 00:00:00 2001
+From 7b87d53b2a321e32305849ef3aa4182451c31850 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sun, 7 Oct 2018 10:39:11 +0900
 Subject: [PATCH 23/28] nsis,dosinst: Support creating 64-bit installer
@@ -103,10 +103,10 @@ index c708c75d7..0aa456b43 100644
    !endif
  
 diff --git a/src/dosinst.c b/src/dosinst.c
-index 357eebbb4..8b8586a19 100644
+index 217b88ff4..8922f5c7f 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
-@@ -1596,7 +1596,11 @@ install_registry(void)
+@@ -1597,7 +1597,11 @@ install_registry(void)
      }
  
      printf("Creating an uninstall entry\n");

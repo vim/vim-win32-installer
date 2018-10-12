@@ -1,4 +1,4 @@
-From 766e2b524dd4496e89771c645da85da06dd7c762 Mon Sep 17 00:00:00 2001
+From 834096f4ccfc0740b86904962c9bbbe6e6be1aba Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 14:51:51 +0900
 Subject: [PATCH 12/28] nsis: Support translation

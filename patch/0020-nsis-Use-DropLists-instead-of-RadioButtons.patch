@@ -1,4 +1,4 @@
-From 99036b68409393542f08621f1619e450d102d320 Mon Sep 17 00:00:00 2001
+From 42c848f1bb4e000631abb0a0491fa42d632b733a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:24:51 +0900
 Subject: [PATCH 20/28] nsis: Use DropLists instead of RadioButtons
