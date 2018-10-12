@@ -1,4 +1,4 @@
-From 8c3d53f4fb5c745a1cf2126ff52188064fbab725 Mon Sep 17 00:00:00 2001
+From c64edda29ff0a9585acbed85ea69735d41923a3b Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Wed, 3 Oct 2018 22:28:40 +0900
 Subject: [PATCH 18/28] nsis: Add uninstallation check

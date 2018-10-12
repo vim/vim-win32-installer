@@ -1,4 +1,4 @@
-From bc32fbc38080c68b5e39718dea736ea1c6eabadd Mon Sep 17 00:00:00 2001
+From 109185412c159326023f5019bb6e8aabc4d9b6df Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:16:11 +0900
 Subject: [PATCH 11/28] nsis: Use InstallLib for installing DLLs

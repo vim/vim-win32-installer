@@ -1,4 +1,4 @@
-From c12906559bebd1dc9dde3a46741c3742c58255c8 Mon Sep 17 00:00:00 2001
+From 1c076dfd4020dbac278e6291a14241aa40473e5c Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:20:04 +0900
 Subject: [PATCH 14/28] nsis: Fix some !ifdef conditions

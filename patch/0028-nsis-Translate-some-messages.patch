@@ -1,4 +1,4 @@
-From da585f4e41e8a88d42894401220395f5c8533b39 Mon Sep 17 00:00:00 2001
+From 69f7541b48410a8c1c3e977a2f26b0e7a7db96c7 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 11 Oct 2018 21:18:02 +0900
 Subject: [PATCH 28/28] nsis: Translate some messages

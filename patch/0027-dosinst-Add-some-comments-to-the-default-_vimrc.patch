@@ -1,14 +1,14 @@
-From b25a1f52d12724e04d4a600a647429b2247c19a8 Mon Sep 17 00:00:00 2001
+From 83e8cd6e973018f78b64e25d9d3d0d024722d79c Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 9 Oct 2018 20:31:44 +0900
 Subject: [PATCH 27/28] dosinst: Add some comments to the default _vimrc
 
 ---
- src/dosinst.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ src/dosinst.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/src/dosinst.c b/src/dosinst.c
-index 6c98fc71f..6d5c95ba5 100644
+index c21536834..6d5c95ba5 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
 @@ -1161,17 +1161,21 @@ install_vimrc(int idx)
@@ -55,11 +55,10 @@ index 6c98fc71f..6d5c95ba5 100644
  		    fprintf(fd, "behave mswin\n");
  		    break;
  	case mouse_default:
-@@ -1198,6 +1208,9 @@ install_vimrc(int idx)
-     {
+@@ -1199,6 +1209,8 @@ install_vimrc(int idx)
  	/* Use the diff.exe that comes with the self-extracting gvim.exe. */
  	fclose(tfd);
-+	fprintf(fd, "\n");
+ 	fprintf(fd, "\n");
 +	fprintf(fd, "\" Use the internal diff if available.\n");
 +	fprintf(fd, "\" Otherwise use the special 'diffexpr' for Windows.\n");
  	fprintf(fd, "if &diffopt !~# 'internal'\n");

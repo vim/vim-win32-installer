@@ -1,4 +1,4 @@
-From 541ad02f94af345a0efd8d5632a8f206fb01d63a Mon Sep 17 00:00:00 2001
+From e4266a086652895fa6762cf5c5c080d398692ea4 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 17:03:55 +0900
 Subject: [PATCH 16/28] nsis: Remove old codes

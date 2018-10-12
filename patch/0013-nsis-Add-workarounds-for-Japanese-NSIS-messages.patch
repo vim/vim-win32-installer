@@ -1,4 +1,4 @@
-From 836d79ed0e775de6969e42158aff324fc8c7b228 Mon Sep 17 00:00:00 2001
+From e337d28d48359f149ff68a5bc2b77bf87675d7bc Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:18:16 +0900
 Subject: [PATCH 13/28] nsis: Add workarounds for Japanese NSIS messages

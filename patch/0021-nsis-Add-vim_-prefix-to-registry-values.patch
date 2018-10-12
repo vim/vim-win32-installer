@@ -1,4 +1,4 @@
-From ccb231deb9cd9c85792c194ad41a67a420e44136 Mon Sep 17 00:00:00 2001
+From b72bc4c9debee0e68950724a87e4039bbfdc9915 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:36:31 +0900
 Subject: [PATCH 21/28] nsis: Add "vim_" prefix to registry values

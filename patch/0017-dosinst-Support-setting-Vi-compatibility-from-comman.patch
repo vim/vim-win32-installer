@@ -1,4 +1,4 @@
-From 3e5256177a533230b786fd262b2b38baa7823e65 Mon Sep 17 00:00:00 2001
+From bc91c3b5e1754f9243b9e629f118360bd61517ca Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Wed, 3 Oct 2018 13:39:57 +0900
 Subject: [PATCH 17/28] dosinst: Support setting Vi compatibility from command
@@ -10,7 +10,7 @@ Also add nocp setting.
  1 file changed, 23 insertions(+)
 
 diff --git a/src/dosinst.c b/src/dosinst.c
-index d8b8af08c..357eebbb4 100644
+index 126352b65..217b88ff4 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
 @@ -63,6 +63,7 @@ int		choice_count = 0;	/* number of choices available */
@@ -41,7 +41,7 @@ index d8b8af08c..357eebbb4 100644
  	case compat_some_enhancements:
  		    fprintf(fd, "source $VIMRUNTIME/defaults.vim\n");
  		    break;
-@@ -2238,6 +2245,8 @@ print_cmd_line_help(void)
+@@ -2239,6 +2246,8 @@ print_cmd_line_help(void)
      printf("    Remap keys when creating a default _vimrc file.\n");
      printf("-vimrc-behave [unix|mswin|default]\n");
      printf("    Set mouse behavior when creating a default _vimrc file.\n");
@@ -50,7 +50,7 @@ index d8b8af08c..357eebbb4 100644
      printf("-install-popup\n");
      printf("    Install the Edit-with-Vim context menu entry\n");
      printf("-install-openwith\n");
-@@ -2315,6 +2324,20 @@ command_line_setup_choices(int argc, char **argv)
+@@ -2316,6 +2325,20 @@ command_line_setup_choices(int argc, char **argv)
  	    else if (strcmp(argv[i], "default") == 0)
  		mouse_choice = mouse_default;
  	}

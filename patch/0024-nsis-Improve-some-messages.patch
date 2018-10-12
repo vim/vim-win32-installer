@@ -1,4 +1,4 @@
-From 1e93bba039376610759520f184b8bdce00841820 Mon Sep 17 00:00:00 2001
+From 47b85c6cde9591400e567cc30f49ba88c8a77191 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 8 Oct 2018 11:59:48 +0900
 Subject: [PATCH 24/28] nsis: Improve some messages

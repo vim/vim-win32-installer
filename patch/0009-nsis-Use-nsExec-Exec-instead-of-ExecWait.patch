@@ -1,4 +1,4 @@
-From 13613ebcd22df73b567a260da9029d20e2d4899e Mon Sep 17 00:00:00 2001
+From 22cd7870acf265141430ce69aaa1aec132b249dd Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:06:40 +0900
 Subject: [PATCH 09/28] nsis: Use nsExec::Exec instead of ExecWait
