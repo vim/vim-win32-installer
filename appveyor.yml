@@ -54,7 +54,7 @@ before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
   # Remove the first 'v' from the tag name.
   - set VIMVER=%APPVEYOR_REPO_TAG_NAME:~1%
-  - set URL=https://%APPVEYOR_REPO_NAME%/releases/download
+  - set URL=https://github.com/%APPVEYOR_REPO_NAME%/releases/download
 
 deploy:
   - provider: GitHub
