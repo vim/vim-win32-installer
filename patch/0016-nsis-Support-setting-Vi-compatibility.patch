@@ -1,7 +1,7 @@
-From c445bf4702054991106ce2499fcded1d1e20c9fd Mon Sep 17 00:00:00 2001
+From ae6bbfb7b41331437035236db1de066e388b85ca Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 09:51:38 +0900
-Subject: [PATCH 19/28] nsis: Support setting Vi compatibility
+Subject: [PATCH 16/27] nsis: Support setting Vi compatibility
 
 ---
  nsis/gvim.nsi             | 88 +++++++++++++++++++++++++++++++++++----
@@ -169,7 +169,7 @@ index b360089ac..eea123cdd 100644
  	${If} $3 == ${BST_CHECKED}
  	  StrCpy $vim_keymap_stat "default"
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 0e08d758a..86de7d703 100644
+index 38cf6de19..c8b6d2c68 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -156,11 +156,6 @@ LangString str_unsection_rootdir    ${LANG_DUTCH} \
@@ -231,7 +231,7 @@ index 0e08d758a..86de7d703 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index 8ef333eae..f340e6e1d 100644
+index 4b1ed020f..700a88fb8 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -164,11 +164,6 @@ LangString str_unsection_rootdir    ${LANG_ENGLISH} \
@@ -293,7 +293,7 @@ index 8ef333eae..f340e6e1d 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index 61be2b665..3d43e6340 100644
+index 59a741b94..895e458ba 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -156,11 +156,6 @@ LangString str_unsection_rootdir    ${LANG_GERMAN} \
@@ -355,7 +355,7 @@ index 61be2b665..3d43e6340 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index 3ccf835ee..c29d1ef7f 100644
+index 5c823f973..6f6e20bdc 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -163,11 +163,6 @@ LangString str_unsection_rootdir    ${LANG_ITALIAN} \
@@ -417,7 +417,7 @@ index 3ccf835ee..c29d1ef7f 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index cc6282143..3594c9f5e 100644
+index fc3704e92..678fa80e5 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -160,11 +160,6 @@ LangString str_unsection_rootdir    ${LANG_JAPANESE} \
@@ -479,7 +479,7 @@ index cc6282143..3594c9f5e 100644
 -    " Unix:$\n     右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
 +    " Unix:       右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index b4c1e3d32..4cc495ea2 100644
+index 96c248350..f835a635f 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -153,11 +153,6 @@ LangString str_unsection_rootdir    ${LANG_SIMPCHINESE} \
@@ -541,7 +541,7 @@ index b4c1e3d32..4cc495ea2 100644
 -    " Unix:$\n     Right button extends selection, left button starts visual mode"
 +    " Unix:        Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index b1a938189..f7299ba46 100644
+index d69cbdae2..14471c19a 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -154,11 +154,6 @@ LangString str_unsection_rootdir    ${LANG_TRADCHINESE} \

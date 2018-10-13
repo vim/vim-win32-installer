@@ -1,7 +1,7 @@
-From 1c076dfd4020dbac278e6291a14241aa40473e5c Mon Sep 17 00:00:00 2001
+From 747161184149741a79a6a07e2f711a979572ebf8 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 15:20:04 +0900
-Subject: [PATCH 14/28] nsis: Fix some !ifdef conditions
+Subject: [PATCH 12/27] nsis: Fix some !ifdef conditions
 
 Newly add HAVE_VIS_VIM and make it disabled by default.
 VisVim is for VC 6.0.  Does anyone still use it?

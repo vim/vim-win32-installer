@@ -1,7 +1,7 @@
-From bfe0118f827ffb911a39e3cad14878bee839d544 Mon Sep 17 00:00:00 2001
+From e95fbeeb001c32012445aa54bfd5c3b77549bbb7 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sat, 13 Oct 2018 22:01:53 +0900
-Subject: [PATCH 32/32] nsis: Remove needless spaces
+Subject: [PATCH 27/27] nsis: Remove needless spaces
 
 ---
  nsis/lang/danish.nsi      |  4 ++--

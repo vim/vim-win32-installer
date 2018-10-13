@@ -1,7 +1,7 @@
-From 42c848f1bb4e000631abb0a0491fa42d632b733a Mon Sep 17 00:00:00 2001
+From 260f5a2dd17170e289b38268beee04f4301ce40a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:24:51 +0900
-Subject: [PATCH 20/28] nsis: Use DropLists instead of RadioButtons
+Subject: [PATCH 17/27] nsis: Use DropLists instead of RadioButtons
 
 The _vimrc setting screen was too noisy.
 Also adjust wording.
@@ -228,7 +228,7 @@ index eea123cdd..a8a095372 100644
  FunctionEnd
  
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 86de7d703..2539106c4 100644
+index c8b6d2c68..62fceb736 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -229,31 +229,37 @@ LangString str_msg_rm_root_fail  ${LANG_DUTCH} \
@@ -282,7 +282,7 @@ index 86de7d703..2539106c4 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index f340e6e1d..f0d696afe 100644
+index 700a88fb8..8a14bcbd3 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -238,31 +238,37 @@ LangString str_msg_rm_root_fail  ${LANG_ENGLISH} \
@@ -336,7 +336,7 @@ index f340e6e1d..f0d696afe 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index 3d43e6340..0a1d5d8ad 100644
+index 895e458ba..b9198defe 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -229,31 +229,37 @@ LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
@@ -390,7 +390,7 @@ index 3d43e6340..0a1d5d8ad 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index c29d1ef7f..3207f8828 100644
+index 6f6e20bdc..7de925e6c 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -238,31 +238,37 @@ LangString str_msg_rm_root_fail  ${LANG_ITALIAN} \
@@ -444,7 +444,7 @@ index c29d1ef7f..3207f8828 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index 3594c9f5e..e1114ae5a 100644
+index 678fa80e5..3f1411b6f 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -234,10 +234,12 @@ LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
@@ -491,7 +491,7 @@ index 3594c9f5e..e1114ae5a 100644
 -    " Unix:       右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
 +    "右：選択を拡張、左：ビジュアルモード (Unix)"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index 4cc495ea2..5fd38d081 100644
+index f835a635f..37b442214 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -225,31 +225,37 @@ LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
@@ -545,7 +545,7 @@ index 4cc495ea2..5fd38d081 100644
 -    " Unix:        Right button extends selection, left button starts visual mode"
 +    "Right: extends selection, Left: visual mode (Unix)"
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index f7299ba46..f6767d5e2 100644
+index 14471c19a..aff28edf3 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -226,31 +226,37 @@ LangString str_msg_rm_root_fail  ${LANG_TRADCHINESE} \

@@ -1,7 +1,7 @@
-From 5e003efe0c8b2f286d00da573f122a995b70a5ce Mon Sep 17 00:00:00 2001
+From 5c7784a60d8b03e7b8a5698c76b9cc856939bf40 Mon Sep 17 00:00:00 2001
 From: scootergrisen <scootergrisen@gmail.com>
 Date: Fri, 12 Oct 2018 21:57:57 +0200
-Subject: [PATCH 29/30] Add danish.nsi
+Subject: [PATCH 24/27] Add danish.nsi
 
 ---
  nsis/lang/danish.nsi | 181 +++++++++++++++++++++++++++++++++++++++++++

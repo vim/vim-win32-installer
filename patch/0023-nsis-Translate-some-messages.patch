@@ -1,7 +1,7 @@
-From 69f7541b48410a8c1c3e977a2f26b0e7a7db96c7 Mon Sep 17 00:00:00 2001
+From f2725d3cfd0f2ec6e4ae871e1694369fc30e452d Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 11 Oct 2018 21:18:02 +0900
-Subject: [PATCH 28/28] nsis: Translate some messages
+Subject: [PATCH 23/27] nsis: Translate some messages
 
 ---
  nsis/gvim.nsi             | 5 ++---
@@ -38,7 +38,7 @@ index b9a98ae68..a4cd27ccb 100644
  
  	# No error message if the "vim62" directory can't be removed, the
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 64f8cd851..23300c06b 100644
+index 544cf616d..2aeaef13d 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -215,7 +215,7 @@ LangString str_msg_install_fail  ${LANG_DUTCH} \
@@ -51,7 +51,7 @@ index 64f8cd851..23300c06b 100644
  
  LangString str_msg_rm_root_fail  ${LANG_DUTCH} \
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index 159e4ab85..3668afe26 100644
+index d77df8705..3be97653d 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -224,7 +224,7 @@ LangString str_msg_install_fail  ${LANG_ENGLISH} \
@@ -64,7 +64,7 @@ index 159e4ab85..3668afe26 100644
  
  LangString str_msg_rm_root_fail  ${LANG_ENGLISH} \
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index ffa3897d8..c432d987a 100644
+index e60e2366b..48284cc3c 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -214,7 +214,7 @@ LangString str_msg_install_fail  ${LANG_GERMAN} \
@@ -77,7 +77,7 @@ index ffa3897d8..c432d987a 100644
  
  LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index 5aa10454f..23444219d 100644
+index 32f5f0b8b..e32b69e24 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -224,7 +224,7 @@ LangString str_msg_install_fail  ${LANG_ITALIAN} \
@@ -90,7 +90,7 @@ index 5aa10454f..23444219d 100644
  
  LangString str_msg_rm_root_fail  ${LANG_ITALIAN} \
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index faa0bcec3..40cbd6461 100644
+index 9b8ccd029..a6a915512 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -217,11 +217,11 @@ LangString str_msg_abort_install ${LANG_JAPANESE} \
@@ -109,7 +109,7 @@ index faa0bcec3..40cbd6461 100644
  LangString str_msg_rm_root_fail  ${LANG_JAPANESE} \
      "WARNING: Cannot remove $\"$vim_install_root$\", it is not empty!"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index a4e2c990a..80ab0792c 100644
+index 3eda37f2d..c4b2ea2d9 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -210,7 +210,7 @@ LangString str_msg_install_fail  ${LANG_SIMPCHINESE} \
@@ -122,7 +122,7 @@ index a4e2c990a..80ab0792c 100644
  
  LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index 63eea8438..8ff094fce 100644
+index 7be198bd6..d65ba659b 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -211,7 +211,7 @@ LangString str_msg_install_fail  ${LANG_TRADCHINESE} \

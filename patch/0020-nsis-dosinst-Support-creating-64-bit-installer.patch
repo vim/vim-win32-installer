@@ -1,7 +1,7 @@
-From 7b87d53b2a321e32305849ef3aa4182451c31850 Mon Sep 17 00:00:00 2001
+From e39aa489fb786a98b51ac9efb25180ba31579977 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sun, 7 Oct 2018 10:39:11 +0900
-Subject: [PATCH 23/28] nsis,dosinst: Support creating 64-bit installer
+Subject: [PATCH 20/27] nsis,dosinst: Support creating 64-bit installer
 
 * Use $PROGRAMFILES64 for the default folder.
 * Adjust file names.
@@ -103,10 +103,10 @@ index c708c75d7..0aa456b43 100644
    !endif
  
 diff --git a/src/dosinst.c b/src/dosinst.c
-index 217b88ff4..8922f5c7f 100644
+index fba7250bb..6d5c95ba5 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
-@@ -1597,7 +1597,11 @@ install_registry(void)
+@@ -1609,7 +1609,11 @@ install_registry(void)
      }
  
      printf("Creating an uninstall entry\n");

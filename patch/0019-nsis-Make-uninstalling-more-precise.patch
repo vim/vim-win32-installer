@@ -1,7 +1,7 @@
-From 42a1c4ead608a2d81623ea9e43f141080806fcb9 Mon Sep 17 00:00:00 2001
+From 98923a7dc512ffc3aa80bb954ccd089d78a3ab2e Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sat, 6 Oct 2018 00:44:58 +0900
-Subject: [PATCH 22/28] nsis: Make uninstalling more precise
+Subject: [PATCH 19/27] nsis: Make uninstalling more precise
 
 * Use UninstallLib to delete gettext and iconv DLLs.
 * Delete GvimExt{32,64} and pack directories explicitly.
@@ -98,7 +98,7 @@ index 9e24c2bd5..c708c75d7 100644
  
  ##########################################################
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 2539106c4..3628c3445 100644
+index 62fceb736..629a1d515 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -149,7 +149,7 @@ LangString str_desc_rm_exe          ${LANG_DUTCH} \
@@ -111,7 +111,7 @@ index 2539106c4..3628c3445 100644
  LangString str_unsection_rootdir    ${LANG_DUTCH} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index f0d696afe..7acbfe990 100644
+index 8a14bcbd3..627720d3e 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -157,7 +157,7 @@ LangString str_desc_rm_exe          ${LANG_ENGLISH} \
@@ -124,7 +124,7 @@ index f0d696afe..7acbfe990 100644
  LangString str_unsection_rootdir    ${LANG_ENGLISH} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index 0a1d5d8ad..a828d183a 100644
+index b9198defe..eb312f28c 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -149,7 +149,7 @@ LangString str_desc_rm_exe          ${LANG_GERMAN} \
@@ -137,7 +137,7 @@ index 0a1d5d8ad..a828d183a 100644
  LangString str_unsection_rootdir    ${LANG_GERMAN} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index 3207f8828..7b63ba627 100644
+index 7de925e6c..dac24c1f4 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -156,7 +156,7 @@ LangString str_desc_rm_rc           ${LANG_ITALIAN} \
@@ -150,7 +150,7 @@ index 3207f8828..7b63ba627 100644
  LangString str_unsection_rootdir    ${LANG_ITALIAN} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index e1114ae5a..aa3d03046 100644
+index 3f1411b6f..d29a3a223 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -153,7 +153,7 @@ LangString str_desc_rm_exe          ${LANG_JAPANESE} \
@@ -163,7 +163,7 @@ index e1114ae5a..aa3d03046 100644
  LangString str_unsection_rootdir    ${LANG_JAPANESE} \
      "Vim のトップディレクトリを削除"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index 5fd38d081..38b98df6a 100644
+index 37b442214..93d733cfa 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -146,7 +146,7 @@ LangString str_desc_rm_exe          ${LANG_SIMPCHINESE} \
@@ -176,7 +176,7 @@ index 5fd38d081..38b98df6a 100644
  LangString str_unsection_rootdir    ${LANG_SIMPCHINESE} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index f6767d5e2..b5a4c7c8a 100644
+index aff28edf3..60ca3334d 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -147,7 +147,7 @@ LangString str_desc_rm_exe          ${LANG_TRADCHINESE} \
