@@ -1,1 +1,1 @@
-* [8.1.0471](https://github.com/vim/vim/releases/tag/v8.1.0471): some tests are flaky or fail on some systems
+* [8.1.0473](https://github.com/vim/vim/releases/tag/v8.1.0473): user doesn't notice file does not exist when swap file does\n* [8.1.0472](https://github.com/vim/vim/releases/tag/v8.1.0472): dosinst command has a few flaws
