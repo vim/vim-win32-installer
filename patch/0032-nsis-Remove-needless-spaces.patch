@@ -1,0 +1,163 @@
+From bfe0118f827ffb911a39e3cad14878bee839d544 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Sat, 13 Oct 2018 22:01:53 +0900
+Subject: [PATCH 32/32] nsis: Remove needless spaces
+
+---
+ nsis/lang/danish.nsi      |  4 ++--
+ nsis/lang/dutch.nsi       |  4 ++--
+ nsis/lang/english.nsi     |  4 ++--
+ nsis/lang/german.nsi      |  4 ++--
+ nsis/lang/italian.nsi     |  4 ++--
+ nsis/lang/japanese.nsi    | 12 ++++++------
+ nsis/lang/simpchinese.nsi |  4 ++--
+ nsis/lang/tradchinese.nsi |  4 ++--
+ 8 files changed, 20 insertions(+), 20 deletions(-)
+
+diff --git a/nsis/lang/danish.nsi b/nsis/lang/danish.nsi
+index 1dc18848c..16b9074a3 100644
+--- a/nsis/lang/danish.nsi
++++ b/nsis/lang/danish.nsi
+@@ -171,8 +171,8 @@ LangString str_msg_compat_all      ${LANG_DANISH}     "Vim med alle forbedringer
+ 
+ LangString str_msg_keymap_title   ${LANG_DANISH}     " Tilknytninger "
+ LangString str_msg_keymap_desc    ${LANG_DANISH}     "&Gentilknyt nogle få taster (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F osv.)"
+-LangString str_msg_keymap_default ${LANG_DANISH}     " Gentilknyt ikke taster (standard)"
+-LangString str_msg_keymap_windows ${LANG_DANISH}     " Gentilknyt nogle få taster"
++LangString str_msg_keymap_default ${LANG_DANISH}     "Gentilknyt ikke taster (standard)"
++LangString str_msg_keymap_windows ${LANG_DANISH}     "Gentilknyt nogle få taster"
+ 
+ LangString str_msg_mouse_title   ${LANG_DANISH}     " Mus "
+ LangString str_msg_mouse_desc    ${LANG_DANISH}     "&Opførsel af højre og venstre knapper"
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index f573da204..5e9f8e61a 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -258,9 +258,9 @@ LangString str_msg_keymap_title   ${LANG_DUTCH} \
+ LangString str_msg_keymap_desc    ${LANG_DUTCH} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_DUTCH} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_DUTCH} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_DUTCH} \
+     " Mouse "
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 4af0dbf0b..fd7ed5ec1 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -267,9 +267,9 @@ LangString str_msg_keymap_title   ${LANG_ENGLISH} \
+ LangString str_msg_keymap_desc    ${LANG_ENGLISH} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_ENGLISH} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_ENGLISH} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_ENGLISH} \
+     " Mouse "
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index 58d929191..78ab058e2 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -258,9 +258,9 @@ LangString str_msg_keymap_title   ${LANG_GERMAN} \
+ LangString str_msg_keymap_desc    ${LANG_GERMAN} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_GERMAN} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_GERMAN} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_GERMAN} \
+     " Mouse "
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index eb92c7b53..53c6980f9 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -267,9 +267,9 @@ LangString str_msg_keymap_title   ${LANG_ITALIAN} \
+ LangString str_msg_keymap_desc    ${LANG_ITALIAN} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_ITALIAN} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_ITALIAN} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_ITALIAN} \
+     " Mouse "
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index 644f4e5c3..ad86242c3 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -250,22 +250,22 @@ LangString str_msg_compat_title    ${LANG_JAPANESE} \
+ LangString str_msg_compat_desc     ${LANG_JAPANESE} \
+     "互換性と拡張(&C)"
+ LangString str_msg_compat_vi       ${LANG_JAPANESE} \
+-    " Vi 互換"
++    "Vi 互換"
+ LangString str_msg_compat_vim      ${LANG_JAPANESE} \
+-    " Vim 独自"
++    "Vim 独自"
+ LangString str_msg_compat_defaults ${LANG_JAPANESE} \
+-    " Vim 独自と多少の拡張"
++    "Vim 独自と多少の拡張"
+ LangString str_msg_compat_all      ${LANG_JAPANESE} \
+-    " Vim 独自と全ての拡張 (既定)"
++    "Vim 独自と全ての拡張 (既定)"
+ 
+ LangString str_msg_keymap_title   ${LANG_JAPANESE} \
+     " マッピング "
+ LangString str_msg_keymap_desc    ${LANG_JAPANESE} \
+     "いくつかのキーをリマップする(&R) (例: Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F など)"
+ LangString str_msg_keymap_default ${LANG_JAPANESE} \
+-    " リマップしない (既定)"
++    "リマップしない (既定)"
+ LangString str_msg_keymap_windows ${LANG_JAPANESE} \
+-    " リマップする"
++    "リマップする"
+ 
+ LangString str_msg_mouse_title   ${LANG_JAPANESE} \
+     " マウス "
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index e071d8311..623579a5e 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -254,9 +254,9 @@ LangString str_msg_keymap_title   ${LANG_SIMPCHINESE} \
+ LangString str_msg_keymap_desc    ${LANG_SIMPCHINESE} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_SIMPCHINESE} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_SIMPCHINESE} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_SIMPCHINESE} \
+     " Mouse "
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index 1394745ac..5c3ab7d7f 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -255,9 +255,9 @@ LangString str_msg_keymap_title   ${LANG_TRADCHINESE} \
+ LangString str_msg_keymap_desc    ${LANG_TRADCHINESE} \
+     "&Remap a few keys (Ctrl-V, Ctrl-C, Ctrl-A, Ctrl-S, Ctrl-F, etc)"
+ LangString str_msg_keymap_default ${LANG_TRADCHINESE} \
+-    " Do not remap keys (Default)"
++    "Do not remap keys (Default)"
+ LangString str_msg_keymap_windows ${LANG_TRADCHINESE} \
+-    " Remap a few keys"
++    "Remap a few keys"
+ 
+ LangString str_msg_mouse_title   ${LANG_TRADCHINESE} \
+     " Mouse "
+-- 
+2.17.0
+
