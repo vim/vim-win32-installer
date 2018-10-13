@@ -1,7 +1,7 @@
-From f50d072e846da2f677386b1d49babea76dbe62a3 Mon Sep 17 00:00:00 2001
+From b985f82532fc444064dccb2a587c08ee8f792cdb Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 16:52:32 +0900
-Subject: [PATCH 15/28] nsis: Fix installer directory
+Subject: [PATCH 13/27] nsis: Fix installer directory
 
 Fix that the installer didn't check the old version of installed
 directory and also $VIM.

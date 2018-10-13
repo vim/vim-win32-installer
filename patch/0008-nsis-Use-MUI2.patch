@@ -1,7 +1,7 @@
-From e7c6538c86ddb0c4d469665e5d2b74c58e923f28 Mon Sep 17 00:00:00 2001
+From 2abb9e3119ea2b4b34e48629bca937ec1ad6b9f7 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:08:08 +0900
-Subject: [PATCH 10/28] nsis: Use MUI2
+Subject: [PATCH 08/27] nsis: Use MUI2
 
 Mostly based on the @gpwen's work in vim-installer-mui2.
 
@@ -3855,10 +3855,10 @@ index 000000000..3a2ddc122
 +LangString str_msg_mouse_unix    ${LANG_ENGLISH} \
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/src/dosinst.c b/src/dosinst.c
-index d9405b577..126352b65 100644
+index b8c7ef82b..fba7250bb 100644
 --- a/src/dosinst.c
 +++ b/src/dosinst.c
-@@ -442,7 +442,7 @@ window_cb(HWND hwnd, LPARAM lparam)
+@@ -445,7 +445,7 @@ window_cb(HWND hwnd, LPARAM lparam)
  
      title[0] = 0;
      GetWindowText(hwnd, title, 256);

@@ -1,7 +1,7 @@
-From e028b58957b80424d719f14b097299926eb0e0c4 Mon Sep 17 00:00:00 2001
+From aeecd66565c49713675c4e5ca5a2e2e602a0c079 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Sat, 13 Oct 2018 21:50:16 +0900
-Subject: [PATCH 31/31] nsis: Comment out unused translation messages
+Subject: [PATCH 26/27] nsis: Comment out unused translation messages
 
 They were needed for gpwen's version. Currently, they are not used.
 ---

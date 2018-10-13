@@ -1,7 +1,7 @@
-From 109185412c159326023f5019bb6e8aabc4d9b6df Mon Sep 17 00:00:00 2001
+From a08aa0bbf7bd456228da3c3602a852449e84f83a Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:16:11 +0900
-Subject: [PATCH 11/28] nsis: Use InstallLib for installing DLLs
+Subject: [PATCH 09/27] nsis: Use InstallLib for installing DLLs
 
 It is more reliable and easier to read than the current implementation.
 ---

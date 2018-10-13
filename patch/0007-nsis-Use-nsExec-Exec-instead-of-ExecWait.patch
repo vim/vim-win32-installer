@@ -1,7 +1,7 @@
-From 22cd7870acf265141430ce69aaa1aec132b249dd Mon Sep 17 00:00:00 2001
+From 8c5a07fb2c70c91d5241b0384c84b080fdd79f72 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 07:06:40 +0900
-Subject: [PATCH 09/28] nsis: Use nsExec::Exec instead of ExecWait
+Subject: [PATCH 07/27] nsis: Use nsExec::Exec instead of ExecWait
 
 It doesn't show a noisy command prompt.
 ---

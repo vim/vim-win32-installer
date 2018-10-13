@@ -1,7 +1,7 @@
-From e63312e187e465719c71b03f6f0660924a0e2208 Mon Sep 17 00:00:00 2001
+From 8006271a64dccda0d08856df1a9934278c93160e Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 1 Oct 2018 06:58:49 +0900
-Subject: [PATCH 05/28] nsis: Register "EstimatedSize"
+Subject: [PATCH 05/27] nsis: Register "EstimatedSize"
 
 Show the estimated size in the control panel.
 ---

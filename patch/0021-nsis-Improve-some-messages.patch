@@ -1,7 +1,7 @@
-From 47b85c6cde9591400e567cc30f49ba88c8a77191 Mon Sep 17 00:00:00 2001
+From b93ca6c479a119c29435f0cfcbe31c908e0a38db Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Mon, 8 Oct 2018 11:59:48 +0900
-Subject: [PATCH 24/28] nsis: Improve some messages
+Subject: [PATCH 21/27] nsis: Improve some messages
 
 Show a message while waiting the uninstall of old version, or while
 executing install.exe or uninstal.exe.
@@ -45,7 +45,7 @@ index 0aa456b43..b9a98ae68 100644
  	Pop $3
  
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
-index 3628c3445..64f8cd851 100644
+index 629a1d515..544cf616d 100644
 --- a/nsis/lang/dutch.nsi
 +++ b/nsis/lang/dutch.nsi
 @@ -221,6 +221,15 @@ LangString str_msg_rm_exe_fail   ${LANG_DUTCH} \
@@ -65,7 +65,7 @@ index 3628c3445..64f8cd851 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index 7acbfe990..159e4ab85 100644
+index 627720d3e..d77df8705 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -230,6 +230,15 @@ LangString str_msg_rm_exe_fail   ${LANG_ENGLISH} \
@@ -85,7 +85,7 @@ index 7acbfe990..159e4ab85 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index a828d183a..ffa3897d8 100644
+index eb312f28c..e60e2366b 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -221,6 +221,15 @@ LangString str_msg_rm_root_fail  ${LANG_GERMAN} \
@@ -105,7 +105,7 @@ index a828d183a..ffa3897d8 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
-index 7b63ba627..5aa10454f 100644
+index dac24c1f4..32f5f0b8b 100644
 --- a/nsis/lang/italian.nsi
 +++ b/nsis/lang/italian.nsi
 @@ -230,6 +230,15 @@ LangString str_msg_rm_exe_fail   ${LANG_ITALIAN} \
@@ -125,7 +125,7 @@ index 7b63ba627..5aa10454f 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index aa3d03046..faa0bcec3 100644
+index d29a3a223..9b8ccd029 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -226,6 +226,15 @@ LangString str_msg_rm_exe_fail   ${LANG_JAPANESE} \
@@ -145,7 +145,7 @@ index aa3d03046..faa0bcec3 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
-index 38b98df6a..a4e2c990a 100644
+index 93d733cfa..3eda37f2d 100644
 --- a/nsis/lang/simpchinese.nsi
 +++ b/nsis/lang/simpchinese.nsi
 @@ -217,6 +217,15 @@ LangString str_msg_rm_root_fail  ${LANG_SIMPCHINESE} \
@@ -165,7 +165,7 @@ index 38b98df6a..a4e2c990a 100644
  ##############################################################################
  # Dialog Box                                                              {{{1
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
-index b5a4c7c8a..63eea8438 100644
+index 60ca3334d..7be198bd6 100644
 --- a/nsis/lang/tradchinese.nsi
 +++ b/nsis/lang/tradchinese.nsi
 @@ -218,6 +218,15 @@ LangString str_msg_rm_root_fail  ${LANG_TRADCHINESE} \

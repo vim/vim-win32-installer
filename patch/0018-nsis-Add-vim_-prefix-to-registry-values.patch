@@ -1,7 +1,7 @@
-From b72bc4c9debee0e68950724a87e4039bbfdc9915 Mon Sep 17 00:00:00 2001
+From 33a6dc7a61515c2dd0d392fc170fa84598b5a186 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 4 Oct 2018 14:36:31 +0900
-Subject: [PATCH 21/28] nsis: Add "vim_" prefix to registry values
+Subject: [PATCH 18/27] nsis: Add "vim_" prefix to registry values
 
 It might be better to add a prefix to avoid conflicts with the system
 values.

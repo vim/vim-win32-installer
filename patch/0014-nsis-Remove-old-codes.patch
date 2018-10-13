@@ -1,7 +1,7 @@
-From e4266a086652895fa6762cf5c5c080d398692ea4 Mon Sep 17 00:00:00 2001
+From 5df64fe8a45d3f5a95db82653711002c4f34a380 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 17:03:55 +0900
-Subject: [PATCH 16/28] nsis: Remove old codes
+Subject: [PATCH 14/27] nsis: Remove old codes
 
 Remove old codes which are no more needed for MUI2.
 "XPStyle on" is also removed. This is automatically enabled in MUI2.
