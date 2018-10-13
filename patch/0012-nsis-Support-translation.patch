@@ -1,7 +1,7 @@
-From 834096f4ccfc0740b86904962c9bbbe6e6be1aba Mon Sep 17 00:00:00 2001
+From 1ef46ecd02006e897bd0b71a0553676a0006a3de Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 2 Oct 2018 14:51:51 +0900
-Subject: [PATCH 12/28] nsis: Support translation
+Subject: [PATCH 12/30] nsis: Support translation
 
 Import most part from gpwen's work.
 ---
@@ -329,7 +329,7 @@ index 306184cb7..9be7d3fb0 100644
 +!insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
 new file mode 100644
-index 000000000..0e08d758a
+index 000000000..38cf6de19
 --- /dev/null
 +++ b/nsis/lang/dutch.nsi
 @@ -0,0 +1,243 @@
@@ -347,7 +347,7 @@ index 000000000..0e08d758a
 +!insertmacro MUI_LANGUAGE "Dutch"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_DUTCH} \
 +        "$(^Name) Setup"
@@ -577,14 +577,14 @@ index 000000000..0e08d758a
 +LangString str_msg_mouse_unix    ${LANG_DUTCH} \
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
-index 3a2ddc122..8ef333eae 100644
+index 3a2ddc122..4b1ed020f 100644
 --- a/nsis/lang/english.nsi
 +++ b/nsis/lang/english.nsi
 @@ -21,6 +21,13 @@
  !insertmacro MUI_LANGUAGE "English"
  
  
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_ENGLISH} \
 +        "$(^Name) Setup"
@@ -653,7 +653,7 @@ index 3a2ddc122..8ef333eae 100644
  ##############################################################################
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
 new file mode 100644
-index 000000000..61be2b665
+index 000000000..59a741b94
 --- /dev/null
 +++ b/nsis/lang/german.nsi
 @@ -0,0 +1,243 @@
@@ -670,7 +670,7 @@ index 000000000..61be2b665
 +!insertmacro MUI_LANGUAGE "German"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_GERMAN} \
 +        "$(^Name) Setup"
@@ -902,7 +902,7 @@ index 000000000..61be2b665
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
 new file mode 100644
-index 000000000..3ccf835ee
+index 000000000..5c823f973
 --- /dev/null
 +++ b/nsis/lang/italian.nsi
 @@ -0,0 +1,252 @@
@@ -920,7 +920,7 @@ index 000000000..3ccf835ee
 +!insertmacro MUI_LANGUAGE "Italian"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_ITALIAN} \
 +        "$(^Name) Setup"
@@ -1160,7 +1160,7 @@ index 000000000..3ccf835ee
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
 new file mode 100644
-index 000000000..93cae55ce
+index 000000000..f398faf5e
 --- /dev/null
 +++ b/nsis/lang/japanese.nsi
 @@ -0,0 +1,238 @@
@@ -1177,7 +1177,7 @@ index 000000000..93cae55ce
 +!insertmacro MUI_LANGUAGE "Japanese"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_JAPANESE} \
 +        "$(^Name) Setup"
@@ -1404,7 +1404,7 @@ index 000000000..93cae55ce
 +    " Unix:$\n     右ボタンは選択を拡張、左ボタンはビジュアルモードを開始"
 diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
 new file mode 100644
-index 000000000..b4c1e3d32
+index 000000000..96c248350
 --- /dev/null
 +++ b/nsis/lang/simpchinese.nsi
 @@ -0,0 +1,239 @@
@@ -1422,7 +1422,7 @@ index 000000000..b4c1e3d32
 +!insertmacro MUI_LANGUAGE "SimpChinese"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_SIMPCHINESE} \
 +        "$(^Name) Setup"
@@ -1649,7 +1649,7 @@ index 000000000..b4c1e3d32
 +    " Unix:$\n     Right button extends selection, left button starts visual mode"
 diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
 new file mode 100644
-index 000000000..b1a938189
+index 000000000..d69cbdae2
 --- /dev/null
 +++ b/nsis/lang/tradchinese.nsi
 @@ -0,0 +1,240 @@
@@ -1667,7 +1667,7 @@ index 000000000..b1a938189
 +!insertmacro MUI_LANGUAGE "TradChinese"
 +
 +
-+# Overwite the default translation.
++# Overwrite the default translation.
 +# These string should be always English.  Otherwise dosinst.c fails.
 +LangString ^SetupCaption     ${LANG_TRADCHINESE} \
 +        "$(^Name) Setup"
