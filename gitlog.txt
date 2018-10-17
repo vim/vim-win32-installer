@@ -1,1 +1,1 @@
-* [8.1.0481](https://github.com/vim/vim/releases/tag/v8.1.0481): when "Terminal" highlight is reverted cursor doesn't show\n* [8.1.0480](https://github.com/vim/vim/releases/tag/v8.1.0480): MinGW build file uses different -I flags than MVC
+* [8.1.0483](https://github.com/vim/vim/releases/tag/v8.1.0483): MinGW does not build tee.exe\n* [8.1.0482](https://github.com/vim/vim/releases/tag/v8.1.0482): MinGW "make clean" deletes all .exe files
