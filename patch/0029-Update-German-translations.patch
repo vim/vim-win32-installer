@@ -1,4 +1,4 @@
-From 2a0121208b94cd28f163c6c15f4932170d8393a0 Mon Sep 17 00:00:00 2001
+From b60e63d771de8e7a64d66e879a5dc85be1a00cdf Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 23 Oct 2018 00:32:45 +0900
 Subject: [PATCH 29/30] Update German translations
@@ -9,7 +9,7 @@ Subject: [PATCH 29/30] Update German translations
  1 file changed, 29 insertions(+), 30 deletions(-)
 
 diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
-index 78ab058e2..155d02277 100644
+index 78ab058e2..02079d593 100644
 --- a/nsis/lang/german.nsi
 +++ b/nsis/lang/german.nsi
 @@ -51,7 +51,7 @@ LangString str_desc_old_ver         ${LANG_GERMAN} \
@@ -137,7 +137,7 @@ index 78ab058e2..155d02277 100644
 +    " Maus "
  LangString str_msg_mouse_desc    ${LANG_GERMAN} \
 -    "&Behavior of right and left buttons"
-+    "&Verhalten von Links und Rechts Buttons"
++    "&Verhalten der linken und rechten Buttons"
  LangString str_msg_mouse_default ${LANG_GERMAN} \
 -    "Right: popup menu, Left: visual mode (Default)"
 +    "Rechts: Popup Menü, Links: Visueller Modus (Standard)"
