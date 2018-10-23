@@ -1,1 +1,1 @@
-* [8.1.0490](https://github.com/vim/vim/releases/tag/v8.1.0490): MS-Windows: doesn't handle missing glibwinpthread-1.dll\n* [8.1.0489](https://github.com/vim/vim/releases/tag/v8.1.0489): crash when autocmd clears vimpgrep location list
+* [8.1.0491](https://github.com/vim/vim/releases/tag/v8.1.0491): if a terminal dump has CR it is considered corrupt
