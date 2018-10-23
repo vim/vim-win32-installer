@@ -1,0 +1,65 @@
+From a2ba3977dc3e45188dd8b9c64d5e1960063058d0 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 23 Oct 2018 08:15:20 +0900
+Subject: [PATCH 31/31] nsis: Add the language selection dialog
+
+The selected language will be stored at `HKCU\Software\Vim\`.
+---
+ nsis/gvim.nsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 1b687d236..89a5d0755 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -97,6 +97,9 @@ RequestExecutionLevel highest
+ 
+ # Show all languages, despite user's codepage:
+ !define MUI_LANGDLL_ALLLANGUAGES
++!define MUI_LANGDLL_REGISTRY_ROOT       "HKCU"
++!define MUI_LANGDLL_REGISTRY_KEY        "Software\Vim"
++!define MUI_LANGDLL_REGISTRY_VALUENAME  "Installer Language"
+ 
+ !define MUI_WELCOMEFINISHPAGE_BITMAP       "icons\welcome.bmp"
+ !define MUI_UNWELCOMEFINISHPAGE_BITMAP     "icons\uninstall.bmp"
+@@ -312,6 +315,11 @@ SectionEnd
+ 
+ ##########################################################
+ Function .onInit
++!ifdef HAVE_MULTI_LANG
++  # Select a language (or read from the registry).
++  !insertmacro MUI_LANGDLL_DISPLAY
++!endif
++
+   # Check $VIM
+   ReadEnvStr $INSTDIR "VIM"
+ 
+@@ -869,6 +877,15 @@ FunctionEnd
+ 
+ 
+ ##########################################################
++# Uninstaller Functions and Sections
++
++Function un.onInit
++!ifdef HAVE_MULTI_LANG
++  # Get the language from the registry.
++  !insertmacro MUI_UNGETLANGUAGE
++!endif
++FunctionEnd
++
+ Section "un.$(str_unsection_register)" id_unsection_register
+ 	SectionIn RO
+ 
+@@ -890,6 +907,9 @@ Section "un.$(str_unsection_register)" id_unsection_register
+ 
+ 	# We may have been put to the background when uninstall did something.
+ 	BringToFront
++
++	# Delete the installer language setting.
++	DeleteRegKey ${MUI_LANGDLL_REGISTRY_ROOT} ${MUI_LANGDLL_REGISTRY_KEY}
+ SectionEnd
+ 
+ Section "un.$(str_unsection_exe)" id_unsection_exe
+-- 
+2.17.0
+
