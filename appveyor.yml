@@ -59,6 +59,7 @@ before_deploy:
 deploy:
   - provider: GitHub
     description: |
+      ![Github Downloads (by Release)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/total.svg)
       Nightly Vim Windows build snapshots ([more information](http://vim.wikia.com/wiki/Where_to_download_Vim)).
 
       ### Changes:
