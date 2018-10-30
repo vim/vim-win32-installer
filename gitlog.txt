@@ -1,1 +1,1 @@
-* [8.1.0500](https://github.com/vim/vim/releases/tag/v8.1.0500): cleaning up in src/tee may not always work\n* [8.1.0499](https://github.com/vim/vim/releases/tag/v8.1.0499): :2vimgrep causes an ml_get error
+* [8.1.0501](https://github.com/vim/vim/releases/tag/v8.1.0501): cppcheck warns for using array index before bounds check
