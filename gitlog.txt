@@ -1,1 +1,1 @@
-* [8.1.0502](https://github.com/vim/vim/releases/tag/v8.1.0502): internal diff fails when diffing a context diff
+* [8.1.0503](https://github.com/vim/vim/releases/tag/v8.1.0503): missing change to diff test
