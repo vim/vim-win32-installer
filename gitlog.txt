@@ -1,1 +1,1 @@
-* [8.1.0503](https://github.com/vim/vim/releases/tag/v8.1.0503): missing change to diff test
+* [8.1.0504](https://github.com/vim/vim/releases/tag/v8.1.0504): when CTRL-C is mapped it triggers InsertLeave
