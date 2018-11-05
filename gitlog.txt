@@ -1,1 +1,1 @@
-* [8.1.0511](https://github.com/vim/vim/releases/tag/v8.1.0511): ml_get error when calling a function with a range\n* Update runtime files\n* [8.1.0510](https://github.com/vim/vim/releases/tag/v8.1.0510): filter test fails when $LANG is C.UTF-8
+* [8.1.0513](https://github.com/vim/vim/releases/tag/v8.1.0513): no error for set diffopt+=algorithm:\n* [8.1.0512](https://github.com/vim/vim/releases/tag/v8.1.0512): 'helplang' default is inconsistent for C and C.UTF-8
