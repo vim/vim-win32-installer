@@ -1,0 +1,34 @@
+From 9be6b98fd788a025bf73cc2f6d1eec3b6f0c7dc7 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 8 Nov 2018 09:55:32 +0900
+Subject: [PATCH 38/38] nsis: Don't show any message boxes in the silent mode
+
+---
+ nsis/gvim.nsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index a64f2537c..65e1d4e96 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -767,7 +767,7 @@ Function .onInstSuccess
+ FunctionEnd
+ 
+ Function .onInstFailed
+-  MessageBox MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
++  MessageBox /SD MB_OK MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
+ FunctionEnd
+ 
+ ##########################################################
+@@ -1067,7 +1067,7 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 	Delete $0\*.txt
+ 
+ 	${If} ${Errors}
+-	  MessageBox MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail)
++	  MessageBox /SD MB_OK MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail)
+ 	${EndIf}
+ 
+ 	# No error message if the "vim62" directory can't be removed, the
+-- 
+2.17.0
+
