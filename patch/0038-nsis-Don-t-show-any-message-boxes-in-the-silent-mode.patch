@@ -1,4 +1,4 @@
-From 9be6b98fd788a025bf73cc2f6d1eec3b6f0c7dc7 Mon Sep 17 00:00:00 2001
+From 4ab916e188d72e649a26ab05b0e69759eaaa18d6 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Thu, 8 Nov 2018 09:55:32 +0900
 Subject: [PATCH 38/38] nsis: Don't show any message boxes in the silent mode
@@ -8,7 +8,7 @@ Subject: [PATCH 38/38] nsis: Don't show any message boxes in the silent mode
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index a64f2537c..65e1d4e96 100644
+index a64f2537c..75199190a 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -767,7 +767,7 @@ Function .onInstSuccess
@@ -16,7 +16,7 @@ index a64f2537c..65e1d4e96 100644
  
  Function .onInstFailed
 -  MessageBox MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
-+  MessageBox /SD MB_OK MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)"
++  MessageBox MB_OK|MB_ICONEXCLAMATION "$(str_msg_install_fail)" /SD IDOK
  FunctionEnd
  
  ##########################################################
@@ -25,7 +25,7 @@ index a64f2537c..65e1d4e96 100644
  
  	${If} ${Errors}
 -	  MessageBox MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail)
-+	  MessageBox /SD MB_OK MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail)
++	  MessageBox MB_OK|MB_ICONEXCLAMATION $(str_msg_rm_exe_fail) /SD IDOK
  	${EndIf}
  
  	# No error message if the "vim62" directory can't be removed, the
