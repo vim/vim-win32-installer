@@ -1,1 +1,1 @@
-* [8.1.0526](https://github.com/vim/vim/releases/tag/v8.1.0526): running out of signal stack in RealWaitForChar\n* [8.1.0525](https://github.com/vim/vim/releases/tag/v8.1.0525): terminal test skips part on Windows
+* [8.1.0527](https://github.com/vim/vim/releases/tag/v8.1.0527): using 'shiftwidth' from wrong buffer for folding
