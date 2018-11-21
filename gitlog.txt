@@ -1,1 +1,1 @@
-* [8.1.0540](https://github.com/vim/vim/releases/tag/v8.1.0540): may evaluate insecure value when appending to option\n* [8.1.0539](https://github.com/vim/vim/releases/tag/v8.1.0539): cannot build without the sandbox\n* [8.1.0538](https://github.com/vim/vim/releases/tag/v8.1.0538): evaluating a modeline might invoke using a shell command\n* [8.1.0537](https://github.com/vim/vim/releases/tag/v8.1.0537): ui_breakcheck() may be called recursively
+* [8.1.0541](https://github.com/vim/vim/releases/tag/v8.1.0541): help message in dosinst.c is outdated
