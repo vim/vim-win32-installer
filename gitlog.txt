@@ -1,1 +1,1 @@
-* [8.1.0542](https://github.com/vim/vim/releases/tag/v8.1.0542): shiftwidth() does not take 'vartabstop' into account
+* [8.1.0543](https://github.com/vim/vim/releases/tag/v8.1.0543): Coverity warns for leaking memory and using wrong struct
