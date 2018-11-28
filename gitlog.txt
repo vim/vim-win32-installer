@@ -1,1 +1,1 @@
-* [8.1.0549](https://github.com/vim/vim/releases/tag/v8.1.0549): netbeans test depends on README.txt contents\n* [8.1.0548](https://github.com/vim/vim/releases/tag/v8.1.0548): crash when job callback unloads a buffer
+* [8.1.0551](https://github.com/vim/vim/releases/tag/v8.1.0551): expression evaluation may repeat an error message\n* [8.1.0550](https://github.com/vim/vim/releases/tag/v8.1.0550): expression evaluation may repeat an error message
