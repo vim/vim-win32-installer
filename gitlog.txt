@@ -1,1 +1,1 @@
-* [8.1.0551](https://github.com/vim/vim/releases/tag/v8.1.0551): expression evaluation may repeat an error message\n* [8.1.0550](https://github.com/vim/vim/releases/tag/v8.1.0550): expression evaluation may repeat an error message
+* [8.1.0553](https://github.com/vim/vim/releases/tag/v8.1.0553): it is not easy to edit a script that was sourced\n* [8.1.0552](https://github.com/vim/vim/releases/tag/v8.1.0552): saved last search pattern may not be restored
