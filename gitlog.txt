@@ -1,1 +1,1 @@
-* [8.1.0553](https://github.com/vim/vim/releases/tag/v8.1.0553): it is not easy to edit a script that was sourced\n* [8.1.0552](https://github.com/vim/vim/releases/tag/v8.1.0552): saved last search pattern may not be restored
+* [8.1.0556](https://github.com/vim/vim/releases/tag/v8.1.0556): saving/restoring search patterns share saved last_idx\n* [8.1.0555](https://github.com/vim/vim/releases/tag/v8.1.0555): crash when last search pat is set but not last substitute pat\n* [8.1.0554](https://github.com/vim/vim/releases/tag/v8.1.0554): popup menu overlaps with preview window
