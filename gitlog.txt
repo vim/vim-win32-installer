@@ -1,1 +1,1 @@
-* [8.1.0560](https://github.com/vim/vim/releases/tag/v8.1.0560): cannot use address type "other" with with user command\n* [8.1.0559](https://github.com/vim/vim/releases/tag/v8.1.0559): command line completion not sufficiently tested\n* [8.1.0558](https://github.com/vim/vim/releases/tag/v8.1.0558): some MS-Windows instructions are outdated\n* [8.1.0557](https://github.com/vim/vim/releases/tag/v8.1.0557): Termdebug: gdb may use X.Y for breakpoint number
+* [8.1.0561](https://github.com/vim/vim/releases/tag/v8.1.0561): MSCV error format has changed
