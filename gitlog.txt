@@ -1,1 +1,1 @@
-* [8.1.0561](https://github.com/vim/vim/releases/tag/v8.1.0561): MSCV error format has changed
+* [8.1.0563](https://github.com/vim/vim/releases/tag/v8.1.0563): setting v:errors to a string give confusing error\n* [8.1.0562](https://github.com/vim/vim/releases/tag/v8.1.0562): parsing of 'diffopt' is slightly wrong
