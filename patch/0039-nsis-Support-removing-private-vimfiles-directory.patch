@@ -1,0 +1,396 @@
+From 7019075fd24ba1e332b9c9958ea3772e91f1e0af Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Tue, 4 Dec 2018 16:03:41 +0900
+Subject: [PATCH 39/41] nsis: Support removing private vimfiles directory
+
+Also update the $(str_desc_plugin_home) message for 8.1.0534.
+Also changed the messages from "vimfiles directory" to "plugin
+directories".
+---
+ nsis/gvim.nsi             | 72 ++++++++++++++++++++++++++-------------
+ nsis/lang/danish.nsi      | 12 +++++--
+ nsis/lang/dutch.nsi       | 21 ++++++++----
+ nsis/lang/english.nsi     | 21 ++++++++----
+ nsis/lang/german.nsi      | 14 ++++++--
+ nsis/lang/italian.nsi     | 21 ++++++++----
+ nsis/lang/japanese.nsi    | 20 ++++++++---
+ nsis/lang/simpchinese.nsi | 21 ++++++++----
+ nsis/lang/tradchinese.nsi | 21 ++++++++----
+ 9 files changed, 161 insertions(+), 62 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 75199190a..6fbc071f2 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -1075,26 +1075,50 @@ Section "un.$(str_unsection_exe)" id_unsection_exe
+ 	RMDir $0
+ SectionEnd
+ 
+-Section "un.$(str_unsection_vimfiles)" id_unsection_vimfiles
+-	# get the parent dir of the installation
+-	Push $INSTDIR
+-	Call un.GetParent
+-	Pop $1
+-
+-	# if a plugin dir was created at installation remove it
+-	${If} ${FileExists} $1\vimfiles
+-	  RMDir $1\vimfiles\colors
+-	  RMDir $1\vimfiles\compiler
+-	  RMDir $1\vimfiles\doc
+-	  RMDir $1\vimfiles\ftdetect
+-	  RMDir $1\vimfiles\ftplugin
+-	  RMDir $1\vimfiles\indent
+-	  RMDir $1\vimfiles\keymap
+-	  RMDir $1\vimfiles\plugin
+-	  RMDir $1\vimfiles\syntax
+-	  RMDir $1\vimfiles
++# Remove "vimfiles" directory under the specified directory.
++!macro RemoveVimfiles dir
++	${If} ${FileExists} ${dir}\vimfiles
++	  RMDir ${dir}\vimfiles\colors
++	  RMDir ${dir}\vimfiles\compiler
++	  RMDir ${dir}\vimfiles\doc
++	  RMDir ${dir}\vimfiles\ftdetect
++	  RMDir ${dir}\vimfiles\ftplugin
++	  RMDir ${dir}\vimfiles\indent
++	  RMDir ${dir}\vimfiles\keymap
++	  RMDir ${dir}\vimfiles\plugin
++	  RMDir ${dir}\vimfiles\syntax
++	  RMDir ${dir}\vimfiles
+ 	${EndIf}
+-SectionEnd
++!macroend
++
++SectionGroup "un.$(str_ungroup_plugin)" id_ungroup_plugin
++	Section /o "un.$(str_unsection_plugin_home)" id_unsection_plugin_home
++		# get the home dir
++		ReadEnvStr $0 "HOME"
++		${If} $0 == ""
++		  ReadEnvStr $0 "HOMEDRIVE"
++		  ReadEnvStr $1 "HOMEPATH"
++		  StrCpy $0 "$0$1"
++		  ${If} $0 == ""
++		    ReadEnvStr $0 "USERPROFILE"
++		  ${EndIf}
++		${EndIf}
++
++		${If} $0 != ""
++		  !insertmacro RemoveVimfiles $0
++		${EndIf}
++	SectionEnd
++
++	Section "un.$(str_unsection_plugin_vim)" id_unsection_plugin_vim
++		# get the parent dir of the installation
++		Push $INSTDIR
++		Call un.GetParent
++		Pop $0
++
++		# if a plugin dir was created at installation remove it
++		!insertmacro RemoveVimfiles $0
++	SectionEnd
++SectionGroupEnd
+ 
+ Section "un.$(str_unsection_rootdir)" id_unsection_rootdir
+ 	# get the parent dir of the installation
+@@ -1110,8 +1134,10 @@ SectionEnd
+ # Description for Uninstaller Sections
+ 
+ !insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
+-    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_register} $(str_desc_unregister)
+-    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_exe}      $(str_desc_rm_exe)
+-    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_vimfiles} $(str_desc_rm_vimfiles)
+-    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_rootdir}  $(str_desc_rm_rootdir)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_register}    $(str_desc_unregister)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_exe}         $(str_desc_rm_exe)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_ungroup_plugin}        $(str_desc_rm_plugin)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_plugin_home} $(str_desc_rm_plugin_home)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_plugin_vim}  $(str_desc_rm_plugin_vim)
++    !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_rootdir}     $(str_desc_rm_rootdir)
+ !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
+diff --git a/nsis/lang/danish.nsi b/nsis/lang/danish.nsi
+index a64810b43..faed5a982 100644
+--- a/nsis/lang/danish.nsi
++++ b/nsis/lang/danish.nsi
+@@ -103,8 +103,16 @@ LangString str_desc_unregister      ${LANG_DANISH}     "Afregistrer Vim fra syst
+ LangString str_unsection_exe        ${LANG_DANISH}     "Fjern Vim-eksekverbare-/afviklingsfiler"
+ LangString str_desc_rm_exe          ${LANG_DANISH}     "Fjern alle Vim-eksekverbare- og afviklingsfiler."
+ 
+-LangString str_unsection_vimfiles   ${LANG_DANISH}     "Fjern vimfiles-mappe"
+-LangString str_desc_rm_vimfiles     ${LANG_DANISH}     "Fjern vimfiles-mappen hvis den er tom."
++LangString str_ungroup_plugin       ${LANG_DANISH}     "Fjern vimfiles-mappe"
++LangString str_desc_rm_plugin       ${LANG_DANISH}     "Fjern vimfiles-mappen hvis den er tom."
++
++LangString str_unsection_plugin_home ${LANG_DANISH}    "Private"
++LangString str_desc_rm_plugin_home  ${LANG_DANISH} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_DANISH}     "Delte"
++LangString str_desc_rm_plugin_vim   ${LANG_DANISH} \
++    "Remove the plugin directories from Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_DANISH}     "Fjern Vim-rodmappen"
+ LangString str_desc_rm_rootdir      ${LANG_DANISH}     "Fjern Vim-rodmappen. Den indeholder dine Vim-konfigurationsfiler!"
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index 1f3ffbfa0..e548687d1 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -117,8 +117,7 @@ LangString str_desc_plugin          ${LANG_DUTCH} \
+ LangString str_section_plugin_home  ${LANG_DUTCH} \
+     "Privé"
+ LangString str_desc_plugin_home     ${LANG_DUTCH} \
+-    "Creëer plugin mappen in HOME (als je deze gedefinieerd hebt) \
+-     of Vim installatie map."
++    "Create plugin directories in HOME directory."
+ 
+ LangString str_section_plugin_vim   ${LANG_DUTCH} \
+     "Gedeeld"
+@@ -146,10 +145,20 @@ LangString str_unsection_exe        ${LANG_DUTCH} \
+ LangString str_desc_rm_exe          ${LANG_DUTCH} \
+     "Verwijder alle Vim uitvoerbare bestanden en runtime bestanden."
+ 
+-LangString str_unsection_vimfiles   ${LANG_DUTCH} \
+-    "Remove vimfiles directory"
+-LangString str_desc_rm_vimfiles     ${LANG_DUTCH} \
+-    "Remove the vimfiles directory if it is empty."
++LangString str_ungroup_plugin       ${LANG_DUTCH} \
++    "Remove plugin directories"
++LangString str_desc_rm_plugin       ${LANG_DUTCH} \
++    "Remove the plugin directories if they are empty."
++
++LangString str_unsection_plugin_home ${LANG_DUTCH} \
++    "Privé"
++LangString str_desc_rm_plugin_home  ${LANG_DUTCH} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_DUTCH} \
++    "Gedeeld"
++LangString str_desc_rm_plugin_vim   ${LANG_DUTCH} \
++    "Remove the plugin directories from Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_DUTCH} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 859b28d7a..75ca8474b 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -125,8 +125,7 @@ LangString str_desc_plugin          ${LANG_ENGLISH} \
+ LangString str_section_plugin_home  ${LANG_ENGLISH} \
+     "Private"
+ LangString str_desc_plugin_home     ${LANG_ENGLISH} \
+-    "Create plugin directories in HOME (if you defined one) or Vim \
+-     install directory."
++    "Create plugin directories in HOME directory."
+ 
+ LangString str_section_plugin_vim   ${LANG_ENGLISH} \
+     "Shared"
+@@ -154,10 +153,20 @@ LangString str_unsection_exe        ${LANG_ENGLISH} \
+ LangString str_desc_rm_exe          ${LANG_ENGLISH} \
+     "Remove all Vim executables and runtime files."
+ 
+-LangString str_unsection_vimfiles   ${LANG_ENGLISH} \
+-    "Remove vimfiles directory"
+-LangString str_desc_rm_vimfiles     ${LANG_ENGLISH} \
+-    "Remove the vimfiles directory if it is empty."
++LangString str_ungroup_plugin       ${LANG_ENGLISH} \
++    "Remove plugin directories"
++LangString str_desc_rm_plugin       ${LANG_ENGLISH} \
++    "Remove the plugin directories if they are empty."
++
++LangString str_unsection_plugin_home ${LANG_ENGLISH} \
++    "Private"
++LangString str_desc_rm_plugin_home  ${LANG_ENGLISH} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_ENGLISH} \
++    "Shared"
++LangString str_desc_rm_plugin_vim   ${LANG_ENGLISH} \
++    "Remove the plugin directories from Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_ENGLISH} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index 15e47089d..f0ffffb02 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -145,11 +145,21 @@ LangString str_unsection_exe        ${LANG_GERMAN} \
+ LangString str_desc_rm_exe          ${LANG_GERMAN} \
+     "Alle Vim-Anwendungen und Laufzeitdateien von diesem System entfernen."
+ 
+-LangString str_unsection_vimfiles   ${LANG_GERMAN} \
++LangString str_ungroup_plugin       ${LANG_GERMAN} \
+     "Entferne vimfiles Verzeichnis"
+-LangString str_desc_rm_vimfiles     ${LANG_GERMAN} \
++LangString str_desc_rm_plugin       ${LANG_GERMAN} \
+     "Entfernt das vimfiles Verzeichnis, falls es leer ist."
+ 
++LangString str_unsection_plugin_home ${LANG_GERMAN} \
++    "Privat"
++LangString str_desc_rm_plugin_home  ${LANG_GERMAN} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_GERMAN} \
++    "Freigegeben"
++LangString str_desc_rm_plugin_vim   ${LANG_GERMAN} \
++    "Remove the plugin directories from Vim install directory."
++
+ LangString str_unsection_rootdir    ${LANG_GERMAN} \
+     "Entferne Vim Installationsverzeichnis"
+ LangString str_desc_rm_rootdir      ${LANG_GERMAN} \
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index 5cbdba056..67af349af 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -118,8 +118,7 @@ LangString str_desc_plugin          ${LANG_ITALIAN} \
+ LangString str_section_plugin_home  ${LANG_ITALIAN} \
+     "Privato"
+ LangString str_desc_plugin_home     ${LANG_ITALIAN} \
+-    "Crea Directory Plugin in HOME (se definita) o nella \
+-     directory di installazione di Vim."
++    "Create plugin directories in HOME directory."
+ 
+ LangString str_section_plugin_vim   ${LANG_ITALIAN} \
+     "Condiviso"
+@@ -153,10 +152,20 @@ LangString str_desc_rm_rc           ${LANG_ITALIAN} \
+     "Cancella file di configurazione di Vim $vim_install_root\_vimrc. \
+      Da saltare se avete personalizzato il file di configurazione."
+ 
+-LangString str_unsection_vimfiles   ${LANG_ITALIAN} \
+-    "Remove vimfiles directory"
+-LangString str_desc_rm_vimfiles     ${LANG_ITALIAN} \
+-    "Remove the vimfiles directory if it is empty."
++LangString str_ungroup_plugin       ${LANG_ITALIAN} \
++    "Remove plugin directories"
++LangString str_desc_rm_plugin       ${LANG_ITALIAN} \
++    "Remove the plugin directories if they are empty."
++
++LangString str_unsection_plugin_home ${LANG_ITALIAN} \
++    "Privato"
++LangString str_desc_rm_plugin_home  ${LANG_ITALIAN} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_ITALIAN} \
++    "Condiviso"
++LangString str_desc_rm_plugin_vim   ${LANG_ITALIAN} \
++    "Remove the plugin directories from Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_ITALIAN} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index ce0b15b9c..16d191d51 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -123,7 +123,7 @@ LangString str_desc_plugin          ${LANG_JAPANESE} \
+ LangString str_section_plugin_home  ${LANG_JAPANESE} \
+     "個人用"
+ LangString str_desc_plugin_home     ${LANG_JAPANESE} \
+-    "プラグインディレクトリを HOME (もし定義していれば)、または Vim のインストールディレクトリに作成します。"
++    "プラグインディレクトリを HOME ディレクトリに作成します。"
+ 
+ LangString str_section_plugin_vim   ${LANG_JAPANESE} \
+     "共用"
+@@ -150,10 +150,20 @@ LangString str_unsection_exe        ${LANG_JAPANESE} \
+ LangString str_desc_rm_exe          ${LANG_JAPANESE} \
+     "全ての Vim の実行ファイルとランタイムファイルを削除します。"
+ 
+-LangString str_unsection_vimfiles   ${LANG_JAPANESE} \
+-    "vimfiles ディレクトリを削除"
+-LangString str_desc_rm_vimfiles     ${LANG_JAPANESE} \
+-    "vimfiles ディレクトリが空であればそれを削除します。"
++LangString str_ungroup_plugin       ${LANG_JAPANESE} \
++    "プラグインディレクトリを削除"
++LangString str_desc_rm_plugin       ${LANG_JAPANESE} \
++    "プラグインディレクトリが空であればそれを削除します。"
++
++LangString str_unsection_plugin_home ${LANG_JAPANESE} \
++    "個人用"
++LangString str_desc_rm_plugin_home  ${LANG_JAPANESE} \
++    "プラグインディレクトリをホームディレクトリから削除します。"
++
++LangString str_unsection_plugin_vim ${LANG_JAPANESE} \
++    "共用"
++LangString str_desc_rm_plugin_vim   ${LANG_JAPANESE} \
++    "プラグインディレクトリを Vim のインストールディレクトリから削除します。"
+ 
+ LangString str_unsection_rootdir    ${LANG_JAPANESE} \
+     "Vim のトップディレクトリを削除"
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index b8233ea42..12bc02627 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -114,8 +114,7 @@ LangString str_desc_plugin          ${LANG_SIMPCHINESE} \
+ LangString str_section_plugin_home  ${LANG_SIMPCHINESE} \
+     "私有插件目录"
+ LangString str_desc_plugin_home     ${LANG_SIMPCHINESE} \
+-    "在 HOME 目录下创建(空的)插件目录结构。若您未设置 HOME 目录，会在安装\
+-     目录下创建该目录结构。"
++    "Create plugin directories in HOME directory."
+ 
+ LangString str_section_plugin_vim   ${LANG_SIMPCHINESE} \
+     "公共插件目录"
+@@ -143,10 +142,20 @@ LangString str_unsection_exe        ${LANG_SIMPCHINESE} \
+ LangString str_desc_rm_exe          ${LANG_SIMPCHINESE} \
+     "删除 Vim 的所有执行文件及脚本。"
+ 
+-LangString str_unsection_vimfiles   ${LANG_SIMPCHINESE} \
+-    "Remove vimfiles directory"
+-LangString str_desc_rm_vimfiles     ${LANG_SIMPCHINESE} \
+-    "Remove the vimfiles directory if it is empty."
++LangString str_ungroup_plugin       ${LANG_SIMPCHINESE} \
++    "Remove plugin directories"
++LangString str_desc_rm_plugin       ${LANG_SIMPCHINESE} \
++    "Remove the plugin directories if they are empty."
++
++LangString str_unsection_plugin_home ${LANG_SIMPCHINESE} \
++    "私有插件目录"
++LangString str_desc_rm_plugin_home  ${LANG_SIMPCHINESE} \
++    "Remove the plugin directories from HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_SIMPCHINESE} \
++    "公共插件目录"
++LangString str_desc_rm_plugin_vim   ${LANG_SIMPCHINESE} \
++    "Remove the plugin directories from Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_SIMPCHINESE} \
+     "Remove the Vim root directory"
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index 76926a0b0..5217d76b0 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -115,8 +115,7 @@ LangString str_desc_plugin          ${LANG_TRADCHINESE} \
+ LangString str_section_plugin_home  ${LANG_TRADCHINESE} \
+     "建立插件資料夾"
+ LangString str_desc_plugin_home     ${LANG_TRADCHINESE} \
+-    "在 HOME 資料夾下建立(空的)插件資料夾結構。若閣下未設定 HOME 資料夾，會\
+-     在安裝資料夾下建立該資料夾結構。"
++    "Create plugin directories in HOME directory."
+ 
+ LangString str_section_plugin_vim   ${LANG_TRADCHINESE} \
+     "建立共享插件資料夾"
+@@ -144,10 +143,20 @@ LangString str_unsection_exe        ${LANG_TRADCHINESE} \
+ LangString str_desc_rm_exe          ${LANG_TRADCHINESE} \
+     "移除所有的 Vim 程式及腳本。"
+ 
+-LangString str_unsection_vimfiles   ${LANG_TRADCHINESE} \
+-    "Remove vimfiles directory"
+-LangString str_desc_rm_vimfiles     ${LANG_TRADCHINESE} \
+-    "Remove the vimfiles directory if it is empty."
++LangString str_ungroup_plugin       ${LANG_TRADCHINESE} \
++    "Remove plugin directories"
++LangString str_desc_rm_plugin       ${LANG_TRADCHINESE} \
++    "Remove the plugin directories if they are empty."
++
++LangString str_unsection_plugin_home ${LANG_TRADCHINESE} \
++    "Private"
++LangString str_desc_rm_plugin_home  ${LANG_TRADCHINESE} \
++    "Remove the vimfiles directory in HOME directory."
++
++LangString str_unsection_plugin_vim ${LANG_TRADCHINESE} \
++    "Shared"
++LangString str_desc_rm_plugin_vim   ${LANG_TRADCHINESE} \
++    "Remove the vimfiles directory in Vim install directory."
+ 
+ LangString str_unsection_rootdir    ${LANG_TRADCHINESE} \
+     "Remove the Vim root directory"
+-- 
+2.17.0
+
