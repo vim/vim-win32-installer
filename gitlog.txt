@@ -1,1 +1,1 @@
-* [8.1.0563](https://github.com/vim/vim/releases/tag/v8.1.0563): setting v:errors to a string give confusing error\n* [8.1.0562](https://github.com/vim/vim/releases/tag/v8.1.0562): parsing of 'diffopt' is slightly wrong
+* [8.1.0565](https://github.com/vim/vim/releases/tag/v8.1.0565): asan complains about reading before allocated block\n* [8.1.0564](https://github.com/vim/vim/releases/tag/v8.1.0564): setting v:errors to wrong type still possible
