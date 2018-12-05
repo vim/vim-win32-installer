@@ -1,4 +1,4 @@
-From 7019075fd24ba1e332b9c9958ea3772e91f1e0af Mon Sep 17 00:00:00 2001
+From 27ebea56b27bc70ce3eddd4cf07af09aac49a198 Mon Sep 17 00:00:00 2001
 From: "K.Takata" <kentkt@csc.jp>
 Date: Tue, 4 Dec 2018 16:03:41 +0900
 Subject: [PATCH 39/41] nsis: Support removing private vimfiles directory
@@ -276,7 +276,7 @@ index 5cbdba056..67af349af 100644
  LangString str_unsection_rootdir    ${LANG_ITALIAN} \
      "Remove the Vim root directory"
 diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
-index ce0b15b9c..16d191d51 100644
+index ce0b15b9c..c13e3e04f 100644
 --- a/nsis/lang/japanese.nsi
 +++ b/nsis/lang/japanese.nsi
 @@ -123,7 +123,7 @@ LangString str_desc_plugin          ${LANG_JAPANESE} \
@@ -284,7 +284,7 @@ index ce0b15b9c..16d191d51 100644
      "個人用"
  LangString str_desc_plugin_home     ${LANG_JAPANESE} \
 -    "プラグインディレクトリを HOME (もし定義していれば)、または Vim のインストールディレクトリに作成します。"
-+    "プラグインディレクトリを HOME ディレクトリに作成します。"
++    "プラグインディレクトリをホームディレクトリに作成します。"
  
  LangString str_section_plugin_vim   ${LANG_JAPANESE} \
      "共用"
