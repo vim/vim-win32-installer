@@ -1,1 +1,1 @@
-* Update runtime files.\n* [8.1.0575](https://github.com/vim/vim/releases/tag/v8.1.0575): Termdebug: clearing multi-breakpoint does not work\n* [8.1.0574](https://github.com/vim/vim/releases/tag/v8.1.0574): 'commentstring' not used when adding fold marker in C
+* [8.1.0576](https://github.com/vim/vim/releases/tag/v8.1.0576): indent script tests pick up installed scripts
