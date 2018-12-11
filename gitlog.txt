@@ -1,1 +1,1 @@
-* [8.1.0576](https://github.com/vim/vim/releases/tag/v8.1.0576): indent script tests pick up installed scripts
+* [8.1.0577](https://github.com/vim/vim/releases/tag/v8.1.0577): tabpage right-click menu never shows "Close tab"
