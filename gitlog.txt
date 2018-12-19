@@ -1,1 +1,1 @@
-* [8.1.0608](https://github.com/vim/vim/releases/tag/v8.1.0608): coverals is not updating\n* [8.1.0607](https://github.com/vim/vim/releases/tag/v8.1.0607): proto files are not in sync with the source code\n* Update runtime files.
+* [8.1.0610](https://github.com/vim/vim/releases/tag/v8.1.0610): MS-Windows ctags file list differs from Unix\n* [8.1.0609](https://github.com/vim/vim/releases/tag/v8.1.0609): MS-Windows: unused variable, depending on the Ruby version
