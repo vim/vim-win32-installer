@@ -10,10 +10,7 @@ automatically ([more information](http://vim.wikia.com/wiki/Where_to_download_Vi
 
 [Download](https://github.com/vim/vim-win32-installer/releases) and execute the
 most recent `gvim_x.y.pppp_x86.exe` file to install Vim (where `x.y` is the
-release version and `pppp` is the patch number). You can also download the
-`gvim_x.y.pppp_x86-mui2.exe` file. This has a modern interface
-([MUI2](http://nsis.sourceforge.net/Docs/Modern%20UI%202/Readme.html)) but
-it is still in a experimental phase. The exe files contain the
+release version and `pppp` is the patch number). The exe files contain the
 (32bit) installer while the .zip files contain an archive of the 32bit (`_x86`)
 or 64bit versions (`_x64`). To install it, extract the archive and update your
 PATH variable. The installer will do that automatically and provide some
