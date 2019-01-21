@@ -1,1 +1,1 @@
-* [8.1.0788](https://github.com/vim/vim/releases/tag/v8.1.0788): cannot build with tiny features\n* [8.1.0787](https://github.com/vim/vim/releases/tag/v8.1.0787): compiler warning for unused function\n* [8.1.0786](https://github.com/vim/vim/releases/tag/v8.1.0786): ml_get error when updating the status line\n* [8.1.0785](https://github.com/vim/vim/releases/tag/v8.1.0785): depending on the configuration some functions are unused
+* [8.1.0789](https://github.com/vim/vim/releases/tag/v8.1.0789): sourcing a session sets v:errmsg
