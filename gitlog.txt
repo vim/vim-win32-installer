@@ -1,1 +1,1 @@
-* [8.1.0867](https://github.com/vim/vim/releases/tag/v8.1.0867): cannot build Python interface with Python 2.4\n* [8.1.0866](https://github.com/vim/vim/releases/tag/v8.1.0866): build file dependencies are outdated
+* [8.1.0868](https://github.com/vim/vim/releases/tag/v8.1.0868): crash if triggering garbage collector after a function call
