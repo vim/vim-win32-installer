@@ -1,1 +1,1 @@
-* [8.1.0875](https://github.com/vim/vim/releases/tag/v8.1.0875): not all errors of marks and findfile()/finddir() are tested\n* Add missing matchit file.\n* [8.1.0874](https://github.com/vim/vim/releases/tag/v8.1.0874): using old style comments in new file
+* [8.1.0877](https://github.com/vim/vim/releases/tag/v8.1.0877): new buffer used every time the quickfix window is opened\n* [8.1.0876](https://github.com/vim/vim/releases/tag/v8.1.0876): completion match not displayed when popup menu is not shown
