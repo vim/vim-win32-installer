@@ -1,1 +1,1 @@
-* [8.1.0982](https://github.com/vim/vim/releases/tag/v8.1.0982): update_cursor() called twice in :shell\n* [8.1.0981](https://github.com/vim/vim/releases/tag/v8.1.0981): pasting in terminal insufficiently tested\n* [8.1.0980](https://github.com/vim/vim/releases/tag/v8.1.0980): extend() insufficiently tested\n* [8.1.0979](https://github.com/vim/vim/releases/tag/v8.1.0979): compiler warning for unused functions
+* [8.1.0983](https://github.com/vim/vim/releases/tag/v8.1.0983): checking __CYGWIN32__ unnecessarily
