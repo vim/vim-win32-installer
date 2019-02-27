@@ -1,1 +1,1 @@
-* [8.1.0983](https://github.com/vim/vim/releases/tag/v8.1.0983): checking __CYGWIN32__ unnecessarily
+* [8.1.0984](https://github.com/vim/vim/releases/tag/v8.1.0984): unnecessary #ifdefs
