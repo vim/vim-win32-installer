@@ -1,1 +1,1 @@
-* [8.1.0996](https://github.com/vim/vim/releases/tag/v8.1.0996): a few screendump tests fail because of scrolling\n* [8.1.0995](https://github.com/vim/vim/releases/tag/v8.1.0995): a getchar() call resets the reg_executing() result
+* [8.1.0998](https://github.com/vim/vim/releases/tag/v8.1.0998): getcurpos() unexpectedly changes "curswant"\n* [8.1.0997](https://github.com/vim/vim/releases/tag/v8.1.0997): using GUI colors in vim.exe when 'termguicolors' is off
