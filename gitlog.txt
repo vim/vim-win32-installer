@@ -1,1 +1,1 @@
-* [8.1.0998](https://github.com/vim/vim/releases/tag/v8.1.0998): getcurpos() unexpectedly changes "curswant"\n* [8.1.0997](https://github.com/vim/vim/releases/tag/v8.1.0997): using GUI colors in vim.exe when 'termguicolors' is off
+* [8.1.0999](https://github.com/vim/vim/releases/tag/v8.1.0999): use register one too often and not properly tested
