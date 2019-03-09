@@ -1,1 +1,1 @@
-* [8.1.0999](https://github.com/vim/vim/releases/tag/v8.1.0999): use register one too often and not properly tested
+* [8.1.1002](https://github.com/vim/vim/releases/tag/v8.1.1002): "gf" does not always work when URL has a port number\n* [8.1.1001](https://github.com/vim/vim/releases/tag/v8.1.1001): Visual area not correct when using 'cursorline'\n* [8.1.1000](https://github.com/vim/vim/releases/tag/v8.1.1000): indenting is off
