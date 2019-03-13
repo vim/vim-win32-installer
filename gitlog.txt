@@ -1,1 +1,1 @@
-* [8.1.1005](https://github.com/vim/vim/releases/tag/v8.1.1005): test fails because t_F2 is not set
+* [8.1.1006](https://github.com/vim/vim/releases/tag/v8.1.1006): repeated code in quickfix support
