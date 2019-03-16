@@ -1,1 +1,1 @@
-* [8.1.1008](https://github.com/vim/vim/releases/tag/v8.1.1008): MS-Windows: HAVE_STDINT_H only defined for non-debug version\n* [8.1.1007](https://github.com/vim/vim/releases/tag/v8.1.1007): using closure may consume a lot of memory
+* [8.1.1011](https://github.com/vim/vim/releases/tag/v8.1.1011): indent from autoindent not removed from blank line\n* [8.1.1010](https://github.com/vim/vim/releases/tag/v8.1.1010): Lua interface leaks memory\n* [8.1.1009](https://github.com/vim/vim/releases/tag/v8.1.1009): MS-Windows: some text is not baseline aligned
