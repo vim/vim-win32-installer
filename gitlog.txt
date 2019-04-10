@@ -1,1 +1,1 @@
-* [8.1.1142](https://github.com/vim/vim/releases/tag/v8.1.1142): no test for dragging the window separators with the mouse\n* [8.1.1141](https://github.com/vim/vim/releases/tag/v8.1.1141): terminal winpos test fails with very large terminal
+* [8.1.1144](https://github.com/vim/vim/releases/tag/v8.1.1144): too strict checking of the 'spellfile' option\n* [8.1.1143](https://github.com/vim/vim/releases/tag/v8.1.1143): may pass weird strings to file name expansion
