@@ -36,8 +36,8 @@ set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
 set RACKET_VER=3m_a36fs8
-set RACKET32_URL=https://mirror.racket-lang.org/releases/6.10.1/installers/racket-minimal-6.10.1-i386-win32.exe
-set RACKET64_URL=https://mirror.racket-lang.org/releases/6.10.1/installers/racket-minimal-6.10.1-x86_64-win32.exe
+set RACKET32_URL=https://www.cs.utah.edu/plt/installers/6.10.1/racket-minimal-6.10.1-i386-win32.exe
+set RACKET64_URL=https://www.cs.utah.edu/plt/installers/6.10.1/racket-minimal-6.10.1-x86_64-win32.exe
 set RACKET_URL=!RACKET%BIT%_URL!
 set RACKET32_DIR=%PROGRAMFILES(X86)%\Racket
 set RACKET64_DIR=%PROGRAMFILES%\Racket
