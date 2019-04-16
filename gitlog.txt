@@ -1,1 +1,1 @@
-* [8.1.1176](https://github.com/vim/vim/releases/tag/v8.1.1176): test for dragging a tab is flaky\n* [8.1.1175](https://github.com/vim/vim/releases/tag/v8.1.1175): no test for dragging a tab and double click for new tab
+* [8.1.1177](https://github.com/vim/vim/releases/tag/v8.1.1177): .ts files are recognized as xml, typescript is more common
