@@ -1,1 +1,1 @@
-* [8.1.1185](https://github.com/vim/vim/releases/tag/v8.1.1185): mapping for CTRL-X is inconsistent\n* [8.1.1184](https://github.com/vim/vim/releases/tag/v8.1.1184): undo file left behind after running test
+* [8.1.1187](https://github.com/vim/vim/releases/tag/v8.1.1187): cannot recognize Pipfile\n* [8.1.1186](https://github.com/vim/vim/releases/tag/v8.1.1186): readdir() allocates list twice
