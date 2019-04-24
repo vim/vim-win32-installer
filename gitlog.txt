@@ -1,1 +1,1 @@
-* [8.1.1200](https://github.com/vim/vim/releases/tag/v8.1.1200): old style comments in debugger source\n* [8.1.1199](https://github.com/vim/vim/releases/tag/v8.1.1199): no test for :abclear
+* [8.1.1201](https://github.com/vim/vim/releases/tag/v8.1.1201): output of :command is hard to read
