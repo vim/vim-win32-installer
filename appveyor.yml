@@ -53,6 +53,15 @@ before_deploy:
   - set URL=https://github.com/%APPVEYOR_REPO_NAME%/releases/download
 
 deploy:
+  - provider: Webhook
+    url: https://app.signpath.io/API/v1/47c0047c-0c1d-42b2-a16c-4ea6907dc813/Integrations/AppVeyor?SigningPolicyId=b060c819-3eff-411b-8b86-60d7e0161751
+    on_build_success: true
+    on_build_failure: false
+    on_build_status_changed: false
+    method: POST
+    authorization:
+      secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
+
   - provider: GitHub
     description: |
       ![Github Downloads (by Release)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/total.svg)
@@ -98,7 +107,7 @@ deploy:
     on:
       appveyor_repo_tag: true
 
-cache:
-  - downloads -> appveyor.bat
+      #cache:
+      #  - downloads -> appveyor.bat
 
 # vim: ts=2 sw=2 et
