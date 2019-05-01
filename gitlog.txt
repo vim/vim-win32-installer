@@ -1,1 +1,1 @@
-* [8.1.1240](https://github.com/vim/vim/releases/tag/v8.1.1240): runtime desktop files are overwritten by build
+* [8.1.1244](https://github.com/vim/vim/releases/tag/v8.1.1244): no tests for CTRL-mouse-click\n* [8.1.1243](https://github.com/vim/vim/releases/tag/v8.1.1243): compiler warnings for incomplete switch statement\n* [8.1.1242](https://github.com/vim/vim/releases/tag/v8.1.1242): no cmdline redraw when tabpages have different 'cmdheight'\n* [8.1.1241](https://github.com/vim/vim/releases/tag/v8.1.1241): Ex command info contains confusing information
