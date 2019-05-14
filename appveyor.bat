@@ -61,8 +61,8 @@ set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
 set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
-set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
-set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
+set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.1-v1.16/gettext0.20.1-iconv1.16-shared-32.zip
+set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.1-v1.16/gettext0.20.1-iconv1.16-shared-64.zip
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
