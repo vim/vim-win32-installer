@@ -1,0 +1,17 @@
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -87,6 +87,14 @@ RequestExecutionLevel highest
+ !endif
+ 
+ ##########################################################
++# Version resources
++
++VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Vim"
++VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Vim Developers"
++VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Vim"
++VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Vi Improved - A Text Editor"
++
++##########################################################
+ # MUI2 settings
+ 
+ !define MUI_ABORTWARNING
