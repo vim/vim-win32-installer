@@ -1,1 +1,1 @@
-* [8.1.1332](https://github.com/vim/vim/releases/tag/v8.1.1332): cannot flush listeners without redrawing, mix of changes\n* [8.1.1331](https://github.com/vim/vim/releases/tag/v8.1.1331): test 29 is old style
+* [8.1.1333](https://github.com/vim/vim/releases/tag/v8.1.1333): text properties don't always move after changes
