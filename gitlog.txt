@@ -1,1 +1,1 @@
-* [8.1.1333](https://github.com/vim/vim/releases/tag/v8.1.1333): text properties don't always move after changes
+* [8.1.1336](https://github.com/vim/vim/releases/tag/v8.1.1336): some eval functionality is not covered by tests\n* [8.1.1335](https://github.com/vim/vim/releases/tag/v8.1.1335): listener callback is called after inserting text\n* [8.1.1334](https://github.com/vim/vim/releases/tag/v8.1.1334): when buffer is hidden "F" in 'shortmess' is not used
