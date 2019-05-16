@@ -15,5 +15,6 @@ diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
 +VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Vi Improved - A Text Editor"
 +VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VER_MAJOR}.${VER_MINOR}.0.0"
 +VIProductVersion "${VER_MAJOR}.${VER_MINOR}.0.0"
+
  # Global variables
  Var vim_dialog
