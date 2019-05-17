@@ -49,7 +49,15 @@ Note: The zip archive might be considered unsecure in Windows, causing Windows
 to display a dialog box "These files might be harmful to your computer...". If
 you want to disable this warning, you need to "unblock" the zip file. Do that
 in the properties dialog of the zip file, first tab General and look for the
-security section and click on "Unblock".
+security section and click on "Unblock". However using a signed release might
+prevent that behaviour in Windows eventually (see also next paragraph).
+
+Creating a signed binary and installer still requires manual effort, therefore
+not every release will be signed. They will be provided on a best effort basis
+occasionaly. Signing the releases is provided by
+[SignPath](https://about.signpath.io/). If there haven't been any signed
+releases for a long time, feel free to request a new one by creating an
+[issue](https://github.com/vim/vim-win32-installer/issues) here.
 
 Note: If you want to test some patches, place them in the patch directory with
 the extension `.patch`. They will be applied before building Vim and the binary
