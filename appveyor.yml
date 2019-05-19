@@ -75,7 +75,7 @@ deploy:
 
       ### Files:
 
-      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$((VIMVER)_x64.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
         64-bit installer
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
         32-bit installer (*If you don't know what to use, use this one*)
