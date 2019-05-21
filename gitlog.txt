@@ -1,1 +1,1 @@
-* [8.1.1362](https://github.com/vim/vim/releases/tag/v8.1.1362): code and data in tests can be hard to read\n* [8.1.1361](https://github.com/vim/vim/releases/tag/v8.1.1361): Python setuptools don't work with Python 3\n* [8.1.1360](https://github.com/vim/vim/releases/tag/v8.1.1360): buffer left 'nomodifiable' after :substitute
+* [8.1.1364](https://github.com/vim/vim/releases/tag/v8.1.1364): design for popup window support needs more details\n* [8.1.1363](https://github.com/vim/vim/releases/tag/v8.1.1363): ":vert options" does not make a vertical split
