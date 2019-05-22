@@ -1,1 +1,1 @@
-* [8.1.1364](https://github.com/vim/vim/releases/tag/v8.1.1364): design for popup window support needs more details\n* [8.1.1363](https://github.com/vim/vim/releases/tag/v8.1.1363): ":vert options" does not make a vertical split
+* [8.1.1365](https://github.com/vim/vim/releases/tag/v8.1.1365): source command doesn't check for the sandbox
