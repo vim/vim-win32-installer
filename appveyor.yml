@@ -45,6 +45,8 @@ artifacts:
     name: gVim_x86_installer
   - path: gvim_*_x64.exe
     name: gVim_x64_installer
+  - path: unsigned*.zip
+    name: vim_zip_for_signing
 
 before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i
@@ -58,6 +60,7 @@ deploy:
     on_build_success: true
     on_build_failure: false
     on_build_status_changed: false
+    artifact: /unsigned*.zip/
     method: POST
     authorization:
       secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
@@ -107,6 +110,8 @@ deploy:
     prerelease: false
     on:
       appveyor_repo_tag: true
+
+      # Cache is being disabled to allow signpath to sign the results
 
       #cache:
       #  - downloads -> appveyor.bat
