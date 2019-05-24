@@ -301,6 +301,14 @@ if /i "%ARCH%"=="x64" (
 )
 popd
 
+:: Create zipfile for signing with signpath.io
+:: This will create a single zip file that should be uploaded to signpath
+:: signpath can then sign each artifact inside the zip file
+:: (the Vim zip archive as well as the installer)
+echo Creating Signpath Zip Archive
+cd %APPVEYOR_BUILD_FOLDER%
+7z a unsigned-gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim*.zip gvim*.exe
+
 @echo off
 goto :eof
 
