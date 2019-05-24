@@ -307,7 +307,7 @@ popd
 :: (the Vim zip archive as well as the installer)
 echo Creating Signpath Zip Archive
 cd %APPVEYOR_BUILD_FOLDER%
-7z a unsigned-gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim*.zip gvim*.exe
+7z a unsigned-gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim*.exe
 
 @echo off
 goto :eof
