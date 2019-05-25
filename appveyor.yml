@@ -78,7 +78,18 @@ deploy:
       $(GITLOG)
 
       ### Files:
-
+      <!--  commented out, because will only be enabled once the signed files are uploaded manually.
+      #### Signed Files:
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86_signed.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe)
+        Signed 32-bit installer (*If you don't know what to use, use this one*)
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64_signed.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe)
+        Signed 64-bit installer
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86_signed.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip)
+        Signed 32-bit zip archive
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64_signed.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip)
+        Signed 64-bit zip archive
+      -->
+      #### Unsigned Files:
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
         64-bit installer
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
@@ -104,7 +115,6 @@ deploy:
 
       See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
     auth_token:
-      # Update the following key, once this is merged to Vim main repository:
       secure: kH0D/3t+1Mc8OChKhe+voKlMO0aMwnlUr64QoZOJC6BaVwy+Us3ZHq9Oo+aBzjYc
     artifact: /gVim/
     draft: false
