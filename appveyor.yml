@@ -34,17 +34,17 @@ test_script:
 
 artifacts:
   - path: gvim_*_x86.zip
-    name: gVim_x86
+    name: gvim_x86
   - path: gvim_*_x86_pdb.zip
-    name: gVim_x86_pdb
+    name: gvim_x86_pdb
   - path: gvim_*_x64.zip
-    name: gVim_x64
+    name: gvim_x64
   - path: gvim_*_x64_pdb.zip
-    name: gVim_x64_pdb
+    name: gvim_x64_pdb
   - path: gvim_*_x86.exe
-    name: gVim_x86_installer
+    name: gvim_x86_installer
   - path: gvim_*_x64.exe
-    name: gVim_x64_installer
+    name: gvim_x64_installer
   - path: unsigned*.zip
     name: vim_zip_for_signing
 
@@ -116,7 +116,7 @@ deploy:
       See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
     auth_token:
       secure: kH0D/3t+1Mc8OChKhe+voKlMO0aMwnlUr64QoZOJC6BaVwy+Us3ZHq9Oo+aBzjYc
-    artifact: /gVim/
+    artifact: /^gvim_.*/
     draft: false
     prerelease: false
     on:
