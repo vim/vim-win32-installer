@@ -1,1 +1,1 @@
-* [8.1.1578](https://github.com/vim/vim/releases/tag/v8.1.1578): MS-Windows: pathdef.c should depend on build options\n* [8.1.1577](https://github.com/vim/vim/releases/tag/v8.1.1577): command line redrawn for +arabic without Arabic characters\n* [8.1.1576](https://github.com/vim/vim/releases/tag/v8.1.1576): compiler warning for unused argument
+* Update runtime files\n* [8.1.1579](https://github.com/vim/vim/releases/tag/v8.1.1579): dict and list could be GC'ed while displaying error
