@@ -1,1 +1,1 @@
-* Update runtime files\n* [8.1.1579](https://github.com/vim/vim/releases/tag/v8.1.1579): dict and list could be GC'ed while displaying error
+* [8.1.1583](https://github.com/vim/vim/releases/tag/v8.1.1583): set_ref_in_list() only sets ref in items\n* [8.1.1582](https://github.com/vim/vim/releases/tag/v8.1.1582): cannot build with +textprop but without +timers\n* [8.1.1581](https://github.com/vim/vim/releases/tag/v8.1.1581): shared functions for testing are disorganised\n* [8.1.1580](https://github.com/vim/vim/releases/tag/v8.1.1580): cannot make part of a popup transparent
