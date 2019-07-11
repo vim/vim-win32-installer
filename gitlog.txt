@@ -1,1 +1,1 @@
-* [8.1.1661](https://github.com/vim/vim/releases/tag/v8.1.1661): cannot build with +textprop but without +balloon_eval\n* [8.1.1660](https://github.com/vim/vim/releases/tag/v8.1.1660): assert_fails() does not fail inside try/catch\n* [8.1.1659](https://github.com/vim/vim/releases/tag/v8.1.1659): popup window "mousemoved" values not correct\n* [8.1.1658](https://github.com/vim/vim/releases/tag/v8.1.1658): debug statements included in patch
+* [8.1.1662](https://github.com/vim/vim/releases/tag/v8.1.1662): cannot build uninstal.exe with some version of MinGW
