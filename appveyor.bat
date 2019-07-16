@@ -188,10 +188,8 @@ if /i "%ARCH%"=="x64" (
 )
 set CL=/D_USING_V110_SDK71_
 
-:: Remove progress bar from the build log
-sed -e "s/\$(LINKARGS2)/\$(LINKARGS2) | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
-nmake -f Make_mvc2.mak ^
+nmake -f Make_mvc.mak ^
 	GUI=yes OLE=yes DIRECTX=yes ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
 	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
@@ -204,7 +202,7 @@ nmake -f Make_mvc2.mak ^
 	TERMINAL=yes ^
 	|| exit 1
 :: Build CUI version
-nmake -f Make_mvc2.mak ^
+nmake -f Make_mvc.mak ^
 	GUI=no OLE=no DIRECTX=no ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
 	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
