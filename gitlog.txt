@@ -1,1 +1,1 @@
-* [8.1.1839](https://github.com/vim/vim/releases/tag/v8.1.1839): insufficient info when test fails because of screen size\n* [8.1.1838](https://github.com/vim/vim/releases/tag/v8.1.1838): there is :spellwrong and :spellgood but not :spellrare
+* [8.1.1842](https://github.com/vim/vim/releases/tag/v8.1.1842): test listed as flaky should no longer be flaky\n* [8.1.1841](https://github.com/vim/vim/releases/tag/v8.1.1841): no test for Ex shift commands\n* [8.1.1840](https://github.com/vim/vim/releases/tag/v8.1.1840): Testing: WorkingClipboard() is not accurate
