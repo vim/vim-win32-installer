@@ -1,1 +1,1 @@
-* [8.1.1845](https://github.com/vim/vim/releases/tag/v8.1.1845): may use NULL pointer when running out of memory\n* [8.1.1844](https://github.com/vim/vim/releases/tag/v8.1.1844): buffer no longer unloaded when adding text properties\n* [8.1.1843](https://github.com/vim/vim/releases/tag/v8.1.1843): might be freeing memory that was not allocated
+* [8.1.1846](https://github.com/vim/vim/releases/tag/v8.1.1846): inconsistently using GetVimCommand() and v:progpath
