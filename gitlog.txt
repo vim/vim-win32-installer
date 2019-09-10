@@ -1,1 +1,1 @@
-* [8.1.2019](https://github.com/vim/vim/releases/tag/v8.1.2019): 'cursorline' always highlights the whole line\n* [8.1.2018](https://github.com/vim/vim/releases/tag/v8.1.2018): using freed memory when out of memory and displaying message\n* [8.1.2017](https://github.com/vim/vim/releases/tag/v8.1.2017): cannot execute commands after closing the cmdline window
+* [8.1.2021](https://github.com/vim/vim/releases/tag/v8.1.2021): some global functions can be local to the file\n* [8.1.2020](https://github.com/vim/vim/releases/tag/v8.1.2020): it is not easy to change the window layout
