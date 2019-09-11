@@ -1,1 +1,1 @@
-* [8.1.2021](https://github.com/vim/vim/releases/tag/v8.1.2021): some global functions can be local to the file\n* [8.1.2020](https://github.com/vim/vim/releases/tag/v8.1.2020): it is not easy to change the window layout
+* Update runtime files
