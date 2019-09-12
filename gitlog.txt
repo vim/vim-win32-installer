@@ -1,1 +1,1 @@
-* Update runtime files
+* [8.1.2022](https://github.com/vim/vim/releases/tag/v8.1.2022): the option.c file is too big
