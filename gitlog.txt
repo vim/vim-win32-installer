@@ -1,1 +1,1 @@
-* [8.1.2071](https://github.com/vim/vim/releases/tag/v8.1.2071): when 'wincolor' is set text property changes highlighting\n* [8.1.2070](https://github.com/vim/vim/releases/tag/v8.1.2070): mouse code is spread out
+* [8.1.2072](https://github.com/vim/vim/releases/tag/v8.1.2072): "gk" moves to start of line instead of upwards
