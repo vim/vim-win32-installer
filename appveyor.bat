@@ -291,7 +291,7 @@ copy vim.exe vimw32.exe
 copy tee\tee.exe teew32.exe
 copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
-copy uninstal.exe uninstalw32.exe
+copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
