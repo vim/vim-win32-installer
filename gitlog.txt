@@ -1,1 +1,1 @@
-* [8.1.2102](https://github.com/vim/vim/releases/tag/v8.1.2102): can't build with GTK and FEAT_GUI_GNOME\n* [8.1.2101](https://github.com/vim/vim/releases/tag/v8.1.2101): write_session_file() often defined but not used\n* [8.1.2100](https://github.com/vim/vim/releases/tag/v8.1.2100): :mksession is not sufficiently tested
+* [8.1.2104](https://github.com/vim/vim/releases/tag/v8.1.2104): the normal.c file is too big\n* [8.1.2103](https://github.com/vim/vim/releases/tag/v8.1.2103): wrong error message if "termdebugger" is not executable
