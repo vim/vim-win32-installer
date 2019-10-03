@@ -1,1 +1,1 @@
-* [8.1.2109](https://github.com/vim/vim/releases/tag/v8.1.2109): popup_getoptions() hangs with tab-local popup
+* [8.1.2110](https://github.com/vim/vim/releases/tag/v8.1.2110): CTRL-C closes two popups instead of one
