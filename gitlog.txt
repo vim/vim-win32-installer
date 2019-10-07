@@ -1,1 +1,1 @@
-* [8.1.2120](https://github.com/vim/vim/releases/tag/v8.1.2120): some MB_ macros are more complicated than necessary\n* [8.1.2119](https://github.com/vim/vim/releases/tag/v8.1.2119): memory access error for empty string\n* [8.1.2118](https://github.com/vim/vim/releases/tag/v8.1.2118): termcodes test fails when $TERM is "dumb"
+* [8.1.2122](https://github.com/vim/vim/releases/tag/v8.1.2122): cannot build without terminal feature\n* [8.1.2121](https://github.com/vim/vim/releases/tag/v8.1.2121): mode is not updated when switching to terminal
