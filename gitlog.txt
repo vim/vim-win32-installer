@@ -1,1 +1,1 @@
-* [8.1.2125](https://github.com/vim/vim/releases/tag/v8.1.2125): fnamemodify() fails when repeating :e\n* [8.1.2124](https://github.com/vim/vim/releases/tag/v8.1.2124): ruler is not updated if win_execute() moves cursor\n* [8.1.2123](https://github.com/vim/vim/releases/tag/v8.1.2123): parsing CSI sequence is messy
+* [8.1.2127](https://github.com/vim/vim/releases/tag/v8.1.2127): the indent.c file is a bit big\n* [8.1.2126](https://github.com/vim/vim/releases/tag/v8.1.2126): viminfo not sufficiently tested
