@@ -188,6 +188,10 @@ if /i "%ARCH%"=="x64" (
 )
 set CL=/D_USING_V110_SDK71_
 
+:: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
+set CHERE_INVOKING=1
+c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
+
 :: Remove progress bar from the build log
 sed -e "s/@<<$/@<< | sed -e 's#.*\\\\r.*##'/" Make_mvc.mak > Make_mvc2.mak
 :: Build GUI version
@@ -285,7 +289,7 @@ xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
 7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip ..\vim
 
 :: Create installer
-c:\cygwin\bin\bash -lc "cd `cygpath '%APPVEYOR_BUILD_FOLDER%'`/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
+c:\cygwin64\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
 copy tee\tee.exe teew32.exe
