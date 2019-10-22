@@ -1,1 +1,1 @@
-* [8.1.2198](https://github.com/vim/vim/releases/tag/v8.1.2198): crash when using :center in autocommand
+* [8.1.2200](https://github.com/vim/vim/releases/tag/v8.1.2200): crash when memory allocation fails\n* [8.1.2199](https://github.com/vim/vim/releases/tag/v8.1.2199): build failure when using normal features without GUI
