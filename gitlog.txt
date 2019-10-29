@@ -1,1 +1,1 @@
-* [8.1.2231](https://github.com/vim/vim/releases/tag/v8.1.2231): not easy to move to the middle of a text line\n* [8.1.2230](https://github.com/vim/vim/releases/tag/v8.1.2230): MS-Windows: testing external commands can be improved
+* [8.1.2233](https://github.com/vim/vim/releases/tag/v8.1.2233): cannot get the Vim command line arguments
