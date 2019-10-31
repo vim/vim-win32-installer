@@ -1,1 +1,1 @@
-* [8.1.2234](https://github.com/vim/vim/releases/tag/v8.1.2234): get_short_pathname() fails depending on encoding
+* [8.1.2237](https://github.com/vim/vim/releases/tag/v8.1.2237): mode() result depends on whether CURSOR_SHAPE is defined\n* [8.1.2236](https://github.com/vim/vim/releases/tag/v8.1.2236): ml_get error if pattern matches beyond last line\n* [8.1.2235](https://github.com/vim/vim/releases/tag/v8.1.2235): "C" with 'virtualedit' set does not include multi-byte char
