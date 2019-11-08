@@ -1,1 +1,1 @@
-* [8.1.2269](https://github.com/vim/vim/releases/tag/v8.1.2269): tags file with very long line stops using binary search\n* [8.1.2268](https://github.com/vim/vim/releases/tag/v8.1.2268): spell file flag zero is not recognized
+* [8.1.2272](https://github.com/vim/vim/releases/tag/v8.1.2272): test may hang at more prompt\n* [8.1.2271](https://github.com/vim/vim/releases/tag/v8.1.2271): build error if FEAT_TAG_BINS is not defined\n* [8.1.2270](https://github.com/vim/vim/releases/tag/v8.1.2270): "gf" is not tested in Visual mode
