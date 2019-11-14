@@ -1,1 +1,1 @@
-* Update runtime files\n* [8.1.2300](https://github.com/vim/vim/releases/tag/v8.1.2300): redraw breaks going through list of popup windows\n* [8.1.2299](https://github.com/vim/vim/releases/tag/v8.1.2299): ConPTY in MS-Windows 1909 is still wrong\n* [8.1.2298](https://github.com/vim/vim/releases/tag/v8.1.2298): missing part of 8.1.2296
+* Fix vim.desktop generation.
