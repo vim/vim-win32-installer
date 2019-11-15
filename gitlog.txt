@@ -1,1 +1,1 @@
-* Fix vim.desktop generation.
+* [8.1.2301](https://github.com/vim/vim/releases/tag/v8.1.2301): MS-Windows GUI: drawing error when background color changes
