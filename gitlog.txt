@@ -1,1 +1,1 @@
-* [8.1.2321](https://github.com/vim/vim/releases/tag/v8.1.2321): cannot select all text with the mouse\n* [8.1.2320](https://github.com/vim/vim/releases/tag/v8.1.2320): insufficient test coverage for quickfix\n* [8.1.2319](https://github.com/vim/vim/releases/tag/v8.1.2319): compiler warning for int size
+* [8.1.2323](https://github.com/vim/vim/releases/tag/v8.1.2323): Old MSVC version no longer tested.\n* [8.1.2322](https://github.com/vim/vim/releases/tag/v8.1.2322): quickfix test fails in very big terminal
