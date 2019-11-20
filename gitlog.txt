@@ -1,1 +1,1 @@
-* [8.1.2323](https://github.com/vim/vim/releases/tag/v8.1.2323): Old MSVC version no longer tested.\n* [8.1.2322](https://github.com/vim/vim/releases/tag/v8.1.2322): quickfix test fails in very big terminal
+* Update runtime files.
