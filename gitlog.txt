@@ -1,1 +1,1 @@
-* [8.1.2337](https://github.com/vim/vim/releases/tag/v8.1.2337): double-click time sometimes miscomputed\n* [8.1.2336](https://github.com/vim/vim/releases/tag/v8.1.2336): when an expr mapping moves the cursor it is not restored\n* [8.1.2335](https://github.com/vim/vim/releases/tag/v8.1.2335): error message for function arguments may use NULL pointer\n* [8.1.2334](https://github.com/vim/vim/releases/tag/v8.1.2334): possible NULL pointer dereference in popup_locate()
+* [8.1.2338](https://github.com/vim/vim/releases/tag/v8.1.2338): using Visual mark sith :s gives E20 if not set
