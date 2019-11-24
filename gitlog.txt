@@ -1,1 +1,1 @@
-* [8.1.2338](https://github.com/vim/vim/releases/tag/v8.1.2338): using Visual mark sith :s gives E20 if not set
+* [8.1.2340](https://github.com/vim/vim/releases/tag/v8.1.2340): quickfix test fails under valgrind and asan\n* [8.1.2339](https://github.com/vim/vim/releases/tag/v8.1.2339): insufficient testing for quickfix
