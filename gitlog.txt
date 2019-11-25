@@ -1,1 +1,1 @@
-* [8.1.2340](https://github.com/vim/vim/releases/tag/v8.1.2340): quickfix test fails under valgrind and asan\n* [8.1.2339](https://github.com/vim/vim/releases/tag/v8.1.2339): insufficient testing for quickfix
+* [8.1.2342](https://github.com/vim/vim/releases/tag/v8.1.2342): random number generator in Vim script is slow\n* [8.1.2341](https://github.com/vim/vim/releases/tag/v8.1.2341): not so easy to interrupt a script programatically
