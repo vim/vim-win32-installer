@@ -1,1 +1,1 @@
-* [8.1.2383](https://github.com/vim/vim/releases/tag/v8.1.2383): using old C style comments\n* [8.1.2382](https://github.com/vim/vim/releases/tag/v8.1.2382): MS-Windows: When using VTP bold+inverse doesn't work\n* [8.1.2381](https://github.com/vim/vim/releases/tag/v8.1.2381): not all register related code is covered by tests
+* [8.1.2384](https://github.com/vim/vim/releases/tag/v8.1.2384): test 48 is old style\n* Update a few runtime files
