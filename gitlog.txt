@@ -1,1 +1,1 @@
-* [8.1.2412](https://github.com/vim/vim/releases/tag/v8.1.2412): crash when evaluating expression with error\n* [8.1.2411](https://github.com/vim/vim/releases/tag/v8.1.2411): function argument copied unnecessarily\n* Runtime file updates.
+* Update a few runtime files.\n* [8.1.2414](https://github.com/vim/vim/releases/tag/v8.1.2414): MS-Windows: properties dialog box shows wrong character\n* [8.1.2413](https://github.com/vim/vim/releases/tag/v8.1.2413): cannot update ex_cmdidxs.h on MS-Windows
