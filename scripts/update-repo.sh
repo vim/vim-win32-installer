@@ -42,7 +42,7 @@ vimlog=$(git log --decorate --graph --pretty=format:%s $vimoldver..HEAD |sed \
     -e 's/ \+/ /g' \
     -e 's/\([0-9]\+ \)Problem: \+/\1/' \
     -e 's/\(.\{100\}\).*/\1/g' \
-    -e 's/\\/&&/g')
+    -e 's/[][_*^<`\\]/\\&/g')
 cd -
 
 # Check if it is updated
