@@ -1,1 +1,1 @@
-\* Vim 8.2 release
+\* 8.2.0002: "dj" only deletes first line of closed fold\n\* 8.2.0001: #endif comments do reflect corresponding #ifdef
