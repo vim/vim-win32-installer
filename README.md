@@ -6,7 +6,7 @@
 # Vim Installer and Archives (Win32 and Win64)
 
 This is a project for building Nightly Vim Windows build snapshots
-automatically ([more information](http://vim.fandom.com/wiki/Where_to_download_Vim)).
+automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
 [Download](https://github.com/vim/vim-win32-installer/releases) and execute the
 most recent `gvim_x.y.pppp_x86.exe` file to install Vim (where `x.y` is the
