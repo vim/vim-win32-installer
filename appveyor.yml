@@ -92,18 +92,18 @@ deploy:
         Signed 64-bit zip archive
       -->
       #### :unlock: Unsigned Files:
-      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
-        64-bit installer
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
         32-bit installer (*If you don't know what to use, use this one*)
-      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip)
-        64-bit zip archive
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.exe]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
+        64-bit installer
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip)
         32-bit zip archive
-      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
-        pdb files for debugging the corresponding 64-bit executable
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip)
+        64-bit zip archive
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x86_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip)
         pdb files for debugging the corresponding 32-bit executable
+      * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
+        pdb files for debugging the corresponding 64-bit executable
 
       ### Compiled with:
 
