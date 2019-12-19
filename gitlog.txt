@@ -1,1 +1,1 @@
-* [8.2.0023](https://github.com/vim/vim/releases/tag/v8.2.0023): command line editing not sufficiently tested\n* [8.2.0022](https://github.com/vim/vim/releases/tag/v8.2.0022): click in popup window doesn't close it in the GUI\n* [8.2.0021](https://github.com/vim/vim/releases/tag/v8.2.0021): timer test fails too often on Travis with MacOS\n* [8.2.0020](https://github.com/vim/vim/releases/tag/v8.2.0020): mouse clicks in the command line not tested
+* Update runtime files.\n* [8.2.0024](https://github.com/vim/vim/releases/tag/v8.2.0024): filetype Rego not recognized
