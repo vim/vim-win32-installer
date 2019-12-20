@@ -1,1 +1,1 @@
-* Update runtime files.\n* [8.2.0024](https://github.com/vim/vim/releases/tag/v8.2.0024): filetype Rego not recognized
+* [8.2.0025](https://github.com/vim/vim/releases/tag/v8.2.0025): repeated word in comment
