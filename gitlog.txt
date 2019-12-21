@@ -1,1 +1,1 @@
-* [8.2.0025](https://github.com/vim/vim/releases/tag/v8.2.0025): repeated word in comment
+* [8.2.0029](https://github.com/vim/vim/releases/tag/v8.2.0029): MS-Windows: crash with empty job command\n* [8.2.0028](https://github.com/vim/vim/releases/tag/v8.2.0028): searchpairpos() is not tested\n* [8.2.0027](https://github.com/vim/vim/releases/tag/v8.2.0027): still some /\* \*/ comments\n* [8.2.0026](https://github.com/vim/vim/releases/tag/v8.2.0026): still some /\* \*/ comments
