@@ -1,1 +1,1 @@
-* [8.2.0035](https://github.com/vim/vim/releases/tag/v8.2.0035): saving and restoring called\_emsg is clumsy\n* [8.2.0034](https://github.com/vim/vim/releases/tag/v8.2.0034): missing check for out of memory
+* [8.2.0037](https://github.com/vim/vim/releases/tag/v8.2.0037): missing renamed message\n* [8.2.0036](https://github.com/vim/vim/releases/tag/v8.2.0036): not enough test coverage for match functions
