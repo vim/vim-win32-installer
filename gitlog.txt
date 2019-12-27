@@ -1,1 +1,1 @@
-* Update runtime files.\n* [8.2.0046](https://github.com/vim/vim/releases/tag/v8.2.0046): tests for spell suggestions are slow
+* [8.2.0050](https://github.com/vim/vim/releases/tag/v8.2.0050): after deleting a file mark it is still in viminfo\n* [8.2.0049](https://github.com/vim/vim/releases/tag/v8.2.0049): command line completion not fully tested\n* [8.2.0048](https://github.com/vim/vim/releases/tag/v8.2.0048): another timers test is flaky on Travis for Mac\n* [8.2.0047](https://github.com/vim/vim/releases/tag/v8.2.0047): cannot skip tests for specific MS-Windows platform
