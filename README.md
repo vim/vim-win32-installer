@@ -8,7 +8,7 @@
 This is a project for building Nightly Vim Windows build snapshots
 automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
-[Download](https://github.com/vim/vim-win32-installer/releases) and execute the
+[Download](https://github.com/vim/vim-win32-installer/releases/latest) and execute the
 most recent `gvim_x.y.pppp_x86.exe` file to install Vim (where `x.y` is the
 release version and `pppp` is the patch number). The exe files contain the
 (32bit) installer while the .zip files contain an archive of the 32bit (`_x86`)
