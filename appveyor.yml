@@ -75,9 +75,12 @@ deploy:
 
       Signed releases will occasionally be provided on a best effort approach.
 
-      ### Changes:
+      <details>
+      <summary>Included Patches</summary>
 
       $(GITLOG)
+
+      </details>
 
       ### Files:
       <!--  commented out, because will only be enabled once the signed files are uploaded manually.
@@ -105,7 +108,8 @@ deploy:
       * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip.svg?label=downloads&logo=vim) [gvim_$(VIMVER)_x64_pdb.zip]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
         pdb files for debugging the corresponding 64-bit executable
 
-      ### Compiled with:
+      <details>
+      <summary>Interface Informations</summary>
 
       * [Strawberry Perl](http://strawberryperl.com/) 5.28
       * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
@@ -114,6 +118,8 @@ deploy:
       * [Python3](https://www.python.org/downloads/) 3.8
       * [Racket](https://download.racket-lang.org/) 6.10.1
       * [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
+
+      </details>
 
       See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
     auth_token:
