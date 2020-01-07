@@ -75,12 +75,9 @@ deploy:
 
       Signed releases will occasionally be provided on a best effort approach.
 
-      <details>
-      <summary>Included Patches</summary>
+      ### Changes:
 
       $(GITLOG)
-
-      </details>
 
       ### Files:
       <!--  commented out, because will only be enabled once the signed files are uploaded manually.
