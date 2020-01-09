@@ -30,20 +30,17 @@ vimoldver=$(git rev-parse HEAD)
 git checkout master
 git pull
 vimver=$(git describe --tags --abbrev=0)
-#vimlog=$(git log --oneline $vimoldver..HEAD | sed -e 's/^\S\+ //')
 # pretty print the shortlog:
-# - squeeze spaces
 # - drop 'patch '
-# - drop 'Problem: '
-# - escape backslashes
-# - format to 100 chars
-vimlog=$(git log --decorate --graph --pretty=format:%s $vimoldver..HEAD |sed \
-    -e 's/^\(. \)patch /\1/' \
-    -e 's/ \+/ /g' \
-    -e 's/\([0-9]\+ \)Problem: \+/\1/' \
-    -e 's/\(.\{100\}\).*/\1/g' \
+# - escape special characters
+# - add link to the commit
+commiturl=https://github.com/vim/vim/commit/
+vimlog_md=$(git log --pretty='format:%H %s' $vimoldver..HEAD | sed \
     -e 's/[][_*^<`\\]/\\&/g' \
-    -e 's/^\\\*/*/')
+    -e "s#^\([0-9a-f]*\) patch \([0-9.a-z]*\)#* [\2]($commiturl\1)#" \
+    -e "s#^\([0-9a-f]*\) \(.*\)#* [\2]($commiturl\1)#")
+vimlog_plain=$(git log --pretty='format:* %s' $vimoldver..HEAD | sed \
+    -e 's/^\* patch /* /g')
 cd -
 
 # Check if it is updated
@@ -54,9 +51,7 @@ fi
 
 # Commit the change and push it
 # replace newline by \n
-echo "$vimlog" | sed \
-    -e 's#^\* *\([0-9]\([a-z]\)\?\.[0-9]\([a-z]\)\?\(\.[0-9]\+\)\?\)#* [\1](https://github.com/vim/vim/releases/tag/v\1)#g' | sed \
-    -e ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
-git commit -a -m "vim: Import $vimver" -m "$vimlog"
+echo "$vimlog_md" | sed -e ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
+git commit -a -m "vim: Import $vimver" -m "$vimlog_plain"
 git tag $vimver
 git push origin master --tags
