@@ -1,1 +1,1 @@
-* Update runtime files.\n* [8.2.0109](https://github.com/vim/vim/releases/tag/v8.2.0109): corrupted text properties when expanding spaces\n* [8.2.0108](https://github.com/vim/vim/releases/tag/v8.2.0108): when sign text is changed a manual redraw is needed\n* [8.2.0107](https://github.com/vim/vim/releases/tag/v8.2.0107): hgignore is out of sync from gitignore
+* [8.2.0110](https://github.com/vim/vim/commit/e05a89ac6399a8c7d164c99fdab6841d999a9128): prop\_find() is not implemented
