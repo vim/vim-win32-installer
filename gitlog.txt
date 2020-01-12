@@ -1,1 +1,1 @@
-* [8.2.0111](https://github.com/vim/vim/commit/9b4a15d5dba354d2e1e02871470bad103f34769a): VAR\_SPECIAL is also used for booleans
+* [8.2.0114](https://github.com/vim/vim/commit/7ebcba61b20d25d23109fff73d0346ad44ba1b3b): info about sourced scripts is scattered\n* [8.2.0113](https://github.com/vim/vim/commit/9b24dfcb9f676e7f7a09a9062f0d05b2104a87eb): "make cmdidxs" fails\n* [8.2.0112](https://github.com/vim/vim/commit/02ad46394e8f887b60fda994f8a5da2ac1937b23): illegal memory access when using 'cindent'
