@@ -1,1 +1,1 @@
-* [Update runtime files.](https://github.com/vim/vim/commit/ade0d39468014fd55d30f7647a1ac104baff4bc5)\n* [8.2.0140](https://github.com/vim/vim/commit/2387773d933bd6c483e44803db8ec79737ecf7ed): CI does not test building doc tags
+* [8.2.0141](https://github.com/vim/vim/commit/0d76683e094c6cac2e879601aff3acf1163cbe0b): no swift filetype detection
