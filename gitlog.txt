@@ -1,1 +1,1 @@
-* [8.2.0148](https://github.com/vim/vim/commit/7f51bbe0d19f1f0cb0321326f45a17b4f5155f89): mapping related function in wrong source file
+* [Update runtime files.](https://github.com/vim/vim/commit/1d9215b9aaa120b9d78fee49488556f73007ce78)
