@@ -1,1 +1,1 @@
-* [8.2.0357](https://github.com/vim/vim/commit/49b79bd4888341d527c95f2aa73ed953203ce2b6): cannot delete a text property matching both id and type
+* [8.2.0360](https://github.com/vim/vim/commit/8eab73132838e977092d7b46f70b4ecf6274fd6a): yaml files are only recognized by the file extension\n* [8.2.0359](https://github.com/vim/vim/commit/ba2920fe976b37326933afa820616523b509495f): popup\_atcursor() may hang\n* [8.2.0358](https://github.com/vim/vim/commit/bd7206e02c957f0619e68e1628e2a3e91dd41e06): insufficient testing for indent.c
