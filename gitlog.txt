@@ -1,1 +1,1 @@
-* [8.2.0362](https://github.com/vim/vim/commit/d0d440f702d1c6fef36386f8b91d074d0f3e4718): MS-Windows: channel test fails if grep is not available\n* [8.2.0361](https://github.com/vim/vim/commit/14e57909e662a43a42438e2701654af48af49b03): internal error when using "0" for a callback
+* [8.2.0364](https://github.com/vim/vim/commit/693e80e93897aff3b07a1ef12b68a6527702f3d7): printf test failing on Haiku\n* [8.2.0363](https://github.com/vim/vim/commit/f5f1e10d0d39890298cdf27f664d466c8872b87e): some Normal mode commands not tested
