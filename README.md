@@ -17,6 +17,13 @@ PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
 
+Note: Due to the expiration of the old certificate, a new certificate to sign the binaries has
+been created and will be used starting with the next release after April 14th, 2020.
+This may cause a SmartScreen warning by Windows because the certificate is new. Hopefully this
+warning will vanish, once the certificate has been used more widely.
+If you want to avoid this warning, you can use the latest release with the old certificate
+[v8.2.577](https://github.com/vim/vim-win32-installer/releases/tag/v8.2.0577).
+
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
