@@ -63,8 +63,8 @@ set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
 set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
-set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.15/gettext0.19.8.1-iconv1.15-shared-32.zip
-set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.15/gettext0.19.8.1-iconv1.15-shared-64.zip
+set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-32.zip
+set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
@@ -277,11 +277,11 @@ copy /Y c:\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
 copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
 copy /Y c:\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
 copy /Y c:\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
-copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
+rem copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
 copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext%BIT%\libiconv-2.dll   ..\runtime\
 copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
-if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
+rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
 set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
