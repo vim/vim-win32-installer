@@ -117,7 +117,7 @@ deploy:
 
       * [Strawberry Perl](http://strawberryperl.com/) 5.28
       * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
-      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
+      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3 (included)
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.8
       * [Racket](https://download.racket-lang.org/) 6.10.1
