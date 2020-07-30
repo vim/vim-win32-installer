@@ -335,6 +335,10 @@ goto :eof
 :: ----------------------------------------------------------------------
 :: call :downloadfile <URL> <localfile>
 if not exist %2 (
+  curl -f -L %1 -o %2
+)
+if ERRORLEVEL 1 (
+  rem Retry once.
   curl -f -L %1 -o %2 || exit 1
 )
 @goto :eof
