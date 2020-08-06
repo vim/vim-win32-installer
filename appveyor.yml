@@ -74,14 +74,6 @@ deploy:
       **If you do not know what to use, use the 32bit installer (use the signed one, if available).**
 
       Signed releases will occasionally be provided on a best effort approach.
-
-      Note: Due to the expiration of the old certificate, a new certificate to sign the binaries has
-      been created and will be used starting with the next release after April 14th, 2020.
-      This may cause a SmartScreen warning by Windows because the certificate is new. Hopefully this
-      warning will vanish, once the certificate has been used more widely.
-      If you want to avoid this warning, you can use the latest release with the old certificate
-      [v8.2.577](https://github.com/vim/vim-win32-installer/releases/tag/v8.2.0577).
-
       ### Changes:
 
       $(GITLOG)
