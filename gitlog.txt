@@ -1,1 +1,1 @@
-* [8.2.1524](https://github.com/vim/vim/commit/2e0866128b6266829a7f38733d5188bc4ec68745): no longer get an error for string concatenation with float\n* [8.2.1523](https://github.com/vim/vim/commit/b9fc192f928b484c8809fb985ef334d7a2bb5a09): still not enough test coverage for the spell file handling
+* [8.2.1525](https://github.com/vim/vim/commit/6e3aeec8461cf27396b6574b5438019a00684e00): messages from tests were not always displayed
