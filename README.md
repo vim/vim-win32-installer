@@ -35,7 +35,7 @@ installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
 * [Strawberry Perl](http://strawberryperl.com/) 5.28
-* ~~[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6~~ (Disabled for now. See [#194](https://github.com/vim/vim-win32-installer/issues/194).)
+* [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8
