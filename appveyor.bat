@@ -114,12 +114,12 @@ call :downloadfile %PERL_URL% downloads\perl.zip
 :: Extract only the "perl" folder.
 7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
 
-:: Tcl
-call :downloadfile %TCL_URL% downloads\tcl.exe
-mkdir c:\ActiveTclTemp
-start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
-for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
-copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
+rem :: Tcl
+rem call :downloadfile %TCL_URL% downloads\tcl.exe
+rem mkdir c:\ActiveTclTemp
+rem start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
+rem for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
+rem copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
@@ -203,7 +203,6 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
@@ -216,7 +215,6 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
