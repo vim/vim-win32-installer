@@ -108,7 +108,7 @@ deploy:
       <summary>Interface Informations</summary>
 
       * [Strawberry Perl](http://strawberryperl.com/) 5.28
-      * ~~[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6~~ (Disabled for 32bits now. See [#194](https://github.com/vim/vim-win32-installer/issues/194).)
+      * ~~[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6~~ (Disabled for now. See [#194](https://github.com/vim/vim-win32-installer/issues/194).)
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.8
