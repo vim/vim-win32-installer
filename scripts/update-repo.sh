@@ -23,10 +23,12 @@ if [ ! -d vim/src ]; then
 	git submodule init
 fi
 git submodule update
+# get the last released tag name from this repo
+vimoldver=$(curl -s https://api.github.com/repos/vim/vim-win32-installer/releases/latest  | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["tag_name"])')
 
 # Get the latest vim source code
 cd vim
-vimoldver=$(git rev-parse HEAD)
+#vimoldver=$(git rev-parse HEAD)
 git checkout master
 git pull
 vimver=$(git describe --tags --abbrev=0)
