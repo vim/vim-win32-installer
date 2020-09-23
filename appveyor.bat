@@ -56,8 +56,8 @@ set RUBY_DIR=!RUBY%BIT%_DIR!
 :: Tcl
 set TCL_VER_LONG=8.6
 set TCL_VER=%TCL_VER_LONG:.=%
-set TCL32_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8607/ActiveTcl-8.6.6.8607-MSWin32-x86-403667.exe
-set TCL64_URL=http://downloads.activestate.com/ActiveTcl/releases/8.6.6.8606/ActiveTcl-8.6.6.8606-MSWin32-x64-401995.exe
+set TCL32_URL=http://dl.activestate.com/org/vim-win32/Tcl-8.6.6/latest/artifact/ActiveTcl-8.6.6.8607-MSWin32-x86-403667.exe
+set TCL64_URL=http://dl.activestate.com/org/vim-win32/Tcl-8.6.6/latest/artifact/ActiveTcl-8.6.6.8606-MSWin32-x64-401995.exe
 set TCL_URL=!TCL%BIT%_URL!
 set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
@@ -114,12 +114,12 @@ call :downloadfile %PERL_URL% downloads\perl.zip
 :: Extract only the "perl" folder.
 7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
 
-rem :: Tcl
-rem call :downloadfile %TCL_URL% downloads\tcl.exe
-rem mkdir c:\ActiveTclTemp
-rem start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
-rem for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
-rem copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
+:: Tcl
+call :downloadfile %TCL_URL% downloads\tcl.exe
+mkdir c:\ActiveTclTemp
+start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
+for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
+copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
@@ -203,6 +203,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
+	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
@@ -215,6 +216,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
+	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
