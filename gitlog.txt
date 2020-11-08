@@ -1,1 +1,1 @@
-* [8.2.1967](https://github.com/vim/vim/commit/59d8e56e048eb5d384649284fb35363931fc3697): the session file does not restore the alternate file\n* [8.2.1966](https://github.com/vim/vim/commit/cbcd9cbd77acc8cc97c0d44683d96c01d3dd0fa7): popup becomes current window after closing a terminal window\n* [8.2.1965](https://github.com/vim/vim/commit/46f479c756c0255e3b6d473590c1857678eff5c6): Vim9: tests fail without the channel feature
+* [8.2.1968](https://github.com/vim/vim/commit/8cebd43e9774d2624af43ee5b86939886f2ba490): Vim9: has() assumes a feature does not change dynamically
