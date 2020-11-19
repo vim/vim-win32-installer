@@ -63,8 +63,8 @@ set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
 set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
-set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-32.zip
-set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip
+set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-32.zip
+set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.zip
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
@@ -278,6 +278,8 @@ copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
 copy /Y c:\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
 copy /Y c:\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
 rem copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
+rem libgcc_s_sjlj-1.dll is not needed anymore. Don't include it in the installer.
+if exist c:\gettext32\libgcc_s_sjlj-1.dll del c:\gettext32\libgcc_s_sjlj-1.dll
 copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext%BIT%\libiconv-2.dll   ..\runtime\
 copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
