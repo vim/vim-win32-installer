@@ -1,1 +1,1 @@
-* [8.2.2144](https://github.com/vim/vim/commit/025cb1ca8605055383c53bf2c823d7093cf29b82): Vim9: some corner cases not tested
+* [8.2.2146](https://github.com/vim/vim/commit/9987fb0b4b591e6450fb1dfbe8f615f365057f2a): Vim9: automatic conversion of number to string for dict key\n* [8.2.2145](https://github.com/vim/vim/commit/399ea8108c8da3fcdf5d738a0f8eae67155b4b10): Vim9: concatenating lists does not adjust type of result
