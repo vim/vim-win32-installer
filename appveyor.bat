@@ -7,9 +7,9 @@ FOR /f "delims=. tokens=1-3" %%i in ("%APPVEYOR_REPO_TAG_NAME%") do set PATCHLEV
 cd %APPVEYOR_BUILD_FOLDER%
 
 if /I "%ARCH%"=="x64" (
-  set BIT=64
+	set BIT=64
 ) else (
-  set BIT=32
+	set BIT=32
 )
 
 :: ----------------------------------------------------------------------
@@ -80,9 +80,9 @@ set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
 path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
 
 if /I "%1"=="" (
-  set target=build
+	set target=build
 ) else (
-  set target=%1
+	set target=%1
 )
 
 goto %target%_%ARCH%
@@ -337,10 +337,10 @@ goto :eof
 :: ----------------------------------------------------------------------
 :: call :downloadfile <URL> <localfile>
 if not exist %2 (
-  curl -f -L %1 -o %2
+	curl -f -L %1 -o %2
 )
 if ERRORLEVEL 1 (
-  rem Retry once.
-  curl -f -L %1 -o %2 || exit 1
+	rem Retry once.
+	curl -f -L %1 -o %2 || exit 1
 )
 @goto :eof
