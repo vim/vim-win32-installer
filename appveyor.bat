@@ -32,7 +32,10 @@ set PYTHON_32_DIR=C:\python%PYTHON_VER%
 set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
-set PYTHON3_VER=38
+set PYTHON3_VER=39
+set PYTHON3_32_URL=https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe
+set PYTHON3_64_URL=https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe
+set PYTHON3_URL=!PYTHON3_%BIT%_URL!
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
@@ -120,6 +123,10 @@ mkdir c:\ActiveTclTemp
 start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
 for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
+
+:: Python 3.9
+call :downloadfile %PYTHON3_URL% downloads\python3.exe
+cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
 
 :: Ruby
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
