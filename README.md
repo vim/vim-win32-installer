@@ -17,6 +17,13 @@ PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
 
+The `gvim.<version>.yml` contains the corresponding winget manifest (as yaml)
+which might in the future be used to upload to the winget package repository.
+Currently (12/2020), there does not seem to exist an automatic workflow, so you
+can use this to contribute to [winget](https://github.com/microsoft/winget-pkgs),
+but you may want to replace the URL and hash of the unsigned 64bit installer by
+the signed one, if it exists (this is currently not automated).
+
 Note: Due to the expiration of the old certificate, a new certificate to sign the binaries has
 been created and will be used starting with the next release after April 14th, 2020.
 This may cause a SmartScreen warning by Windows because the certificate is new. Hopefully this
