@@ -45,7 +45,7 @@ You can find those interperters here:
 * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
 * [Python](https://www.python.org/downloads/) 2.7
-* [Python 3](https://www.python.org/downloads/) 3.8
+* [Python 3](https://www.python.org/downloads/) 3.9
 * [Racket](https://download.racket-lang.org/) 6.10.1
 * [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
 
