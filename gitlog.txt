@@ -1,1 +1,1 @@
-* [8.2.2488](https://github.com/vim/vim/commit/a853089479b60b829bab1c4a0a737a073415f8a7): json\_encode() gives generic argument error\n* [8.2.2487](https://github.com/vim/vim/commit/4549dad874244fe933b969e4ac0b41923ee70dc3): terminal shows garbage after double-wide character
+* [8.2.2489](https://github.com/vim/vim/commit/963ffa0a5a6091655ed72b4590ec5d5a1653bce8): current buffer is wrong after deletebufline() fails
