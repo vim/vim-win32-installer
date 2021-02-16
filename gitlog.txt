@@ -1,1 +1,1 @@
-* [8.2.2519](https://github.com/vim/vim/commit/b8554304c3673b081e9b5996f009fd0e4307e482): Vim9: no reason to keep strange Vi behavior\n* [8.2.2518](https://github.com/vim/vim/commit/eed9d46293f0842aad0d50ff3a526f9a48b12421): 'listchars' should be window-local
+* [8.2.2521](https://github.com/vim/vim/commit/333bd56422d840961c6df51d4450c884f8500994): some compilers can't handle pointer initialization\n* [8.2.2520](https://github.com/vim/vim/commit/04ea7e9049706788179945e2a91922c0b7cb9ed0): missing tests for 'listchars'
