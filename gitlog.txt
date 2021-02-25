@@ -1,1 +1,1 @@
-* [8.2.2549](https://github.com/vim/vim/commit/1bd3cb201983859d86d644eef9e98cd3e9de7261): crash after using "g:" in a for loop
+* [8.2.2550](https://github.com/vim/vim/commit/0e62a6742bca186624e97e2121c98ada30e009a0): signal stack size is wrong with latest glibc 2.34
