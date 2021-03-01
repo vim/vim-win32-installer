@@ -1,1 +1,1 @@
-* [8.2.2559](https://github.com/vim/vim/commit/3650fd709807d5ac182e28d952cbd790c1ad0a6a): MS-Windows: guifont test fails on Windows XP\n* [8.2.2558](https://github.com/vim/vim/commit/057e84afe5bd37fe272bf7cfafca629ef9da1bd3): no error if a lambda argument shadows a variable
+* [8.2.2560](https://github.com/vim/vim/commit/39d4cab494248131b6fb07aba633aa4da7871a57): setting 'winminheigt' does not take tabline into account
