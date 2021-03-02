@@ -1,1 +1,1 @@
-* [8.2.2560](https://github.com/vim/vim/commit/39d4cab494248131b6fb07aba633aa4da7871a57): setting 'winminheigt' does not take tabline into account
+* [8.2.2562](https://github.com/vim/vim/commit/37096afd3f3133a831ab49a9677f090c3c935c9d): GUI: star register changed when 'clipboard is "unnamedplus"\n* [8.2.2561](https://github.com/vim/vim/commit/3dc3474f00e529b014add48f7f3d1dad2ec15498): not all textprop code is covered by tests
