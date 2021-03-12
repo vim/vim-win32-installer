@@ -1,1 +1,1 @@
-* [8.2.2590](https://github.com/vim/vim/commit/12bce95887f7c5f07a7bdb7b4485b53d074ccc0a): Vim9: default argument value may cause internal error
+* [8.2.2591](https://github.com/vim/vim/commit/c80f647512b001fb6952ed10d076d56c3d4b84e0): Poke files are not recognized
