@@ -1,1 +1,1 @@
-* [8.2.2608](https://github.com/vim/vim/commit/f4fcedc59d4cc5ae6b5270a933e8377030283c1c): character input not fully tested
+* [8.2.2610](https://github.com/vim/vim/commit/1e448465e1281eeb379f75fe848cbb47fe1be1d9): mouse click test fails when using remote connection\n* [8.2.2609](https://github.com/vim/vim/commit/321481299757cdd43baeed33f4c5ba543fdfc7f7): test disabled on MS-Windows even though it should work
