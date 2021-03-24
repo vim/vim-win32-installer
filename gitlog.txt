@@ -1,1 +1,1 @@
-* [8.2.2648](https://github.com/vim/vim/commit/c54f347d63bcca97ead673d01ac6b59914bb04e5): terminal resize test sometimes hangs\n* [8.2.2647](https://github.com/vim/vim/commit/f4a2ed071447ad4984fad55b9d1671b55140ae1c): terminal test sometimes hangs
+* [8.2.2650](https://github.com/vim/vim/commit/2fecb53115e25de6203363be8018ee676ad1422b): Vim9: command modifiers not handled in nested function\n* [8.2.2649](https://github.com/vim/vim/commit/1ff89deeaa07a161afbe91f57c340f3758d34f49): Vim9: some wincmd arguments cause a white space error
