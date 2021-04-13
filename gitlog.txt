@@ -1,1 +1,1 @@
-* [8.2.2758](https://github.com/vim/vim/commit/f48b2fa33cda94e963f6fa8b78f344385c9ebea6): Vim9: wrong line number for autoload function with wrong name\n* [8.2.2757](https://github.com/vim/vim/commit/68452177ca4cda4a9d5f93892e437447cf9404c8): Vim9: blob tests for legacy and Vim9 script are separate
+* [8.2.2760](https://github.com/vim/vim/commit/f6a8d420a8d2924737f713de046947dcb487550c): Vim9: no error for changing a for loop variable\n* [8.2.2759](https://github.com/vim/vim/commit/f2253963c28e4791092620df6a6bb238c33168df): Vim9: for loop infers type of loop variable
