@@ -1,1 +1,1 @@
-* [8.2.2814](https://github.com/vim/vim/commit/b06b50dfa06e1cbefd634e2735e7cd5ddd5b911c): Vim9: unused variable\n* [8.2.2813](https://github.com/vim/vim/commit/bb01a1ef3a093cdb36877ba73474719c531dc8cb): cannot grep using fuzzy matching\n* [8.2.2812](https://github.com/vim/vim/commit/5930ddcd25c3c31a323cdb1b74c228958e124527): Vim9: still crash when using substitute expression
+* [8.2.2815](https://github.com/vim/vim/commit/b80d2fb0e7b9adec4cff1bc4e2d30635cb70502e): status line flickers when redrawing popup menu info
