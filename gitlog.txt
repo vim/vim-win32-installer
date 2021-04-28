@@ -1,1 +1,1 @@
-* [8.2.2815](https://github.com/vim/vim/commit/b80d2fb0e7b9adec4cff1bc4e2d30635cb70502e): status line flickers when redrawing popup menu info
+* [8.2.2817](https://github.com/vim/vim/commit/227c58a486d2459e7bf6ed2c917ede7e324e3570): Vim9: script sourcing continues after an error\n* [8.2.2816](https://github.com/vim/vim/commit/03717bf6a27d753fe8f9d713d66594fb1940515f): Vim9: comment below expression in lambda causes problems\n* [8.2.2815](https://github.com/vim/vim/commit/b80d2fb0e7b9adec4cff1bc4e2d30635cb70502e): status line flickers when redrawing popup menu info
