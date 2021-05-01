@@ -1,1 +1,1 @@
-* [8.2.2820](https://github.com/vim/vim/commit/b6c2e9a010ebd7db586081957e634903d4972fa1): session file may divide by zero\n* [8.2.2819](https://github.com/vim/vim/commit/4934ed34c3e2090d1963c89c629cd3ce81d3ecd1): finishing an abbreviation with multi-byte char may not work
+* [8.2.2822](https://github.com/vim/vim/commit/4a22897591dc8ff64560bef693af49f171faf557): MS-Windows: unnessarily loading libraries when unregistering\n* [8.2.2821](https://github.com/vim/vim/commit/3d0e7a956afb6f913466e96bd462eff0c92ad4c6): MS-Windows: unnessarily loading libraries when registering OLE
