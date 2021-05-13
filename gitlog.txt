@@ -1,1 +1,1 @@
-* [8.2.2847](https://github.com/vim/vim/commit/588cf7547bafaff46a82bc125d05d24a1cedf827): Perl not tested sufficiently
+* [8.2.2850](https://github.com/vim/vim/commit/71c6f7a665eb467054fbf319989d97c252af28d2): recalling commands from history is not tested\n* [8.2.2849](https://github.com/vim/vim/commit/36f96a515109dc1fad279571a645c0f0d65f2de4): bufwrite not sufficiently tested\n* [8.2.2848](https://github.com/vim/vim/commit/fe8ebdbe5c4e116311c0c0d5937b89ded5c92d01): crash whn calling partial
