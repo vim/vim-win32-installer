@@ -1,1 +1,1 @@
-* [8.2.2873](https://github.com/vim/vim/commit/46aa6f93acb5d932d2893606d980a6b4b8a9594c): not enough tests for writing buffers\n* [8.2.2872](https://github.com/vim/vim/commit/56c9fd01076bc62b55c8cb89d8a66f6136e52f3a): Python tests fail without the channel feature
+* [8.2.2875](https://github.com/vim/vim/commit/5cf94577cf2045fec87344d7d89422fe6dfce62f): cancelling inputlist() after a digit does not return zero\n* [8.2.2874](https://github.com/vim/vim/commit/4eb1914e1bd870a7ea829cae150e1f9fdc3df7b1): MS-Windows: screen redraws too often
