@@ -1,1 +1,1 @@
-* [8.2.2875](https://github.com/vim/vim/commit/5cf94577cf2045fec87344d7d89422fe6dfce62f): cancelling inputlist() after a digit does not return zero\n* [8.2.2874](https://github.com/vim/vim/commit/4eb1914e1bd870a7ea829cae150e1f9fdc3df7b1): MS-Windows: screen redraws too often
+* [8.2.2876](https://github.com/vim/vim/commit/23c0192166760b0d73bd39252ca72e3cfe596f6e): configure cannot detect Python 3.10
