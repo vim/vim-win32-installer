@@ -1,1 +1,1 @@
-* [8.2.2876](https://github.com/vim/vim/commit/23c0192166760b0d73bd39252ca72e3cfe596f6e): configure cannot detect Python 3.10
+* [8.2.2878](https://github.com/vim/vim/commit/b777da9be8eb421982e567702db3195475383dec): Vim9: for loop list unpack only allows for one "\_"\n* [8.2.2877](https://github.com/vim/vim/commit/1e615669c0f1f4125001b2c01c30b00d8c68035e): insufficient tests for popup menu rightleft
