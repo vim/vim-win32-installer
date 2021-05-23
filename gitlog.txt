@@ -1,1 +1,1 @@
-* [8.2.2878](https://github.com/vim/vim/commit/b777da9be8eb421982e567702db3195475383dec): Vim9: for loop list unpack only allows for one "\_"\n* [8.2.2877](https://github.com/vim/vim/commit/1e615669c0f1f4125001b2c01c30b00d8c68035e): insufficient tests for popup menu rightleft
+* [8.2.2879](https://github.com/vim/vim/commit/f5409dbf66f4e4a0461d3f2079c1bffacbf12392): file extension .hsig not recognized
