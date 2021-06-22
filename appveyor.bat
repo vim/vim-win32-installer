@@ -74,6 +74,9 @@ set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpt
 set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
+:: Libsodium
+set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
+set SODIUM_DIR=C:\libsodium
 
 :: Subsystem version (targeting Windows XP)
 set SUBSYSTEM_VER32=5.01
@@ -176,6 +179,15 @@ call :downloadfile %SHELLEXECASUSER_URL% downloads\shellexecasuser.zip
 7z x downloads\shellexecasuser.zip -oc:\shellexecasuser > nul || exit 1
 copy /Y c:\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
 
+:: Install Libsodium
+call :downloadfile %LIBSODIUM_URL% downloads\libsodium.zip
+7z x downloads\libsodium.zip -oc:\ > nul || exit 1
+if /i "%ARCH%"=="x64" (
+	copy /Y C:\libsodium\x64\Release\v140\dynamic\libsodium.dll        vim\src\libsodium.dll
+) else (
+	copy /Y C:\libsodium\Win32\Release\v140\dynamic\libsodium.dll      vim\src\libsodium.dll
+)
+
 :: Show PATH for debugging
 path
 
@@ -220,7 +232,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes ^
+	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build CUI version
 nmake -f Make_mvc2.mak ^
@@ -233,7 +245,7 @@ nmake -f Make_mvc2.mak ^
 	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes ^
+	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build translations
 pushd po
@@ -281,6 +293,7 @@ copy /Y GvimExt\*.reg      GvimExt32\
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\vimtutor.bat ..\runtime
 copy /Y *.exe ..\runtime\
+copy /Y libsodium.dll ..\runtime\
 copy /Y xxd\*.exe ..\runtime
 copy /Y tee\*.exe ..\runtime
 mkdir ..\runtime\GvimExt64
