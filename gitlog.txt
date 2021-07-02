@@ -1,1 +1,1 @@
-* [8.2.3082](https://github.com/vim/vim/commit/b836f631dba2534efd314a8f77439cebc75acd4e): a channel command "echoerr" does not show anything
+* [8.2.3083](https://github.com/vim/vim/commit/72463f883cdfd08e29ab0018ef3889284848d5f1): crash when passing null string to charclass()
