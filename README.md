@@ -58,6 +58,10 @@ the [winpty repository](https://github.com/rprichard/winpty). This feature is
 currently considered experimental. Read the help at [:h
 terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
 information.
+For supporting better encryption, it comes with the libsodium.dll from the
+[libsodium repository](https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE)
+See the help at [:h 'cryptmethod'](https://vimhelp.org/options.txt.html#%27cryptmethod%27)
+for more details.
 
 Note: The zip archive might be considered unsecure in Windows, causing Windows
 to display a dialog box "These files might be harmful to your computer...". If
