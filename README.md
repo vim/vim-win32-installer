@@ -59,7 +59,7 @@ currently considered experimental. Read the help at [:h
 terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
 information.
 For supporting better encryption, it comes with the libsodium.dll from the
-[libsodium repository](https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE)
+[libsodium repository](https://github.com/jedisct1/libsodium/releases/1.0.18-RELEASE)
 See the help at [:h 'cryptmethod'](https://vimhelp.org/options.txt.html#%27cryptmethod%27)
 for more details.
 
