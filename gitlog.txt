@@ -1,1 +1,1 @@
-* [8.2.3356](https://github.com/vim/vim/commit/ccfb7c6758510e0fe5f390149ea14aee6ff4f55e): adding many text properties requires a lot of function calls\n* [8.2.3355](https://github.com/vim/vim/commit/434df7a401c92d4084bb0a01ffd6d1737ae0193b): MS-Windows: compiler warning for 64-32 bit conversion
+* [8.2.3358](https://github.com/vim/vim/commit/dea561111a5761bf99397a246b8baa43e73288de): structurizr files are not recognized\n* [8.2.3357](https://github.com/vim/vim/commit/02f8694a6bd116ab3316add4a7ea6735bf2e8839): crash when 'virtualedit' is set and window is narrow
