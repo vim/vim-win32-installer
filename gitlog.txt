@@ -1,1 +1,1 @@
-* [8.2.3358](https://github.com/vim/vim/commit/dea561111a5761bf99397a246b8baa43e73288de): structurizr files are not recognized\n* [8.2.3357](https://github.com/vim/vim/commit/02f8694a6bd116ab3316add4a7ea6735bf2e8839): crash when 'virtualedit' is set and window is narrow
+* [8.2.3360](https://github.com/vim/vim/commit/5aec755b678cfd434b8ea2158d06992f33e1ff80): user function completion fails with dict function\n* [8.2.3359](https://github.com/vim/vim/commit/c66f645b809d0852592ca37afacb9031b5950c7f): Vim9: error for type when variable is not set
