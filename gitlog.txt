@@ -1,1 +1,1 @@
-* [8.2.3360](https://github.com/vim/vim/commit/5aec755b678cfd434b8ea2158d06992f33e1ff80): user function completion fails with dict function\n* [8.2.3359](https://github.com/vim/vim/commit/c66f645b809d0852592ca37afacb9031b5950c7f): Vim9: error for type when variable is not set
+* [8.2.3361](https://github.com/vim/vim/commit/d895b1d918f7d56dd9dd564be4820082ba6492e9): Vim9: crash with nested :while
