@@ -1,1 +1,1 @@
-* [8.2.3377](https://github.com/vim/vim/commit/47016f57724d3970c54f4ca1f392dff39d3fecae): Vim9: :disass completion does not understand "s:"
+* [8.2.3378](https://github.com/vim/vim/commit/6024c0427ce1196344439997d5e41a6f8546368c): MS-Windows: completing environment variables with % is wrong
