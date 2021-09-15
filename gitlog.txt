@@ -1,1 +1,1 @@
-* [8.2.3440](https://github.com/vim/vim/commit/f2a8bafa4b815e5b4e50a25c2b3a8a24fbe8aa11): recover test fails if there is an old swap file\n* [8.2.3439](https://github.com/vim/vim/commit/78eb9cce911dcd662182443e0920649ec1596d41): deleted lines go to wrong yank register\n* [8.2.3438](https://github.com/vim/vim/commit/5dfe467432638fac2e0156a2f9cd0d9eb569fb39): cannot manipulate blobs
+* [8.2.3441](https://github.com/vim/vim/commit/ee2cbcd99c54d7c4a3ccfaf0cd5ddeb1369a844e): MS-Windows: vimtutor can't handle path with spaces
