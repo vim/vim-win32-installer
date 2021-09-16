@@ -1,1 +1,1 @@
-* [8.2.3441](https://github.com/vim/vim/commit/ee2cbcd99c54d7c4a3ccfaf0cd5ddeb1369a844e): MS-Windows: vimtutor can't handle path with spaces
+* [8.2.3444](https://github.com/vim/vim/commit/644b49fa0fb90143e8dbe90a7c14c9498d17b266): concealed text not revealed when leaving insert mode\n* [8.2.3443](https://github.com/vim/vim/commit/3dfe2e0fb8768914a019fa04b1ed9581e33c9b26): Vim9: memory leak when and/or fails\n* [8.2.3442](https://github.com/vim/vim/commit/1a7ee4dd115329052670d7af176341bd09c9dc5a): Vim9: || and && are not handled at compile time
