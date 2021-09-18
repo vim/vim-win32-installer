@@ -1,1 +1,1 @@
-* [8.2.3446](https://github.com/vim/vim/commit/820d5525cae707f39571c6abc2aa6a9e66ed171e): not enough tests for empty string arguments\n* [8.2.3445](https://github.com/vim/vim/commit/542ffe16a1b6961e9262a3c4c6ddb86e6149a1cd): on Solaris longVersion may be declared twice
+* [8.2.3448](https://github.com/vim/vim/commit/1d34189ecb99fa76363c06e1aa815c1075675a1c): :endtry after function call that throws not found\n* [8.2.3447](https://github.com/vim/vim/commit/d2b98ab4ecf168514ae622948e3749dea7671946): a couple of declarations are not ANSI C
