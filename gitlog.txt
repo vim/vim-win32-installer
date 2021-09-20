@@ -1,1 +1,1 @@
-* [8.2.3450](https://github.com/vim/vim/commit/18fefddcb023db3c8461953892650b0c5f0cc9fe): coveralls action fails\n* [8.2.3449](https://github.com/vim/vim/commit/c04f62346bfd6b92151908239a3c5ab1a7d18f2a): sort fails if the sort compare function returns 999
+* [8.2.3451](https://github.com/vim/vim/commit/770ddbe1595f6dab836304203d5ca2e0b069266f): not all apache files are recognized
