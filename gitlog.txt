@@ -1,1 +1,1 @@
-* [8.2.3451](https://github.com/vim/vim/commit/770ddbe1595f6dab836304203d5ca2e0b069266f): not all apache files are recognized
+* [Correct Spanish translations](https://github.com/vim/vim/commit/da0b497c6e4e01447669773a931b0eaa5ca757f3)\n* [Update runtime files](https://github.com/vim/vim/commit/34cc7d8c034f2bc5b57455577051db8d72e2b87c)\n* [8.2.3452](https://github.com/vim/vim/commit/690c524ce6629f9ff67728541ba211f831caf0ee): MPD files are not recognized
