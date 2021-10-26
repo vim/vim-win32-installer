@@ -1,1 +1,1 @@
-* [8.2.3564](https://github.com/vim/vim/commit/777e7c21b7627be80961848ac560cb0a9978ff43): invalid memory access when scrolling without valid screen\n* [8.2.3563](https://github.com/vim/vim/commit/2a52196b78f3fcc0e9fad538984272c5fd8d85db): build failure with +eval but without GUI or +termguicolors
+* [8.2.3565](https://github.com/vim/vim/commit/2446ec9b567ce2b72bd06d121f200f40bbdc8a84): Makefile dependencies are outdated
