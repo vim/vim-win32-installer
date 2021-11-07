@@ -1,1 +1,1 @@
-* [8.2.3582](https://github.com/vim/vim/commit/15d9890eee53afc61eb0a03b878a19cb5672f732): reading uninitialized memory when giving spell suggestions\n* [8.2.3581](https://github.com/vim/vim/commit/0b5b06cb4777d1401fdf83e7d48d287662236e7e): reading character past end of line\n* [8.2.3580](https://github.com/vim/vim/commit/aaec1d4fb12efb82b87ad322e95994de77b1a833): gj does not move properly with a wide character
+* [Update runtime files](https://github.com/vim/vim/commit/113cb513f76d8866cbb6dc85fa18aded753e01da)
