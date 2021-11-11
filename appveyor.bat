@@ -15,16 +15,14 @@ if /I "%ARCH%"=="x64" (
 :: ----------------------------------------------------------------------
 :: Download URLs, local dirs and versions
 :: Lua
-set LUA_VER=53
-set LUA32_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win32_dllw4_lib.zip
-set LUA64_URL=http://downloads.sourceforge.net/luabinaries/lua-5.3.2_Win64_dllw4_lib.zip
-set LUA_URL=!LUA%BIT%_URL!
+set LUA_VER=54
+set LUA_RELEASE=5.4.2
+set LUA_URL=https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win%BIT%_dllw6_lib.zip
 set LUA_DIR=C:\Lua
 :: Perl
-set PERL_VER=528
-set PERL32_URL=http://strawberryperl.com/download/5.28.0.1/strawberry-perl-5.28.0.1-32bit-portable.zip
-set PERL64_URL=http://strawberryperl.com/download/5.28.0.1/strawberry-perl-5.28.0.1-64bit-portable.zip
-set PERL_URL=!PERL%BIT%_URL!
+set PERL_VER=532
+set PERL_RELEASE=5.32.1.1
+set PERL_URL=https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-%PERL_RELEASE%-%BIT%bit-portable.zip
 set PERL_DIR=C:\Strawberry\perl
 :: Python2
 set PYTHON_VER=27
@@ -32,9 +30,10 @@ set PYTHON_32_DIR=C:\python%PYTHON_VER%
 set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
-set PYTHON3_VER=39
-set PYTHON3_32_URL=https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe
-set PYTHON3_64_URL=https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe
+set PYTHON3_VER=310
+set PYTHON3_RELEASE=3.10.0
+set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
+set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
 set PYTHON3_URL=!PYTHON3_%BIT%_URL!
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
@@ -49,10 +48,12 @@ set RACKET64_DIR=%PROGRAMFILES%\Racket
 set RACKET_DIR=!RACKET%BIT%_DIR!
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
-set RUBY_VER=24
-set RUBY_API_VER_LONG=2.4.0
-set RUBY_BRANCH=ruby_2_4
-set RUBY_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
+set RUBY_VER=30
+set RUBY_API_VER_LONG=3.0.0
+set RUBY_BRANCH=ruby_3_0
+set RUBY_RELEASE=3.0.2-1
+set RUBY_SRC_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
+set RUBY_URL=https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z
 set RUBY32_DIR=C:\Ruby%RUBY_VER%
 set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
 set RUBY_DIR=!RUBY%BIT%_DIR!
@@ -129,18 +130,22 @@ start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /
 for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
-:: Python 3.9
+:: Python 3
 call :downloadfile %PYTHON3_URL% downloads\python3.exe
 cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
 
 :: Ruby
+:: Download RubyInstaller binary
+call :downloadfile %RUBY_URL% downloads\ruby.7z
+7z x downloads\ruby.7z -oC:\ > nul || exit 1
+move C:\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
 :: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
-call :downloadfile %RUBY_URL% downloads\ruby.zip
+call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
 :: Extract the files only we needed to reduce the building time.
 :: We need to use `^^` to escape `!` because we enable delayed expansion.
-7z x downloads\ruby.zip */bin */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
+7z x downloads\ruby_src.zip */bin */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
 move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat

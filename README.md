@@ -41,13 +41,13 @@ a working Lua installation). This means, those interpreters have to be
 installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
-* [Strawberry Perl](http://strawberryperl.com/) 5.28
+* [Strawberry Perl](http://strawberryperl.com/) 5.32
 * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
-* [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
+* [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
-* [Python 3](https://www.python.org/downloads/) 3.9
+* [Python 3](https://www.python.org/downloads/) 3.10
 * [Racket](https://download.racket-lang.org/) 6.10.1
-* [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
+* [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
 
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.

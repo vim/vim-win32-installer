@@ -109,13 +109,13 @@ deploy:
       <details>
       <summary>Interface Informations</summary>
 
-      * [Strawberry Perl](http://strawberryperl.com/) 5.28
+      * [Strawberry Perl](http://strawberryperl.com/) 5.32
       * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
-      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.3
+      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
       * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.9
+      * [Python3](https://www.python.org/downloads/) 3.10
       * [Racket](https://download.racket-lang.org/) 6.10.1
-      * [RubyInstaller2](http://rubyinstaller.org/downloads/) 2.4
+      * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
       <!-- * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18 -->
       </details>
 
