@@ -114,7 +114,7 @@ deploy:
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.10
-      * [Racket](https://download.racket-lang.org/) 6.10.1
+      * [Racket](https://download.racket-lang.org/) 8.3 (BC)
       * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
       <!-- * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18 -->
       </details>
