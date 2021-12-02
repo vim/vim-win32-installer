@@ -39,13 +39,12 @@ set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
-set RACKET_VER=3m_a36fs8
-set RACKET32_URL=https://www.cs.utah.edu/plt/installers/6.10.1/racket-minimal-6.10.1-i386-win32.exe
-set RACKET64_URL=https://www.cs.utah.edu/plt/installers/6.10.1/racket-minimal-6.10.1-x86_64-win32.exe
+set RACKET_VER=3m_da32rk
+set RACKET_RELEASE=8.3
+set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
+set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
 set RACKET_URL=!RACKET%BIT%_URL!
-set RACKET32_DIR=%PROGRAMFILES(X86)%\Racket
-set RACKET64_DIR=%PROGRAMFILES%\Racket
-set RACKET_DIR=!RACKET%BIT%_DIR!
+set RACKET_DIR=C:\racket
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=30
@@ -155,8 +154,10 @@ xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
 :: Racket
-call :downloadfile %RACKET_URL% downloads\racket.exe
-start /wait downloads\racket.exe /S
+call :downloadfile %RACKET_URL% downloads\racket.tgz
+:: Use tar.exe from "Git for Windows"
+tar xf downloads/racket.tgz -C /c || exit 1
+type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
@@ -362,6 +363,8 @@ goto :eof
 :test_x64
 :: ----------------------------------------------------------------------
 @echo on
+set PLTCOLLECTS=%RACKET_DIR%\collects
+set PLTCONFIGDIR=%RACKET_DIR%\etc
 cd vim\src\testdir
 nmake -f Make_dos.mak VIMPROG=..\gvim || exit 1
 nmake -f Make_dos.mak clean

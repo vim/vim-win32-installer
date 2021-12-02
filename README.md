@@ -46,7 +46,7 @@ You can find those interperters here:
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.10
-* [Racket](https://download.racket-lang.org/) 6.10.1
+* [Racket](https://download.racket-lang.org/) 8.3 (BC)
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
 
 Make sure that you install the same architecture (32bit/64bit) for those
