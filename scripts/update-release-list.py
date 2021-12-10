@@ -78,28 +78,25 @@ def write_new_rels(new_rels, latest_rel):
             lines += [l]
 
     print('New releases: ', end='')
-    f = open(latest_file, 'w')
-    for i, rel in enumerate(new_rels):
-        y = rel['published_at'][:4]
-        m = rel['published_at'][5:7]
-        if y != last_y:
-            f.writelines(lines)
-            f.close()
-            lines = []
-            last_y = y
-            f = open(f'Releases-in-{y}.md', 'w')
-        if m != last_m:
-            lines += [f"## {y}-{m}\n"]
-            last_m = m
-        lines += [f"* [{rel['name']}]({rel['html_url']})\n"]
+        with open(latest_file, 'w') as f:
+            for i, rel in enumerate(new_rels):
+                y = rel['published_at'][:4]
+                m = rel['published_at'][5:7]
+                if y != last_y:
+                    f.writelines(lines)
+                    lines = []
+                    last_y = y
+                    with open(f'Releases-in-{y}.md', 'w') as f:
+                        if m != last_m:
+                            lines += [f"## {y}-{m}\n"]
+                            last_m = m
+                        lines += [f"* [{rel['name']}]({rel['html_url']})\n"]
 
-        if i != 0:
-            print(', ', end='')
-        print(rel['name'], end='')
-
-    f.writelines(lines)
-    f.close()
-    print()
+                        if i != 0:
+                            print(', ', end='')
+                        print(rel['name'], end='')
+                        f.writelines(lines)
+                        print()
 
 
 def main():
