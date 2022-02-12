@@ -31,7 +31,7 @@ warning will vanish, once the certificate has been used more widely.
 If you want to avoid this warning, you can use the latest release with the old certificate
 [v8.2.577](https://github.com/vim/vim-win32-installer/releases/tag/v8.2.0577).
 
-If you need a dynamic interface to Perl, Python2, Python3, Ruby, TCL, Lua or
+If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
 [Gundo](https://github.com/sjl/gundo.vim) needs a working Python2 installation,
@@ -42,7 +42,7 @@ installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
 * [Strawberry Perl](http://strawberryperl.com/) 5.32
-* [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6
+* <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.10

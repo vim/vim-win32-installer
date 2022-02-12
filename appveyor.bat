@@ -123,11 +123,15 @@ call :downloadfile %PERL_URL% downloads\perl.zip
 7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
 
 :: Tcl
+goto skiptcl
+
 call :downloadfile %TCL_URL% downloads\tcl.exe
 mkdir c:\ActiveTclTemp
 start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
 for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
+
+:skiptcl
 
 :: Python 3
 call :downloadfile %PYTHON3_URL% downloads\python3.exe
@@ -233,7 +237,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
@@ -246,7 +249,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-	DYNAMIC_TCL=yes TCL=%TCL_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes ^
