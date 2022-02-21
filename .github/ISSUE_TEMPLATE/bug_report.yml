@@ -1,0 +1,51 @@
+---
+name: Bug report
+description: Create a report to help us improve Vim installer.
+labels: [bug]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting issues of Vim installer!
+
+        If you want to report an issue of Vim itself, please go to the [main repository](https://github.com/vim/vim/issues/new/choose).
+        If you want ask a user question about Vim itself, please go to the [vim_use mailinglist](https://groups.google.com/g/vim_use) or use [vi.stackexchange.com](https://vi.stackexchange.com/).
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. 
+        2. 
+        3. 
+        4. 
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behaviour
+      placeholder: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Version of Vim
+      description: >
+        Including patch level, use ":version" to see it [e.g. 8.2.1234]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: >
+        Windows version [e.g. Windows 10 22H1 (64 bits)], Installer package [e.g. 32-bit self-installer, 64-bit zip package, ...]; anything that might matter
+      placeholder: |
+        Windows version:
+        Installer package:
+    validations:
+      required: true
+  #- type: textarea
+  #  attributes:
+  #    label: Logs and stack traces
+  #    placeholder: Insert log or other text here (if necessary)
+  #    render: shell
