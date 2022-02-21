@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Issues in the main repository
+    url: https://github.com/vim/vim/issues/new/choose
+    about: If you have any issues with Vim itself, please report to the main repository.
