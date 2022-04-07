@@ -1,0 +1,14 @@
+diff --git a/src/testdir/test_channel.vim b/src/testdir/test_channel.vim
+index 6ad9dc0e1..0699f9a09 100644
+--- a/src/testdir/test_channel.vim
++++ b/src/testdir/test_channel.vim
+@@ -2663,7 +2663,8 @@ func LspTests(port)
+ endfunc
+ 
+ func Test_channel_lsp_mode()
+-  call RunServer('test_channel_lsp.py', 'LspTests', [])
++  throw 'Skipped: on Vim-Win32-installer CI repository'
++  "call RunServer('test_channel_lsp.py', 'LspTests', [])
+ endfunc
+ 
+ " vim: shiftwidth=2 sts=2 expandtab
