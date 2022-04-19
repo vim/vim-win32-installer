@@ -107,8 +107,7 @@ deploy:
         pdb files for debugging the corresponding 64-bit executable
 
       <details>
-      <summary>Interface Informations</summary>
-
+      <summary>Interface Information</summary>
       * [Strawberry Perl](http://strawberryperl.com/) 5.32
       <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
