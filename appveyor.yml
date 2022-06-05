@@ -6,6 +6,9 @@ image: Visual Studio 2015
 skip_non_tags: true
 
 environment:
+  auth_token:
+    secure: Ren8cbJnovyLFJO+91+ZeMvHFuiN/gwss7avDjif0TdhD1rK5FdbH0DqegU87a5t
+
   matrix:
     - ARCH: x64
     - ARCH: x86
@@ -120,10 +123,9 @@ deploy:
       </details>
 
       See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
-    auth_token:
-      secure: Ren8cbJnovyLFJO+91+ZeMvHFuiN/gwss7avDjif0TdhD1rK5FdbH0DqegU87a5t
+    auth_token: $(auth_token)
     artifact: /^gvim_.*/
-    draft: false
+    draft: true
     prerelease: false
     on:
       appveyor_repo_tag: true
@@ -132,5 +134,8 @@ deploy:
 
       #cache:
       #  - downloads -> appveyor.bat
+
+on_success:
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" onsuccess'
 
 # vim: ts=2 sw=2 et
