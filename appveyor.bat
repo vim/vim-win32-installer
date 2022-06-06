@@ -374,6 +374,27 @@ nmake -f Make_dos.mak VIMPROG=..\vim || exit 1
 goto :eof
 
 
+:onsuccess_x64
+goto :eof
+:onsuccess_x86
+:: ----------------------------------------------------------------------
+:: Turn off the draft status of the release when x86 is successfully finished.
+
+curl -o c:\cygwin64\setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
+c:\cygwin64\setup-x86_64.exe -qnNdO -P jq
+path %PATH%;c:\cygwin64\bin
+
+:: Get the ID of the release.
+curl -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
+type releases.json | jq ".[] | {name, id} | select(.name == \"%APPVEYOR_REPO_TAG_NAME%\") | {id}[]" > release_id.txt
+type release_id.txt
+for /f "delims=" %%i in (release_id.txt) do set REL_ID=%%i
+
+:: Turn off the draft status.
+curl -X PATCH -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%" -d "{\"draft\": false}"
+goto :eof
+
+
 :downloadfile
 :: ----------------------------------------------------------------------
 :: call :downloadfile <URL> <localfile>
