@@ -138,4 +138,7 @@ deploy:
 on_success:
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" onsuccess'
 
+on_failure:
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" onfailure'
+
 # vim: ts=2 sw=2 et
