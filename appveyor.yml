@@ -83,6 +83,9 @@ deploy:
 
       $(GITLOG)
 
+      <!--
+      _This release includes signed files_
+      -->
       ### Files:
       <!--  commented out, because will only be enabled once the signed files are uploaded manually.
       #### :lock: Signed Files:
