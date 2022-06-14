@@ -80,8 +80,11 @@ def write_new_rels(new_rels, latest_rel):
     print('New releases: ', end='')
     f = open(latest_file, 'w')
     for i, rel in enumerate(new_rels):
-        y = rel['published_at'][:4]
-        m = rel['published_at'][5:7]
+        pub_at = rel['published_at']
+        if not pub_at:
+            pub_at = rel['created_at']
+        y = pub_at[:4]
+        m = pub_at[5:7]
         if y != last_y:
             f.writelines(lines)
             f.close()
