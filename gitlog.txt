@@ -1,1 +1,1 @@
-* [release version 9.0](https://github.com/vim/vim/commit/eb49041875118be5fe60f07750c7c86cb26dccef)\n* [8.2.5172](https://github.com/vim/vim/commit/c19f1a3488c1bb6fe5707dc6338b13cb9f598670): "make menu" still uses legacy script
+* [9.0.0001](https://github.com/vim/vim/commit/75417d960bd17a5b701cfb625b8864dacaf0cc39): Travis CI is no longer used
