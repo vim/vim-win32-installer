@@ -50,8 +50,6 @@ artifacts:
     name: gvim_x64_installer
   - path: unsigned*.zip
     name: vim_zip_for_signing
-  - path: gvim_*.yml
-    name: yaml for winget
 
 before_deploy:
   - for /f "delims=" %%i in (gitlog.txt) do set GITLOG=%%i

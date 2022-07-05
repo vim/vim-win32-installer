@@ -17,20 +17,6 @@ PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
 
-The `gvim.<version>.yml` contains the corresponding winget manifest (as yaml)
-which might in the future be used to upload to the winget package repository.
-Currently (12/2020), there does not seem to exist an automatic workflow, so you
-can use this to contribute to [winget](https://github.com/microsoft/winget-pkgs),
-but you may want to replace the URL and hash of the unsigned 64bit installer by
-the signed one, if it exists (this is currently not automated).
-
-Note: Due to the expiration of the old certificate, a new certificate to sign the binaries has
-been created and will be used starting with the next release after April 14th, 2020.
-This may cause a SmartScreen warning by Windows because the certificate is new. Hopefully this
-warning will vanish, once the certificate has been used more widely.
-If you want to avoid this warning, you can use the latest release with the old certificate
-[v8.2.577](https://github.com/vim/vim-win32-installer/releases/tag/v8.2.0577).
-
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
@@ -58,6 +44,7 @@ the [winpty repository](https://github.com/rprichard/winpty). This feature is
 currently considered experimental. Read the help at [:h
 terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
 information.
+
 For supporting better encryption, it comes with the libsodium.dll from the
 [libsodium repository](https://github.com/jedisct1/libsodium/releases/1.0.18-RELEASE)
 See the help at [:h 'cryptmethod'](https://vimhelp.org/options.txt.html#%27cryptmethod%27)
@@ -70,6 +57,14 @@ in the properties dialog of the zip file, first tab General and look for the
 security section and click on "Unblock". However using a signed release might
 prevent that behaviour in Windows eventually (see also next paragraph).
 
+See: [Vim Repository](https://github.com/vim/vim) for the Vim source.
+
+## Custom Patches
+Note: If you want to test some patches, place them in the patch directory with
+the extension `.patch`. They will be applied before building Vim and the binary
+will then be tested against the test suite.
+
+## Signed Builds
 Creating a signed binary and installer still requires manual effort, therefore
 not every release will be signed. They will be provided on a best effort basis
 occasionaly. Signing the releases is provided by
@@ -77,15 +72,25 @@ occasionaly. Signing the releases is provided by
 releases for a long time, feel free to request a new one by creating an
 [issue](https://github.com/vim/vim-win32-installer/issues) here.
 
-Note: If you want to test some patches, place them in the patch directory with
-the extension `.patch`. They will be applied before building Vim and the binary
-will then be tested against the test suite.
+## Winget 
+This repository also contains a github actions CI-step for uploading the
+binaries to the winget repository.
 
-See: [Vim Repository](https://github.com/vim/vim) for the Vim source.
+This means, the (unsigned) nightly builds will be automatically uploaded and
+submitted to the [winget repository](https://github.com/microsoft/winget-pkgs/).
+So you can use the
+[winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)
+command to update your vim installation and do not have to download and
+install new releases manually.
+
+This is only done for the nightly builds, because the signed builds currently
+still require some manual steps to complete.
 
 # License & Copyright
 
 Most work was done by Ken Takata (@k-takata) and Christian Brabandt (@chrisbra).
 
-The Vim license applies (see [:h license](http://vimhelp.appspot.com/uganda.txt.html#license)) to all the build scripts in this repository.
-Note, that Vim is included as a submodule and comes with its own license (although is also released under the Vim license).
+The Vim license applies (see [:h
+license](http://vimhelp.appspot.com/uganda.txt.html#license)) to all the build
+scripts in this repository. Note, that Vim is included as a submodule and comes
+with its own license (although is also released under the Vim license).
