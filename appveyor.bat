@@ -227,7 +227,9 @@ set CL=/D_USING_V110_SDK71_
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 :: Set CHERE_INVOKING to start Cygwin in the current directory
 set CHERE_INVOKING=1
-c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
+::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
+c:\cygwin64\bin\bash -lc ../../scripts/patchlevel.sh
+type version.h
 
 :: Build GUI version
 nmake -f Make_mvc.mak ^
