@@ -1,1 +1,1 @@
-* [9.0.0054](https://github.com/vim/vim/commit/c7bd2f08e531f08723cdc677212a3633d11c9a97): compiler warning for size\_t to int conversion
+* [9.0.0055](https://github.com/vim/vim/commit/fa49eb482729a5fe7da9c9a5ed8d14f68afa55c7): bitbake files are not detected
