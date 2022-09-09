@@ -282,14 +282,14 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake CPU=AMD64 clean all > ..\gvimext.log"
+start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake CPU=i386 clean all > ..\gvimext.log"
+start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
@@ -362,9 +362,9 @@ goto :eof
 set PLTCOLLECTS=%RACKET_DIR%\collects
 set PLTCONFIGDIR=%RACKET_DIR%\etc
 cd vim\src\testdir
-nmake -f Make_dos.mak VIMPROG=..\gvim || exit 1
-nmake -f Make_dos.mak clean
-nmake -f Make_dos.mak VIMPROG=..\vim || exit 1
+nmake -f Make_mvc.mak VIMPROG=..\gvim || exit 1
+nmake -f Make_mvc.mak clean
+nmake -f Make_mvc.mak VIMPROG=..\vim || exit 1
 
 @echo off
 goto :eof
