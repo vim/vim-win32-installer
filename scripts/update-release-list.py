@@ -60,7 +60,7 @@ def get_new_rels(rels_info, latest_rel):
     return rels
 
 
-def read_latest_rel(latest_file):
+def read_latest_rel(latest_file, latest_rel):
     lines = []
     last_y = ''
     last_m = ''
@@ -81,7 +81,7 @@ def read_latest_rel(latest_file):
 
 def write_new_rels(new_rels, latest_rel):
     latest_file = sorted(glob.glob('Releases-in-*.md'))[-1]
-    last_y, last_m, lines = read_latest_rel(latest_file)
+    last_y, last_m, lines = read_latest_rel(latest_file, latest_rel)
 
     print('New releases: ', end='')
     f = open(latest_file, 'w')
