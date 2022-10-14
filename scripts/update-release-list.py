@@ -13,6 +13,8 @@ GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', default='')
 
 gh_releases_url = f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases'
 
+rel_name_pat = re.compile(r'^\* \[(v\d+\.\d+\.\d+)\]')
+
 
 # Get information of GitHub release
 # see: https://docs.github.com/en/rest/reference/repos#releases
@@ -41,7 +43,7 @@ def get_latest_rel():
     rel = ''
     with open(files[-1]) as f:
         for l in f:
-            m = re.match(r'^\* \[(v\d+\.\d+\.\d+)\]', l)
+            m = rel_name_pat.match(l)
             if m:
                 rel = m.group(1)
     if rel == '':
@@ -58,9 +60,7 @@ def get_new_rels(rels_info, latest_rel):
     return rels
 
 
-def write_new_rels(new_rels, latest_rel):
-    latest_file = sorted(glob.glob('Releases-in-*.md'))[-1]
-
+def read_latest_rel(latest_file):
     lines = []
     last_y = ''
     last_m = ''
@@ -71,11 +71,17 @@ def write_new_rels(new_rels, latest_rel):
                 last_y = m1.group(1)
                 last_m = m1.group(2)
             else:
-                m2 = re.match(r'^\* \[(v\d+\.\d+\.\d+)\]', l)
+                m2 = rel_name_pat.match(l)
                 if m2.group(1) == latest_rel:
                     lines += [l]
                     break
             lines += [l]
+    return last_y, last_m, lines
+
+
+def write_new_rels(new_rels, latest_rel):
+    latest_file = sorted(glob.glob('Releases-in-*.md'))[-1]
+    last_y, last_m, lines = read_latest_rel(latest_file)
 
     print('New releases: ', end='')
     f = open(latest_file, 'w')
@@ -83,8 +89,7 @@ def write_new_rels(new_rels, latest_rel):
         pub_at = rel['published_at']
         if not pub_at:
             pub_at = rel['created_at']
-        y = pub_at[:4]
-        m = pub_at[5:7]
+        y, m = pub_at.split('-')[:2]
         if y != last_y:
             f.writelines(lines)
             f.close()
