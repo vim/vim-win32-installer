@@ -8,6 +8,9 @@ on:
   #  branches: [master]
   #  types: [completed]
 
+permissions:
+  contents: write # to update wiki
+
 env:
   # Account for committing
   USER_NAME: "vim-win32-installer CI"
@@ -24,11 +27,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         path: main
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: "${{ github.repository }}.wiki"
         path: wiki
