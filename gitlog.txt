@@ -1,1 +1,1 @@
-* [9.0.0828](https://github.com/vim/vim/commit/c57b5bcd22826e0852c2bc9c7d4382e1cac7cb74): various typos
+* [9.0.0831](https://github.com/vim/vim/commit/6c3d3e69047438ff5b7f58d44fe66af9e2c4212b): compiler warning for redefining HAVE\_DUP\n* [9.0.0830](https://github.com/vim/vim/commit/5375205761b5ed247f992abce341cf745dded38d): compiling with Perl on Mac 12 fails\n* [9.0.0829](https://github.com/vim/vim/commit/3d19c81a116e7923d8295e7d2795fb3edb45acb1): wrong counts in macro comment
