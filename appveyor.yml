@@ -2,9 +2,6 @@ version: "{build}"
 
 image: Visual Studio 2015
 
-# Build only on tags
-skip_non_tags: true
-
 environment:
   auth_token:
     secure: Ren8cbJnovyLFJO+91+ZeMvHFuiN/gwss7avDjif0TdhD1rK5FdbH0DqegU87a5t
@@ -69,6 +66,10 @@ deploy:
     authorization:
       secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
 
+    # Deploy only on tags
+    on:
+      APPVEYOR_REPO_TAG: true
+
   - provider: GitHub
     description: |
       [![$(APPVEYOR_REPO_TAG_NAME)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/total.svg)](https://github.com/$(APPVEYOR_REPO_NAME)/releases/tag/$(APPVEYOR_REPO_TAG_NAME))
@@ -128,8 +129,10 @@ deploy:
     artifact: /^gvim_.*/
     draft: true
     prerelease: false
+
+    # Deploy only on tags
     on:
-      appveyor_repo_tag: true
+      APPVEYOR_REPO_TAG: true
 
       # Cache is being disabled to allow signpath to sign the results
 
