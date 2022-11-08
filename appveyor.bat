@@ -383,6 +383,8 @@ goto :eof
 :: ----------------------------------------------------------------------
 :: Turn off the draft status of the release when x86 is successfully finished.
 
+if "%APPVEYOR_REPO_TAG_NAME%"=="" goto :eof
+
 call :get_release_id
 
 :: Turn off the draft status.
@@ -395,6 +397,8 @@ goto :eof
 :onfailure_x86
 :: ----------------------------------------------------------------------
 :: Delete the release when x86 is failed.
+
+if "%APPVEYOR_REPO_TAG_NAME%"=="" goto :eof
 
 call :get_release_id
 
