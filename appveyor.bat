@@ -2,9 +2,15 @@
 :: Batch file for building/testing Vim on AppVeyor
 
 setlocal ENABLEDELAYEDEXPANSION
-FOR /f "delims=. tokens=1-3" %%i in ("%APPVEYOR_REPO_TAG_NAME%") do set PATCHLEVEL=%%k
 
 cd %APPVEYOR_BUILD_FOLDER%
+
+if "%APPVEYOR_REPO_TAG_NAME%"=="" (
+	for /f %%i in ('git describe --tags --abbrev^=0') do set TAG_NAME=%%i
+) else (
+	set TAG_NAME=%APPVEYOR_REPO_TAG_NAME%
+)
+FOR /f "delims=. tokens=1-3" %%i in ("%TAG_NAME%") do set PATCHLEVEL=%%k
 
 if /I "%ARCH%"=="x64" (
 	set BIT=64
@@ -101,6 +107,7 @@ exit 1
 :install_x86
 :install_x64
 :: ----------------------------------------------------------------------
+echo TAG_NAME: %TAG_NAME%
 @echo on
 
 :: Get Vim source code
@@ -297,7 +304,7 @@ copy /Y GvimExt\*.inf      GvimExt32\
 copy /Y GvimExt\*.reg      GvimExt32\
 
 :: Create zip packages
-7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%_pdb.zip *.pdb
+7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%_pdb.zip *.pdb
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\vimtutor.bat ..\runtime
 copy /Y *.exe ..\runtime\
@@ -321,10 +328,10 @@ copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
 rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
-set dir=vim%APPVEYOR_REPO_TAG_NAME:~1,1%%APPVEYOR_REPO_TAG_NAME:~3,1%
+set dir=vim%TAG_NAME:~1,1%%TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
-7z a ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip ..\vim
+7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim
 
 :: Create installer
 c:\cygwin64\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
@@ -337,9 +344,9 @@ copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
-	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 ) else (
-	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DPATCHLEVEL=%PATCHLEVEL%  gvim.nsi "/XOutFile ..\..\gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DPATCHLEVEL=%PATCHLEVEL%  gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 )
 popd
 
@@ -349,7 +356,7 @@ popd
 :: (the Vim zip archive as well as the installer)
 echo Creating Signpath Zip Archive
 cd %APPVEYOR_BUILD_FOLDER%
-7z a unsigned-gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim_%APPVEYOR_REPO_TAG_NAME:~1%_%ARCH%.zip gvim*.exe
+7z a unsigned-gvim_%TAG_NAME:~1%_%ARCH%.zip gvim_%TAG_NAME:~1%_%ARCH%.zip gvim*.exe
 
 @echo off
 goto :eof
@@ -376,6 +383,8 @@ goto :eof
 :: ----------------------------------------------------------------------
 :: Turn off the draft status of the release when x86 is successfully finished.
 
+if "%APPVEYOR_REPO_TAG_NAME%"=="" goto :eof
+
 call :get_release_id
 
 :: Turn off the draft status.
@@ -388,6 +397,8 @@ goto :eof
 :onfailure_x86
 :: ----------------------------------------------------------------------
 :: Delete the release when x86 is failed.
+
+if "%APPVEYOR_REPO_TAG_NAME%"=="" goto :eof
 
 call :get_release_id
 
@@ -404,7 +415,7 @@ c:\cygwin64\setup-x86_64.exe -qnNdO -P jq
 path %PATH%;c:\cygwin64\bin
 
 curl -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
-type releases.json | jq ".[] | {name, id} | select(.name == \"%APPVEYOR_REPO_TAG_NAME%\") | {id}[]" > release_id.txt
+type releases.json | jq ".[] | {name, id} | select(.name == \"%TAG_NAME%\") | {id}[]" > release_id.txt
 type release_id.txt
 for /f "delims=" %%i in (release_id.txt) do set REL_ID=%%i
 goto :eof
