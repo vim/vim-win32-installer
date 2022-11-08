@@ -1,1 +1,1 @@
-* [9.0.0844](https://github.com/vim/vim/commit/7b224fdf4a29f115567d4fc8629c1cef92d8444a): handling 'statusline' errors is spread out\n* [9.0.0843](https://github.com/vim/vim/commit/1756f4b21837e8596241ecd668f4abbbab4bc7e5): VHS tape files are not recognized\n* [9.0.0842](https://github.com/vim/vim/commit/0e364c9fca7a666de0775007d2f0687ecdd73c8d): Unicode range for Apple SF symbols is outdated
+* [9.0.0845](https://github.com/vim/vim/commit/4e7590ec00483077daaa567aa2220bc8df912f3c): shell command with just space gives strange error
