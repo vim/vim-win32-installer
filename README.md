@@ -31,7 +31,7 @@ You can find those interperters here:
 * <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
-* [Python 3](https://www.python.org/downloads/) 3.10
+* [Python 3](https://www.python.org/downloads/) 3.11
 * [Racket](https://download.racket-lang.org/) 8.3 (BC)
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
 
