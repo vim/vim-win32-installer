@@ -1,1 +1,1 @@
-* [9.0.0915](https://github.com/vim/vim/commit/29967732761d1ffb5592db5f5aa7036f5b52abf1): WinScrolled may trigger immediately when defined\n* [9.0.0914](https://github.com/vim/vim/commit/228e422855d43965f2c3319ff0cdc26ea422c10f): deletebufline() may move marks in the wrong window
+* [9.0.0916](https://github.com/vim/vim/commit/ce30ccc06af7f2c03762e5b18dde37b26ea6ec42): getbufline() is inefficient for getting a single line
