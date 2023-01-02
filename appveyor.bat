@@ -18,6 +18,7 @@ if /I "%ARCH%"=="x64" (
 	set BIT=32
 )
 set DEPS=%APPVEYOR_BUILD_FOLDER%\DEPS
+
 :: ----------------------------------------------------------------------
 :: Download URLs, local dirs and versions
 :: Lua
@@ -86,6 +87,9 @@ set SUBSYSTEM_VER64=5.02
 set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
 :: ----------------------------------------------------------------------
 
+set CYGWIN_DIR=%DEPS%\cygwin64
+set CYGWIN_URL=https://cygwin.com/setup-x86_64.exe
+
 :: Update PATH
 path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
 
@@ -115,6 +119,9 @@ for %%i in (..\patch\*.patch) do git apply -v %%i
 popd
 
 if not exist downloads mkdir downloads
+
+call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
+%CYGWIN_DIR%\setup-x86_64.exe -qnNdOv -R %CYGWIN_DIR% -P jq,gettext-devel
 
 :: Lua
 call :downloadfile %LUA_URL% downloads\lua.zip
@@ -405,9 +412,7 @@ goto :eof
 :get_release_id
 :: ----------------------------------------------------------------------
 :: Get the ID of the release. Set the result to %REL_ID%.
-curl -o %DEPS%\cygwin64\setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
-%DEPS%\cygwin64\setup-x86_64.exe -qnNdO -R %DEPS%\cygwin64 -P jq,gettext-devel
-path %PATH%;%DEPS%\cygwin64\bin
+path %PATH%;%CYGWIN_DIR%\bin
 
 curl -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
 type releases.json | jq ".[] | {name, id} | select(.name == \"%TAG_NAME%\") | {id}[]" > release_id.txt
