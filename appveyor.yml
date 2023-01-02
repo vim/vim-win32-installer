@@ -8,7 +8,6 @@ environment:
 
   matrix:
     - ARCH: x64
-    - ARCH: x86
 
 matrix:
   fast_finish: true
