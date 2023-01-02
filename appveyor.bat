@@ -167,7 +167,7 @@ popd
 :: Racket
 call :downloadfile %RACKET_URL% downloads\racket.tgz
 :: Use tar.exe from "Git for Windows"
-%DEPS%\cygwin64\bin\tar.exe xf downloads/racket.tgz -C %DEPS% || exit 1
+%DEPS%\cygwin64\bin\tar.exe xf downloads/racket.tgz -C ./DEPS/ || exit 1
 type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
