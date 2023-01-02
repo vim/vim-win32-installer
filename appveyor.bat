@@ -148,6 +148,7 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 :: Python 2
 call :downloadfile %PYTHON_URL% downloads\%PYTHON_INSTALLER%
 msiexec /i downloads\%PYTHON_INSTALLER% ALLUSERS=0 TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature /qn
+dir %PYTHON_DIR%
 
 :: Python 3
 call :downloadfile %PYTHON3_URL% downloads\python3.exe
