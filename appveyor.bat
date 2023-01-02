@@ -125,10 +125,11 @@ call :downloadfile %LUA_URL% downloads\lua.zip
 7z x downloads\lua.zip -o%LUA_DIR% > nul || exit 1
 
 :: Perl
-call :downloadfile %PERL_URL% downloads\perl.zip
+if not exist %PERL_DIR% (
+  call :downloadfile %PERL_URL% downloads\perl.zip
 :: Extract only the "perl" folder.
-7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
-
+  7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
+)
 :: Tcl
 goto skiptcl
 
