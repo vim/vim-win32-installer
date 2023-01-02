@@ -406,7 +406,7 @@ goto :eof
 :: ----------------------------------------------------------------------
 :: Get the ID of the release. Set the result to %REL_ID%.
 curl -o %DEPS%\cygwin64\setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
-%DEPS%\cygwin64\setup-x86_64.exe -qnNdO -P jq
+%DEPS%\cygwin64\setup-x86_64.exe -qnNdO -P jq,gettext-devel
 path %PATH%;%DEPS%\cygwin64\bin
 
 curl -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
