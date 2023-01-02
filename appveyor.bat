@@ -32,8 +32,8 @@ set PERL_URL=https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-
 set PERL_DIR=%DEPS%\Strawberry\perl
 :: Python2
 set PYTHON_VER=27
-set PYTHON_32_DIR=%DEPS%:\python%PYTHON_VER%
-set PYTHON_64_DIR=%DEPS%:\python%PYTHON_VER%-x64
+set PYTHON_32_DIR=%DEPS%\python%PYTHON_VER%
+set PYTHON_64_DIR=%DEPS%\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=311
