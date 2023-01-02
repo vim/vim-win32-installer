@@ -147,7 +147,7 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :: Python 2
 call :downloadfile %PYTHON_URL% downloads\%PYTHON_INSTALLER%
-msiexec /i downloads\%PYTHON_INSTALLER% TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature /qn /L*v "%PYTHON_INSTALLER%-Install.log"
+cmd /c start /wait msiexec /i downloads\%PYTHON_INSTALLER% TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature /qn /L*v "%PYTHON_INSTALLER%-Install.log"
 dir %PYTHON_DIR%
 type "%PYTHON_INSTALLER%-Install.log"
 
