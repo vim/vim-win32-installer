@@ -37,12 +37,8 @@ set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=311
-set PYTHON3_RELEASE=3.11.1
-set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
-set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
-set PYTHON3_URL=!PYTHON3_%BIT%_URL!
-set PYTHON3_32_DIR=%DEPS%\python%PYTHON3_VER%
-set PYTHON3_64_DIR=%DEPS%\python%PYTHON3_VER%-x64
+set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
+set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
 set RACKET_VER=3m_da32rk
@@ -139,10 +135,6 @@ for /d %%i in (%DEPS%\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :skiptcl
-
-:: Python 3
-call :downloadfile %PYTHON3_URL% downloads\python3.exe
-cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
 
 :: Ruby
 :: Download RubyInstaller binary
