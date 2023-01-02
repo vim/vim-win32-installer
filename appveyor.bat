@@ -149,7 +149,7 @@ cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include
 call :downloadfile %RUBY_URL% downloads\ruby.7z
 7z x downloads\ruby.7z -o%DEPS%\ > nul || exit 1
 move %DEPS%\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
-:: RubyInstaller is built by MinGW, so we cannot use header files from it.
+:: RubyInstaller is built by MinGW, so we cannot use header files from it.RACKET_DIR
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
@@ -167,7 +167,7 @@ popd
 :: Racket
 call :downloadfile %RACKET_URL% downloads\racket.tgz
 :: Use tar.exe from "Git for Windows"
-tar xf downloads/racket.tgz -C %DEPS% || exit 1
+%DEPS%\cygwin64\bin\tar.exe xf downloads/racket.tgz -C %DEPS% || exit 1
 type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
@@ -221,15 +221,15 @@ goto :eof
 @echo on
 cd vim\src
 
-:: Setting for targeting Windows XP
-set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
-set INCLUDE=%WinSdk71%\Include;%INCLUDE%
-if /i "%ARCH%"=="x64" (
-	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
-) else (
-	set "LIB=%WinSdk71%\Lib;%LIB%"
-)
-set CL=/D_USING_V110_SDK71_
+@REM :: Setting for targeting Windows XP
+@REM set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
+@REM set INCLUDE=%WinSdk71%\Include;%INCLUDE%
+@REM if /i "%ARCH%"=="x64" (
+@REM 	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
+@REM ) else (
+@REM 	set "LIB=%WinSdk71%\Lib;%LIB%"
+@REM )
+@REM set CL=/D_USING_V110_SDK71_
 
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 :: Set CHERE_INVOKING to start Cygwin in the current directory
@@ -289,14 +289,16 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
