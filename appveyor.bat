@@ -37,7 +37,7 @@ set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=311
-set PYTHON3_RELEASE=3.11.0
+set PYTHON3_RELEASE=3.11.1
 set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
 set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
 set PYTHON3_URL=!PYTHON3_%BIT%_URL!
