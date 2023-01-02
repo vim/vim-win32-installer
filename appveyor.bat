@@ -32,6 +32,11 @@ set PERL_URL=https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-
 set PERL_DIR=%DEPS%\Strawberry\perl
 :: Python2
 set PYTHON_VER=27
+set PYTHON_RELEASE=2.7.18
+set PYTHON_32_INSTALLER=python-%PYTHON_RELEASE%.msi
+set PYTHON_64_INSTALLER=python-%PYTHON_RELEASE%.amd64.msi
+set PYTHON_INSTALLER=!PYTHON_%BIT%_INSTALLER!
+set PYTHON_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/%PYTHON_INSTALLER%
 set PYTHON_32_DIR=%DEPS%\python%PYTHON_VER%
 set PYTHON_64_DIR=%DEPS%\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
@@ -139,6 +144,10 @@ for /d %%i in (%DEPS%\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :skiptcl
+
+:: Python 2
+call :downloadfile %PYTHON_URL% downloads\%PYTHON_INSTALLER%
+msiexec /i downloads\%PYTHON_INSTALLER% ALLUSERS=0 TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature /qn
 
 :: Python 3
 call :downloadfile %PYTHON3_URL% downloads\python3.exe
