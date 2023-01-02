@@ -19,7 +19,7 @@ build:
   verbosity: minimal
 
 before_build:
-  - 'VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat'
+  - 'set VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat'
   - 'call "%VCVARSALL%" %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
