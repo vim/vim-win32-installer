@@ -19,7 +19,8 @@ build:
   verbosity: minimal
 
 before_build:
-  - 'set VCVARSALL="$(%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat"'
+   # - 'set VCVARSALL="$(%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat"'
+  - 'set VCVARSALL="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"'
   - 'call "%VCVARSALL%" %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
