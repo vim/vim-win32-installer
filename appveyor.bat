@@ -119,6 +119,8 @@ for %%i in (..\patch\*.patch) do git apply -v %%i
 popd
 
 if not exist downloads mkdir downloads
+if not exist DEPS mkdir DEPS
+if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
 %CYGWIN_DIR%\setup-x86_64.exe -qnNdOv -R %CYGWIN_DIR% -P jq,gettext-devel
