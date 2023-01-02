@@ -235,7 +235,7 @@ cd vim\src
 :: Set CHERE_INVOKING to start Cygwin in the current directory
 set CHERE_INVOKING=1
 ::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
-%DEPS%\cygwin64\bin\bash -lc ../../scripts/patchlevel.sh
+%CYGWIN_DIR%\bin\bash -lc ../../scripts/patchlevel.sh
 type version.h
 
 :: Build GUI version
@@ -264,7 +264,7 @@ nmake -f Make_mvc.mak ^
 	|| exit 1
 :: Build translations
 pushd po
-nmake -f Make_mvc.mak GETTEXT_PATH=%DEPS%\cygwin\bin VIMRUNTIME=..\..\runtime install-all || exit 1
+nmake -f Make_mvc.mak GETTEXT_PATH=%CYGWIN_DIR%\bin VIMRUNTIME=..\..\runtime install-all || exit 1
 popd
 
 :check_executable
@@ -336,7 +336,7 @@ xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
 7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim
 
 :: Create installer
-%DEPS%\cygwin64\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
+%CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
 copy tee\tee.exe teew32.exe
