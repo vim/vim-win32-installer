@@ -123,9 +123,9 @@ if not exist downloads mkdir downloads
 if not exist DEPS mkdir DEPS
 if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 
-:: Cygwin - used for dev-ops and installer packagecomponents
+:: Cygwin - used for dev-ops and installer package components
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
-%CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel
+%CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel > nul || exit 1
 
 :: Lua
 call :downloadfile %LUA_URL% downloads\lua.zip
