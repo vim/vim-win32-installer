@@ -24,7 +24,7 @@ if [ ! -d vim/src ]; then
 fi
 git submodule update
 # get the last released tag name from this repo
-vimoldver=$(curl -s https://api.github.com/repos/vim/vim-win32-installer/releases/latest  | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["tag_name"])')
+vimoldver=$(curl -s https://api.github.com/repos/zewpo/vim-win32-installer/releases/latest  | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["tag_name"])')
 
 # Get the latest vim source code
 cd vim
@@ -36,7 +36,7 @@ vimver=$(git describe --tags --abbrev=0)
 # - drop 'patch '
 # - escape special characters
 # - add link to the commit
-commiturl=https://github.com/vim/vim/commit/
+commiturl=https://github.com/zewpo/vim/commit/
 vimlog_md=$(git log --pretty='format:%H %s' $vimoldver..HEAD | sed \
     -e 's/[][_*^<`\\]/\\&/g' \
     -e "s#^\([0-9a-f]*\) patch \([0-9.a-z]*\)#* [\2]($commiturl\1)#" \
