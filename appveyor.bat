@@ -126,6 +126,8 @@ if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 :: Cygwin - used for dev-ops and installer package components
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
 %CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel > nul || exit 1
+:: Initialise the new bash profile
+%CYGWIN_DIR%\bin\bash -lc true
 
 :: Lua
 call :downloadfile %LUA_URL% downloads\lua.zip
@@ -296,7 +298,7 @@ mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
 :: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
-cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log
+start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
@@ -304,7 +306,7 @@ copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
 :: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
-cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log
+start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
