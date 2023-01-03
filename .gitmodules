@@ -1,3 +1,4 @@
 [submodule "vim"]
 	path = vim
-	url = https://github.com/vim/vim.git
+	url = https://github.com/zewpo/vim.git
+	branch = MS-Win-Special-Key-Modifiers
