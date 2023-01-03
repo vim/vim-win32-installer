@@ -240,7 +240,7 @@ cd vim\src
 set CHERE_INVOKING=1
 ::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
 :: %CYGWIN_DIR%\bin\bash -lc ../../scripts/patchlevel.sh
-%CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')vim/src && ../../scripts/patchlevel.sh"
+%CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
 
 type version.h
 
