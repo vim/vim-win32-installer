@@ -29,7 +29,7 @@ before_build:
     echo "%VSWHERE%" %VSWHEREARGS%
     for /f "usebackq delims=" %%i in (`"%VSWHERE%" %VSWHEREARGS%`) do (
       if exist "%%i\VC\Auxiliary\Build\vcvarsall.bat" (
-        set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VCVARSALL=%%i\VC\Auxiliary\Build\vcvarsall.bat"
         echo "%VCVARSALL%"
         call %VCVARSALL% %ARCH%
         goto vcvars_done
