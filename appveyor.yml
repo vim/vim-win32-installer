@@ -22,7 +22,7 @@ build:
 before_build:
   #  - 'set VCVARSALL=$(%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat"'
   # - 'call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%'
-  - 'for /f "usebackq delims=" %%i in (`%"ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -products \* -latest -property installationPath`) do ( set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat" )'
+  - 'for /f "usebackq delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -products \* -latest -property installationPath`) do ( set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat" )'
   - 'call %VCVARSALL% %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
