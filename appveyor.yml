@@ -8,6 +8,7 @@ environment:
 
   matrix:
     - ARCH: x64
+    - ARCH: x86
 
 matrix:
   fast_finish: true
@@ -19,9 +20,12 @@ build:
   verbosity: minimal
 
 before_build:
-   # - 'set VCVARSALL="$(%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat"'
-  #    - 'set VCVARSALL="C:\Program^ Files\Microsoft^ Visual^ Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"'
-  - 'call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%'
+  - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
+  - >
+    for /f "usebackq delims=" %%i
+    in (`"%VSWHERE%" -products * -latest -property installationPath`) 
+    do (set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat")
+  - 'call %VCVARSALL% %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
@@ -34,10 +38,16 @@ test_script:
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
 
 artifacts:
+  - path: gvim_*_x86.zip
+    name: gvim_x86
+  - path: gvim_*_x86_pdb.zip
+    name: gvim_x86_pdb
   - path: gvim_*_x64.zip
     name: gvim_x64
   - path: gvim_*_x64_pdb.zip
     name: gvim_x64_pdb
+  - path: gvim_*_x86.exe
+    name: gvim_x86_installer
   - path: gvim_*_x64.exe
     name: gvim_x64_installer
   - path: unsigned*.zip
