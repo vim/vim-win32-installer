@@ -30,7 +30,7 @@ before_build:
       if exist "%%i\VC\Auxiliary\Build\vcvarsall.bat" (
         set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat"
         call %VCVARSALL% %ARCH%
-	      goto vcvars_done
+        goto vcvars_done
       )
     )
     :vcvars_done
