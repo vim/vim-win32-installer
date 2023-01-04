@@ -26,7 +26,7 @@ before_build:
     set "VSWHEREARGS=!VSWHEREARGS! -latest"
     set "VSWHEREARGS=!VSWHEREARGS! -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
     set "VSWHEREARGS=!VSWHEREARGS! -property installationPath"
-    for /f "usebackq delims=" %%i in (`"%VSWHERE% %VSWHEREARGS%"`) do (
+    for /f "usebackq delims=" %%i in (`"%VSWHERE%" "%VSWHEREARGS%"`) do (
       if exist "%%i\VC\Auxiliary\Build\vcvarsall.bat" (
         set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat"
         call %VCVARSALL% %ARCH%
