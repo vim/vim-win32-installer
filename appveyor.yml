@@ -20,10 +20,19 @@ build:
   verbosity: minimal
 
 before_build:
-  #  - 'set VCVARSALL=$(%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat"'
-  # - 'call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%'
-  - 'for /f "usebackq delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -products * -latest -property installationPath`) do ( set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat" )'
-  - 'call %VCVARSALL% %ARCH%'
+  - |
+    set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+    set "VSWHEREARGS=-products *"
+    set "VSWHEREARGS=!VSWHEREARGS! -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+    set "VSWHEREARGS=!VSWHEREARGS! -property installationPath"
+    for /f "usebackq delims=" %%i in (`"%VSWHERE%" "VSWHEREARGS"`) do (
+      if exist "%%i\VC\Auxiliary\Build\vcvarsall.bat" (
+        set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat"
+        call %VCVARSALL% %ARCH%
+	      goto vcvars_done
+      )
+    )
+    :vcvars_done
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
