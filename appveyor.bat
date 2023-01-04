@@ -17,10 +17,10 @@ if /I "%ARCH%"=="x64" (
 ) else (
 	set BIT=32
 )
-set DEPS=%APPVEYOR_BUILD_FOLDER%\DEPS
 
 :: ----------------------------------------------------------------------
 :: Download URLs, local dirs and versions
+set DEPS=%APPVEYOR_BUILD_FOLDER%\DEPS
 :: Lua
 set LUA_VER=54
 set LUA_RELEASE=5.4.2
@@ -38,6 +38,10 @@ set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=311
+set PYTHON3_RELEASE=3.11.1
+set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
+set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
+set PYTHON3_URL=!PYTHON3_%BIT%_URL!
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
@@ -85,10 +89,11 @@ set SODIUM_DIR=%DEPS%\libsodium
 set SUBSYSTEM_VER32=5.01
 set SUBSYSTEM_VER64=5.02
 set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
-:: ----------------------------------------------------------------------
 
+:: Cygwin - used for scripting of some installer package components
 set CYGWIN_DIR=%DEPS%\cygwin64
 set CYGWIN_URL=https://cygwin.com/setup-x86_64.exe
+:: ----------------------------------------------------------------------
 
 :: Update PATH
 path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
@@ -112,7 +117,6 @@ echo TAG_NAME: %TAG_NAME%
 
 :: Get Vim source code
 git submodule update --init
-git submodule update --remote
 
 :: Apply experimental patches
 pushd vim
@@ -123,7 +127,7 @@ if not exist downloads mkdir downloads
 if not exist DEPS mkdir DEPS
 if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 
-:: Cygwin - used for dev-ops and installer package components
+:: Cygwin
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
 %CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel > nul || exit 1
 :: Initialise the new bash profile
@@ -149,6 +153,10 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :skiptcl
 
+:: Python 3
+call :downloadfile %PYTHON3_URL% downloads\python3.exe
+cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
+
 :: Ruby
 :: Download RubyInstaller binary
 call :downloadfile %RUBY_URL% downloads\ruby.7z
@@ -171,9 +179,7 @@ popd
 
 :: Racket
 call :downloadfile %RACKET_URL% downloads\racket.tgz
-:: Use tar.exe from "Git for Windows"
-::tar xf downloads/racket.tgz -C /c || exit 1
-7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPS%
+7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPS% || exit 1
 type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
@@ -227,21 +233,12 @@ goto :eof
 @echo on
 cd vim\src
 
-@REM :: Setting for targeting Windows XP
-@REM set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
-@REM set INCLUDE=%WinSdk71%\Include;%INCLUDE%
-@REM if /i "%ARCH%"=="x64" (
-@REM 	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
-@REM ) else (
-@REM 	set "LIB=%WinSdk71%\Lib;%LIB%"
-@REM )
-@REM set CL=/D_USING_V110_SDK71_
 
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 :: Set CHERE_INVOKING to start Cygwin in the current directory
 set CHERE_INVOKING=1
 ::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
-:: %CYGWIN_DIR%\bin\bash -lc ../../scripts/patchlevel.sh
+:: c:\cygwin64\bin\bash -lc ../../scripts/patchlevel.sh
 %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
 
 type version.h
@@ -297,7 +294,6 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
@@ -305,7 +301,6 @@ move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
