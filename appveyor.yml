@@ -24,8 +24,8 @@ before_build:
   - >
     for /f "usebackq delims=" %%i
     in (`"%VSWHERE%" -products * -latest -property installationPath`) 
-    do ( set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat" )
-  - 'call "%VCVARSALL%" %ARCH%'
+    do (set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat")
+  - 'call %VCVARSALL% %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
