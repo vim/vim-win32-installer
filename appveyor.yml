@@ -20,7 +20,6 @@ build:
   verbosity: minimal
 
 before_build:
-# - ''
   - |
     for /f "usebackq delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -products * -latest -property installationPath`) do (
       set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat"
