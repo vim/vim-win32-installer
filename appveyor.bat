@@ -276,18 +276,14 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-pushd GvimExt
-nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log
-popd
+start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-pushd GvimExt
-nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log
-popd
+start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
