@@ -108,7 +108,6 @@ echo TAG_NAME: %TAG_NAME%
 
 :: Get Vim source code
 git submodule update --init
-git submodule update --remote
 
 :: Apply experimental patches
 pushd vim
@@ -223,21 +222,8 @@ goto :eof
 @echo on
 cd vim\src
 
-@REM :: Setting for targeting Windows XP
-@REM set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
-@REM set INCLUDE=%WinSdk71%\Include;%INCLUDE%
-@REM if /i "%ARCH%"=="x64" (
-@REM 	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
-@REM ) else (
-@REM 	set "LIB=%WinSdk71%\Lib;%LIB%"
-@REM )
-@REM set CL=/D_USING_V110_SDK71_
-
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
-:: Set CHERE_INVOKING to start Cygwin in the current directory
-set CHERE_INVOKING=1
-::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
-:: %CYGWIN_DIR%\bin\bash -lc ../../scripts/patchlevel.sh
+:: Set CHERE_INVOKING to start Cygwin in the current directory - (DID NOT WORK IN CUSTOM CYGWIN PATH)
 %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
 
 type version.h
@@ -293,7 +279,6 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
@@ -301,7 +286,6 @@ move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-:: start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
