@@ -7,7 +7,7 @@ environment:
     secure: Ren8cbJnovyLFJO+91+ZeMvHFuiN/gwss7avDjif0TdhD1rK5FdbH0DqegU87a5t
 
   matrix:
-    - ARCH: x64
+#    - ARCH: x64
     - ARCH: x86
 
 matrix:
@@ -34,8 +34,8 @@ build_script:
 after_build:
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" package'
 
-# test_script:
-#   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
+test_script:
+  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
 
 artifacts:
   - path: gvim_*_x86.zip
