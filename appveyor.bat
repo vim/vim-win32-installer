@@ -1,8 +1,6 @@
 @echo off
 :: Batch file for building/testing Vim on AppVeyor
 
-chcp 65001
-
 setlocal ENABLEDELAYEDEXPANSION
 
 cd %APPVEYOR_BUILD_FOLDER%
