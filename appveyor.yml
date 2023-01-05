@@ -1,6 +1,6 @@
 version: "{build}"
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 environment:
   auth_token:
@@ -20,22 +20,23 @@ build:
   verbosity: minimal
 
 before_build:
+  - 'chcp 65001'
   - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
   - >
     for /f "usebackq delims=" %%i
     in (`"%VSWHERE%" -products * -latest -property installationPath`) 
     do (set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat")
   - 'call %VCVARSALL% %ARCH%'
-  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
+  - 'chcp 65001 && "%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
-  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" build'
+  - 'chcp 65001 && "%APPVEYOR_BUILD_FOLDER%\appveyor.bat" build'
 
 after_build:
-  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" package'
+  - 'chcp 65001 && "%APPVEYOR_BUILD_FOLDER%\appveyor.bat" package'
 
 test_script:
-  - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
+  - 'chcp 65001 &&"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" test'
 
 artifacts:
   - path: gvim_*_x86.zip
