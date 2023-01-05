@@ -41,14 +41,14 @@ set PYTHON3_VER=311
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
-:: Racket
-set RACKET_VER=3m_da32rk
-set RACKET_RELEASE=8.3
-set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
-set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
-set RACKET_URL=!RACKET%BIT%_URL!
-set RACKET_DIR=%DEPS%\racket
-set MZSCHEME_VER=%RACKET_VER%
+@REM :: Racket
+@REM set RACKET_VER=3m_da32rk
+@REM set RACKET_RELEASE=8.3
+@REM set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
+@REM set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
+@REM set RACKET_URL=!RACKET%BIT%_URL!
+@REM set RACKET_DIR=%DEPS%\racket
+@REM set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=30
 set RUBY_API_VER_LONG=3.0.0
@@ -91,7 +91,7 @@ set CYGWIN_DIR=%DEPS%\cygwin64
 set CYGWIN_URL=https://cygwin.com/setup-x86_64.exe
 
 :: Update PATH
-path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
+path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls
 
 if /I "%1"=="" (
 	set target=build
@@ -154,7 +154,7 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 call :downloadfile %RUBY_URL% downloads\ruby.7z
 7z x downloads\ruby.7z -o%DEPS%\ > nul || exit 1
 move %DEPS%\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
-:: RubyInstaller is built by MinGW, so we cannot use header files from it.RACKET_DIR
+:: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
@@ -169,12 +169,12 @@ nmake .config.h.time || exit 1
 xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
-:: Racket
-call :downloadfile %RACKET_URL% downloads\racket.tgz
-:: Use tar.exe from "Git for Windows"
-::tar xf downloads/racket.tgz -C /c || exit 1
-7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPS%
-type NUL > %RACKET_DIR%\include\bc_suffix.h
+@REM :: Racket
+@REM call :downloadfile %RACKET_URL% downloads\racket.tgz
+@REM :: Use tar.exe from "Git for Windows"
+@REM ::tar xf downloads/racket.tgz -C /c || exit 1
+@REM 7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPS%
+@REM type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
@@ -255,7 +255,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build CUI version
@@ -267,7 +266,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build translations
@@ -376,8 +374,8 @@ goto :eof
 :test_x64
 :: ----------------------------------------------------------------------
 @echo on
-set PLTCOLLECTS=%RACKET_DIR%\collects
-set PLTCONFIGDIR=%RACKET_DIR%\etc
+:: set PLTCOLLECTS=%RACKET_DIR%\collects
+:: set PLTCONFIGDIR=%RACKET_DIR%\etc
 cd vim\src\testdir
 nmake -f Make_mvc.mak VIMPROG=..\gvim || exit 1
 nmake -f Make_mvc.mak clean
