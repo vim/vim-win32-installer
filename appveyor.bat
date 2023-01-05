@@ -149,7 +149,7 @@ copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 call :downloadfile %RUBY_URL% downloads\ruby.7z
 7z x downloads\ruby.7z -o%DEPS%\ > nul || exit 1
 move %DEPS%\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
-:: RubyInstaller is built by MinGW, so we cannot use header files from it.RACKET_DIR
+:: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
