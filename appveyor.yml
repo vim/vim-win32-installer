@@ -1,6 +1,6 @@
 version: "{build}"
 
-image: Visual Studio 2022
+image: Visual Studio 2019
 
 environment:
   auth_token:
