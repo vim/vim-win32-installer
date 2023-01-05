@@ -20,17 +20,16 @@ if /I "%ARCH%"=="x64" (
 
 :: ----------------------------------------------------------------------
 :: Download URLs, local dirs and versions
-set DEPS=%APPVEYOR_BUILD_FOLDER%\DEPS
 :: Lua
 set LUA_VER=54
 set LUA_RELEASE=5.4.2
 set LUA_URL=https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win%BIT%_dllw6_lib.zip
-set LUA_DIR=%DEPS%\Lua
+set LUA_DIR=C:\Lua
 :: Perl
 set PERL_VER=532
 set PERL_RELEASE=5.32.1.1
 set PERL_URL=https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-%PERL_RELEASE%-%BIT%bit-portable.zip
-set PERL_DIR=%DEPS%\Strawberry\perl
+set PERL_DIR=C:\Strawberry\perl
 :: Python2
 set PYTHON_VER=27
 set PYTHON_32_DIR=C:\python%PYTHON_VER%
@@ -38,7 +37,7 @@ set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
 set PYTHON3_VER=311
-set PYTHON3_RELEASE=3.11.1
+set PYTHON3_RELEASE=3.11.0
 set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
 set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
 set PYTHON3_URL=!PYTHON3_%BIT%_URL!
@@ -51,7 +50,7 @@ set RACKET_RELEASE=8.3
 set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
 set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
 set RACKET_URL=!RACKET%BIT%_URL!
-set RACKET_DIR=%DEPS%\racket
+set RACKET_DIR=C:\racket
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=30
@@ -60,8 +59,8 @@ set RUBY_BRANCH=ruby_3_0
 set RUBY_RELEASE=3.0.2-1
 set RUBY_SRC_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
 set RUBY_URL=https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z
-set RUBY32_DIR=%DEPS%\Ruby%RUBY_VER%
-set RUBY64_DIR=%DEPS%\Ruby%RUBY_VER%-x64
+set RUBY32_DIR=C:\Ruby%RUBY_VER%
+set RUBY64_DIR=C:\Ruby%RUBY_VER%-x64
 set RUBY_DIR=!RUBY%BIT%_DIR!
 :: Tcl
 set TCL_VER_LONG=8.6
@@ -69,7 +68,7 @@ set TCL_VER=%TCL_VER_LONG:.=%
 set TCL32_URL=http://dl.activestate.com/org/vim-win32/Tcl-8.6.6/latest/artifact/ActiveTcl-8.6.6.8607-MSWin32-x86-403667.exe
 set TCL64_URL=http://dl.activestate.com/org/vim-win32/Tcl-8.6.6/latest/artifact/ActiveTcl-8.6.6.8606-MSWin32-x64-401995.exe
 set TCL_URL=!TCL%BIT%_URL!
-set TCL_DIR=%DEPS%\Tcl
+set TCL_DIR=C:\Tcl
 set TCL_DLL=tcl%TCL_VER%t.dll
 set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
@@ -83,16 +82,8 @@ set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
 :: Libsodium (currently disabled)
 set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
-set SODIUM_DIR=%DEPS%\libsodium
+set SODIUM_DIR=C:\libsodium
 
-:: Subsystem version (targeting Windows XP)
-set SUBSYSTEM_VER32=5.01
-set SUBSYSTEM_VER64=5.02
-set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
-
-:: Cygwin - used for scripting of some installer package components
-set CYGWIN_DIR=%DEPS%\cygwin64
-set CYGWIN_URL=https://cygwin.com/setup-x86_64.exe
 :: ----------------------------------------------------------------------
 
 :: Update PATH
@@ -124,14 +115,6 @@ for %%i in (..\patch\*.patch) do git apply -v %%i
 popd
 
 if not exist downloads mkdir downloads
-if not exist DEPS mkdir DEPS
-if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
-
-:: Cygwin
-call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
-%CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel > nul || exit 1
-:: Initialise the new bash profile
-%CYGWIN_DIR%\bin\bash -lc true
 
 :: Lua
 call :downloadfile %LUA_URL% downloads\lua.zip
@@ -146,9 +129,9 @@ call :downloadfile %PERL_URL% downloads\perl.zip
 goto skiptcl
 
 call :downloadfile %TCL_URL% downloads\tcl.exe
-mkdir %DEPS%\ActiveTclTemp
-start /wait downloads\tcl.exe /extract:%DEPS%\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
-for /d %%i in (%DEPS%\ActiveTclTemp\*) do move %%i %TCL_DIR%
+mkdir c:\ActiveTclTemp
+start /wait downloads\tcl.exe /extract:c:\ActiveTclTemp /exenoui /exenoupdates /quiet /norestart
+for /d %%i in (c:\ActiveTclTemp\*) do move %%i %TCL_DIR%
 copy %TCL_DIR%\bin\%TCL_DLL% vim\src\
 
 :skiptcl
@@ -160,9 +143,9 @@ cmd /c start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR%  Include
 :: Ruby
 :: Download RubyInstaller binary
 call :downloadfile %RUBY_URL% downloads\ruby.7z
-7z x downloads\ruby.7z -o%DEPS%\ > nul || exit 1
-move %DEPS%\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
-:: RubyInstaller is built by MinGW, so we cannot use header files from it.RACKET_DIR
+7z x downloads\ruby.7z -oC:\ > nul || exit 1
+move C:\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
+:: RubyInstaller is built by MinGW, so we cannot use header files from it.
 :: Download the source files and generate config.h for MSVC.
 rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../ruby
 call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
@@ -179,24 +162,25 @@ popd
 
 :: Racket
 call :downloadfile %RACKET_URL% downloads\racket.tgz
-7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPS% || exit 1
+:: Use tar.exe from "Git for Windows"
+tar xf downloads/racket.tgz -C /c || exit 1
 type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
-7z e -y downloads\gettext32.zip -o%DEPS%\gettext32 > nul || exit 1
+7z e -y downloads\gettext32.zip -oc:\gettext32 > nul || exit 1
 call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
-7z e -y downloads\gettext64.zip -o%DEPS%\gettext64 > nul || exit 1
+7z e -y downloads\gettext64.zip -oc:\gettext64 > nul || exit 1
 
 :: Install winpty
 call :downloadfile %WINPTY_URL% downloads\winpty.zip
-7z x -y downloads\winpty.zip -o%DEPS%\winpty > nul || exit 1
+7z x -y downloads\winpty.zip -oc:\winpty > nul || exit 1
 if /i "%ARCH%"=="x64" (
-	copy /Y %DEPS%\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
-	copy /Y %DEPS%\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
+	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
+	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
 ) else (
-	copy /Y %DEPS%\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
-	copy /Y %DEPS%\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
+	copy /Y c:\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
+	copy /Y c:\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
 )
 
 :: Install UPX
@@ -205,16 +189,16 @@ call :downloadfile %UPX_URL% downloads\upx.zip
 
 :: Install ShellExecAsUser
 call :downloadfile %SHELLEXECASUSER_URL% downloads\shellexecasuser.zip
-7z x downloads\shellexecasuser.zip -o%DEPS%\shellexecasuser > nul || exit 1
-copy /Y %DEPS%\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
+7z x downloads\shellexecasuser.zip -oc:\shellexecasuser > nul || exit 1
+copy /Y c:\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
 
 :: Install Libsodium
 call :downloadfile %LIBSODIUM_URL% downloads\libsodium.zip
-7z x downloads\libsodium.zip -o%DEPS%\ > nul || exit 1
+7z x downloads\libsodium.zip -oc:\ > nul || exit 1
 if /i "%ARCH%"=="x64" (
-	copy /Y %DEPS%\libsodium\x64\Release\v140\dynamic\libsodium.dll        vim\src\libsodium.dll
+	copy /Y C:\libsodium\x64\Release\v140\dynamic\libsodium.dll        vim\src\libsodium.dll
 ) else (
-	copy /Y %DEPS%\libsodium\Win32\Release\v140\dynamic\libsodium.dll      vim\src\libsodium.dll
+	copy /Y C:\libsodium\Win32\Release\v140\dynamic\libsodium.dll      vim\src\libsodium.dll
 )
 
 :: Show PATH for debugging
@@ -238,9 +222,7 @@ cd vim\src
 :: Set CHERE_INVOKING to start Cygwin in the current directory
 set CHERE_INVOKING=1
 ::c:\cygwin64\bin\bash -lc "sed -i -e /VIM_VERSION_PATCHLEVEL/s/0/$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)/ version.h"
-:: c:\cygwin64\bin\bash -lc ../../scripts/patchlevel.sh
-%CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
-
+c:\cygwin64\bin\bash -lc ../../scripts/patchlevel.sh
 type version.h
 
 :: Build GUI version
@@ -269,7 +251,7 @@ nmake -f Make_mvc.mak ^
 	|| exit 1
 :: Build translations
 pushd po
-nmake -f Make_mvc.mak GETTEXT_PATH=%CYGWIN_DIR%\bin VIMRUNTIME=..\..\runtime install-all || exit 1
+nmake -f Make_mvc.mak GETTEXT_PATH=C:\cygwin\bin VIMRUNTIME=..\..\runtime install-all || exit 1
 popd
 
 :check_executable
@@ -294,14 +276,18 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+pushd GvimExt
+nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log
+popd
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+pushd GvimExt
+nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log
+popd
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
@@ -319,17 +305,17 @@ copy /Y tee\*.exe ..\runtime
 mkdir ..\runtime\GvimExt64
 mkdir ..\runtime\GvimExt32
 copy /Y GvimExt64\*.*                    ..\runtime\GvimExt64\
-copy /Y %DEPS%\gettext64\libiconv-2.dll      ..\runtime\GvimExt64\
-copy /Y %DEPS%\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
+copy /Y c:\gettext64\libiconv-2.dll      ..\runtime\GvimExt64\
+copy /Y c:\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
 copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
-copy /Y %DEPS%\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
-copy /Y %DEPS%\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
+copy /Y c:\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
+copy /Y c:\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
 rem copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
 rem libgcc_s_sjlj-1.dll is not needed anymore. Don't include it in the installer.
-if exist %DEPS%\gettext32\libgcc_s_sjlj-1.dll del %DEPS%\gettext32\libgcc_s_sjlj-1.dll
+if exist c:\gettext32\libgcc_s_sjlj-1.dll del c:\gettext32\libgcc_s_sjlj-1.dll
 copy /Y ..\..\diff.exe ..\runtime\
-copy /Y %DEPS%\gettext%BIT%\libiconv-2.dll   ..\runtime\
-copy /Y %DEPS%\gettext%BIT%\libintl-8.dll    ..\runtime\
+copy /Y c:\gettext%BIT%\libiconv-2.dll   ..\runtime\
+copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
 rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
@@ -339,7 +325,7 @@ xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
 7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim
 
 :: Create installer
-%CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
+c:\cygwin64\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
 copy tee\tee.exe teew32.exe
@@ -349,9 +335,9 @@ copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
-	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPS% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 ) else (
-	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPS% /DPATCHLEVEL=%PATCHLEVEL%  gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=c: /DPATCHLEVEL=%PATCHLEVEL%  gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 )
 popd
 
@@ -415,7 +401,9 @@ goto :eof
 :get_release_id
 :: ----------------------------------------------------------------------
 :: Get the ID of the release. Set the result to %REL_ID%.
-path %PATH%;%CYGWIN_DIR%\bin
+curl -o c:\cygwin64\setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
+c:\cygwin64\setup-x86_64.exe -qnNdO -P jq
+path %PATH%;c:\cygwin64\bin
 
 curl -H "Authorization: token %auth_token%" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
 type releases.json | jq ".[] | {name, id} | select(.name == \"%TAG_NAME%\") | {id}[]" > release_id.txt

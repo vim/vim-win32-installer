@@ -1,6 +1,6 @@
 version: "{build}"
 
-image: Visual Studio 2022
+image: Visual Studio 2015
 
 environment:
   auth_token:
@@ -20,12 +20,7 @@ build:
   verbosity: minimal
 
 before_build:
-  - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
-  - >
-    for /f "usebackq delims=" %%i
-    in (`"%VSWHERE%" -products * -latest -property installationPath`) 
-    do (set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat")
-  - 'call %VCVARSALL% %ARCH%'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
@@ -60,20 +55,20 @@ before_deploy:
   - set URL=https://github.com/%APPVEYOR_REPO_NAME%/releases/download
 
 deploy:
-  # - provider: Webhook
-  #   url: https://app.signpath.io/API/v1/47c0047c-0c1d-42b2-a16c-4ea6907dc813/Integrations/AppVeyor?SigningPolicyId=297bf19e-ccf4-4c01-b6e6-c327ee23792d
-  #   # not needed by Signpath
-  #   # on_build_success: true
-  #   # on_build_failure: false
-  #   # on_build_status_changed: false
-  #   # artifact: /unsigned*.zip/
-  #   # method: POST
-  #   authorization:
-  #     secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
-  #
-  #   # Deploy only on tags
-  #   on:
-  #     APPVEYOR_REPO_TAG: true
+  - provider: Webhook
+    url: https://app.signpath.io/API/v1/47c0047c-0c1d-42b2-a16c-4ea6907dc813/Integrations/AppVeyor?SigningPolicyId=297bf19e-ccf4-4c01-b6e6-c327ee23792d
+    # not needed by Signpath
+    # on_build_success: true
+    # on_build_failure: false
+    # on_build_status_changed: false
+    # artifact: /unsigned*.zip/
+    # method: POST
+    authorization:
+      secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
+
+    # Deploy only on tags
+    on:
+      APPVEYOR_REPO_TAG: true
 
   - provider: GitHub
     description: |
