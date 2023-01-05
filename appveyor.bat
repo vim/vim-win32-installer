@@ -214,8 +214,8 @@ if /i "%ARCH%"=="x64" (
 :: Show PATH for debugging
 path
 
-:: Install additional packages for Racket
-raco pkg install --auto r5rs-lib
+@REM :: Install additional packages for Racket
+@REM raco pkg install --auto r5rs-lib
 
 @echo off
 goto :eof
