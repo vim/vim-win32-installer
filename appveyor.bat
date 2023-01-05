@@ -123,9 +123,9 @@ if not exist downloads mkdir downloads
 if not exist DEPS mkdir DEPS
 if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 
-:: Cygwin - used for dev-ops and installer package components
+:: Cygwin - bash used for shared init scripts, translations, nsis installer package components
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
-%CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,gettext-devel > nul || exit 1
+%CYGWIN_DIR%\setup-x86_64.exe -qnNdO -R %CYGWIN_DIR% -P jq,make,gettext-devel > nul || exit 1
 :: Initialise the new bash profile
 %CYGWIN_DIR%\bin\bash -lc true
 
