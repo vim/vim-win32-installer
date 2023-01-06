@@ -45,14 +45,14 @@ set PYTHON3_URL=!PYTHON3_%BIT%_URL!
 set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
-:: Racket
-set RACKET_VER=3m_da32rk
-set RACKET_RELEASE=8.3
-set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
-set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
-set RACKET_URL=!RACKET%BIT%_URL!
-set RACKET_DIR=%DEPENDENCIES%\racket
-set MZSCHEME_VER=%RACKET_VER%
+@REM :: Racket
+@REM set RACKET_VER=3m_da32rk
+@REM set RACKET_RELEASE=8.3
+@REM set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
+@REM set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
+@REM set RACKET_URL=!RACKET%BIT%_URL!
+@REM set RACKET_DIR=%DEPENDENCIES%\racket
+@REM set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
 set RUBY_VER=30
 set RUBY_API_VER_LONG=3.0.0
@@ -91,7 +91,8 @@ set CYGWIN_DIR=c:\cygwin64
 :: ----------------------------------------------------------------------
 
 :: Update PATH
-path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
+path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls
+@REM ;%RACKET_DIR%;%RACKET_DIR%\lib
 
 if /I "%1"=="" (
 	set target=build
@@ -114,10 +115,11 @@ echo TAG_NAME: %TAG_NAME%
 git submodule update --init
 git submodule update --remote
 
+git submodule foreach 'git status'
+
 pushd vim
 :: Show the vim submodule info in the log.
 git config --get remote.origin.url
-git branch --show-current
 git log -n1
 :: Apply experimental patches
 for %%i in (..\patch\*.patch) do git apply -v %%i
@@ -178,10 +180,10 @@ nmake .config.h.time || exit 1
 xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 
-:: Racket
-call :downloadfile %RACKET_URL% downloads\racket.tgz
-7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPENDENCIES%
-type NUL > %RACKET_DIR%\include\bc_suffix.h
+@REM :: Racket
+@REM call :downloadfile %RACKET_URL% downloads\racket.tgz
+@REM 7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -o%DEPENDENCIES%
+@REM type NUL > %RACKET_DIR%\include\bc_suffix.h
 
 :: Install libintl.dll and iconv.dll
 call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
@@ -221,8 +223,8 @@ if /i "%ARCH%"=="x64" (
 :: Show PATH for debugging
 path
 
-:: Install additional packages for Racket
-raco pkg install --auto r5rs-lib
+@REM :: Install additional packages for Racket
+@REM raco pkg install --auto r5rs-lib
 
 @echo off
 goto :eof
@@ -249,7 +251,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build CUI version
@@ -261,7 +262,6 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build translations
@@ -291,14 +291,14 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+start /wait cmd /c "%VCVARSALL% x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c "cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+start /wait cmd /c "%VCVARSALL% x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
@@ -368,8 +368,8 @@ goto :eof
 :test_x64
 :: ----------------------------------------------------------------------
 @echo on
-set PLTCOLLECTS=%RACKET_DIR%\collects
-set PLTCONFIGDIR=%RACKET_DIR%\etc
+@REM set PLTCOLLECTS=%RACKET_DIR%\collects
+@REM set PLTCONFIGDIR=%RACKET_DIR%\etc
 cd vim\src\testdir
 nmake -f Make_mvc.mak VIMPROG=..\gvim || exit 1
 nmake -f Make_mvc.mak clean
