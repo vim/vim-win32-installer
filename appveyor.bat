@@ -283,7 +283,7 @@ move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c "%VCVARSALL% x86 cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+start /wait cmd /c "%VCVARSALL% x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
