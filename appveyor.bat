@@ -114,8 +114,12 @@ echo TAG_NAME: %TAG_NAME%
 git submodule update --init
 git submodule update --remote
 
-:: Apply experimental patches
 pushd vim
+:: Show the vim submodule info in the log.
+git config --get remote.origin.url
+git branch --show-current
+git log -n1
+:: Apply experimental patches
 for %%i in (..\patch\*.patch) do git apply -v %%i
 popd
 
