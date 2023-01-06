@@ -20,6 +20,7 @@ build:
   verbosity: minimal
 
 before_build:
+  - 'call ver'
   - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
   - >
     for /f "usebackq delims=" %%i
