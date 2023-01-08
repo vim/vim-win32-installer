@@ -60,90 +60,90 @@ before_deploy:
   - set VIMVER=%APPVEYOR_REPO_TAG_NAME:~1%
   - set URL=https://github.com/%APPVEYOR_REPO_NAME%/releases/download
 
-deploy:
-  - provider: Webhook
-    url: https://app.signpath.io/API/v1/47c0047c-0c1d-42b2-a16c-4ea6907dc813/Integrations/AppVeyor?SigningPolicyId=297bf19e-ccf4-4c01-b6e6-c327ee23792d
-    # not needed by Signpath
-    # on_build_success: true
-    # on_build_failure: false
-    # on_build_status_changed: false
-    # artifact: /unsigned*.zip/
-    # method: POST
-    authorization:
-      secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
+# deploy:
+#   - provider: Webhook
+#     url: https://app.signpath.io/API/v1/47c0047c-0c1d-42b2-a16c-4ea6907dc813/Integrations/AppVeyor?SigningPolicyId=297bf19e-ccf4-4c01-b6e6-c327ee23792d
+#     # not needed by Signpath
+#     # on_build_success: true
+#     # on_build_failure: false
+#     # on_build_status_changed: false
+#     # artifact: /unsigned*.zip/
+#     # method: POST
+#     authorization:
+#       secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
   
-    # Deploy only on tags
-    on:
-      APPVEYOR_REPO_TAG: true
+#     # Deploy only on tags
+#     on:
+#       APPVEYOR_REPO_TAG: true
 
-  - provider: GitHub
-    description: |
-      [![$(APPVEYOR_REPO_TAG_NAME)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/total.svg)](https://github.com/$(APPVEYOR_REPO_NAME)/releases/tag/$(APPVEYOR_REPO_TAG_NAME))
-      Nightly Vim Windows build snapshots ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
+#   - provider: GitHub
+#     description: |
+#       [![$(APPVEYOR_REPO_TAG_NAME)](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/total.svg)](https://github.com/$(APPVEYOR_REPO_NAME)/releases/tag/$(APPVEYOR_REPO_TAG_NAME))
+#       Nightly Vim Windows build snapshots ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
-      **If you do not know what to use, use the 32bit installer (use the signed one, if available).**
+#       **If you do not know what to use, use the 32bit installer (use the signed one, if available).**
 
-      Signed releases will occasionally be provided on a best effort approach.
-      ### Changes:
+#       Signed releases will occasionally be provided on a best effort approach.
+#       ### Changes:
 
-      $(GITLOG)
+#       $(GITLOG)
 
-      <!--
-      _This release includes signed files_
-      -->
-      ### Files:
-      <!--  commented out, because will only be enabled once the signed files are uploaded manually.
-      #### :lock: Signed Files:
-      * [![gvim_$(VIMVER)_x86_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe)
-        Signed 32-bit installer (*If you don't know what to use, use this one*)
-      * [![gvim_$(VIMVER)_x64_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe)
-        Signed 64-bit installer
-      * [![gvim_$(VIMVER)_x86_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip)
-        Signed 32-bit zip archive
-      * [![gvim_$(VIMVER)_x64_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip)
-        Signed 64-bit zip archive
-      -->
-      #### :unlock: Unsigned Files:
-      * [![gvim_$(VIMVER)_x86.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
-        32-bit installer (*If you don't know what to use, use this one*)
-      * [![gvim_$(VIMVER)_x64.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
-        64-bit installer
-      * [![gvim_$(VIMVER)_x86.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip)
-        32-bit zip archive
-      * [![gvim_$(VIMVER)_x64.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip)
-        64-bit zip archive
-      * [![gvim_$(VIMVER)_x86_pdb.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip)
-        pdb files for debugging the corresponding 32-bit executable
-      * [![gvim_$(VIMVER)_x64_pdb.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
-        pdb files for debugging the corresponding 64-bit executable
+#       <!--
+#       _This release includes signed files_
+#       -->
+#       ### Files:
+#       <!--  commented out, because will only be enabled once the signed files are uploaded manually.
+#       #### :lock: Signed Files:
+#       * [![gvim_$(VIMVER)_x86_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.exe)
+#         Signed 32-bit installer (*If you don't know what to use, use this one*)
+#       * [![gvim_$(VIMVER)_x64_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe)
+#         Signed 64-bit installer
+#       * [![gvim_$(VIMVER)_x86_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip)
+#         Signed 32-bit zip archive
+#       * [![gvim_$(VIMVER)_x64_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip)
+#         Signed 64-bit zip archive
+#       -->
+#       #### :unlock: Unsigned Files:
+#       * [![gvim_$(VIMVER)_x86.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
+#         32-bit installer (*If you don't know what to use, use this one*)
+#       * [![gvim_$(VIMVER)_x64.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.exe)
+#         64-bit installer
+#       * [![gvim_$(VIMVER)_x86.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.zip)
+#         32-bit zip archive
+#       * [![gvim_$(VIMVER)_x64.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64.zip)
+#         64-bit zip archive
+#       * [![gvim_$(VIMVER)_x86_pdb.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_pdb.zip)
+#         pdb files for debugging the corresponding 32-bit executable
+#       * [![gvim_$(VIMVER)_x64_pdb.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_pdb.zip)
+#         pdb files for debugging the corresponding 64-bit executable
 
-      <details>
-      <summary>Interface Information</summary>
+#       <details>
+#       <summary>Interface Information</summary>
 
-      * [Strawberry Perl](http://strawberryperl.com/) 5.32
-      <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
-      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
-      * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.11
-      * [Racket](https://download.racket-lang.org/) 8.3 (BC)
-      * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
-      * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18
-      </details>
+#       * [Strawberry Perl](http://strawberryperl.com/) 5.32
+#       <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
+#       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
+#       * [Python](https://www.python.org/downloads/) 2.7
+#       * [Python3](https://www.python.org/downloads/) 3.11
+#       * [Racket](https://download.racket-lang.org/) 8.3 (BC)
+#       * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
+#       * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18
+#       </details>
 
-      See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
-    auth_token: $(auth_token)
-    artifact: /^gvim_.*/
-    draft: true
-    prerelease: false
+#       See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
+#     auth_token: $(auth_token)
+#     artifact: /^gvim_.*/
+#     draft: true
+#     prerelease: false
 
-    # Deploy only on tags
-    on:
-      APPVEYOR_REPO_TAG: true
+#     # Deploy only on tags
+#     on:
+#       APPVEYOR_REPO_TAG: true
 
-      # Cache is being disabled to allow signpath to sign the results
+#       # Cache is being disabled to allow signpath to sign the results
 
-      #cache:
-      #  - downloads -> appveyor.bat
+#       #cache:
+#       #  - downloads -> appveyor.bat
 
 on_success:
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" onsuccess'
