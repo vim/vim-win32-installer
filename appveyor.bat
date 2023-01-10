@@ -75,8 +75,8 @@ set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.zip
-:: winpty
-set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
+@REM :: winpty
+@REM set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
 set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
@@ -185,16 +185,16 @@ call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
 call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
 7z e -y downloads\gettext64.zip -o%DEPENDENCIES%\gettext64 > nul || exit 1
 
-:: Install winpty
-call :downloadfile %WINPTY_URL% downloads\winpty.zip
-7z x -y downloads\winpty.zip -o%DEPENDENCIES%\winpty > nul || exit 1
-if /i "%ARCH%"=="x64" (
-	copy /Y %DEPENDENCIES%\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
-	copy /Y %DEPENDENCIES%\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
-) else (
-	copy /Y %DEPENDENCIES%\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
-	copy /Y %DEPENDENCIES%\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
-)
+@REM :: Install winpty
+@REM call :downloadfile %WINPTY_URL% downloads\winpty.zip
+@REM 7z x -y downloads\winpty.zip -o%DEPENDENCIES%\winpty > nul || exit 1
+@REM if /i "%ARCH%"=="x64" (
+@REM 	copy /Y %DEPENDENCIES%\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
+@REM 	copy /Y %DEPENDENCIES%\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
+@REM ) else (
+@REM 	copy /Y %DEPENDENCIES%\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
+@REM 	copy /Y %DEPENDENCIES%\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
+@REM )
 
 :: Install UPX
 call :downloadfile %UPX_URL% downloads\upx.zip
@@ -324,8 +324,8 @@ copy /Y ..\..\diff.exe ..\runtime\
 copy /Y %DEPENDENCIES%\gettext%BIT%\libiconv-2.dll   ..\runtime\
 copy /Y %DEPENDENCIES%\gettext%BIT%\libintl-8.dll    ..\runtime\
 rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
-copy /Y winpty* ..\runtime\
-copy /Y winpty* ..\..\
+@REM copy /Y winpty* ..\runtime\
+@REM copy /Y winpty* ..\..\
 set dir=vim%TAG_NAME:~1,1%%TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
