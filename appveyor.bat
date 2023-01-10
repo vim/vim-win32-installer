@@ -74,8 +74,8 @@ set TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%
 :: Gettext
 set GETTEXT32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-32.zip
 set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.zip
-@REM :: winpty
-@REM set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
+:: winpty
+set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
 set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
@@ -84,10 +84,6 @@ set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellE
 set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
 set SODIUM_DIR=C:\libsodium
 
-:: Subsystem version (targeting Windows XP)
-set SUBSYSTEM_VER32=5.01
-set SUBSYSTEM_VER64=5.02
-set SUBSYSTEM_VER=!SUBSYSTEM_VER%BIT%!
 :: ----------------------------------------------------------------------
 
 :: Update PATH
@@ -176,16 +172,16 @@ call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
 call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
 7z e -y downloads\gettext64.zip -oc:\gettext64 > nul || exit 1
 
-@REM :: Install winpty
-@REM call :downloadfile %WINPTY_URL% downloads\winpty.zip
-@REM 7z x -y downloads\winpty.zip -oc:\winpty > nul || exit 1
-@REM if /i "%ARCH%"=="x64" (
-@REM 	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
-@REM 	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
-@REM ) else (
-@REM 	copy /Y c:\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
-@REM 	copy /Y c:\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
-@REM )
+:: Install winpty
+call :downloadfile %WINPTY_URL% downloads\winpty.zip
+7z x -y downloads\winpty.zip -oc:\winpty > nul || exit 1
+if /i "%ARCH%"=="x64" (
+	copy /Y c:\winpty\x64_xp\bin\winpty.dll        vim\src\winpty64.dll
+	copy /Y c:\winpty\x64_xp\bin\winpty-agent.exe  vim\src\
+) else (
+	copy /Y c:\winpty\ia32_xp\bin\winpty.dll       vim\src\winpty32.dll
+	copy /Y c:\winpty\ia32_xp\bin\winpty-agent.exe vim\src\
+)
 
 :: Install UPX
 call :downloadfile %UPX_URL% downloads\upx.zip
@@ -221,15 +217,6 @@ goto :eof
 @echo on
 cd vim\src
 
-:: Setting for targeting Windows XP
-set WinSdk71=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.1A
-set INCLUDE=%WinSdk71%\Include;%INCLUDE%
-if /i "%ARCH%"=="x64" (
-	set "LIB=%WinSdk71%\Lib\x64;%LIB%"
-) else (
-	set "LIB=%WinSdk71%\Lib;%LIB%"
-)
-set CL=/D_USING_V110_SDK71_
 
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 :: Set CHERE_INVOKING to start Cygwin in the current directory
@@ -289,14 +276,14 @@ cd vim\src
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+start /wait cmd /c "%VCVARSALL% x64 && cd GvimExt && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
 move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt64\
 copy /Y GvimExt\*.inf      GvimExt64\
 copy /Y GvimExt\*.reg      GvimExt64\
-start /wait cmd /c ""C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+start /wait cmd /c "%VCVARSALL% x86 && cd GvimExt && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type gvimext.log
 copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
 copy /Y GvimExt\README.txt GvimExt32\
@@ -326,8 +313,8 @@ copy /Y ..\..\diff.exe ..\runtime\
 copy /Y c:\gettext%BIT%\libiconv-2.dll   ..\runtime\
 copy /Y c:\gettext%BIT%\libintl-8.dll    ..\runtime\
 rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
-@REM copy /Y winpty* ..\runtime\
-@REM copy /Y winpty* ..\..\
+copy /Y winpty* ..\runtime\
+copy /Y winpty* ..\..\
 set dir=vim%TAG_NAME:~1,1%%TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
