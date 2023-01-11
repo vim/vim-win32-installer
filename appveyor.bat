@@ -129,7 +129,6 @@ call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
 :: Initialise the new bash profile, just in case it it a new install.
 %CYGWIN_DIR%\bin\bash -lc true > nul
 
-
 :: Lua
 call :downloadfile %LUA_URL% downloads\lua.zip
 7z x downloads\lua.zip -o%LUA_DIR% > nul || exit 1
