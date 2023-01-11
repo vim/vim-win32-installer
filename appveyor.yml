@@ -71,7 +71,7 @@ deploy:
     # method: POST
     authorization:
       secure: eX3iWU3dQqDdg8UHR7Br6tqtvlFlhXihHcV0y/oR2YhSj6XZ2Pl/KVLiczUBCc39WWG/Aa5AXafWxaHQC/s40g==
-  
+
     # Deploy only on tags
     on:
       APPVEYOR_REPO_TAG: true
