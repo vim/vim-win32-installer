@@ -231,7 +231,6 @@ cd vim\src
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 :: Set CHERE_INVOKING to start Cygwin in the current directory - (DID NOT WORK IN CUSTOM CYGWIN PATH)
 %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
-
 type version.h
 
 :: Build GUI version
