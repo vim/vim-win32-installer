@@ -102,7 +102,6 @@ if /I "%1"=="" (
 goto %target%_%ARCH%
 echo Unknown build target.
 exit 1
-
  
 :install_x86
 :install_x64
@@ -126,7 +125,7 @@ if not exist dependencies mkdir dependencies
 if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
 %CYGWIN_DIR%\setup-x86_64.exe -qnNdO -P jq,make,gettext-devel
-:: Initialise the new bash profile, just in case it it a new install.
+:: Initialise the new bash profile, just in case it is a new install.
 %CYGWIN_DIR%\bin\bash -lc true > nul
 
 :: Lua
