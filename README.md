@@ -18,7 +18,7 @@ additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
-Racket/MzScheme, make sure you also install the following. Vim will work
+Racket, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
 [Gundo](https://github.com/sjl/gundo.vim) needs a working Python2 installation,
 [Command-T](https://github.com/wincent/command-t) needs a working Ruby
