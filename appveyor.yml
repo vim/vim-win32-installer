@@ -1,6 +1,6 @@
 version: "{build}"
 
-image: Visual Studio 2015
+image: Visual Studio 2022
 
 environment:
   auth_token:
@@ -20,7 +20,13 @@ build:
   verbosity: minimal
 
 before_build:
-  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %ARCH%'
+  - 'call ver'
+  - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
+  - >
+    for /f "usebackq delims=" %%i
+    in (`"%VSWHERE%" -products * -latest -property installationPath`)
+    do (set VCVARSALL="%%i\VC\Auxiliary\Build\vcvarsall.bat")
+  - 'call %VCVARSALL% %ARCH%'
   - '"%APPVEYOR_BUILD_FOLDER%\appveyor.bat" install'
 
 build_script:
