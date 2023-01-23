@@ -46,8 +46,8 @@ set PYTHON3_32_DIR=C:\python%PYTHON3_VER%
 set PYTHON3_64_DIR=C:\python%PYTHON3_VER%-x64
 set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
-set RACKET_VER=3m_da32rk
-set RACKET_RELEASE=8.3
+set RACKET_VER=3m_dcgt6o
+set RACKET_RELEASE=8.7
 set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
 set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
 set RACKET_URL=!RACKET%BIT%_URL!
@@ -217,7 +217,7 @@ if /i "%ARCH%"=="x64" (
 path
 
 :: Install additional packages for Racket
-raco pkg install --auto r5rs-lib
+raco pkg install -i --auto r5rs-lib
 
 @echo off
 goto :eof
@@ -242,7 +242,7 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
+	DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build CUI version
@@ -254,7 +254,7 @@ nmake -f Make_mvc.mak ^
 	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
+	DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% "MZSCHEME=%RACKET_DIR%" ^
 	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
 	|| exit 1
 :: Build translations
