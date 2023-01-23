@@ -1,0 +1,426 @@
+name: GitHub Build
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for
+  # pull requests or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+
+  windows:
+    runs-on: windows-2022
+
+    env:
+      # Interfaces
+      # Lua
+      LUA_VER: 54
+      LUA_VER_DOT: '5.4'
+      LUA_RELEASE: 5.4.2
+      LUA_URL: https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win64_dllw6_lib.zip
+      LUA_DIR: D:\Lua
+      # do not want \L to end up in pathdef.c and compiler complaining about unknown escape sequences \l
+      LUA_DIR_SLASH: D:/Lua
+      # Python 2
+      PYTHON_VER: 27
+      PYTHON_VER_DOT: '2.7'
+      PYTHON_DIR: 'C:\Python27'
+      # Python 3
+      PYTHON3_VER: 311
+      PYTHON3_VER_DOT: '3.11'
+      # Other dependencies
+      # winpty
+      WINPTY_URL: https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
+      # GetText libintl.dll and libiconv.dll
+      GETTEXT64_URL: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.zip
+      GETTEXT32_URL: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-32.zip
+      # Perl
+      PERL_VER: 532
+      PERL_RELEASE: 5.32.1.1
+      PERL_URL: https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-%PERL_RELEASE%-64bit-portable.zip
+      PERL_DIR: D:\Strawberry\perl
+      # Racket
+      RACKET_VER: 3m_dcgt6o
+      RACKET_RELEASE: 8.7
+      RACKET_URL: https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
+      RACKET_DIR: D:\racket
+      # Ruby
+      RUBY_VER: 32
+      RUBY_API_VER_LONG: 3.2.0
+      RUBY_BRANCH: ruby_3_2
+      RUBY_RELEASE: 3.2.0-1
+      RUBY_SRC_URL: https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
+      RUBY_URL: https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-x64.7z
+      RUBY_DIR: D:\Ruby32-x64
+      # libsodium
+      LIBSODIUM_URL: https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
+      SODIUM_DIR: D:\libsodium
+      # Installer helpers
+      # UPX
+      UPX_URL: https://github.com/upx/upx/releases/download/v4.0.1/upx-4.0.1-win32.zip
+      # ShellExecAsUser
+      SHELLEXECASUSER_URL: https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
+
+      # Escape sequences
+      COL_RED: "\x1b[31m"
+      COL_GREEN: "\x1b[32m"
+      COL_YELLOW: "\x1b[33m"
+      COL_RESET: "\x1b[m"
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Initialize
+        id: init
+        shell: bash
+        run: |
+          # Show Windows version
+          cmd /c ver
+
+          git config --global core.autocrlf input
+
+          cygreg=registry
+          pyreg=
+          echo "VCARCH=amd64" >> $GITHUB_ENV
+          echo "WARCH=x64" >> $GITHUB_ENV
+          echo "MSYSTEM=MINGW64" >> $GITHUB_ENV
+
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+          choco install python2 --no-progress
+
+          python3_dir=$(cat "/proc/$cygreg/HKEY_LOCAL_MACHINE/SOFTWARE/Python/PythonCore/${PYTHON3_VER_DOT}$pyreg/InstallPath/@")
+          echo "PYTHON3_DIR=$python3_dir" >> $GITHUB_ENV
+
+      - name: Checkout repository from github
+        uses: actions/checkout@v3
+
+      - name: Get Vim source code
+        shell: cmd
+        run: |
+          git submodule update --init
+          git submodule update --remote
+
+      - name: Create a list of download URLs
+        shell: cmd
+        run: |
+          type NUL > urls.txt
+          call echo %LUA_URL%>> urls.txt
+          call echo %WINPTY_URL%>> urls.txt
+          call echo %GETTEXT32_URL%>> urls.txt
+          call echo %GETTEXT64_URL%>> urls.txt
+          call echo %RUBY_URL%>> urls.txt
+          call echo %PERL_URL%>> urls.txt
+          call echo %UPX_URL%>> urls.txt
+          call echo %SHELLEXECASUSER_URL%>> urls.txt
+          type urls.txt
+
+      - name: Cache downloaded files
+        uses: actions/cache@v3
+        with:
+          path: downloads
+          key: ${{ runner.os }}-x64-${{ hashFiles('urls.txt') }}
+
+      - name: Download and extract dependencies
+        shell: cmd
+        run: |
+          echo on
+          path C:\Program Files\7-Zip;%PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%path%;%LUA_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib
+          call "%VCVARSALL%" %VCARCH%
+          @echo on
+          if not exist downloads mkdir downloads
+
+          echo %COL_GREEN%Download Lua%COL_RESET%
+          call :downloadfile %LUA_URL% downloads\lua.zip
+          7z x downloads\lua.zip -o%LUA_DIR% > nul || exit 1  
+
+          echo %COL_GREEN%Download Perl%COL_RESET%
+          call :downloadfile %PERL_URL% downloads\perl.zip
+          7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
+
+          echo %COL_GREEN%Download WinPTY%COL_RESET%
+          call :downloadfile %WINPTY_URL% downloads\winpty.zip
+          7z x -y downloads\winpty.zip -oD:\winpty > nul || exit 1
+          copy /Y D:\winpty\x64\bin\winpty.dll        vim\src\
+          copy /Y D:\winpty\x64\bin\winpty-agent.exe  vim\src\
+
+          echo %COL_GREEN%Download 64 bit GetText libintl.dll and iconv.dll%COL_RESET%
+          call :downloadfile %GETTEXT64_URL% downloads\gettext64.zip
+          7z e -y downloads\gettext64.zip -oD:\gettext64 > nul || exit 1
+          copy /Y D:\gettext64\libiconv-2.dll   vim\src\
+          copy /Y D:\gettext64\libintl-8.dll    vim\src\
+
+          echo %COL_GREEN%Download 32 bit GetText libintl.dll and iconv.dll%COL_RESET%
+          call :downloadfile %GETTEXT32_URL% downloads\gettext32.zip
+          7z e -y downloads\gettext32.zip -oD:\gettext32 > nul || exit 1
+          @REM copy /Y D:\gettext32\libiconv-2.dll   vim\src\
+          @REM copy /Y D:\gettext32\libintl-8.dll    vim\src\
+          
+
+          @REM echo %COL_GREEN%Updating MSYS2%COL_RESET%
+          @REM C:\msys64\usr\bin\env MSYSTEM=MINGW64 c:\msys64\usr\bin\bash -l -c "pacman -S --needed --noconfirm make"
+
+          echo %COL_GREEN%Download Ruby%COL_RESET%
+          call :downloadfile %RUBY_URL% downloads\ruby.7z
+          @echo on
+          7z x downloads\ruby.7z -oD:\ > nul || exit 1
+          move D:\rubyinstaller-%RUBY_RELEASE%-x64 %RUBY_DIR% > nul || exit 1
+          call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
+          7z x downloads\ruby_src.zip -aoa -o..  > nul || exit 1
+          move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
+          pushd ..\ruby
+          call win32\configure.bat
+          nmake .config.h.time || exit 1
+          dir .ext\include\ruby-%RUBY_API_VER_LONG%
+          xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
+          popd
+          @echo off
+
+          echo %COL_GREEN%Download Libsodium%COL_RESET% 
+          call :downloadfile %LIBSODIUM_URL% downloads\libsodium.zip
+          7z x downloads\libsodium.zip -oD:\ > nul || exit 1
+          copy /Y D:\libsodium\x64\Release\v140\dynamic\libsodium.dll   vim\src\libsodium.dll
+
+          echo %COL_GREEN%Download Racket%COL_RESET%
+          @echo on
+          call :downloadfile %RACKET_URL% downloads\racket.tgz
+          7z x -tgzip -so downloads/racket.tgz | 7z x -aoa -si -ttar -oD:\
+          type NUL > %RACKET_DIR%\include\bc_suffix.h
+          raco pkg install -i --auto r5rs-lib
+          @echo on
+
+          echo %COL_GREEN%Download Installer UPX%COL_RESET%
+          call :downloadfile %UPX_URL% downloads\upx.zip
+          7z e downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
+
+          echo %COL_GREEN%Download Installer ShellExecAsUser%COL_RESET%
+          call :downloadfile %SHELLEXECASUSER_URL% downloads\shellexecasuser.zip
+          7z x downloads\shellexecasuser.zip -oD:\shellexecasuser > nul || exit 1
+          copy /Y D:\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
+
+          goto :eof
+
+          :downloadfile
+          :: call :downloadfile <URL> <localfile>
+          if not exist %2 (
+            curl -f -L %1 -o %2
+          ) else (
+            echo %COL_GREEN% %2 already downloaded %COL_RESET%
+          )
+          if ERRORLEVEL 1 (
+            rem Retry once.
+            curl -f -L %1 -o %2 || exit 1
+          )
+          goto :eof
+
+      - name: Build (MSVC)
+        shell: cmd
+        run: |
+          path C:\Windows\system32;C:\Windows
+          call "%VCVARSALL%" %VCARCH%
+          path %RACKET_DIR%;%RACKET_DIR%\lib;%PATH%
+          path %RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%PATH%
+          path %LUA_DIR%;%PATH%
+          path %PERL_DIR%\bin;%PATH%
+          path %PYTHON3_DIR%;%PYTHON_DIR%;%PATH%
+
+          path
+          cd vim\src
+          set VIM_NMAKE_ARGS=FEATURES=HUGE POSTSCRIPT=yes DEBUG=no ^
+            IME=yes ICONV=yes VIMDLL=no ^
+            DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
+            DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
+            DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
+            DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
+            DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
+            DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% MZSCHEME=%RACKET_DIR% ^
+            SODIUM=%SODIUM_DIR%
+
+          nmake -nologo -f Make_mvc.mak GUI=yes %VIM_NMAKE_ARGS%
+
+          nmake -nologo -f Make_mvc.mak GUI=no %VIM_NMAKE_ARGS%
+
+
+          pushd po
+          nmake -f Make_mvc.mak GETTEXT_PATH=C:\msys64\usr\bin VIMRUNTIME=..\..\runtime install-all || exit 1
+          popd
+
+      - name: Test Vim
+        shell: cmd
+        timeout-minutes: 15
+        run: |
+          path C:\Windows\system32;C:\Windows
+          path C:\msys64\mingw64\bin;c:\msys64\usr\bin;%PATH%
+          call "%VCVARSALL%" %VCARCH%
+          path %RACKET_DIR%;%RACKET_DIR%\lib;%PATH%
+          path %RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%PATH%
+          path %LUA_DIR%;%PATH%
+          path %PERL_DIR%\bin;%PATH%
+          path %PYTHON3_DIR%;%PYTHON_DIR%;%PATH%
+          path %GITHUB_WORKSPACE%\vim\src;%GITHUB_WORKSPACE%;%GITHUB_WORKSPACE%\vim\src\tee;%GITHUB_WORKSPACE%\vim\src\xxd;%PATH%
+          path
+
+          echo %COL_GREEN%Test Vim:%COL_RESET%
+          cd vim\src\testdir
+          nmake -nologo -f Make_mvc.mak clean
+          nmake -nologo -f Make_mvc.mak VIMPROG=..\vim || exit 1
+
+      - name: Test gVim
+        shell: cmd
+        timeout-minutes: 15
+        run: |
+          path C:\Windows\system32;C:\Windows
+          path C:\msys64\mingw64\bin;c:\msys64\usr\bin;%PATH%
+          call "%VCVARSALL%" %VCARCH%
+          path %RACKET_DIR%;%RACKET_DIR%\lib;%PATH%
+          path %RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%PATH%
+          path %LUA_DIR%;%PATH%
+          path %PERL_DIR%\bin;%PATH%
+          path %PYTHON3_DIR%;%PYTHON_DIR%;%PATH%
+          path %GITHUB_WORKSPACE%\vim\src;%GITHUB_WORKSPACE%;%GITHUB_WORKSPACE%\vim\src\tee;%GITHUB_WORKSPACE%\vim\src\xxd;%PATH%
+          path
+
+          echo %COL_GREEN%Test gVim:%COL_RESET%
+          cd vim\src\testdir
+          nmake -nologo -f Make_mvc.mak clean
+          nmake -nologo -f Make_mvc.mak VIMPROG=..\gvim || exit 1
+
+      - name: Build Installer Packages
+        shell: cmd
+        run: |
+          setlocal ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS
+          call "%VCVARSALL%" %VCARCH%
+          @echo on
+
+          cd vim\src
+
+          for /f "tokens=4,5 delims=.- " %%i in ('.\vim.exe --version ^| find "IMproved"') do (
+            set TAG_NAME_I=%%i
+            set TAG_NAME_J=%%j
+          )
+          for /f "tokens=4 delims=.- " %%k in ('.\vim.exe --version ^| find "patches"') do (
+            set PATCHLEVEL=%%k
+          )
+          set TAG_NAME=vzewpo%TAG_NAME_I%.%TAG_NAME_J%.%PATCHLEVEL%
+
+          echo %TAG_NAME%
+
+          echo %COL_GREEN%Build 64- and 32-bit versions of gvimext.dll for the installer%COL_RESET%
+          mkdir GvimExt64
+          mkdir GvimExt32
+          pushd GvimExt
+          start /wait cmd /c "call ^"%VCVARSALL% x64^" && nmake -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext64.log"
+          @REM ping 127.0.0.1 -n 6 > nul
+          popd
+          type gvimext64.log
+          copy GvimExt\gvimext.dll   GvimExt\gvimext64.dll
+          move GvimExt\gvimext.dll   GvimExt64\gvimext.dll
+          copy /Y GvimExt\README.txt GvimExt64\
+          copy /Y GvimExt\*.inf      GvimExt64\
+          copy /Y GvimExt\*.reg      GvimExt64\
+
+          pushd GvimExt
+          start /wait cmd /c "call ^"%VCVARSALL% x86^" && nmake -f Make_mvc.mak CPU=i386 clean all > ..\gvimext32.log"
+          @REM ping 127.0.0.1 -n 6 > nul
+          popd
+          type gvimext32.log
+          copy GvimExt\gvimext.dll   GvimExt32\gvimext.dll
+          copy /Y GvimExt\README.txt GvimExt32\
+          copy /Y GvimExt\*.inf      GvimExt32\
+          copy /Y GvimExt\*.reg      GvimExt32\
+
+          echo %COL_GREEN%Create zip packages%COL_RESET%
+          7z a ..\..\gvim_%TAG_NAME:~1%_x64_pdb.zip *.pdb
+          copy /Y ..\README.txt ..\runtime
+          copy /Y ..\vimtutor.bat ..\runtime
+          copy /Y *.exe ..\runtime\
+          copy /Y libsodium.dll ..\runtime\
+          copy /Y xxd\*.exe ..\runtime
+          copy /Y tee\*.exe ..\runtime
+          mkdir ..\runtime\GvimExt64
+          mkdir ..\runtime\GvimExt32
+
+          copy /Y GvimExt64\*.*                    ..\runtime\GvimExt64\
+          copy /Y D:\gettext64\libiconv-2.dll      ..\runtime\GvimExt64\
+          copy /Y D:\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
+
+          copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
+          copy /Y D:\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
+          copy /Y D:\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
+
+          @REM # if exist D:\gettext32\libgcc_s_sjlj-1.dll del D:\gettext32\libgcc_s_sjlj-1.dll
+          @REM # copy /Y D:\gettext32\libiconv-2.dll   ..\runtime\
+          @REM # copy /Y D:\gettext32\libintl-8.dll    ..\runtime\
+
+          copy /Y ..\..\diff.exe ..\runtime\
+          copy /Y D:\gettext64\libiconv-2.dll   ..\runtime\
+          copy /Y D:\gettext64\libintl-8.dll    ..\runtime\
+
+          copy /Y winpty* ..\runtime\
+          copy /Y winpty* ..\..\
+          set dir=vim%TAG_NAME_I%%TAG_NAME_J%
+          mkdir ..\vim\%dir%
+          xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
+          7z a ..\..\gvim_%TAG_NAME:~1%_x64.zip ..\vim
+
+          pushd ..\runtime\doc
+          touch ..\..\src\auto\config.mk
+          make uganda.nsis.txt
+          popd
+          copy gvim.exe gvim_ole.exe
+          copy vim.exe vimw32.exe
+          copy tee\tee.exe teew32.exe
+          copy xxd\xxd.exe xxdw32.exe
+          copy install.exe installw32.exe
+          copy uninstall.exe uninstallw32.exe
+          pushd ..\nsis
+          7z x icons.zip > nul
+          "%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=D: /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_x64.exe"
+          popd
+          7z a unsigned-gvim_%TAG_NAME:~1%_x64.zip gvim_%TAG_NAME:~1%_x64.zip gvim*.exe
+
+      - name: Check version
+        shell: cmd
+        run: |
+          PATH %LUA_DIR%;%PATH%;%PYTHON3_DIR%
+          cd vim
+
+          echo %COL_GREEN%gVim Version%COL_RESET%
+          start /wait src\gvim -u NONE -i NONE -c "redir > version.txt | ver | q" || exit 1
+          type version.txt
+          echo.
+          start /wait src\gvim -u NONE -i NONE -c "redir! > version.txt | so ci\if_ver-1.vim | q"
+          start /wait src\gvim -u NONE -i NONE -c "redir >> version.txt | so ci\if_ver-2.vim | q"
+          type version.txt
+          del version.txt
+
+          echo %COL_GREEN%Vim Version%COL_RESET%
+          src\vim --version || exit 1
+          src\vim -u NONE -i NONE --not-a-term -esNX -V1 -S ci/if_ver-1.vim -c quit
+          src\vim -u NONE -i NONE --not-a-term -esNX -V1 -S ci/if_ver-2.vim -c quit
+
+      - name: Prepare Artifact
+        shell: cmd
+        run: |
+          mkdir artifacts
+          copy vim\src\*.exe artifacts
+          copy vim\src\*.dll artifacts
+          copy *.zip artifacts
+          copy *.exe artifacts
+          copy *.dll artifacts
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: vim64-msvc
+          path: ./artifacts
+
