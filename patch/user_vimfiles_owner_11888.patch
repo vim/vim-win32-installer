@@ -1,5 +1,5 @@
 diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
-index 64c1bc76c..0f029f2e9 100644
+index 64c1bc76c5..752ee16557 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
 @@ -228,6 +228,28 @@ FunctionEnd
@@ -49,7 +49,7 @@ index 64c1bc76c..0f029f2e9 100644
 +	  ReadEnvStr $3 "COMSPEC"
 +	  Call GetHomeDir
 +	  Pop $4
-+	  ShellExecAsUser::ShellExecAsUser "" "$3" '/c mkdir "$4\vimfiles"' SW_HIDE
++	  ShellExecAsUser::ShellExecAsUser "" "$3" '/c "cd /d "$4" & mkdir vimfiles & cd vimfiles & mkdir colors compiler doc ftdetect ftplugin indent keymap plugin syntax"' SW_HIDE
 +	${EndIf}
  SectionEnd
  
