@@ -1,1 +1,1 @@
-* [9.0.1275](https://github.com/vim/vim/commit/78012f55faf7444e554c0a97a589d99fa215bea9): the code for setting options is too complicated\n* [Update runtime files.](https://github.com/vim/vim/commit/be4e01637e71c8d5095c33b9861fd70b41476732)\n* [9.0.1274](https://github.com/vim/vim/commit/685bf83b73d0fe6fd36bb2949bebd6aae66a139e): FIRRTL files are not recognized
+* [9.0.1276](https://github.com/vim/vim/commit/4be18e77ff2d9a85d01e9d62335542755b26d5d5): some mappings with Meta and Shift do not work
