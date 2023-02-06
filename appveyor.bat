@@ -48,8 +48,8 @@ set PYTHON3_DIR=!PYTHON3_%BIT%_DIR!
 :: Racket
 set RACKET_VER=3m_dcgt6o
 set RACKET_RELEASE=8.7
-set RACKET32_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
-set RACKET64_URL=https://www.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
+set RACKET32_URL=https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
+set RACKET64_URL=https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
 set RACKET_URL=!RACKET%BIT%_URL!
 set RACKET_DIR=%DEPENDENCIES%\racket
 set MZSCHEME_VER=%RACKET_VER%
