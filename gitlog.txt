@@ -1,1 +1,1 @@
-* [9.0.1291](https://github.com/vim/vim/commit/6642982beaf4f1f5164f0315a1b3e3c275156089): Move language files are not recognized
+* [9.0.1292](https://github.com/vim/vim/commit/313e4724c3b4f6d7454b45b89da08f83a2a0c77e): :defer may call the wrong method for an object
