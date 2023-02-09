@@ -1,1 +1,1 @@
-* [9.0.1292](https://github.com/vim/vim/commit/313e4724c3b4f6d7454b45b89da08f83a2a0c77e): :defer may call the wrong method for an object
+* [9.0.1294](https://github.com/vim/vim/commit/80b817b7494b5b162efd2d0d308933f81aef7c45): the set\_bool\_option() function is too long\n* [9.0.1293](https://github.com/vim/vim/commit/0caaf1e46511f7a92e036f05e6aa9d5992540117): the set\_num\_option() is too long\n* [9.0.1292](https://github.com/vim/vim/commit/313e4724c3b4f6d7454b45b89da08f83a2a0c77e): :defer may call the wrong method for an object
