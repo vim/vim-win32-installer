@@ -1,1 +1,1 @@
-* [9.0.1307](https://github.com/vim/vim/commit/32ff96ef018eb1a5bea0953648b4892a6ee71658): setting 'formatoptions' with :let doesn't check for errors
+* [9.0.1310](https://github.com/vim/vim/commit/fdbd14e89207dca95549f298ee468793da852086): 'splitkeep' test has failures\n* [9.0.1309](https://github.com/vim/vim/commit/1d6539cf36a7b6d1afe76fb6316fe662f543bf60): scrolling two lines with even line count and 'scrolloff' set\n* [9.0.1308](https://github.com/vim/vim/commit/1a6476428f63e9fa0c2cbea296e475e60363af11): the code for setting options is too complicated
