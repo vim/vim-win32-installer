@@ -1,0 +1,13 @@
+diff --git a/src/GvimExt/gvimext.cpp b/src/GvimExt/gvimext.cpp
+index dd26eb1b6..0755c1c2a 100644
+--- a/src/GvimExt/gvimext.cpp
++++ b/src/GvimExt/gvimext.cpp
+@@ -907,7 +907,7 @@ STDMETHODIMP CShellExt::InvokeSingleGvim(HWND hParent,
+     getGvimInvocationW(cmdStrW);
+ 
+     if (gvimExtraOptions == EDIT_WITH_VIM_IN_DIFF_MODE)
+-	wcscat(cmdStrW, L" -d");
++	wcscat(cmdStrW, L" -d -O");
+     else if (gvimExtraOptions == EDIT_WITH_VIM_USE_TABPAGES)
+ 	wcscat(cmdStrW, L" -p");
+     for (i = 0; i < cbFiles; i++)
