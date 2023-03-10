@@ -1,1 +1,1 @@
-* [9.0.1396](https://github.com/vim/vim/commit/be19d78c3d44221cbc38fbb5bac19302345c1def): sort(list, 'N') does not work in Vim9 script context
+* [9.0.1399](https://github.com/vim/vim/commit/4df0772a41c361a1c40d220f6fad0b1e1653fc5b): highlight test script has a few problems\n* [9.0.1398](https://github.com/vim/vim/commit/c0bdbfb2ee026e913e23a5d6bcaa97d44d9a6406): profile test repeats the headers many times\n* [9.0.1397](https://github.com/vim/vim/commit/6a7c7749204b256e779c245b1e999bf852ad7b64): highlight for popupmenu kind and extra cannot be set
