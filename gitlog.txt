@@ -1,1 +1,1 @@
-* [9.0.1402](https://github.com/vim/vim/commit/d13dd30240e32071210f55b587182ff48757ea46): crash when using null\_class\n* [9.0.1401](https://github.com/vim/vim/commit/c481ad38f05c9f759ca7fd01a54c78acad794e85): condition is always true\n* [9.0.1400](https://github.com/vim/vim/commit/5145c9a829cd43cb9e7962b181bf99226eb3a53f): find\_file\_in\_path() is not reentrant
+* [9.0.1403](https://github.com/vim/vim/commit/e764d1b4219e6615a04df1c3a6a5c0210a0a7dac): unused variables and functions
