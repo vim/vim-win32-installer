@@ -1,1 +1,1 @@
-* [9.0.1403](https://github.com/vim/vim/commit/e764d1b4219e6615a04df1c3a6a5c0210a0a7dac): unused variables and functions
+* [9.0.1405](https://github.com/vim/vim/commit/14338024c131b71a337c2bb87cb5904f5a5782b8): missing check for out-of-memory\n* [9.0.1404](https://github.com/vim/vim/commit/e638acc9274112ca5ac6b610b01e44ab2a1e19ce): compilation error with some compilers
