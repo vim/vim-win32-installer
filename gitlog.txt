@@ -1,1 +1,1 @@
-* [9.0.1413](https://github.com/vim/vim/commit/2a003177eb3cee535bb8a384b4b87db13f0486ae): compiler warning for unused variable\n* [9.0.1412](https://github.com/vim/vim/commit/6e377eca8de4c0c0d25808beb7de7676194ebf1d): Pony files are not recognized
+* [9.0.1414](https://github.com/vim/vim/commit/ea83c194625e51c28a2796eba9ba87b0b9ab23e0): \<M-S-x> in Kitty does not use the Shift modifier
