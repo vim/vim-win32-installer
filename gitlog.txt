@@ -1,1 +1,1 @@
-* [9.0.1414](https://github.com/vim/vim/commit/ea83c194625e51c28a2796eba9ba87b0b9ab23e0): \<M-S-x> in Kitty does not use the Shift modifier
+* [9.0.1417](https://github.com/vim/vim/commit/a1fa8b3ac2f7b54c7901ad3eb0ba8b8290912509): ESDL files are not recognized\n* [9.0.1416](https://github.com/vim/vim/commit/e6d40dcdc7227594935d2db01eca29f0e575dcee): crash when collection is modified when using filter()\n* [9.0.1415](https://github.com/vim/vim/commit/7c4516fe93d865f4ef1877181f8156b8b9331856): Crystal files are not recognized
