@@ -1,1 +1,1 @@
-* [9.0.1471](https://github.com/vim/vim/commit/be9624eb47ff4db4f068c65ad9cd37b14d1818a8): warnings for function declarations\n* [9.0.1470](https://github.com/vim/vim/commit/1be4b81bfb3d7edf0e2ae41711d429e8fa5e0555): deferred functions invoked in unexpected order
+* [9.0.1472](https://github.com/vim/vim/commit/8281a16efc76197f7b0b2a385dffb44fce66d33e): ":drop fname" may change the last used tab page
