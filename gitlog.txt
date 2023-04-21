@@ -1,1 +1,1 @@
-* [9.0.1472](https://github.com/vim/vim/commit/8281a16efc76197f7b0b2a385dffb44fce66d33e): ":drop fname" may change the last used tab page
+* [9.0.1474](https://github.com/vim/vim/commit/9be736f2eb7b3474246d644d3defe6fd126b5b18): CI runs with old version of Ubuntu and tools\n* [9.0.1473](https://github.com/vim/vim/commit/017227079f104bd69483ee3d33e31490d7e52135): CI does not run sound tests
