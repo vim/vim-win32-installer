@@ -1,1 +1,1 @@
-* [9.0.1506](https://github.com/vim/vim/commit/88bb3e0a48f160134bdea98cd2b8bd3af86f9d6f): line number not displayed when using 'smoothscroll'\n* [9.0.1505](https://github.com/vim/vim/commit/a93d9cdc74f70ca2c85781496ffae4ca738fcd88): error when heredoc content looks like heredoc
+* [9.0.1507](https://github.com/vim/vim/commit/53f5e51628b56ef9171671cd6e9970374036a084): assert message is confusing with boolean result
