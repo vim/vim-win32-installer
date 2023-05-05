@@ -1,1 +1,1 @@
-* [9.0.1507](https://github.com/vim/vim/commit/53f5e51628b56ef9171671cd6e9970374036a084): assert message is confusing with boolean result
+* [9.0.1510](https://github.com/vim/vim/commit/70e8028a4d63c83f67bc3314d064613e2041e462): misleading variable name for error message\n* [9.0.1509](https://github.com/vim/vim/commit/23919540367952f7fbb06350d7b5af96316fbd5f): error message lacks mentioning the erroneous argument\n* [9.0.1508](https://github.com/vim/vim/commit/f2588b6fc90ba85b333ee8f747e8d1ebbc7e6300): catch does not work when lines are joined with a newline
