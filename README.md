@@ -67,10 +67,11 @@ will then be tested against the test suite.
 ## Signed Builds
 Creating a signed binary and installer still requires manual effort, therefore
 not every release will be signed. They will be provided on a best effort basis
-occasionaly. Signing the releases is provided by
-[SignPath](https://about.signpath.io/). If there haven't been any signed
+occasionaly. If there haven't been any signed
 releases for a long time, feel free to request a new one by creating an
 [issue](https://github.com/vim/vim-win32-installer/issues) here.
+
+Thanks to [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=vim) for providing a free code signing service and to the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=vim) for a free code signing certificate to sign the builds.
 
 ## Winget 
 This repository also contains a github actions CI-step for uploading the
