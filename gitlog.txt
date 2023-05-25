@@ -1,1 +1,1 @@
-* [9.0.1576](https://github.com/vim/vim/commit/097c5370ea8abab17ceb0f3bcd74f57b1655c7f7): users may not know what to do with an internal error
+* [9.0.1579](https://github.com/vim/vim/commit/d87dec0582db09fd0100b4e81f41d9f2fe58cbb3): some error messages are not translated\n* [9.0.1578](https://github.com/vim/vim/commit/2ac6497f0ef186f0e3ba67d7f0a485bfb612bb08): SpellCap highlight not always updated when needed\n* [9.0.1577](https://github.com/vim/vim/commit/1271572a35ae215fa023d97db9896c5745591024): MS-Windows: context menu translations may be wrong
