@@ -1,1 +1,1 @@
-* [9.0.1579](https://github.com/vim/vim/commit/d87dec0582db09fd0100b4e81f41d9f2fe58cbb3): some error messages are not translated\n* [9.0.1578](https://github.com/vim/vim/commit/2ac6497f0ef186f0e3ba67d7f0a485bfb612bb08): SpellCap highlight not always updated when needed\n* [9.0.1577](https://github.com/vim/vim/commit/1271572a35ae215fa023d97db9896c5745591024): MS-Windows: context menu translations may be wrong
+* [9.0.1580](https://github.com/vim/vim/commit/9f3afe7a70d50447424b8d7404aae0d641cd827c): CI: indent test hangs on FreeBSD
