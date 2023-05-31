@@ -1,1 +1,1 @@
-* [9.0.1592](https://github.com/vim/vim/commit/29b4c513b11deb37f0e0538df53d195f602fa42c): not all timer tests are marked as flaky
+* [9.0.1595](https://github.com/vim/vim/commit/e84c773d42e8b6ef0f8ae9b6c7312e0fd47909af): line pointer becomes invalid when using spell checking\n* [9.0.1594](https://github.com/vim/vim/commit/68ebcee0237d927dd5386073499162389d4d708a): some internal error messages are translated\n* [9.0.1593](https://github.com/vim/vim/commit/3c240f608c38ef1af67e112e0e689751c003f946): MS-Windows: assert error when compiled with debug mode
