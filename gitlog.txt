@@ -1,1 +1,1 @@
-* [9.0.1614](https://github.com/vim/vim/commit/59f7038536a370d771758dc34036cc1424be7421): strlen() called too often for :spellrepall
+* [9.0.1616](https://github.com/vim/vim/commit/5bf042810b19a627eda2f170624a0cfd7b4f6ed6): quickfix text field is truncated\n* [9.0.1615](https://github.com/vim/vim/commit/cdb7b4c50826df254d2e5ba8abd211e49b7a9784): URL shortcut files are not recognized
