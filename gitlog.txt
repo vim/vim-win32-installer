@@ -1,1 +1,1 @@
-* [9.0.1627](https://github.com/vim/vim/commit/46acad7284cba7842b5e505fa3d07e99806d246f): no generic mechanism to test syntax plugins\n* [Update runtime files](https://github.com/vim/vim/commit/10e8ff9b26078994cae57c2422b145d37aaf714e)
+* [9.0.1628](https://github.com/vim/vim/commit/d5b952a871835b057176fd37fc91b971e8e3f300): syntax tests fail on FreeBSD
