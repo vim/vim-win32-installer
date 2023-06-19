@@ -126,7 +126,7 @@ deploy:
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.11
       * [Racket](https://download.racket-lang.org/) 8.7 (BC)
-      * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.0
+      * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.2
       * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18
       </details>
 

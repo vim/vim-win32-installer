@@ -54,10 +54,10 @@ set RACKET_URL=!RACKET%BIT%_URL!
 set RACKET_DIR=%DEPENDENCIES%\racket
 set MZSCHEME_VER=%RACKET_VER%
 :: Ruby
-set RUBY_VER=30
-set RUBY_API_VER_LONG=3.0.0
-set RUBY_BRANCH=ruby_3_0
-set RUBY_RELEASE=3.0.5-1
+set RUBY_VER=32
+set RUBY_API_VER_LONG=3.2.0
+set RUBY_BRANCH=ruby_3_2
+set RUBY_RELEASE=3.2.2-1
 set RUBY_SRC_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
 set RUBY_URL=https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z
 set RUBY32_DIR=%DEPENDENCIES%\Ruby%RUBY_VER%
@@ -164,7 +164,7 @@ rem git clone https://github.com/ruby/ruby.git -b %RUBY_BRANCH% --depth 1 -q ../
 call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
 :: Extract the files only we needed to reduce the building time.
 :: We need to use `^^` to escape `!` because we enable delayed expansion.
-7z x downloads\ruby_src.zip */bin */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
+7z x downloads\ruby_src.zip */bin */include */enc/Makefile.in */win32 */common.mk -ir^^!version.h -xr^^!README.* -xr^^!*/win32/*.c -xr^^!*/win32/*.h -o.. > nul || exit 1
 move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
