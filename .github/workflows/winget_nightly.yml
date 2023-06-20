@@ -8,6 +8,6 @@ jobs:
     steps:
       - uses: vedantmgoyal2009/winget-releaser@v2
         with:
-          identifier: vim.vim
+          identifier: vim.vim.nightly
           installers-regex: 'gvim.*(x64|x86).exe$'
           token: ${{ secrets.WINGET_TOKEN }}

@@ -1,0 +1,39 @@
+name: Publish to WinGet Stable
+on:
+  release:
+    types: [released]
+jobs:
+  check-update-job:
+    runs-on: ubuntu-latest
+
+    outputs:
+      needs_update: ${{ steps.check-updates.outputs.result }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: repo
+
+      - name: Check updates
+        id: check-updates
+        run: |
+          cd repo
+          #  only for debugging
+          #
+          #  bash -x scripts/get_last_windows_release.sh "$URL" || true
+          #  bash -x scripts/do_next_stable_release.sh || true
+          echo "result=$(scripts/do_next_stable_release.sh $URL)" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/v/vim/vim"
+
+  publish-winget-stable:
+    runs-on: windows-latest # action can only be run on windows
+    needs: check-update-job
+    if: needs.check-update-job.outputs.needs_update == 'true'
+    steps:
+      - uses: vedantmgoyal2009/winget-releaser@v2
+        with:
+          identifier: vim.vim
+          installers-regex: 'gvim.*(x64|x86).exe$'
+          token: ${{ secrets.WINGET_TOKEN }}

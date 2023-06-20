@@ -5,7 +5,7 @@
 
 # Vim Installer and Archives (Win32 and Win64)
 
-This is a project for building Nightly Vim Windows build snapshots
+This is a project for building Nightly and Stable Vim Windows build snapshots
 automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
 [Download](https://github.com/vim/vim-win32-installer/releases/latest) and execute the
@@ -74,18 +74,26 @@ releases for a long time, feel free to request a new one by creating an
 Thanks to [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=vim) for providing a free code signing service and to the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=vim) for a free code signing certificate to sign the builds.
 
 ## Winget 
-This repository also contains a github actions CI-step for uploading the
-binaries to the winget repository.
-
-This means, the (unsigned) nightly builds will be automatically uploaded and
-submitted to the [winget repository](https://github.com/microsoft/winget-pkgs/).
-So you can use the
+The nightly builds will be automatically uploaded and submitted to the [winget
+repository](https://github.com/microsoft/winget-pkgs/). So you can use the
 [winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)
-command to update your vim installation and do not have to download and
-install new releases manually.
+command line tool to update your vim installation and do not have to download
+and install new releases manually.
 
-This is only done for the nightly builds, because the signed builds currently
+This is only done for the unsigned builds, because the signed builds currently
 still require some manual steps to complete.
+
+There will be 2 different types of Releases submitted to the winget Repository:
+
+### 1) `vim.vim.nightly` Releases
+Every build will be uploaded to the winget package repository as
+`vim.vim.nightly` (nightly) build. You need to search for `vim.vim.nightly`.
+
+### 2) `vim.vim` (stable) Releases
+In addition, approximately every 100 releases, a new stable release will be
+uploaded to the winget repository using the 'vim.vim' identifier. This should
+happen approximately every month.
+
 
 # License & Copyright
 
