@@ -343,7 +343,7 @@ copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 
 :: Disable UPX
-sed -i 's/^\(!define HAVE_UPX\)/# \1/' gvim.nsi
+sed -i '/^\(!define HAVE_UPX\)/d' gvim.nsi
 
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
