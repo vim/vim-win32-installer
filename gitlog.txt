@@ -1,1 +1,1 @@
-* [9.0.1665](https://github.com/vim/vim/commit/590aae35575cbd74d80c41d87fc647f2812aad70): empty CmdlineEnter autocommand causes errors in Ex mode
+* [9.0.1668](https://github.com/vim/vim/commit/0256d76a3392aef270b38d1cf7633008e45c2003): PEM files are not recognized\n* [9.0.1667](https://github.com/vim/vim/commit/e42989374144a63d986b878618aeac328e35ac3b): regression test doesn't fail when fix is reverted\n* [9.0.1666](https://github.com/vim/vim/commit/a2a90d5e202c3f8c5cbbf945b94833007b5711e7): compiler may warn for uninitialized variable
