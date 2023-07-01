@@ -78,7 +78,7 @@ set GETTEXT64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/down
 :: winpty
 set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 :: UPX
-set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
+::set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
 :: Libsodium (currently disabled)
@@ -196,8 +196,12 @@ if /i "%ARCH%"=="x64" (
 )
 
 :: Install UPX
-call :downloadfile %UPX_URL% downloads\upx.zip
-7z e downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
+::
+:: This is disabled, because UPX is known to be flagged as
+:: supsicious by AV vendors
+::
+::call :downloadfile %UPX_URL% downloads\upx.zip
+::7z e downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
 
 :: Install ShellExecAsUser
 call :downloadfile %SHELLEXECASUSER_URL% downloads\shellexecasuser.zip
@@ -337,6 +341,10 @@ copy xxd\xxd.exe xxdw32.exe
 copy install.exe installw32.exe
 copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
+
+:: Disable UPX
+sed -i '/^\(!define HAVE_UPX\)/d' gvim.nsi
+
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
 	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
