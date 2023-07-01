@@ -1,1 +1,1 @@
-* [9.0.1671](https://github.com/vim/vim/commit/e7d9ca2b3bf99b0b759be8952e02c77110a354c1): Termdebug: error with more than 99 breakpoints
+* [9.0.1672](https://github.com/vim/vim/commit/d392a74c5a8af8271a33a20d37ae1a8ea422cb4b): tabline highlight wrong after truncated double width label
