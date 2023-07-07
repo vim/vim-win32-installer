@@ -1,1 +1,1 @@
-* [9.0.1672](https://github.com/vim/vim/commit/d392a74c5a8af8271a33a20d37ae1a8ea422cb4b): tabline highlight wrong after truncated double width label
+* [9.0.1673](https://github.com/vim/vim/commit/80adaa8ae8398403ca4e9797219ea9a501fc76a5): cannot produce a status 418 or 503 message
