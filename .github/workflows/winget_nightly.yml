@@ -6,7 +6,7 @@ jobs:
   publish:
     runs-on: windows-latest # action can only be run on windows
     steps:
-      - uses: vedantmgoyal2009/winget-releaser@v2
+      - uses: vedantmgoyal2009/winget-releaser@f5fe57eeed3b1d0ece9116be65c80c5c53354db9
         with:
           identifier: vim.vim.nightly
           installers-regex: 'gvim.*(x64|x86).exe$'
