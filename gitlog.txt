@@ -1,1 +1,1 @@
-* [Merge pull request #12740 from k-takata/import-9.0.1678](https://github.com/vim/vim/commit/9fcde94176b9c1a3b85d054cc388c49cb17dfb18)\n* [9.0.1678](https://github.com/vim/vim/commit/ad34abee258322826146d597ac5b5fd2111c2b79): blade files are not recognized
+* [9.0.1679](https://github.com/vim/vim/commit/84bc00e9b52b1174888f2f696f8b628a83c49988): Cleanup Tests from leftover files
