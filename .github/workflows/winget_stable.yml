@@ -28,7 +28,7 @@ jobs:
           URL: "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/v/vim/vim"
 
   publish-winget-stable:
-    runs-on: windows-latest # action can only be run on windows
+    runs-on: ubuntu-latest
     needs: check-update-job
     if: needs.check-update-job.outputs.needs_update == 'true'
     steps:
