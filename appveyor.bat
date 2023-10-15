@@ -81,7 +81,7 @@ set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpt
 ::set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
-:: Libsodium (currently disabled)
+:: Libsodium
 set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
 set SODIUM_DIR=%DEPENDENCIES%\libsodium
 
