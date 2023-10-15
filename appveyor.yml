@@ -124,7 +124,7 @@ deploy:
       <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
       * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.11
+      * [Python3](https://www.python.org/downloads/) 3.8 or later
       * [Racket](https://download.racket-lang.org/) 8.7 (BC)
       * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.2
       * [libsodium](https://download.libsodium.org/libsodium/) 1.0.18
