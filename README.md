@@ -38,6 +38,8 @@ You can find those interperters here:
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.
 
+For Python 3, Vim is compiled against Python 3.12 using [Stable ABI](https://docs.python.org/3.12/c-api/stable.html), and this allows you to use Python 3.8 or any later version. See also `:help python3-stable-abi`.
+
 Additionally the binaries include the new terminal feature for Vim and
 therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
 the [winpty repository](https://github.com/rprichard/winpty). This feature is
