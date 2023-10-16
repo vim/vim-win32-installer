@@ -37,8 +37,8 @@ set PYTHON_32_DIR=C:\python%PYTHON_VER%
 set PYTHON_64_DIR=C:\python%PYTHON_VER%-x64
 set PYTHON_DIR=!PYTHON_%BIT%_DIR!
 :: Python3
-set PYTHON3_VER=311
-set PYTHON3_RELEASE=3.11.1
+set PYTHON3_VER=312
+set PYTHON3_RELEASE=3.12.0
 set PYTHON3_32_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%.exe
 set PYTHON3_64_URL=https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%-amd64.exe
 set PYTHON3_URL=!PYTHON3_%BIT%_URL!
@@ -81,7 +81,7 @@ set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpt
 ::set UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip
 :: ShellExecAsUser
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
-:: Libsodium (currently disabled)
+:: Libsodium
 set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
 set SODIUM_DIR=%DEPENDENCIES%\libsodium
 
@@ -243,7 +243,7 @@ nmake -f Make_mvc.mak ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
 	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
-	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% DYNAMIC_PYTHON3_STABLE_ABI=yes ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% "MZSCHEME=%RACKET_DIR%" ^
@@ -255,7 +255,7 @@ nmake -f Make_mvc.mak ^
 	FEATURES=HUGE IME=yes MBYTE=yes ICONV=yes DEBUG=no ^
 	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
-	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% ^
+	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% DYNAMIC_PYTHON3_STABLE_ABI=yes ^
 	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
 	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
 	DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% "MZSCHEME=%RACKET_DIR%" ^

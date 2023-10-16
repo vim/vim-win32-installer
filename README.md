@@ -31,12 +31,14 @@ You can find those interperters here:
 * <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
-* [Python 3](https://www.python.org/downloads/) 3.11
+* [Python 3](https://www.python.org/downloads/) 3.8 or later
 * [Racket](https://download.racket-lang.org/) 8.7 (BC)
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.2
 
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.
+
+For Python 3, Vim is compiled against Python 3.12 using [Stable ABI](https://docs.python.org/3.12/c-api/stable.html), and this allows you to use Python 3.8 or any later version. See also `:help python3-stable-abi`.
 
 Additionally the binaries include the new terminal feature for Vim and
 therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
