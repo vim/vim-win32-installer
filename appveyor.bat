@@ -330,7 +330,8 @@ copy /Y winpty* ..\..\
 set dir=vim%TAG_NAME:~1,1%%TAG_NAME:~3,1%
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q
-7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim
+:: need to escape the ! because of delayedexpansion being active
+7z a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim -x^^!vim\%dir%\syntax\testdir\
 
 :: Create installer
 %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
