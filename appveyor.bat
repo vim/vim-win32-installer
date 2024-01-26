@@ -82,7 +82,7 @@ set WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpt
 :: ShellExecAsUser
 set SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
 :: Libsodium
-set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18-msvc.zip
+set LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.19-RELEASE/libsodium-1.0.19-msvc.zip
 set SODIUM_DIR=%DEPENDENCIES%\libsodium
 
 :: Cygwin
@@ -212,9 +212,9 @@ copy /Y %DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFile
 call :downloadfile %LIBSODIUM_URL% downloads\libsodium.zip
 7z x downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
 if /i "%ARCH%"=="x64" (
-	copy /Y %DEPENDENCIES%\libsodium\x64\Release\v140\dynamic\libsodium.dll        vim\src\libsodium.dll
+	copy /Y %DEPENDENCIES%\libsodium\x64\Release\v142\dynamic\libsodium.dll        vim\src\libsodium.dll
 ) else (
-	copy /Y %DEPENDENCIES%\libsodium\Win32\Release\v140\dynamic\libsodium.dll      vim\src\libsodium.dll
+	copy /Y %DEPENDENCIES%\libsodium\Win32\Release\v142\dynamic\libsodium.dll      vim\src\libsodium.dll
 )
 
 :: Show PATH for debugging
