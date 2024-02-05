@@ -1,1 +1,1 @@
-* [9.1.0076](https://github.com/vim/vim/commit/de7f5bde6c598d4da4ce5b30328eb458962ba60a): luau config file not detected\n* [runtime(vim): Update syntax file (#13969)](https://github.com/vim/vim/commit/7c5aeaffa2bec8f16f36bd33a749a6e965d8ab30)
+* [runtime(colors): color names in the v:colornames dict should be lower cased](https://github.com/vim/vim/commit/0f4054feb66ea55414f97add63b3070d7d7b5295)
