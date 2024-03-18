@@ -212,9 +212,9 @@ copy /Y %DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll "%ProgramFile
 call :downloadfile %LIBSODIUM_URL% downloads\libsodium.zip
 7z x downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
 if /i "%ARCH%"=="x64" (
-	copy /Y %DEPENDENCIES%\libsodium\x64\Release\v142\dynamic\libsodium.dll        vim\src\libsodium.dll
+	copy /Y %DEPENDENCIES%\libsodium\x64\Release\v143\dynamic\libsodium.dll        vim\src\libsodium.dll
 ) else (
-	copy /Y %DEPENDENCIES%\libsodium\Win32\Release\v142\dynamic\libsodium.dll      vim\src\libsodium.dll
+	copy /Y %DEPENDENCIES%\libsodium\Win32\Release\v143\dynamic\libsodium.dll      vim\src\libsodium.dll
 )
 
 :: Show PATH for debugging
