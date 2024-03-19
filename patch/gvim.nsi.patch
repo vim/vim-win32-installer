@@ -1,5 +1,6 @@
---- F:/RepoGit/vimOrigin/nsis/gvim.nsi	Fri Mar  8 12:53:50 2024
-+++ E:/Project/vim/ru/wrk/nsis/nsis/files/gvim.nsi	Sun Mar 17 22:43:04 2024
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+--- a/nsis/gvim.nsi	Fri Mar  8 12:53:50 2024
++++ b/nsis/gvim.nsi	Sun Mar 17 22:43:04 2024
 @@ -1,6 +1,6 @@
  # NSIS file to create a self-installing exe for Vim.
  # It requires NSIS version 3.0 or later.
@@ -33,7 +34,7 @@
 +!define FileExists `"" FileExists2`
 +!macro _DirExists _a _b _t _f
 +	!insertmacro _LOGICLIB_TEMP
-+	StrCpy $_LOGICLIB_TEMP "0"	
++	StrCpy $_LOGICLIB_TEMP "0"
 +;if path is not blank, continue to next check
 +	StrCmp `${_b}` `` +3 0
 +;if directory exists, continue to confirm exists
