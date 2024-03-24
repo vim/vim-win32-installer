@@ -344,13 +344,14 @@ copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 
 :: Disable UPX
-sed -i '/^\(!define HAVE_UPX\)/d' gvim.nsi
+rem Now it is not needed. Disabled by default. To enable /DUPX=1 on makensis.exe
+rem sed -i '/^\(!define HAVE_UPX\)/d' gvim.nsi
 
 7z x icons.zip > nul
 if /i "%ARCH%"=="x64" (
 	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 ) else (
-	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DPATCHLEVEL=%PATCHLEVEL%  gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
+	"%ProgramFiles(x86)%\NSIS\makensis" /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
 )
 popd
 
