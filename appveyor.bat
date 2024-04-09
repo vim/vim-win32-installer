@@ -233,8 +233,8 @@ goto :eof
 @echo on
 cd vim\src
 
-rem Now it's not necessary.  When Vim is compiled, the current patch number
-rem is automatically substituted.
+@rem Now it's not necessary.  When Vim is compiled, the current patch number
+@rem is automatically inserted.
 :: Replace VIM_VERSION_PATCHLEVEL in version.h with the actual patchlevel
 @rem %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/src && ../../scripts/patchlevel.sh"
 @rem call ..\..\scripts\patchlevel.cmd
