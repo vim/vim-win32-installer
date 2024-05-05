@@ -1,1 +1,1 @@
-* [9.1.0393](https://github.com/vim/vim/commit/c3e6e393cbd0ee171001d75fc2310070da81b657): 'viewdir' not respecting $XDG\_CONFIG\_HOME\n* [9.1.0392](https://github.com/vim/vim/commit/7edde3f39e755a573ae863de9b88f90d13c2f88b): tests: Vim9 debug tests may be flaky\n* [runtime(doc): correct getscriptinfo() example (#14718)](https://github.com/vim/vim/commit/ad4881cb3c04048242f69dc77af2dde889c9beea)
+* [runtime(doc): Fix typos in help documents](https://github.com/vim/vim/commit/53753f6a49253cdb3f98f6461d3de3b07ed67451)
