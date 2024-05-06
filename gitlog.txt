@@ -1,1 +1,1 @@
-* [runtime(doc): Fix typos in help documents](https://github.com/vim/vim/commit/53753f6a49253cdb3f98f6461d3de3b07ed67451)
+* [runtime(sh,zsh): clear $MANPAGER in ftplugin before shelling out](https://github.com/vim/vim/commit/8d8cb45756cb7e6fda17013b8347be3a11b29610)\n* [runtime(doc): Fix typos in help documents](https://github.com/vim/vim/commit/53753f6a49253cdb3f98f6461d3de3b07ed67451)
