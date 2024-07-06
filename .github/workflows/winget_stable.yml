@@ -32,7 +32,7 @@ jobs:
     needs: check-update-job
     if: needs.check-update-job.outputs.needs_update == 'true'
     steps:
-      - uses: vedantmgoyal2009/winget-releaser@v2
+      - uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: vim.vim
           installers-regex: 'gvim.*(x64|x86).exe$'
