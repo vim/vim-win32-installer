@@ -20,7 +20,7 @@ build:
   verbosity: minimal
 
 before_build:
-  - 'if "%APPVEYOR_REPO_BRANCH%"=="master" if not defined APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH appveyor.exe exit'
+  - 'if "%APPVEYOR_REPO_TAG%/%APPVEYOR_REPO_BRANCH%"=="false/master" if not defined APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH appveyor.exe exit'
   - 'call ver'
   - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
   - >
