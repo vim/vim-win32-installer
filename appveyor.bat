@@ -10,7 +10,14 @@ if not defined APPVEYOR_REPO_TAG_NAME (
 ) else (
 	set "TAG_NAME=%APPVEYOR_REPO_TAG_NAME%"
 )
-for /F "delims=. tokens=1-3" %%I in ("%TAG_NAME%") do set "PATCHLEVEL=%%K"
+:: Strip the first "v" from the tag name.
+set "VER_NUM=%TAG_NAME:~1%"
+:: Split the version into each component.
+for /F "delims=.-+ tokens=1-3" %%I in ("%VER_NUM%") do (
+	set "MAJOR=%%I"
+	set "MINOR=%%J"
+	set "PATCHLEVEL=%%K"
+)
 
 if /I "%ARCH%"=="x64" (
 	set "BIT=64"
@@ -307,7 +314,7 @@ copy /Y GvimExt\*.inf      GvimExt32\
 copy /Y GvimExt\*.reg      GvimExt32\
 
 :: Create zip packages
-7z.exe a ..\..\gvim_%TAG_NAME:~1%_%ARCH%_pdb.zip *.pdb
+7z.exe a ..\..\gvim_%VER_NUM%_%ARCH%_pdb.zip *.pdb
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\README.???.txt ..\runtime
 copy /Y ..\uninstall.txt ..\runtime
@@ -335,11 +342,11 @@ copy /Y %DEPENDENCIES%\gettext%BIT%\libintl-8.dll    ..\runtime\
 @rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
-set "dir=vim%TAG_NAME:~1,1%%TAG_NAME:~3,1%"
+set "dir=vim%MAJOR%%MINOR%"
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q /EXCLUDE:..\..\exclist.txt
 :: need to escape the ! because of delayedexpansion being active
-7z.exe a ..\..\gvim_%TAG_NAME:~1%_%ARCH%.zip ..\vim
+7z.exe a ..\..\gvim_%VER_NUM%_%ARCH%.zip ..\vim
 
 :: Create installer
 @rem %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
@@ -361,9 +368,9 @@ pushd ..\nsis
 
 7z.exe x -y icons.zip > nul
 if /I "%ARCH%"=="x64" (
-    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
+    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
 ) else (
-    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%TAG_NAME:~1%_%ARCH%.exe"
+    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
 )
 popd
 
@@ -373,7 +380,7 @@ popd
 :: (the Vim zip archive as well as the installer)
 echo Creating Signpath Zip Archive
 cd %APPVEYOR_BUILD_FOLDER%
-7z.exe a unsigned-gvim_%TAG_NAME:~1%_%ARCH%.zip gvim_%TAG_NAME:~1%_%ARCH%.zip gvim*.exe
+7z.exe a unsigned-gvim_%VER_NUM%_%ARCH%.zip gvim_%VER_NUM%_%ARCH%.zip gvim*.exe
 
 @echo off
 goto :eof
