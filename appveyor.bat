@@ -10,7 +10,7 @@ if not defined APPVEYOR_REPO_TAG_NAME (
 ) else (
 	set "TAG_NAME=%APPVEYOR_REPO_TAG_NAME%"
 )
-for /F "delims=. tokens=1-3" %%I in ("%TAG_NAME%") do set "PATCHLEVEL=%%K"
+for /F "delims=.-+ tokens=1-3" %%I in ("%TAG_NAME%") do set "PATCHLEVEL=%%K"
 
 if /I "%ARCH%"=="x64" (
 	set "BIT=64"
