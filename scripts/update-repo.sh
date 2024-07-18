@@ -23,8 +23,15 @@ if [ ! -d vim/src ]; then
 	git submodule init
 fi
 git submodule update
-# get the last released tag name from this repo
-vimoldver=$(curl -s https://api.github.com/repos/vim/vim-win32-installer/releases/latest  | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["tag_name"])')
+
+# get the last released commit id from this repo
+curl -s https://api.github.com/repos/vim/vim-win32-installer/releases/latest -o latest.json
+vimoldver=$(cat latest.json | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["body"])' | sed -n -e '/.*(https:\/\/github\.com\/vim\/vim\/commit\/\([0-9a-f]*\)).*/{s//\1/;p;q}')
+if [ -z "$vimoldver" ]; then
+	# Fall back to the latest tag name
+	vimoldver=$(cat latest.json | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["tag_name"])')
+fi
+rm latest.json
 
 # Get the latest vim source code
 cd vim
