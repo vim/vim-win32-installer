@@ -1,0 +1,41 @@
+name: Update repo
+
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  #workflow_dispatch:
+  #  inputs:
+  #    tag:
+  #      description: 'Tag name (in vim repo) to run'
+  #      required: true
+  #      type: string
+  #    base_commit:
+  #      description: 'Base commit or tag in vim-win32-installer repo'
+  #      required: true
+  #      type: string
+
+permissions:
+  contents: write
+
+env:
+  # Account for committing
+  USER_NAME: "github-actions[bot]"
+  USER_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      if: github.event_name != 'workflow_dispatch'
+    #- uses: actions/checkout@v4
+    #  if: github.event_name == 'workflow_dispatch'
+    #  with:
+    #    ref: ${{inputs.base_commit}}
+
+    - name: update
+      run: |
+        git config --local user.name "$USER_NAME"
+        git config --local user.email "$USER_EMAIL"
+        ./scripts/update-repo.sh
