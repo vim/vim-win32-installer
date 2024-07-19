@@ -314,7 +314,7 @@ copy /Y GvimExt\*.inf      GvimExt32\
 copy /Y GvimExt\*.reg      GvimExt32\
 
 :: Create zip packages
-7z.exe a ..\..\gvim_%VER_NUM%_%ARCH%_pdb.zip *.pdb
+7z.exe a -mx=9 ..\..\gvim_%VER_NUM%_%ARCH%_pdb.zip *.pdb
 copy /Y ..\README.txt ..\runtime
 copy /Y ..\README.???.txt ..\runtime
 copy /Y ..\uninstall.txt ..\runtime
@@ -346,7 +346,7 @@ set "dir=vim%MAJOR%%MINOR%"
 mkdir ..\vim\%dir%
 xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q /EXCLUDE:..\..\exclist.txt
 :: need to escape the ! because of delayedexpansion being active
-7z.exe a ..\..\gvim_%VER_NUM%_%ARCH%.zip ..\vim
+7z.exe a -mx=9 ..\..\gvim_%VER_NUM%_%ARCH%.zip ..\vim
 
 :: Create installer
 @rem %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
@@ -380,7 +380,7 @@ popd
 :: (the Vim zip archive as well as the installer)
 echo Creating Signpath Zip Archive
 cd %APPVEYOR_BUILD_FOLDER%
-7z.exe a unsigned-gvim_%VER_NUM%_%ARCH%.zip gvim_%VER_NUM%_%ARCH%.zip gvim*.exe
+7z.exe a -mx=1 unsigned-gvim_%VER_NUM%_%ARCH%.zip gvim_%VER_NUM%_%ARCH%.zip gvim*.exe
 
 @echo off
 goto :eof
