@@ -19,9 +19,14 @@ shallow_clone: false
 build:
   verbosity: minimal
 
+init:
+  - >
+    if "%APPVEYOR_REPO_TAG%/%APPVEYOR_REPO_BRANCH%"=="false/master"
+    if not defined APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH
+    appveyor.exe exit
+
 before_build:
-  - 'if "%APPVEYOR_REPO_TAG%/%APPVEYOR_REPO_BRANCH%"=="false/master" if not defined APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH appveyor.exe exit'
-  - 'call ver'
+  - 'ver'
   - 'set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"'
   - >
     for /f "usebackq delims=" %%i
