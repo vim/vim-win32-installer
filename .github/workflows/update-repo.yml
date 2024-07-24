@@ -24,6 +24,7 @@ env:
 
 jobs:
   update-repo:
+    if: github.repository == 'vim/vim-win32-installer'
     runs-on: ubuntu-latest
 
     steps:
