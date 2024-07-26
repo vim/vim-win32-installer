@@ -247,21 +247,9 @@ cd vim\src
 @rem call ..\..\scripts\patchlevel.cmd
 @rem type version.h
 
-:: Build GUI version
+:: Build GUI/CUI version
 nmake.exe -f Make_mvc.mak ^
-	GUI=yes OLE=yes DIRECTX=yes ^
-	FEATURES=HUGE IME=yes ICONV=yes DEBUG=no ^
-	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
-	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
-	DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% DYNAMIC_PYTHON3_STABLE_ABI=yes ^
-	DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-	DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-	DYNAMIC_MZSCHEME=yes MZSCHEME_VER=%RACKET_VER% "MZSCHEME=%RACKET_DIR%" ^
-	TERMINAL=yes SODIUM=%SODIUM_DIR% ^
-	|| exit 1
-:: Build CUI version
-nmake.exe -f Make_mvc.mak ^
-	GUI=no OLE=no DIRECTX=no ^
+	GUI=yes OLE=yes DIRECTX=yes VIMDLL=yes ^
 	FEATURES=HUGE IME=yes ICONV=yes DEBUG=no ^
 	DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
 	DYNAMIC_PYTHON=yes PYTHON=%PYTHON_DIR% ^
