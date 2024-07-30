@@ -1,6 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/0x8kevh62dkdt7mu?svg=true)](https://ci.appveyor.com/project/chrisbra/vim-win32-installer)
-[![Github All Releases](https://img.shields.io/github/downloads/vim/vim-win32-installer/total.svg?maxAge=2592000)](https://github.com/vim/vim-win32-installer/releases)
-[![GitHub tag](https://img.shields.io/github/tag/vim/vim-win32-installer.svg?maxAge=2592000)](https://github.com/vim/vim-win32-installer)
+[![GitHub All Releases](https://img.shields.io/github/downloads/vim/vim-win32-installer/total)](https://github.com/vim/vim-win32-installer/releases)
+[![Latest GitHub Release](https://img.shields.io/github/v/release/vim/vim-win32-installer)](https://github.com/vim/vim-win32-installer/releases/latest)
 
 
 # Vim Installer and Archives (Win32 and Win64)
