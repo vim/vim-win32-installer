@@ -1,1 +1,1 @@
-* [runtime(doc): clarify directory of Vim's executable vs CWD](https://github.com/vim/vim/commit/0cc5dce5780d39fe621f6146d4fb862318918125)\n* [9.1.0665](https://github.com/vim/vim/commit/6b97d7ad197de0fb38648c91552c4374e39fdf98): Locked variable can be changed in a :for loop
+* [9.1.0666](https://github.com/vim/vim/commit/9c4b2462bb498f44044616f7309d111d12170369): assert\_equal() doesn't show multibyte string correctly
