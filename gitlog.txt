@@ -1,1 +1,1 @@
-* [9.1.0666](https://github.com/vim/vim/commit/9c4b2462bb498f44044616f7309d111d12170369): assert\_equal() doesn't show multibyte string correctly
+* [9.1.0668](https://github.com/vim/vim/commit/9abd7158d7d10b2b6a6b786c5ef0d428f690e37d): build-error with python3.12 and stable ABI\n* [translations: Update generated po files](https://github.com/vim/vim/commit/181fda18e98620144a0e82a5b5a80dc47448af20)\n* [9.1.0667](https://github.com/vim/vim/commit/b026a293b1e9d7a30f7717e256fe5f7f1dfa20d7): Some other options reset curswant unnecessarily when set
