@@ -1,1 +1,1 @@
-* [9.1.0698](https://github.com/vim/vim/commit/d56c451e1c05310562c5282352d7bb287c16323c): tests: "Untitled" file not removed when running Test\_crash1\_3 alone
+* [runtime(java): Provide support for syntax preview features](https://github.com/vim/vim/commit/8556e23ee90448f01b612d337599f6e8f86679ea)
