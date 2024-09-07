@@ -1,1 +1,1 @@
-* [9.1.0719](https://github.com/vim/vim/commit/66f65a46c5d169f20f780721d4f74d4729855b96): Resetting cell widths can make 'listchars' or 'fillchars' invalid
+* [runtime(doc): buffers can be re-used](https://github.com/vim/vim/commit/b584117b05790cc95628af79e874fb58bbcc2cb7)\n* [9.1.0720](https://github.com/vim/vim/commit/61a6ac4d0066317131528f1b3ecc3b3a2599a75c): Wrong breakindentopt=list:-1 with multibyte or TABs
