@@ -1,1 +1,1 @@
-* [9.1.0739](https://github.com/vim/vim/commit/a6de28755ec3fcc86d1ed0b744f1b410a8e9702d): \[security\]: use-after-free in ex\_getln.c\n* [runtime(filetype): tests: Test\_filetype\_detection() fails](https://github.com/vim/vim/commit/a0c14ef310acac62276b4ee51930d3246b11772e)
+* [runtime(netrw): remove extraneous closing bracket](https://github.com/vim/vim/commit/be551dacb87a0542afd8b5c17b89e6749f2dc355)\n* [9.1.0740](https://github.com/vim/vim/commit/f1694b439bb175d956b49da620f1253462ec507b): incorrect internal diff with empty file
