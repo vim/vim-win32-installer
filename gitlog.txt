@@ -1,1 +1,1 @@
-* [9.1.0741](https://github.com/vim/vim/commit/6908428560a0d6ae27bf7af6fcb6dc362e31926c): No way to get prompt for input()/confirm()\n* [runtime(doc): fix typo in version9.txt nrformat -> nrformats](https://github.com/vim/vim/commit/770b38df40dc0ba252e227dd14499276b710c91d)\n* [runtime(rmd,rrst): 'fex' option not properly restored](https://github.com/vim/vim/commit/a7229c8a99129608e9d651441cca6e6d3079ef56)
+* [runtime(doc): fix typo in :h dos-colors](https://github.com/vim/vim/commit/ac8a10ab7672aa5fd359f76d34d8b0187728b92d)
