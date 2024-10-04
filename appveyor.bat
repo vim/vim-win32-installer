@@ -284,6 +284,14 @@ goto :eof
 @echo on
 cd vim\src
 
+:: Check if we need to copy libgcc_s_sjlj-1.dll.
+%CYGWIN_DIR%\bin\bash -lc "objdump -p $(cygpath '%DEPENDENCIES%\gettext32')/libintl-8.dll | grep -q 'libgcc_s_sjlj-1\.dll'"
+if ERRORLEVEL 1 (
+	set INCLUDE_LIBGCC=0
+) else (
+	set INCLUDE_LIBGCC=1
+)
+
 mkdir GvimExt64
 mkdir GvimExt32
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
@@ -321,13 +329,15 @@ copy /Y %DEPENDENCIES%\gettext64\libintl-8.dll       ..\runtime\GvimExt64\
 copy /Y GvimExt32\*.*                    ..\runtime\GvimExt32\
 copy /Y %DEPENDENCIES%\gettext32\libiconv-2.dll      ..\runtime\GvimExt32\
 copy /Y %DEPENDENCIES%\gettext32\libintl-8.dll       ..\runtime\GvimExt32\
-@rem copy /Y c:\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
-@rem libgcc_s_sjlj-1.dll is not needed anymore. Don't include it in the installer.
-@rem if exist %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll del %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
+if "%INCLUDE_LIBGCC%"=="1" (
+	copy /Y %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32\
+)
 copy /Y ..\..\diff.exe ..\runtime\
 copy /Y %DEPENDENCIES%\gettext%BIT%\libiconv-2.dll   ..\runtime\
 copy /Y %DEPENDENCIES%\gettext%BIT%\libintl-8.dll    ..\runtime\
-@rem if exist c:\gettext%BIT%\libgcc_s_sjlj-1.dll copy /Y c:\gettext%BIT%\libgcc_s_sjlj-1.dll ..\runtime\
+if "%INCLUDE_LIBGCC%-%BIT%"=="1-32" (
+	copy /Y %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll ..\runtime\
+)
 copy /Y winpty* ..\runtime\
 copy /Y winpty* ..\..\
 set "dir=vim%MAJOR%%MINOR%"
@@ -356,10 +366,11 @@ pushd ..\nsis
 
 7z.exe x -y icons.zip > nul
 if /I "%ARCH%"=="x64" (
-    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=1 /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
+	set WIN64=1
 ) else (
-    "%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
+	set WIN64=0
 )
+"%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=%WIN64% /DINCLUDE_LIBGCC=%INCLUDE_LIBGCC% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
 popd
 
 :: Create zipfile for signing with signpath.io
