@@ -1,1 +1,1 @@
-* [9.1.0792](https://github.com/vim/vim/commit/cc15bbcbc471a206e995e147a09a0720b9f35a38): tests: Test\_set\_values() is not comprehensive enough
+* [9.1.0793](https://github.com/vim/vim/commit/c73fc86bf8fe318aab41900dd92e380143211cda): xxd: -e does add one extra space
