@@ -1,1 +1,1 @@
-* [9.1.0793](https://github.com/vim/vim/commit/c73fc86bf8fe318aab41900dd92e380143211cda): xxd: -e does add one extra space
+* [9.1.0794](https://github.com/vim/vim/commit/4f5681dbdfaf25f3357cba3172906c076421c7b9): tests: tests may fail on Windows environment\n* [runtime(doc): improve the :colorscheme documentation](https://github.com/vim/vim/commit/539349cb32323a1bf94f06592c96b1064fb6e966)
