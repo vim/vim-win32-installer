@@ -1,1 +1,1 @@
-* [9.1.0822](https://github.com/vim/vim/commit/05a40e07c2f0e41b708c4c75a6aa7d0e7f6201a3): topline might be changed in diff mode unexpectedly\n* [CI: huge linux builds should also run syntax & indent tests](https://github.com/vim/vim/commit/203c7225f52fbb4a58e544dafbc4ac96b71085b3)
+* [runtime(netrw): fix regression with x mapping on Cygwin](https://github.com/vim/vim/commit/9f32069b8c4f74aa6af47e2f0ec07f2745feac57)\n* [runtime(netrw): fix filetype detection for remote files](https://github.com/vim/vim/commit/aa2ce6f58005bc3b81be2bf42f84ffd01ce22d57)
