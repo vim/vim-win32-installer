@@ -1,1 +1,1 @@
-* [runtime(doc): Makefile does not clean up all temporary files](https://github.com/vim/vim/commit/deda23f850ae384706f3f071366e5849498e6a76)
+* [9.1.0869](https://github.com/vim/vim/commit/9848face747ba91282d34a96dcb966bcb410bf2b): Problem: curswant not set on gm in folded line\n* [9.1.0868](https://github.com/vim/vim/commit/8b94afc2079cdb691de68f5909f9911358bdc560): the warning about missing clipboard can be improved\n* [runtime(doc): Makefile does not clean up all temporary files](https://github.com/vim/vim/commit/deda23f850ae384706f3f071366e5849498e6a76)
