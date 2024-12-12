@@ -1,1 +1,1 @@
-* [9.1.0918](https://github.com/vim/vim/commit/dff3c9c1a789351a741b6a430862c8b2a0eff383): tiny Vim crashes with fuzzy buffer completion
+* [9.1.0919](https://github.com/vim/vim/commit/d66d68763d0947c292a9fdda4da6fda3650fa563): filetype: some assembler files are not recognized\n* [runtime(netrw): do not pollute search history with symlinks](https://github.com/vim/vim/commit/5c42c7731536418c53273932d7ef76b80b001f38)
