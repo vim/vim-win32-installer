@@ -1,1 +1,1 @@
-* [9.1.0990](https://github.com/vim/vim/commit/e15cbc1af47e9dea90448c714eb4908e5d4302fc): Inconsistent behavior when changing cmdheight\n* [9.1.0989](https://github.com/vim/vim/commit/dbe39edb29cf5f899d475ee783a059cb6f678286): Vim9: Whitespace after the final enum value causes a syntax error
+* [runtime(zsh): sync syntax script with upstream repo](https://github.com/vim/vim/commit/202ebc6ced6c5d7c0cdd9a79867af14aab39f75d)\n* [runtime(doc): Capitalise the mnemonic "Zero" for the 'z' flag of search()](https://github.com/vim/vim/commit/8a27d9784805ad15a5d832917410b4e70039e7d2)
