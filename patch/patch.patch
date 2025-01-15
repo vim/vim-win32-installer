@@ -1,0 +1,1822 @@
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 99bfcfa2c..17bb9b307 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -79,7 +79,7 @@ can be translated:
+ *   Menus, see [runtime/lang/README.txt][2]
+ *   Vim tutor, see [runtime/tutor/README.txt][3]
+ *   Manual pages, see [runtime/doc/\*.1][4] for examples
+-*   Installer, see [nsis/lang/\*.nsi][5] for examples
++*   Installer, see [nsis/lang/README.txt][5]
+ 
+ The help files can be translated and made available separately.
+ See https://www.vim.org/translations.php for examples.
+@@ -103,7 +103,7 @@ mailing list. For other questions please use the [Vi Stack Exchange][8] website,
+ [2]: https://github.com/vim/vim/blob/master/runtime/lang/README.txt
+ [3]: https://github.com/vim/vim/blob/master/runtime/tutor/README.txt
+ [4]: https://github.com/vim/vim/blob/master/runtime/doc/vim.1
+-[5]: https://github.com/vim/vim/blob/master/nsis/lang/english.nsi
++[5]: https://github.com/vim/vim/blob/master/nsis/lang/README.txt
+ [6]: https://github.com/vim/vim/discussions/13087
+ [7]: https://github.com/vim/vim/blob/master/runtime/doc/develop.txt
+ [8]: https://vi.stackexchange.com
+diff --git a/Filelist b/Filelist
+index 0a1d9936a..7011d06ec 100644
+--- a/Filelist
++++ b/Filelist
+@@ -607,6 +607,8 @@ SRC_DOS =	\
+ 		src/xxd/Make_mvc.mak \
+ 		nsis/gvim.nsi \
+ 		nsis/gvim_version.nsh \
++		nsis/Makefile \
++		nsis/Make_mvc.mak \
+ 		nsis/README.txt \
+ 		nsis/lang/*.nsi \
+ 		nsis/lang/README.txt \
+@@ -708,8 +710,6 @@ RT_ALL =	\
+ 		README_VIM9.md \
+ 		LICENSE \
+ 		CONTRIBUTING.md \
+-		lang/LICENSE.itx \
+-		lang/README.itx \
+ 		runtime/bugreport.vim \
+ 		runtime/doc/*.awk \
+ 		runtime/doc/*.pl \
+@@ -1033,7 +1033,8 @@ IN_README_DIR = \
+ 
+ # Generic language files.
+ LANG_GEN = \
+-		README.??x.txt \
++		lang/README.*.txt \
++		lang/LICENSE.*.txt \
+ 		runtime/doc/*-da.1 \
+ 		runtime/doc/*-da.UTF-8.1 \
+ 		runtime/doc/*-de.1 \
+@@ -1049,7 +1050,6 @@ LANG_GEN = \
+ 		runtime/doc/*-ru.UTF-8.1 \
+ 		runtime/doc/*-tr.1 \
+ 		runtime/doc/*-tr.UTF-8.1 \
+-		runtime/doc/uganda.??x \
+ 		runtime/lang/README.txt \
+ 		runtime/lang/Makefile \
+ 		runtime/lang/Make_all.mak \
+diff --git a/Makefile b/Makefile
+index fddf33c93..3151c24aa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -96,8 +96,14 @@ syntaxtest:
+ #    To do all this you need the Unix archive and compiled binaries.
+ #    Before creating an archive first delete all backup files, *.orig, etc.
+ 
+-MAJOR = 9
+-MINOR = 1
++# I think it is better to place getting the current version number in the
++# configure script. And then automatically fill in the fields in the files
++# listed below. (Restorer)
++
++MAJOR != grep -E 'VIM_VERSION_MAJOR\s{2,}' src/version.h | \
++	awk '{ printf "%d",$$3 }'
++MINOR != grep -E 'VIM_VERSION_MINOR\s{2,}' src/version.h | \
++	awk '{ printf "%d",$$3 }'
+ 
+ # CHECKLIST for creating a new version:
+ #
+@@ -161,12 +167,12 @@ MINOR = 1
+ # - See src/INSTALLpc.txt for installing the compiler and SDK.
+ # - Set environment for Visual C++ 2015:
+ #   > cd src
+-#   > msvc2015.bat
++#   > msvc-latest.bat
+ # - Build the console binary:
+-#   > nmake -f Make_mvc.mak
++#   > nmake.exe -f Make_mvc.mak
+ # - Run the tests and check the output:
+-#   > nmake -f Make_mvc.mak testclean
+-#   > nmake -f Make_mvc.mak test
++#   > nmake.exe -f Make_mvc.mak testclean
++#   > nmake.exe -f Make_mvc.mak test
+ # - Rename (using ../tools/rename.bat):
+ #           vim.exe to vimw32.exe
+ #           tee/tee.exe to teew32.exe
+@@ -176,10 +182,10 @@ MINOR = 1
+ #           uninstall.exe to uninstallw32.exe
+ # Win32 GUI version build:
+ # - > cd src
+-#   > nmake -f Make_mvc.mak GUI=yes
++#   > nmake.exe -f Make_mvc.mak "GUI=yes"
+ # - Run the tests and check the output:
+-#   > nmake -f Make_mvc.mak testclean
+-#   > nmake -f Make_mvc.mak testgvim
++#   > nmake.exe -f Make_mvc.mak testclean
++#   > nmake.exe -f Make_mvc.mak testgvim
+ # - move "gvim.exe" to here (otherwise the OLE version will overwrite it).
+ # - Move gvim.pdb to here.
+ # - Copy "GvimExt/gvimext.dll" to here.
+@@ -191,8 +197,8 @@ MINOR = 1
+ #   > cd src
+ #   > bigvim.bat
+ # - Run the tests:
+-#   > nmake -f Make_mvc.mak testclean
+-#   > nmake -f Make_mvc.mak testgvim
++#   > nmake.exe -f Make_mvc.mak testclean
++#   > nmake.exe -f Make_mvc.mak testgvim
+ #   - check the output.
+ # - Rename "gvim.exe" to "gvim_ole.exe".
+ # - Rename gvim.pdb to "gvim_ole.pdb".
+@@ -216,9 +222,9 @@ MINOR = 1
+ # - Make sure there is a diff.exe two levels up (get it from a previous Vim
+ #   version).  Also put winpty32.dll and winpty-agent.exe there.
+ # - go to ../nsis and do:
+-#   > unzip icons.zip
+-#   > makensis gvim.nsi  (takes a few minutes).
+-#      ignore warning for libwinpthread-1.dll
++#   > nmake.exe -f Make_mvc.mak all
++#    (takes a few minutes).
++#    See nsis/README.txt for details.
+ # - Copy gvim##.exe to the dist directory.
+ #
+ # 64 bit builds (these are not in the normal distribution, the 32 bit build
+@@ -226,9 +232,9 @@ MINOR = 1
+ # Like the console and GUI version, but first run vcvars64.bat or
+ #   "..\VC\vcvarsall.bat x86_amd64".
+ # - Build the console version:
+-#   > nmake -f Make_mvc.mak
++#   > nmake.exe -f Make_mvc.mak
+ # - Build the GUI version:
+-#   > nmake -f Make_mvc.mak GUI=yes
++#   > nmake.exe -f Make_mvc.mak "GUI=yes"
+ # - Build the OLE version with interfaces:
+ #   > bigvim64.bat
+ #
+@@ -266,8 +272,8 @@ dist:
+ # Clean up some files to avoid they are included.
+ # Copy README files to the top directory.
+ prepare:
+-	if test -f runtime/doc/uganda.nsis.txt; then \
+-		rm runtime/doc/uganda.nsis.???; fi
++	if test -f lang/LICENSE.nsis.txt; then \
++		rm -f lang/LICENSE*.nsis.txt; fi
+ 	for name in $(IN_README_DIR); do \
+ 	  cp READMEdir/"$$name" .; \
+ 	  done
+@@ -408,8 +414,7 @@ amisrc: dist prepare
+ 	mv dist/vim$(VERSION)src.tar.gz dist/vim$(VERSION)src.tgz
+ 
+ # MS-DOS sources
+-dossrc: dist dist/$(COMMENT_SRC) runtime/doc/uganda.nsis.txt \
+-	nsis/gvim_version.nsh
++dossrc: dist dist/$(COMMENT_SRC) license nsis/gvim_version.nsh
+ 	-rm -rf dist/vim$(VERSION)src.zip
+ 	-rm -rf dist/vim
+ 	mkdir dist/vim
+@@ -420,23 +425,19 @@ dossrc: dist dist/$(COMMENT_SRC) runtime/doc/uganda.nsis.txt \
+ 		$(SRC_DOS_BIN) \
+ 		$(SRC_AMI_DOS) \
+ 		$(SRC_DOS_UNIX) \
+-		runtime/doc/uganda.nsis.??? \
++		lang/LICENSE.*.txt \
++		lang/README.*.txt \
+ 		nsis/gvim_version.nsh \
+ 		| (cd dist/vim/$(VIMRTDIR); tar xf -)
+ 	mv dist/vim/$(VIMRTDIR)/runtime/* dist/vim/$(VIMRTDIR)
+ 	rmdir dist/vim/$(VIMRTDIR)/runtime
+ 	cd dist && zip -9 -rD -z vim$(VERSION)src.zip vim <$(COMMENT_SRC)
+ 
+-runtime/doc/uganda.nsis.txt: runtime/doc/uganda.???
+-	cd runtime/doc && $(MAKE) uganda.nsis.txt
++license:
++	cd nsis && $(MAKE) -f Makefile $@
+ 
+ nsis/gvim_version.nsh: Makefile
+-	echo "# Generated from Makefile: define the version numbers" > $@
+-	echo "!ifndef __GVIM_VER__NSH__"  >> $@
+-	echo "!define __GVIM_VER__NSH__"  >> $@
+-	echo "!define VER_MAJOR $(MAJOR)" >> $@
+-	echo "!define VER_MINOR $(MINOR)" >> $@
+-	echo "!endif" >> $@
++	cd nsis && $(MAKE) -f Makefile $(@F)
+ 
+ dosrt: dist dist/$(COMMENT_RT) dosrt_files
+ 	-rm -rf dist/vim$(VERSION)rt.zip
+diff --git a/lang/LICENSE.itx b/lang/LICENSE.it.txt
+similarity index 100%
+rename from lang/LICENSE.itx
+rename to lang/LICENSE.it.txt
+diff --git a/lang/LICENSE.ru.txt b/lang/LICENSE.ru.txt
+new file mode 100644
+index 000000000..ba9deae97
+--- /dev/null
++++ b/lang/LICENSE.ru.txt
+@@ -0,0 +1,109 @@
++ЛИЦЕНЗИЯ VIM
++
++I)  Неизменённые копии программы Vim могут распространяться без ограничения
++    при условии включения данного текста лицензии. Распространение
++    неизменённых копий отдельных частей программы Vim также возможно
++    при соблюдении условия о включении данного текста лицензии. Подобным
++    образом разрешается добавлять исполняемые файлы, скомпилированные
++    из неизменённого исходного кода программы Vim, а также собственные
++    примеры использования и командные файлы редактора Vim.
++
++II) Изменённую (или дополненную) версию программы Vim, включающую
++    исполняемые файлы и/или исходный код, допускается распространять
++    при соблюдении следующих четырёх условий:
++    1) Текст настоящей лицензии должен включаться в состав распространяемой
++    версии программы Vim без изменений.
++    2) Изменённая версия программы Vim должна распространяться одним
++    из следующих пяти способов:
++       a) При внесении изменений в программу Vim, в дистрибутиве должны
++	  быть явно указаны контактные данные лица, внёсшего эти изменения.
++	  Ответственному разработчику по его запросу (в любой форме) должна
++	  быть безвозмездно предоставлена копия распространяемой изменённой
++	  версии программы Vim, включая её исходный код. Ответственный
++	  разработчик оставляет за собой право включать сделанные изменения
++	  в официальную версию программы Vim. Конкретные действия
++	  ответственного разработчика, относительно переданных изменений,
++	  а также лицензионные условия, на основании которых будет
++	  осуществляться их распространение, могут быть дополнительно
++	  согласованы. Если согласование не проводилось, сделанные изменения
++	  будут распространяться на условиях настоящей лицензии или более
++	  поздней её версии. Лица, в данное время являющиеся ответственными
++	  за разработку, указаны в перечне, размещённом по адресу:
++	  https://github.com/orgs/vim/people. В случае изменения этой
++	  информации, актуальные данные будут опубликованы на
++	  соответствующих ресурсах (вероятнее всего по интернет‐адресам
++	  vim.sf.net, www.vim.org и/или comp.editors). В случае полной
++	  невозможности установить контакт с ответственным разработчиком,
++	  обязательства по отправке изменений утрачивают силу. После
++	  передачи подтверждения о получении изменений от ответственного
++	  разработчика, необходимость в повторной отправке копии изменённой
++	  программы Vim неприменима.
++       b) Если лицом получена изменённая версия программа Vim,
++	  распространяющаяся на условиях, указанных в ч. II) п. 2) пп. а)
++	  допускается дальнейшее её распространение этим лицом без внесения
++	  изменений и согласно ч. I) настоящей лицензии. В случае внесения
++	  дополнительных изменений, на эти изменения будут распространяться
++	  условия, указанные в ч. II) п. 2) пп. a).
++       c) Каждая копия распространяемой изменённой версии программы Vim
++	  должна включать информацию обо всех произведённых изменениях,
++	  включая исходный код. Эта информация может быть представлена
++	  в виде построчного сравнения файлов. Выбор лицензии, по условиям
++	  которой будет распространяться добавленный код, остаётся
++	  за автором этих изменений. Изменения и лицензия на эти изменения
++	  не должны запрещать другим лицам внесение своих собственных
++	  изменений в официальную версию программы Vim.
++       d) Изменённая версия программы Vim, содержащая изменения в
++	  соответствии с ч. II) п. 2 пп. c), может распространяться без
++	  исходного кода для этих изменений, при соблюдении следующих трёх
++	  условий:
++	  - Лицензия, применяемая к внесённым изменениям, предоставляет
++	    ответственному разработчику программы Vim возможность
++	    безвозмездного и неограниченного распространения этих изменений,
++	    а также право на безвозмездное и неограниченное включение этих
++	    изменений в официальную версию программы Vim.
++	  - Изменения должны сохраняться не менее трёх лет со времени
++	    распространения соответствующей изменённой версии программы Vim.
++	    В течение этого периода по запросу ответственного разработчика
++	    или другого пользователя изменённой версии программы Vim
++	    (в любой форме) необходимо предоставить исходный код данных
++	    изменений.
++	  - В дистрибутиве изменённой версии программы Vim должны быть явно
++	    указаны контактные данные лица, внёсшего эти изменения.
++	    Контактные данные должны сохранять актуальность в течение
++	    не менее трёх лет со времени последнего распространения
++	    соответствующей изменённой версии программы Vim или как можно
++	    дольше.
++       e) Если к изменениям, внесённым в программу Vim, применимы условия
++	  лицензии GNU General Public License (GNU GPL), допускается
++	  распространение изменённой версия программы Vim на условиях
++	  лицензии GNU GPL версии 2 или любой более поздней версии этой
++	  лицензии.
++    3) Необходимо добавить соответствующую информацию, которая должна быть
++       выведена в результате выполнения команды ":version" в программе Vim,
++       а также на экране приветствия программы Vim, чтобы пользователь
++       изменённой версии программы Vim имел возможность определить,
++       что он пользуется изменённой версией. При распространении
++       на условиях, указанных в ч. II) п. 2) пп. e) такую информацию
++       требуется добавлять только в том случае, когда она не противоречит
++       лицензии, распространяющейся на эти изменения.
++    4) Контактная информация, которая указывается по требованию ч. II) п. 2)
++       пп. a) и ч. II) п. 2) пп. d) не должна удаляться или изменяться никем
++       другим, кроме лица, указавшего данную контактную информацию.
++
++III) При распространении изменённой версии программы Vim рекомендуется
++     пользоваться лицензией Vim для произведённых изменений и обеспечить
++     доступ к этим изменениям ответственного разработчика, включая исходный
++     код изменений. Предпочтительным способом предоставления доступа
++     к произведённым изменениям является отправка этих изменений через
++     электронную почту или размещение файлов на сервер с отправкой
++     URL-адреса по электронной почте. Если количество изменений
++     незначительно (например, изменения в файле Makefile), достаточно будет
++     отправить через электронную почту файл построчного сравнения. Изменения
++     или URL-адреса должны быть направлены на адрес электронной почты
++     maintainer@vim.org
++
++IV)  Не допускается удаление настоящей лицензия из дистрибутива исходного
++     кода программы Vim, его отдельных частей или изменённой версии.
++     Допускается использование настоящей лицензию для предыдущих
++     изменённых выпусков программы Vim, взамен тех лицензий, с которыми
++     они распространялись.
+diff --git a/lang/README.itx b/lang/README.it.txt
+similarity index 100%
+rename from lang/README.itx
+rename to lang/README.it.txt
+diff --git a/README.rux.txt b/lang/README.ru.txt
+similarity index 99%
+rename from README.rux.txt
+rename to lang/README.ru.txt
+index be909280c..a2a29db45 100644
+--- a/README.rux.txt
++++ b/lang/README.ru.txt
+@@ -1,4 +1,4 @@
+-README.rux.txt для версии 9.1 программы Vim — Vi IMproved.
++README.ru.txt для версии 9.1 программы Vim — Vi IMproved.
+ 
+ 
+ ЧТО ТАКОЕ РЕДАКТОР VIM?
+diff --git a/nsis/Make_mvc.mak b/nsis/Make_mvc.mak
+new file mode 100644
+index 000000000..c5aff151b
+--- /dev/null
++++ b/nsis/Make_mvc.mak
+@@ -0,0 +1,134 @@
++#
++# Makefile for MS Windows for create self-installing exe of Vim.
++# 05/04/2024, Restorer restorer@mail2k.ru
++#
++
++
++#!INCLUDE .\Make_all.mak
++
++.SUFFIXES :
++
++!IFDEF PROGRAMW6432
++ProgFiles=%%PROGRAMFILES(x86)%%
++!ELSE
++ProgFiles=$(PROGRAMFILES)
++!ENDIF
++
++!IFDEF VIMSRC
++MKNSISFLAGS = /D"VIMSRC=$(VIMSRC)"
++!ENDIF
++
++!IFDEF VIMRT
++MKNSISFLAGS = $(MKNSISFLAGS) /D"VIMRT=$(VIMRT)"
++!ENDIF
++
++!IFDEF VIMTOOLS
++MKNSISFLAGS = $(MKNSISFLAGS) /D"VIMTOOLS=$(VIMTOOLS)"
++!ENDIF
++
++!IFDEF GETTEXT
++MKNSISFLAGS = $(MKNSISFLAGS) /D"GETTEXT=$(GETTEXT)"
++!ENDIF
++
++!IFDEF HAVE_UPX
++MKNSISFLAGS = $(MKNSISFLAGS) /DHAVE_UPX=$(HAVE_UPX)
++!ENDIF
++
++!IFDEF HAVE_NLS
++MKNSISFLAGS = $(MKNSISFLAGS) /DHAVE_NLS=$(HAVE_NLS)
++!ENDIF
++
++!IFDEF HAVE_MULTI_LANG
++MKNSISFLAGS = $(MKNSISFLAGS) /DHAVE_MULTI_LANG=$(HAVE_MULTI_LANG)
++!ENDIF
++
++!IFDEF WIN64
++MKNSISFLAGS = $(MKNSISFLAGS) /DWIN64=$(WIN64)
++!ENDIF
++
++!IFDEF INCLUDE_LIBGCC
++MKNSISFLAGS = $(MKNSISFLAGS) /DINCLUDE_LIBGCC=$(INCLUDE_LIBGCC)
++!ENDIF
++
++!IFDEF X
++XX = /X"$(X:;=" /X")"
++!ENDIF
++
++# If necessary, correct the full path of the NSIS compiler in the next line.
++# Please do not enclose the path in quotation marks.
++MKNSIS = $(ProgFiles)\NSIS
++
++PS = powershell.exe
++RM = del /f /q
++RD = rmdir /s /q
++
++MKNSISFLAGS = /INPUTCHARSET UTF8 $(MKNSISFLAGS)
++PSFLAGS = -NoLogo -NoProfile -Command
++
++# Read MAJOR and MINOR from version.h.
++!IF ![for /F "tokens=2,3" %G in ( \
++	'findstr /rc:"VIM_VERSION_MINOR[	^]*[0-9^]" \
++	/rc:"VIM_VERSION_MAJOR[	^]*[0-9^]" ..\src\version.h') do \
++	@if "VIM_VERSION_MAJOR"=="%G" (echo MAJOR=%H>>_ver.tmp) \
++	else echo MINOR=%H>>_ver.tmp]
++! INCLUDE .\_ver.tmp
++! IF [$(RM) .\_ver.tmp]
++! ENDIF
++!ENDIF
++
++# Read PATCHLEVEL from version.c
++!IF ![for /F %G in ( \
++	'findstr /nblc:"static int included_patches[^]" ..\src\version.c \
++	^| (set /p "_t=" ^& set /a _t+=2 ^)') do \
++	@cmd /q /c "for /F "skip=%G delims=, " %H in (..\src\version.c) do \
++			(echo PATCH=%H>_patchlvl.tmp & exit /b)"]
++! INCLUDE .\_patchlvl.tmp
++! IF [$(RM) .\_patchlvl.tmp]
++! ENDIF
++!ENDIF
++!IF $(PATCH) < 10
++PATCH = 000$(PATCH)
++!ELSEIF $(PATCH) < 100
++PATCH = 00$(PATCH)
++!ELSEIF $(PATCH) < 1000
++PATCH = 0$(PATCH)
++!ENDIF
++
++
++all : makeinst
++
++makeinst : prepare
++	^"$(MKNSIS)\makensis.exe" $(MKNSISFLAGS) gvim.nsi $(XX)
++
++prepare : unzipicons gvim_version.nsh license rename
++
++unzipicons : icons.zip
++	@ if exist %|fF\nul $(RD) %|fF
++	@ $(PS) $(PSFLAGS) \
++		Add-Type -AssemblyName 'System.IO.Compression.FileSystem'; \
++		[System.IO.Compression.ZipFile]::ExtractToDirectory(\"$**\", \".\")
++
++gvim_version.nsh : Make_mvc.mak
++	@ 1> $@ echo:^# Generated from Makefile: define the version numbers
++	@ 1>> $@ echo:^!ifndef __GVIM_VER__NSH__
++	@ 1>> $@ echo:^!define __GVIM_VER__NSH__
++	@ 1>> $@ echo:^!define VER_MAJOR $(MAJOR)
++	@ 1>> $@ echo:^!define VER_MINOR $(MINOR)
++	@ 1>> $@ echo:^!define PATCHLEVEL $(PATCH)
++	@ 1>> $@ echo:^!endif
++
++license : ..\lang\LICENSE.*.txt ..\LICENSE
++	!@ $(PS) $(PSFLAGS) \
++		Get-Content -Path '$**' -Encoding UTF8 ^| \
++		Set-Content -Path '..\lang\$(**B).nsis.txt' -Enc Unicode -Force
++
++rename :
++	@ ..\tools\rename.bat "$(SRC)" "$(DST)" 1> nul
++
++clean :
++	@ if exist .\gvim_version.nsh $(RM) .\gvim_version.nsh
++	@ if exist ..\lang\LICENSE*.nsis.txt $(RM) ..\lang\LICENSE*.nsis.txt
++	@ if exist .\icons\nul $(RD) .\icons
++	@ if exist .\gvim??.exe $(RM) .\gvim??.exe
++
++# vim: set noet sw=8 ts=8 sts=0 wm=0 tw=0 ft=make:
+diff --git a/nsis/Makefile b/nsis/Makefile
+new file mode 100644
+index 000000000..fdbc12012
+--- /dev/null
++++ b/nsis/Makefile
+@@ -0,0 +1,95 @@
++#
++# Makefile for UNIX-like for create self-installing exe of Vim.
++# 15/12/2024, Restorer restorer@mail2k.ru
++#
++
++
++.SUFFIXES:
++.PHONY: all makeinst prepare rename clean 
++
++ifdef VIMSRC
++MKNSISFLAGS := -D"VIMSRC=$(VIMSRC)"
++endif
++
++ifdef VIMRT
++MKNSISFLAGS := $(MKNSISFLAGS) -D"VIMRT=$(VIMRT)"
++endif
++
++ifdef VIMTOOLS
++MKNSISFLAGS := $(MKNSISFLAGS) -D"VIMTOOLS=$(VIMTOOLS)"
++endif
++
++ifdef GETTEXT
++MKNSISFLAGS := $(MKNSISFLAGS) -D"GETTEXT=$(GETTEXT)"
++endif
++
++ifdef HAVE_UPX
++MKNSISFLAGS := $(MKNSISFLAGS) -DHAVE_UPX=$(HAVE_UPX)
++endif
++
++ifdef HAVE_NLS
++MKNSISFLAGS := $(MKNSISFLAGS) -DHAVE_NLS=$(HAVE_NLS)
++endif
++
++ifdef HAVE_MULTI_LANG
++MKNSISFLAGS := $(MKNSISFLAGS) -DHAVE_MULTI_LANG=$(HAVE_MULTI_LANG)
++endif
++
++ifdef WIN64
++MKNSISFLAGS := $(MKNSISFLAGS) -DWIN64=$(WIN64)
++endif
++
++ifdef INCLUDE_LIBGCC
++MKNSISFLAGS := $(MKNSISFLAGS) -DINCLUDE_LIBGCC=$(INCLUDE_LIBGCC)
++endif
++
++ifdef X
++XX := -X"$(X:;=" -X")"
++endif
++
++MAJOR != grep -E 'VIM_VERSION_MAJOR\s{2,}' ../src/version.h | \
++	awk '{ printf "%d",$$3 }'
++MINOR != grep -E 'VIM_VERSION_MINOR\s{2,}' ../src/version.h | \
++	awk '{ printf "%d",$$3 }'
++PATCH != awk '/number below this line/,/,/' ../src/version.c | \
++	awk 'NR == 3 { printf "%04d",$$1 }' | sed -e 's/[ ,]//g'
++
++MKNSISFLAGS := -INPUTCHARSET UTF8 $(MKNSISFLAGS)
++
++all: makeinst
++
++makeinst: prepare
++	makensis $(MKNSISFLAGS) gvim.nsi $(XX)
++
++prepare: unzipicons gvim_version.nsh license rename
++
++unzipicons: icons.zip
++	if test -d `basename $? .zip` ; then rm -rf `basename $? .zip` ; fi
++	unzip $?
++
++gvim_version.nsh: Makefile
++	echo "# Generated from Makefile: define the version numbers" > $@
++	echo "!ifndef __GVIM_VER__NSH__"  >> $@
++	echo "!define __GVIM_VER__NSH__"  >> $@
++	echo "!define VER_MAJOR $(MAJOR)" >> $@
++	echo "!define VER_MINOR $(MINOR)" >> $@
++	echo "!define PATCHLEVEL $(PATCH)" >> $@
++	echo "!endif" >> $@
++
++license: ../lang/LICENSE.*.txt ../LICENSE
++	for lic in $? ; do \
++		bn=`basename $$lic .txt` ; \
++		awk 'sub("$$", "\r")' < $$lic | \
++		iconv -f UTF-8 -t UTF-16 > ../lang/$$bn.nsis.txt ; \
++	done
++
++rename:
++	../tools/rename.bat "$(SRC)" "$(DST)"
++
++clean:
++	if test -f gvim_version.nsh ; then rm -f gvim_version.nsh ; fi
++	rm -f ../lang/LICENSE*.nsis.txt
++	if test -d icons ; then rm -rf icons ; fi
++	if test -f gvim??.exe ; then rm -f gvim??.exe ; fi
++
++# vim: set noet sw=8 ts=8 sts=0 wm=0 tw=0 ft=make:
+diff --git a/nsis/README.txt b/nsis/README.txt
+index 79c195213..4b4b7a0fb 100644
+--- a/nsis/README.txt
++++ b/nsis/README.txt
+@@ -3,22 +3,15 @@ Installation System (NSIS), available at http://nsis.sourceforge.net/
+ 
+ To build the installable .exe file:
+ 
+-1.  Unpack three archives:
+-	PC sources
+-	PC runtime
+-	PC language files
+-    You can generate these from the Unix sources and runtime plus the extra
+-    archive (see the Makefile in the top directory).
+-
+-2.  Go to the src directory and build:
+-	gvim.exe (the OLE version),
+-	vimrun.exe,
+-	install.exe,
+-	uninstall.exe,
+-	tee/tee.exe,
+-	xxd/xxd.exe
+-
+-    Then execute tools/rename.bat to rename the executables.
++Preparatory stage
++
++1.  Clone using the git tool the Vim repository or download its zip file
++    available at:
++	https://github.com/vim/vim
++
++2.  Go to the "/src" directory and build the Vim editor, making sure to use the
++    following variable values: "GUI=yes"; "OLE=yes"; "VIMDLL=yes". See
++    INSTALLpc.txt and Make_mvc.mak for details.
+ 
+ 3.  Go to the GvimExt directory and build gvimext.dll (or get it from a binary
+     archive).  Both 64- and 32-bit versions are needed and should be placed
+@@ -32,8 +25,8 @@ To build the installable .exe file:
+ 	https://www.mediafire.com/file/9edk4g3xvfgzby0/diff4Vim.zip/file
+     When will you have "diff.exe" put it in the "../.." directory (above the
+     "vim91" directory, it's the same for all Vim versions).  However, you can
+-    specify another directory by passing /DVIMTOOLS=<dir> option to the
+-    "makensis.exe" program via the command line.
++    specify a different directory by specifying the appropriate makefile value.
++    How to do this is described below.
+ 
+ 5.  For the terminal window to work in Vim, the library winpty is required.
+     You can get it at the following url:
+@@ -41,8 +34,8 @@ To build the installable .exe file:
+     For the 32-bit version, rename "winpty.dll" from ia32/bin to "winpty32.dll",
+     and for the 64-bit version — "winpty.dll" from x64/bin to "winpty64.dll".
+     Put the renamed file and "winpty-agent.exe" in "../.." (above the "vim91"
+-    directory).  However, you can specify another directory by passing
+-    /DVIMTOOLS=<dir> option to the "makensis.exe" program via the command line.
++    directory).  However, you can specify a different directory by specifying
++    the appropriate makefile value. How to do this is described below. 
+ 
+ 6.  To use stronger encryption, add the Sodium library.  You can get it here:
+ 	https://github.com/jedisct1/libsodium/releases/download/1.0.19-RELEASE/libsodium-1.0.19-msvc.zip
+@@ -52,12 +45,7 @@ To build the installable .exe file:
+     "../.." directory (above the "vim91" directory, where "diff.exe" and
+     "winpty{32|64}.dll").
+ 
+-7.  On MS Windows do "nmake.exe -f Make_mvc.mak uganda.nsis.txt" in runtime/doc.
+-    On Unix-like system do "make runtime/doc/uganda.nsis.txt" in top directory
+-    or "make uganda.nsis.txt" in runtime/doc.  The created files
+-    "uganda.nsis.???" will be automatically converted to DOS file format.
+-
+-8.  Get gettext and iconv DLLs from the following site:
++7.  Get gettext and iconv DLLs from the following site:
+ 	https://github.com/mlocati/gettext-iconv-windows/releases
+     Both 64- and 32-bit versions are needed.
+     Download the files gettextX.X.X.X-iconvX.XX-shared-{32,64}.zip, extract
+@@ -74,35 +62,47 @@ To build the installable .exe file:
+ 		libintl-8.dll
+ 		libiconv-2.dll
+ 
+-    The default <GETTEXT directory> is "..", however, you can specify another
+-    directory by passing /DGETTEXT=<dir> option to "makensis.exe" program via
+-    the command line.
++    The default <GETTEXT directory> is "../..".  However, you can specify a
++    different directory by specifying the appropriate makefile value. How to do
++    this is described below. 
+ 
+-
+-Install NSIS if you didn't do that already.
+-Download Unicode version the ShellExecAsUser plug-in for NSIS from:
++8.  Install NSIS if you didn't do that already.
++    Download Unicode version the ShellExecAsUser plug-in for NSIS from:
+ 	https://nsis.sourceforge.io/ShellExecAsUser_plug-in
+-and put ShellExecAsUser.dll to path\to\NSIS\Plugins\x86-unicode
++    and put "ShellExecAsUser.dll" to path\to\NSIS\Plugins\x86-unicode
++
++Installer assembly stage
++
++    On MS Windows, open the Developer Command Prompt for VS and go to the
++    "/nsis" directory and type the command
++	    nmake.exe -lf Make_mvc.mak [variables] all
+ 
++    After the installer is created and you copy it to the desired location, run
++    the following command in the "/nsis" directory
++	    nmake.exe -lf Make_mvc.mak clean
++    
++    On UNIX-like systems, go to the "/nsis" directory and type the command
++	    make -f Makefile [variables] all
+ 
+-Unpack the images:
+-	cd nsis
+-	unzip icons.zip or 7z x icons.zip (on Unix-like or MS Windows)
+-	WinRar.exe x icons.zip (on MS Windows)
++    After the installer is created and you copy it to the desired location, run
++    the following command in the "/nsis" directory
++	    make -f Makefile clean
+ 
+-Then build gvim.exe:
+-	cd nsis
+-	makensis.exe [options] gvim.nsi
++Variables and their values available for building the installer (not mandatory):
+ 
+-Options (not mandatory):
+-    /DVIMSRC=<dir>	— directory where location of gvim_ole.exe, vimw32.exe,
++    "VIMSRC=<dir>"	— directory where location of gvim_ole.exe, vimw32.exe,
+ 			    GvimExt/*, etc.
+-    /DVIMRT=<dir>	— directory where location of runtime files
+-    /DVIMTOOLS=<dir>    — directory where location of extra tools: diff.exe,
+-			    winpty{32|64}.dll, winpty-agent.exe, libsodium.dll
+-    /DGETTEXT=<dir>     — directory where location of gettext libraries
+-    /DHAVE_UPX=1	— additional compression of the installer.  UPX program
++    "VIMRT=<dir>"	— directory where location of runtime files.
++    "VIMTOOLS=<dir>"    — directory where location of extra tools: diff.exe,
++			    winpty{32|64}.dll, winpty-agent.exe, libsodium.dll.
++    "GETTEXT=<dir>"     — directory where location of gettext libraries.
++    "HAVE_UPX=1"	— additional compression of the installer.  UPX program
+ 			    must be installed.
+-    /DHAVE_NLS=0	— do not add native language support
+-    /DHAVE_MULTI_LANG=0 — to create an English-only the installer
+-    /DWIN64=1		— to create a 64-bit the installer
++    "HAVE_NLS=0"	— do not add native language support.
++    "HAVE_MULTI_LANG=0" — to create an English-only the installer.
++    "WIN64=1"		— to create a 64-bit the installer.
++    "X=<scriptcmd>"	— executes scriptcmd in script.  If multiple scriptcmd
++			    are specified, they are separated by a semicolon.
++			    Example "X=OutFile MyVim.exe;XPMode on"
++    "MKNSIS=<dir>"	— the directory where the "makensis.exe" program is
++			    located.
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 3ea1d15de..878867f68 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -1,6 +1,6 @@
+ # NSIS file to create a self-installing exe for Vim.
+ # It requires NSIS version 3.0 or later.
+-# Last Change:	2024 Mar 20
++# Last Change:	2025 Jan 05
+ 
+ Unicode true
+ 
+@@ -14,19 +14,19 @@ Unicode true
+ 
+ # Location of runtime files
+ !ifndef VIMRT
+-  !define VIMRT ".."
++  !define VIMRT "..\runtime"
+ !endif
+ 
+ # Location of extra tools: diff.exe, winpty{32|64}.dll, winpty-agent.exe, etc.
+ !ifndef VIMTOOLS
+-  !define VIMTOOLS ..\..
++  !define VIMTOOLS "..\.."
+ !endif
+ 
+ # Location of gettext.
+ # It must contain two directories: gettext32 and gettext64.
+ # See README.txt for detail.
+ !ifndef GETTEXT
+-  !define GETTEXT ${VIMRT}
++  !define GETTEXT ${VIMTOOLS}
+ !endif
+ 
+ # If you have UPX, use the switch /DHAVE_UPX=1 on the command line makensis.exe.
+@@ -74,6 +74,8 @@ Unicode true
+ !include "nsDialogs.nsh"
+ !include "Sections.nsh"
+ !include "x64.nsh"
++!include "StrFunc.nsh"
++${StrRep}
+ 
+ # See https://nsis.sourceforge.io/LogicLib
+ ;FileExists is already part of LogicLib, but returns true for directories
+@@ -246,6 +248,9 @@ Var vim_nsd_mouse
+ Var vim_compat_stat
+ Var vim_keymap_stat
+ Var vim_mouse_stat
++!if ${HAVE_NLS}
++Var lng_usr
++!endif
+ 
+ 
+ # Reserve files
+@@ -423,6 +428,7 @@ Section "$(str_section_exe)" id_section_exe
+ 	File /oname=xxd.exe ${VIMSRC}\xxdw32.exe
+ 	File ..\vimtutor.bat
+ 	File ..\README.txt
++	File /oname=LICENSE.txt ..\LICENSE
+ 	File ..\uninstall.txt
+ 	File ${VIMRT}\*.vim
+ 
+@@ -621,110 +627,23 @@ SectionGroupEnd
+ Section "$(str_section_nls)" id_section_nls
+ 	SectionIn 1 3
+ 
+-#; FIXME: When adding new translations, do not forget to make changes here.
+-	SetOutPath $0
+-!if /FileExists ..\README.dax.txt
+-    ${If} $Language = ${LANG_DANISH}
+-	File ..\README.dax.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.nlx.txt
+-    ${If} $Language = ${LANG_DUTCH}
+-	File ..\README.nlx.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.dex.txt
+-    ${If} $Language = ${LANG_GERMAN}
+-	File ..\README.dex.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.itx.txt
+-    ${If} $Language = ${LANG_ITALIAN}
+-	File ..\README.itx.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.jax.txt
+-    ${If} $Language = ${LANG_JAPANESE}
+-	File ..\README.jax.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.rux.txt
+-    ${If} $Language = ${LANG_RUSSIAN}
+-	File ..\README.rux.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.srx.txt
+-    ${If} $Language = ${LANG_SERBIAN}
+-	File ..\README.srx.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.cnx.txt
+-    ${If} $Language = ${LANG_SIMPCHINESE}
+-	File ..\README.cnx.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.twx.txt
+-    ${If} $Language = ${LANG_TRADCHINESE}
+-	File ..\README.twx.txt
+-    ${EndIf}
+-!endif
+-!if /FileExists ..\README.trx.txt
+-    ${OrIf} $Language = ${LANG_TURKISH}
+-	File ..\README.trx.txt
+-    ${EndIf}
+-!endif
+-#; FIXME: When adding new translations, do not forget to make changes here.
+-	SetOutPath $0\doc
+-!if /FileExists "${VIMRT}\doc\uganda.dax"
+-    ${If} $Language = ${LANG_DANISH}
+-	File ${VIMRT}\doc\uganda.dax
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.nlx"
+-    ${If} $Language = ${LANG_DUTCH}
+-	File ${VIMRT}\doc\uganda.nlx
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.dex"
+-    ${If} $Language = ${LANG_GERMAN}
+-	File ${VIMRT}\doc\uganda.dex
+-    ${EndIf}
++	SetOutPath $INSTDIR
++!if /FileExists "..\lang\README.*.txt"
++	File ..\lang\README.*.txt
++	CopyFiles /SILENT /FILESONLY $INSTDIR\README.$lng_usr.txt \
++	       	$INSTDIR\vim${VER_MAJOR}${VER_MINOR}\README.$lng_usr.txt
++	Delete $INSTDIR\README.*.txt
+ !endif
+-!if /FileExists "${VIMRT}\doc\uganda.itx"
+-    ${If} $Language = ${LANG_ITALIAN}
+-	File ${VIMRT}\doc\uganda.itx
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.jax"
+-    ${If} $Language = ${LANG_JAPANESE}
+-	File ${VIMRT}\doc\uganda.jax
+-    ${EndIf}
++!if /FileExists "..\lang\LICENSE.??.txt"
++	File ..\lang\LICENSE.??.txt
++!if /FileExists "..\lang\LICENSE.??_??.txt"
++	File ..\lang\LICENSE.??_??.txt
+ !endif
+-!if /FileExists "${VIMRT}\doc\uganda.rux"
+-    ${If} $Language = ${LANG_RUSSIAN}
+-	File ${VIMRT}\doc\uganda.rux
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.srx"
+-    ${If} $Language = ${LANG_SERBIAN}
+-	File ${VIMRT}\doc\uganda.srx
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.cnx"
+-    ${If} $Language = ${LANG_SIMPCHINESE}
+-	File ${VIMRT}\doc\uganda.cnx
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.twx"
+-    ${If} $Language = ${LANG_TRADCHINESE}
+-	File ${VIMRT}\doc\uganda.twx
+-    ${EndIf}
+-!endif
+-!if /FileExists "${VIMRT}\doc\uganda.trx"
+-    ${If} $Language = ${LANG_TURKISH}
+-	File ${VIMRT}\doc\uganda.trx
+-    ${EndIf}
++	CopyFiles /SILENT /FILESONLY $INSTDIR\LICENSE.$lng_usr.txt \
++	       	$INSTDIR\vim${VER_MAJOR}${VER_MINOR}\LICENSE.$lng_usr.txt
++	Delete $INSTDIR\LICENSE.*.txt
+ !endif
++
+ 	SetOutPath $0\lang
+ 	File /r /x Makefile ${VIMRT}\lang\*.*
+ 	SetOutPath $0
+@@ -883,6 +802,20 @@ Function .onInit
+   !insertmacro MUI_LANGDLL_DISPLAY
+ !endif
+ 
++!if ${HAVE_NLS}
++  ClearErrors
++  System::Call 'kernel32::GetUserDefaultLocaleName(t.r19, *i${NSIS_MAX_STRLEN})'
++  StrCmp $R9 "zh-cn" coincide 0
++  StrCmp $R9 "zh-tw" 0 part
++  coincide:
++  System::Call 'User32::CharLower(t r19 r19)*i${NSIS_MAX_STRLEN}'
++  ${StrRep} $lng_usr "$R9" "-" "_"
++  Goto done
++  part:
++  StrCpy $lng_usr $R9 2
++  done:
++!endif
++
+   ${If} $INSTDIR == ${DEFAULT_INSTDIR}
+     # Check $VIM
+     ReadEnvStr $3 "VIM"
+diff --git a/nsis/gvim_version.nsh b/nsis/gvim_version.nsh
+index aee434ba0..c59366a74 100644
+--- a/nsis/gvim_version.nsh
++++ b/nsis/gvim_version.nsh
+@@ -3,4 +3,5 @@
+ !define __GVIM_VER__NSH__
+ !define VER_MAJOR 9
+ !define VER_MINOR 1
++!define PATCHLEVEL 0
+ !endif
+diff --git a/nsis/lang/README.txt b/nsis/lang/README.txt
+index 68ff1124c..07899cbe2 100644
+--- a/nsis/lang/README.txt
++++ b/nsis/lang/README.txt
+@@ -18,17 +18,17 @@ allowable length of strings.  For example:
+  drop-down lists on the .vimrc page - 55 characters.
+ Characters in this case mean characters of the English alphabet.
+ 
+-If you do not yet have a translated "uganda.txt" file and a main "README.txt"
++If you do not yet have a translated "LICENSE" file and/or a main "README.txt"
+ file, set the following values:
+ 
+ for the license file
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
+ 
+ for the readme.txt file
+ LangString vim_readme_file 0 "README.txt"
+ 
+ Once you have the translations of these files, then set the values for these
+ variables similarly to what is done in the other translation files.
+-Also add the appropriate entries to the "gvim.nsi" file as done for other
+-languages.
+-
++Translation files should be located in the "lang" subdirectory of the root
++directory. The name of the files is as follows: "README.xx.txt", where xx is the
++language code according to ISO639.
+diff --git a/nsis/lang/danish.nsi b/nsis/lang/danish.nsi
+index ceb18be2f..c4000312f 100644
+--- a/nsis/lang/danish.nsi
++++ b/nsis/lang/danish.nsi
+@@ -19,15 +19,15 @@ LangString ^UninstallCaption ${LANG_DANISH}         "$(^Name) Uninstall"
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_DANISH} "${VIMRT}\doc\uganda.nsis.dax"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_DANISH} "..\lang\LICENSE.da.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_DANISH} "README.dax.txt"
++#LangString vim_readme_file ${LANG_DANISH} "README.da.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/dutch.nsi b/nsis/lang/dutch.nsi
+index 49b1ed07c..5a2ba14ce 100644
+--- a/nsis/lang/dutch.nsi
++++ b/nsis/lang/dutch.nsi
+@@ -21,15 +21,15 @@ LangString ^UninstallCaption ${LANG_DUTCH} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_DUTCH} "${VIMRT}\doc\uganda.nsis.nlx"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_DUTCH} "..\lang\LICENSE.nl.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_DUTCH} "README.nlx.txt"
++#LangString vim_readme_file ${LANG_DUTCH} "README.nl.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/english.nsi b/nsis/lang/english.nsi
+index 6f69f58df..d80f6f368 100644
+--- a/nsis/lang/english.nsi
++++ b/nsis/lang/english.nsi
+@@ -21,7 +21,7 @@ LangString ^UninstallCaption ${LANG_ENGLISH} \
+ # License file for the license page                                       {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file ${LANG_ENGLISH} "${VIMRT}\doc\uganda.nsis.txt"
++LicenseLangString page_lic_file ${LANG_ENGLISH} "..\lang\LICENSE.nsis.txt"
+ 
+ ##############################################################################
+ # README.txt file, which is opened after installation                     {{{1
+diff --git a/nsis/lang/german.nsi b/nsis/lang/german.nsi
+index 21cf80e52..59d65a342 100644
+--- a/nsis/lang/german.nsi
++++ b/nsis/lang/german.nsi
+@@ -21,15 +21,15 @@ LangString ^UninstallCaption ${LANG_GERMAN} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_GERMAN} "${VIMRT}\doc\uganda.nsis.dex"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_GERMAN} "..\lang\LICENSE.de.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_GERMAN} "README.dex.txt"
++#LangString vim_readme_file ${LANG_GERMAN} "README.de.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/greek.nsi b/nsis/lang/greek.nsi
+index b92d3f326..d746cb3a2 100644
+--- a/nsis/lang/greek.nsi
++++ b/nsis/lang/greek.nsi
+@@ -21,15 +21,15 @@ LangString ^UninstallCaption ${LANG_GREEK} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_GREEK} "${VIMRT}\doc\uganda.nsis.elx"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_GREEK} "..\lang\LICENSE.el.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_GREEK} "README.elx.txt"
++#LangString vim_readme_file ${LANG_GREEK} "README.el.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/italian.nsi b/nsis/lang/italian.nsi
+index 5f326809a..629d47658 100644
+--- a/nsis/lang/italian.nsi
++++ b/nsis/lang/italian.nsi
+@@ -21,15 +21,13 @@ LangString ^UninstallCaption ${LANG_ITALIAN} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_ITALIAN} "${VIMRT}\doc\uganda.nsis.itx"
++LicenseLangString page_lic_file ${LANG_ITALIAN} "..\lang\LICENSE.it.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+-LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_ITALIAN} "README.itx.txt"
++LangString vim_readme_file ${LANG_ITALIAN} "README.it.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/japanese.nsi b/nsis/lang/japanese.nsi
+index d290355d1..c28529cb4 100644
+--- a/nsis/lang/japanese.nsi
++++ b/nsis/lang/japanese.nsi
+@@ -31,15 +31,15 @@ LangString ^InstallBtn       ${LANG_JAPANESE} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_JAPANESE} "${VIMRT}\doc\uganda.nsis.jax"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_JAPANESE} "..\lang\LICENSE.ja.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_JAPANESE} "README.jax.txt"
++#LangString vim_readme_file ${LANG_JAPANESE} "README.ja.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/russian.nsi b/nsis/lang/russian.nsi
+index 876bef2b8..bcb54672f 100644
+--- a/nsis/lang/russian.nsi
++++ b/nsis/lang/russian.nsi
+@@ -21,13 +21,13 @@ LangString ^UninstallCaption ${LANG_RUSSIAN} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file ${LANG_RUSSIAN} "${VIMRT}\doc\uganda.nsis.rux"
++LicenseLangString page_lic_file ${LANG_RUSSIAN} "..\lang\LICENSE.ru.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+-LangString vim_readme_file ${LANG_RUSSIAN} "README.rux.txt"
++LangString vim_readme_file ${LANG_RUSSIAN} "README.ru.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/serbian.nsi b/nsis/lang/serbian.nsi
+index 122727d11..9b829ef96 100644
+--- a/nsis/lang/serbian.nsi
++++ b/nsis/lang/serbian.nsi
+@@ -21,15 +21,15 @@ LangString ^UninstallCaption ${LANG_SERBIAN} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_SERBIAN} "${VIMRT}\doc\uganda.nsis.srx"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_SERBIAN} "..\lang\LICENSE.sr.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_SERBIAN} "README.srx.txt"
++#LangString vim_readme_file ${LANG_SERBIAN} "README.sr.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/simpchinese.nsi b/nsis/lang/simpchinese.nsi
+index 8d2d073f7..0c9290eab 100644
+--- a/nsis/lang/simpchinese.nsi
++++ b/nsis/lang/simpchinese.nsi
+@@ -22,16 +22,16 @@ LangString ^UninstallCaption ${LANG_SIMPCHINESE} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
+ #LicenseLangString page_lic_file ${LANG_SIMPCHINESE} \
+-#        "${VIMRT}\doc\uganda.nsis.cnx"
++#        "..\lang\LICENSE.zh_cn.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_SIMPCHINESE} "README.cnx.txt"
++#LangString vim_readme_file ${LANG_SIMPCHINESE} "README.zh_cn.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/tradchinese.nsi b/nsis/lang/tradchinese.nsi
+index 66bb1b880..5d9a5d3a5 100644
+--- a/nsis/lang/tradchinese.nsi
++++ b/nsis/lang/tradchinese.nsi
+@@ -22,16 +22,16 @@ LangString ^UninstallCaption ${LANG_TRADCHINESE} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
+ #LicenseLangString page_lic_file ${LANG_TRADCHINESE} \
+-#        "${VIMRT}\doc\uganda.nsis.twx"
++#        "..\lang\LICENSE.zh_tw.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_TRADCHINESE} "README.twx.txt"
++#LangString vim_readme_file ${LANG_TRADCHINESE} "README.zh_tw.txt"
+ 
+ ##############################################################################
+ # MUI Configuration Strings                                               {{{1
+diff --git a/nsis/lang/turkish.nsi b/nsis/lang/turkish.nsi
+index 429cbb3d9..3522faa7f 100644
+--- a/nsis/lang/turkish.nsi
++++ b/nsis/lang/turkish.nsi
+@@ -20,15 +20,15 @@ LangString ^UninstallCaption ${LANG_TURKISH} \
+ # Translated license file for the license page                            {{{1
+ ##############################################################################
+ 
+-LicenseLangString page_lic_file 0 "${VIMRT}\doc\uganda.nsis.txt"
+-#LicenseLangString page_lic_file ${LANG_TURKISH} "${VIMRT}\doc\uganda.nsis.trx"
++LicenseLangString page_lic_file 0 "..\lang\LICENSE.nsis.txt"
++#LicenseLangString page_lic_file ${LANG_TURKISH} "..\lang\LICENSE.tr.nsis.txt"
+ 
+ ##############################################################################
+ # Translated README.txt file, which is opened after installation          {{{1
+ ##############################################################################
+ 
+ LangString vim_readme_file 0 "README.txt"
+-#LangString vim_readme_file ${LANG_TURKISH} "README.trx.txt"
++#LangString vim_readme_file ${LANG_TURKISH} "README.tr.txt"
+ 
+ ##############################################################################
+ 
+diff --git a/runtime/doc/Make_mvc.mak b/runtime/doc/Make_mvc.mak
+index a6af4baf8..064aa3ebf 100644
+--- a/runtime/doc/Make_mvc.mak
++++ b/runtime/doc/Make_mvc.mak
+@@ -12,7 +12,7 @@
+ 
+ # Correct the following line for the where executable file vim is installed.
+ # Please do not put the path in quotes.
+-VIMPROG = D:\Programs\Vim\vim91\vim.exe
++VIMPROG = ..\..\src\vim.exe
+ 
+ # Correct the following line for the directory where iconv installed.
+ # Please do not put the path in quotes.
+@@ -54,7 +54,7 @@ tags : doctags $(DOCS)
+ 	doctags.exe $(DOCS) | sort /L C /O tags
+ 	$(PS) $(PSFLAGS) \
+ 		(Get-Content -Raw tags ^| Get-Unique ^| %%{$$_ -replace \"`r\", \"\"}) \
+-		^| New-Item -Path . -Force -ItemType file -Name tags
++		^| New-Item -Path . -Name tags -ItemType file -Force
+ 
+ doctags : doctags.c
+ 	$(CC) doctags.c
+@@ -65,15 +65,6 @@ doctags : doctags.c
+ vimtags : $(DOCS)
+ 	@"$(VIMPROG)" --clean -esX -V1 -u doctags.vim
+ 
+-
+-uganda.nsis.txt : uganda.???
+-	! $(PS) $(PSFLAGS) (Get-Content $? -Encoding UTF8 \
+-		^| %%{$$_ -replace '[\t\s]*\*.*\*', '' -replace 'vim:tw=\d\d:.*', ''}) \
+-		^| Set-Content \"$(@B)$$((Get-Item $?).Extension)\" -Encoding Unicode
+-	! $(PS) $(PSFLAGS)\
+-		(Get-Content $(@B)$$((Get-Item $?).Extension) -Raw).Trim() -replace '(\r\n){3,}', '$$1$$1' \
+-		^| Set-Content \"$(@B)$$((Get-Item $?).Extension)\" -Encoding Unicode
+-
+ # TODO:
+ #html: noerrors tags $(HTMLS)
+ #	if exist errors.log (more errors.log)
+@@ -108,8 +99,8 @@ test_urls :
+ 	"$(VIMPROG)" --clean -S test_urls.vim
+ 
+ clean :
+-	$(RM) doctags.exe doctags.obj
+-	$(RM) *.html vim-stylesheet.css
++	- $(RM) doctags.exe doctags.obj
++	- $(RM) *.html vim-stylesheet.css
+ 
+ 
+ arabic.txt :
+diff --git a/runtime/doc/Makefile b/runtime/doc/Makefile
+index 00ea5411d..82b568081 100644
+--- a/runtime/doc/Makefile
++++ b/runtime/doc/Makefile
+@@ -49,16 +49,6 @@ vimtutor.man: vimtutor.1
+ xxd.man: xxd.1
+ 	nroff -man $? | sed -e s/.//g > $@
+ 
+-uganda.nsis.txt : uganda.???
+-	for dpn in $?; do \
+-	  trg=$@; \
+-          sed -e 's/[ 	]*\*.*\*//g' -e 's/vim:tw=[[:digit:]][[:digit:]]:.*//' \
+-            $${dpn} | uniq > $${trg%txt}$${dpn##*.}; \
+-	done
+-# This files needs to be in dos fileformat for NSIS.
+-	$(VIMPROG) -e -X -u NONE --cmd "set notitle noicon nocp noml viminfo=" \
+-	  -c "argdo write ++ff=dos" -c "qa" uganda.nsis.???
+-
+ # Awk version of .txt to .html conversion.
+ html: noerrors tags $(HTMLS)
+ 	@if test -f errors.log; then more errors.log; fi
+diff --git a/runtime/doc/uganda.rux b/runtime/doc/uganda.rux
+deleted file mode 100644
+index 6f0f205f8..000000000
+--- a/runtime/doc/uganda.rux
++++ /dev/null
+@@ -1,337 +0,0 @@
+-*uganda.txt*    для Vim version 9.1		 редакция от 14 авг 2024 г.
+-
+-
+-			 СПРАВОЧНИК ПО РЕДАКТОРУ VIM
+-			      автор Брам Моленар
+-
+-
+-			*uganda* *Uganda* *copying* *copyright* *license*
+-КРАТКОЕ ОПИСАНИЕ
+-								*iccf* *ICCF*
+-Редактор Vim является благотворительным программным обеспечением.
+-Использование и копирование программы Vim не ограничено, однако
+-рекомендуется сделать добровольное пожертвование для нуждающихся детей в
+-Уганде. Ознакомьтесь с разделом |kcc| далее в этом документе или посетите
+-веб-сайт организации ICCF, доступный по указанным ниже адресам:
+-
+-	https://iccf-holland.org/
+-	https://www.vim.org/iccf/
+-	https://www.iccf.nl/
+-
+-Также возможно оказание финансовой помощи для разработки программы Vim,
+-см. раздел |sponsor|. В любом случае деньги направляются в Уганду.
+-
+-Документация, поставляемая в составе программы Vim, распространяется на
+-условиях лицензии на Открытые публикации, см. раздел |manual-copyright|.
+-
+-=== начало лицензии ===
+-
+-ЛИЦЕНЗИЯ VIM
+-
+-I)  Неизменённые копии программы Vim могут распространяться без ограничения
+-    при условии включения данного текста лицензии. Распространение
+-    неизменённых копий отдельных частей программы Vim также возможно при
+-    соблюдении условия о включении данного текста лицензии. Подобным образом
+-    разрешается добавлять исполняемые файлы, скомпилированные из
+-    неизменённого исходного кода программы Vim, а также собственные примеры
+-    использования и командные файлы редактора Vim.
+-
+-II) Изменённую (или дополненную) версию программы Vim, включающую
+-    исполняемые файлы и/или исходный код, допускается распространять при
+-    соблюдении следующих четырёх условий:
+-    1) Текст настоящей лицензии должен включаться в состав распространяемой
+-    версии программы Vim без изменений.
+-    2) Изменённая версия программы Vim должна распространяться одним из
+-    следующих пяти способов:
+-       a) При внесении изменений в программу Vim, в дистрибутиве должны
+-	  быть явно указаны контактные данные лица, внёсшего эти изменения.
+-	  Ответственному разработчику по его запросу (в любой форме) должна
+-	  быть безвозмездно предоставлена копия распространяемой изменённой
+-	  версии программы Vim, включая её исходный код. Ответственный
+-	  разработчик оставляет за собой право включать сделанные изменения
+-	  в официальную версию программы Vim. Конкретные действия
+-	  ответственного разработчика, относительно переданных изменений, а
+-	  также лицензионные условия, на основании которых будет
+-	  осуществляться их распространение, могут быть дополнительно
+-	  согласованы. Если согласование не проводилось, сделанные изменения
+-	  будут распространяться на условиях настоящей лицензии или более
+-	  поздней её версии. Лица, в данное время являющиеся ответственными
+-	  за разработку, указаны в перечне, размещённом по следующему адресу:
+-	  https://github.com/orgs/vim/people. В случае изменения этой
+-	  информации, актуальные данные будут опубликованы на
+-	  соответствующих ресурсах (вероятнее всего по интернет‐адресам
+-	  vim.sf.net, www.vim.org и/или comp.editors). В случае полной
+-	  невозможности установить контакт с ответственным разработчиком,
+-	  обязательства по отправке изменений утрачивают силу. После
+-	  передачи подтверждения о получении изменений от ответственного
+-	  разработчика, необходимость в повторной отправке копии изменённой
+-	  программы Vim неприменима.
+-       b) Если лицом получена изменённая версия программа Vim,
+-	  распространяющаяся на условиях, указанных в ч. II) п. 2) пп. а)
+-	  допускается дальнейшее её распространение этим лицом без внесения
+-	  изменений и согласно ч. I) настоящей лицензии. В случае внесения
+-	  дополнительных изменений, на эти изменения будут распространяться
+-	  условия, указанные в ч. II) п. 2) пп. a).
+-       c) Каждая копия распространяемой изменённой версии программы Vim
+-	  должна включать информацию обо всех произведённых изменениях,
+-	  включая исходный код. Эта информация может быть представлена в
+-	  виде построчного сравнения файлов. Выбор лицензии, по условиям
+-	  которой будет распространяться добавленный код, остаётся за
+-	  автором этих изменений. Изменения и лицензия на эти изменения не
+-	  должны запрещать другим лицам внесение своих собственных
+-	  изменений в официальную версию программы Vim.
+-       d) Изменённая версия программы Vim, содержащая изменения в
+-	  соответствии с ч. II) п. 2 пп. c), может распространяться без
+-	  исходного кода для этих изменений, при соблюдении следующих трёх
+-	  условий:
+-	  - Лицензия, применяемая к внесённым изменениям, предоставляет
+-	    ответственному разработчику программы Vim возможность
+-	    безвозмездного и неограниченного распространения этих изменений,
+-	    а также право на безвозмездное и неограниченное включение этих
+-	    изменений в официальную версию программы Vim.
+-	  - Изменения должны сохраняться не менее трёх лет со времени
+-	    распространения соответствующей изменённой версии программы Vim.
+-	    В течение этого периода по запросу ответственного разработчика
+-	    или другого пользователя изменённой версии программы Vim
+-	    (в любой форме) необходимо предоставить исходный код данных
+-	    изменений.
+-	  - В дистрибутиве изменённой версии программы Vim должны быть явно
+-	    указаны контактные данные лица, внёсшего эти изменения.
+-	    Контактные данные должны сохранять актуальность в течение
+-	    не менее трёх лет со времени последнего распространения
+-	    соответствующей изменённой версии программы Vim или как можно
+-	    дольше.
+-       e) Если к изменениям, внесённым в программу Vim, применимы условия
+-	  лицензии GNU General Public License (GNU GPL), допускается
+-	  распространение изменённой версия программы Vim на условиях
+-	  лицензии GNU GPL версии 2 или любой более поздней версии этой
+-	  лицензии.
+-    3) Необходимо добавить соответствующую информацию, которая должна быть
+-       выведена в результате выполнения команды ":version" в программе Vim,
+-       а также на экране приветствия программы Vim, чтобы пользователь
+-       изменённой версии программы Vim имел возможность определить, что он
+-       пользуется изменённой версией. При распространении на условиях,
+-       указанных в ч. II) п. 2) пп. e) такую информацию требуется добавлять
+-       только в том случае, когда она не противоречит лицензии,
+-       распространяющейся на эти изменения.
+-    4) Контактная информация, которая указывается по требованию ч. II) п. 2)
+-       пп. a) и ч. II) п. 2) пп. d) не должна удаляться или изменяться никем
+-       другим, кроме лица, указавшего данную контактную информацию.
+-
+-III) При распространении изменённой версии программы Vim рекомендуется
+-     пользоваться лицензией Vim для произведённых изменений и обеспечить
+-     доступ к этим изменениям ответственного разработчика, включая исходный
+-     код изменений. Предпочтительным способом предоставления доступа к
+-     произведённым изменениям является отправка этих изменений по
+-     электронной почте или загрузка файлов на сервер с отправкой URL-адреса
+-     по электронной почте. Если количество изменений незначительно
+-     (например, изменения в файле Makefile) достаточно будет отправить по
+-     электронной почте файл построчного сравнения. Изменения или URL-адреса
+-     должны быть отправлены на адрес электронной почты maintainer@vim.org
+-
+-IV)  Не допускается удаление настоящей лицензия из дистрибутива исходного
+-     кода программы Vim, его отдельных частей или изменённой версии.
+-     Допускается использование настоящей лицензию для предыдущих изменённых
+-     выпусков программы Vim, взамен тех лицензий, с которыми они
+-     распространялись.
+-
+-=== конец лицензии ===
+-
+-Примечание.
+-
+-- Если вам нравится программа Vim, дочитайте до конца и подумайте над
+-  оказанием помощи нуждающимся детям в Уганде.
+-
+-- При наличии желания поддержать дальнейшую разработку программы Vim,
+-  рассмотрите возможность оказания финансовой поддержки (см. раздел
+-  |sponsor|). В любом случае деньги отправляются в Уганду.
+-
+-- Ричард Столлман (Richard Stallman) подтвердил, что лицензия Vim совместима
+-  с лицензией GNU GPL. С момента его последней проверки были внесены
+-  незначительные изменения, но они не должны оказать на это никакого влияния.
+-
+-- Если сборка программы Vim осуществляется с использованием библиотеки, на
+-  которую распространяется лицензия GNU GPL, дальнейшее распространение
+-  программы может осуществляться только на условиях лицензии GNU GPL. Даже
+-  если в саму программу Vim не было внесено никаких изменений.
+-
+-- Если были внесены изменения, на которые распространяется лицензия GNU GPL,
+-  все дальнейшие изменения также должны добавляться на условиях лицензии
+-  GNU GPL или другой совместимой лицензии.
+-
+-- При распространении изменённой версии программы Vim, своё имя и контактную
+-  информацию можно добавлять с помощью аргумента конфигурации
+-  "--with-modified-by" или директивы define MODIFIED_BY.
+-
+-==============================================================================
+-Детский центр в Кибаале				*kcc* *Kibaale*  *charity*
+-
+-Детский центр в Кибаале (Kibaale Children's Centre, KCC) находится в гор.
+-Кибаал. Это небольшой городок в восточной Африке на юге Уганды недалеко от
+-Танзании на территории округа Ракаи. Большая часть населения занимается
+-земледелием. Несмотря на бедность жителей, здесь обычно бывает достаточно
+-пищи. Однако по числу заболевших СПИД этот округ превосходит любую другую
+-точку планеты. Существует мнение, что именно отсюда началось распространение
+-этой смертельной болезни. По некоторым оценкам в прошлом от 10 до 30
+-процентов жителей Уганды были заражены ВИЧ. Высокая смертность родителей
+-стала причиной появления большого количества сирот. При населении округа
+-в 350 000 человек, 60 000 детей потеряло одного или обоих родителей. Однако
+-даже несомненные успехи в уменьшении масштабов распространения СПИД
+-не могут привести к полному исчезновению проблем.
+-
+-Дети очень нуждаются в помощи. Организация KCC прилагает все усилия для
+-предоставления нуждающимся пищи, медицинской помощи и образования. Пища и
+-медицинская помощь предоставляются для поддержания здоровья, а образование
+-даёт возможность позаботиться о себе в будущем. Организация KCC работает на
+-базе христианской миссии, но помощь оказывается всем детям независимо от их
+-приверженности к какой-либо религии.
+-
+-В данном случае ключом к решению проблем является возможность получения
+-образования. В последнее время при правлении президента Иди Амина (Idi Amin
+-Dada Oumee), а также в ходе последовавших гражданских войн, этой проблеме не
+-уделялось достаточно внимания. Однако сейчас после стабилизации деятельности
+-правительства детям и их родителям нужно учиться жить и заботиться самим о
+-себе, избегая при этом риска заражения инфекционными заболеваниями. Поэтому
+-наряду с оказанием помощи больным и голодающим, основной целью миссии
+-является предупреждение заболеваемости и прививание навыков по употреблению
+-здоровой пищи.
+-
+-Большинство сирот проживают у близких родственников, воспитываются дядями
+-или старшими сёстрами. Вследствие больших размеров семей и низких доходов
+-(если таковые имеются), большим везением для ребёнка будет обеспечение
+-здоровым питанием. Про одежду, медицинскую помощь и школьное обучение
+-говорить уже не приходится. Для оказания помощи таким нуждающимся детям была
+-организована программа оказания финансовой помощи. Она позволяет взять
+-ребёнка на финансовое обеспечение. За несколько долларов в месяц организация
+-KCC обеспечит его необходимыми предметами обихода, будет следить за его
+-здоровьем, организует школьное обучение, а также сделает всё необходимое для
+-ребёнка и семьи, которая поддерживает его развитие.
+-
+-Помимо непосредственного оказания помощи ребёнку, необходимо также проводить
+-комплексное развитие среды, в которой живут дети. С этой целью организация
+-KCC предоставляет школам помощь по улучшению методов обучения. На базе
+-центра имеется показательная школа, в которой организуется обучение для
+-учителей. Также проводится обучение медицинских работников, прививаются
+-санитарно-гигиенические нормы, пропагандируется постройка туалетов
+-надлежащей конструкции в местах проживания. Также лично мною была оказана
+-помощь в постройке производственного объекта по созданию железобетонных плит,
+-которые применяются при постройке туалетов и продаются по сниженным ценам.
+-
+-На балансе проекта содержится клиника, в которой предоставляется медицинская
+-помощь детям и их семьям. В 2020 году было открыто родильное отделение и
+-пункт круглосуточного оказания медицинской помощи. При необходимости
+-осуществляется доставка в больницу. Проводятся программы иммунизации
+-населения, и предоставляется помощь при вспышках эпидемии (случаются вспышки
+-кори и холеры).
+-							*donate*
+-С лета 1994 года до лета 1995 года мне целый год довелось провести в центре,
+-работая там в качестве волонтёра. Я помогал в расширении центра и трудился в
+-сфере водоснабжения и санитарно-гигиенического контроля. Там я убедился в
+-эффективности той помощи, которую оказывает организация KCC. По возвращении
+-в Нидерланды утвердилось желание продолжить поддержку организации KCC.
+-С этой целью я провожу сбор средств и организую программу оказания
+-финансовой помощи. Поэтому предлагаю вам рассмотреть одну из следующих
+-возможностей:
+-
+-1.  Предоставить финансовую помощь ребёнку в начальной школе — 17 евро в
+-    месяц (или больше).
+-2.  Предоставить финансовую помощь ребёнку в средней школе — 25 евро в месяц
+-    (или больше).
+-3.  Предоставить финансовую помощь клинике — любая сумма раз в месяц или
+-    в квартал.
+-4.  Единовременное пожертвование.
+-
+-По сравнению с другими программами оказания финансовой поддержки детям,
+-указанные выше суммы выглядят весьма скромно. Причина столь небольшого
+-размера пожертвований заключается в том, что деньги направляются
+-непосредственно в центр. На администрацию тратиться менее 5 %, что стало
+-возможным благодаря малым размерам организации и привлечению волонтёров.
+-Если вы предполагаете взять на финансовое обеспечение ребёнка, то важно
+-понимать, что регулярное оказание помощи должно осуществляться на протяжении
+-не менее одного года.
+-
+-Я понимаю, что вам нужны гарантии поступления средств по адресу. Прежде
+-всего, я готов предоставить свои личные гарантии, как автор программы Vim.
+-Я доверяю людям, работающим в этом центре, и знаю их лично. Кроме того,
+-финансирование и инспектирование центра осуществлялось совместно с такими
+-общеизвестными благотворительными организациями, как «World Vision»,
+-«Save the Children», а теперь центр находится на попечении организации
+-«Pacific Academy Outreach Society». Посещение центра осуществляется (за свой
+-собственный счёт) примерно раз в год для проверки хода выполнения текущих
+-задач. Я сам неоднократно посещал этот центр, начиная с 1993 года. Отчёты о
+-посещениях размещаются на веб-сайте организации ICCF.
+-
+-Если у вас остались вопросы, можете задать их по электронной почте
+-<Bram@vim.org>.
+-
+-Адрес центра:
+-			Kibaale Children's Centre
+-			p.o. box 1658
+-			Masaka, Uganda, East Africa
+-
+-Перечисление средств					*iccf-donations*
+-
+-Самая свежая информация доступна на веб-сайте организации ICCF!
+-См. раздел |iccf|.
+-
+-
+- США
+-		Можно использовать методы, перечисленные ниже. Если
+-		требуется отправить чек, то отправьте его нашему партнёру в
+-		Канаде, адрес: https://www.kuwasha.net/
+-
+- Канада
+-		Свяжитесь с командой Kuwasha в гор. Сарри, Канада. Они
+-		могут оказать содействие благотворителям из Канады для
+-		помощи детям в гор. Кибаале. Команда Kuwasha переводит 100%
+-		средств, поступивших в пользу проекта в Уганде.
+-		Единовременное пожертвование может быть отправлено им
+-		напрямую.
+-		На их веб-сайте также можно ознакомиться с информацией по
+-		оказанию финансовой поддержки https://www.kuwasha.net/
+-		При отправке пожертвований через Kuwasha вы получите
+-		налоговое уведомление, которое можно будет подать вместе с
+-		налоговой декларацией.
+-
+- Нидерланды
+-		Перевод на счёт «Stichting ICCF Holland», Amersfoort. Можно
+-		будет получить налоговый вычет, если вы проживаете в
+-		Нидерландах. Банк ING, IBAN: NL95 INGB 0004 5487 74
+-
+- Германия
+-		Можно сделать пожертвование, дающее право на налоговый
+-		вычет. Ознакомьтесь с последней информацией на веб-сайте
+-		организации ICCF 
+-			https://iccf-holland.org/germany.html
+-
+- Европа
+-		Банковский перевод. См. далее «Другие варианты»,
+-		где указан код Swift и номер IBAN.
+-		Любые другие платёжные методы также должны работать.
+-		Проконсультируйтесь по вопросу отправки средств на
+-		благотворительные цели.
+-
+- Банковская карта
+-		Можно воспользоваться платёжной системой PayPal для
+-		отправки денег с банковской карты. Это наиболее
+-		распространённая и чрезвычайно простая в использовании
+-		платёжная система на основе сети Интернет. Больше информации
+-		можно найти по адресу
+-		    https://www.paypal.com/en_US/mrb/pal=XAC62PML3GF8Q
+-		Адрес электронной почты для обсуждения вопросов по
+-		отправке средств
+-		    Bram@iccf-holland.org
+-
+- Другие варианты
+-		Средства можно отправить на указанный ниже счёт.
+-		    Банк ING.	IBAN: NL95 INGB 0004 5487 74
+-				Код SWIFT: INGBNL2A
+-		    на имя «stichting ICCF Holland», Amersfoort
+-		Чеки не принимаются.
+-
+-=============================================================================
+-
+-© Казорин Сергей, перевод на русский язык, 2022, <kazorin@basealt.ru>
+-© Restorer, редакторская правка, 2024, <restorer@mail2k.ru>
+-
+- vim:tw=78:ts=8:noet:ft=help:norl:
+diff --git a/src/GvimExt/gvimext.inf b/src/GvimExt/gvimext.inf
+index 8b45bb19e..d2faf0b86 100644
+--- a/src/GvimExt/gvimext.inf
++++ b/src/GvimExt/gvimext.inf
+@@ -16,7 +16,7 @@ HKCR,CLSID\{51EEE242-AD87-11d3-9C1E-0090278BBD99}\InProcServer32
+ HKCR,*\shellex\ContextMenuHandlers\gvim
+ HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved",{51EEE242-AD87-11d3-9C1E-0090278BBD99}
+ HKLM,Software\Vim\Gvim
+-HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\Vim 6.0"
++HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.1"
+ 
+ [Strings]
+ ThisDll="gvimext.dll"
+diff --git a/src/Makefile b/src/Makefile
+index f5d01cf08..ee577ae24 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -1182,6 +1182,9 @@ KMAPSOURCE = ../runtime/keymap
+ # Where to look for print resource files
+ PRINTSOURCE = ../runtime/print
+ 
++# Where to look translated README and LICENSE files
++TRANSSOURCE = ../lang
++
+ # If you are using Linux, you might want to use this to make vim the
+ # default vi editor, it will create a link from vi to Vim when doing
+ # "make install".  An existing file will be overwritten!
+@@ -2404,6 +2407,11 @@ installrtbase: $(HELPSOURCE)/vim.1 $(DEST_VIM) $(VIMTARGET) $(DEST_RT) \
+ 	chmod $(VIMSCRIPTMOD) $(SYS_INDOFF_FILE)
+ 	$(INSTALL_DATA) $(SCRIPTSOURCE)/optwin.vim $(SYS_OPTWIN_FILE)
+ 	chmod $(VIMSCRIPTMOD) $(SYS_OPTWIN_FILE)
++# install README and LICENCE files
++	$(INSTALL_DATA) ../README.txt $(DEST_RT)
++	chmod $(HELPMOD) $(DEST_RT)/README.txt
++	$(INSTALL_DATA) ../LICENSE $(DEST_RT)
++	chmod $(HELPMOD) $(DEST_RT)/LICENSE
+ # install the print resource files
+ 	cd $(PRINTSOURCE); $(INSTALL_DATA) *.ps $(DEST_PRINT)
+ 	cd $(DEST_PRINT); chmod $(FILEMOD) *.ps
+@@ -2542,7 +2550,7 @@ install-tool-languages:
+ 
+ 
+ # install the language specific files, if they were unpacked
+-install-languages: languages $(DEST_LANG) $(DEST_KMAP)
++install-languages: languages $(DEST_LANG) $(DEST_KMAP) $(DEST_RT)
+ 	-$(SHELL) ./installman.sh install $(DEST_MAN_DA) "-da" $(INSTALLMANARGS)
+ 	-$(SHELL) ./installman.sh install $(DEST_MAN_DA_I) "-da" $(INSTALLMANARGS)
+ 	-$(SHELL) ./installman.sh install $(DEST_MAN_DA_U) "-da.UTF-8" $(INSTALLMANARGS)
+@@ -2618,6 +2626,29 @@ install-languages: languages $(DEST_LANG) $(DEST_KMAP)
+ 	   $(INSTALL_DATA) $(KMAPSOURCE)/README.txt $(KMAPSOURCE)/*.vim $(DEST_KMAP); \
+ 	   chmod $(FILEMOD) $(DEST_KMAP)/README.txt $(DEST_KMAP)/*.vim; \
+ 	fi
++# Installing translated README and LICENSE files
++	if test -d $(TRANSSOURCE) ; then \
++	  if test -n "$(LANG)" ; then \
++	    lngusr=$${LANG%%.*} ; \
++	  elif test -n "$(LANGUAGE)" ; then \
++	    lngusr=$${LANGUAGE%%:*} ; \
++	  elif test -n "$(LC_MESSAGES)" ; then \
++	    lngusr=$${LC_MESSAGES%%.*} ; \
++	  fi; \
++	  if test "$$lngusr" = "zh_TW" -o "$$lngusr" = "zh_CN" ; then \
++	    lngusr=`echo $$lngusr | tr '[:upper:]' '[:lower:]'` ; \
++	  elif test -n "$$lngusr" -a "$$lngusr" != "C" -a "$$lngusr" != "POSIX" ; then \
++	    lngusr=$${lngusr%%_*} ; \
++	  fi ; \
++	  if test -f $(TRANSSOURCE)/README.$$lngusr.txt ; then \
++	    $(INSTALL_DATA) $(TRANSSOURCE)/README.$$lngusr.txt $(DEST_RT) ; \
++	    chmod $(HELPMOD) $(DEST_RT)/README.$$lngusr.txt ; \
++	  fi ; \
++	  if test -f $(TRANSSOURCE)/LICENSE.$$lngusr.txt ; then \
++	    $(INSTALL_DATA) $(TRANSSOURCE)/LICENSE.$$lngusr.txt $(DEST_RT) ; \
++	    chmod $(HELPMOD) $(DEST_RT)/LICENSE.$$lngusr.txt ; \
++	  fi ; \
++	fi
+ 
+ # Install the icons for KDE, if the directory exists and the icon doesn't.
+ # Always when $(DESTDIR) is not empty.
+@@ -2879,6 +2910,9 @@ uninstall_runtime:
+ 	-rm -f $(DEST_PLUG)/*.vim $(DEST_PLUG)/README.txt
+ 	-rmdir $(DEST_FTP) $(DEST_AUTO)/dist $(DEST_AUTO)/xml $(DEST_AUTO)/cargo $(DEST_AUTO)/rust $(DEST_AUTO)
+ 	-rmdir $(DEST_IMPORT)/dist $(DEST_IMPORT)
++	-rm -f $(DEST_RT)/README.??.txt
++	-rm -f $(DEST_RT)/LICENSE.??.txt
++	-rm -f $(DEST_RT)/README.txt $(DEST_RT)/LICENSE
+ 	-rmdir $(DEST_PLUG) $(DEST_RT)
+ #	This will fail when other Vim versions are installed, no worries.
+ 	-rmdir $(DEST_VIM)
+diff --git a/tools/rename.bat b/tools/rename.bat
+index 3df635288..003714479 100755
+--- a/tools/rename.bat
++++ b/tools/rename.bat
+@@ -1,38 +1,57 @@
+ @ 2>/dev/null # 2>nul & goto:win32
+ #!/bin/sh
+-if test -e ../src/vim.exe ; then mv ../src/vim.exe ../src/vimw32.exe ; fi
+-if test -e ../src/vim.pdb ; then mv ../src/vim.pdb ../src/vimw32.pdb ; fi
+-if test -e ../src/gvim.exe ; then mv ../src/gvim.exe ../src/gvim_ole.exe ; fi
+-if test -e ../src/gvim.pdb ; then mv ../src/gvim.pdb ../src/gvim_ole.pdb ; fi
+-if test -e ../src/install.exe ;
+- then
+- mv ../src/install.exe ../src/installw32.exe ;
+-fi
+-if test -e ../src/uninstall.exe ;
+- then
+- mv ../src/uninstall.exe ../src/uninstallw32.exe ;
+-fi
+-if test -e ../src/tee/tee.exe ;
+- then
+- mv ../src/tee/tee.exe ../src/teew32.exe ; 
+-fi
+-if test -e ../src/xxd/xxd.exe ;
+- then
+- mv ../src/xxd/xxd.exe ../src/xxdw32.exe ; 
++if test -z "$1" ; then src=../src ; else src=$1 ; fi
++if test -z "$2" ; then dst=${src} ; else dst=$2 ; fi
++if test -f "${src}/vim.exe" ;
++ then mv -f "${src}/vim.exe" "${dst}/vimw32.exe" ;
++fi
++if test -f "${src}/vim.pdb" ;
++ then mv -f "${src}/vim.pdb" "${dst}/vimw32.pdb" ;
++fi
++if test -f "${src}/gvim.exe" ;
++ then mv -f "${src}/gvim.exe" "${dst}/gvim_ole.exe" ;
++fi
++if test -f "${src}/gvim.pdb" ;
++ then mv -f "${src}/gvim.pdb" "${dst}/gvim_ole.pdb" ;
++fi
++if test -f "${src}/install.exe" ;
++ then mv "${src}/install.exe" "${dst}/installw32.exe" ;
++fi
++if test -f "${src}/uninstall.exe" ;
++ then mv -f "${src}/uninstall.exe" "${dst}/uninstallw32.exe" ;
++fi
++if test -f "${src}/tee/tee.exe" ;
++ then mv -f "${src}/tee/tee.exe" "${dst}/teew32.exe" ; 
++elif test -f "${src}/tee.exe" ;
++ then mv -f "${src}/tee.exe" "${dst}/teew32.exe" ; 
++fi
++if test -f "${src}/xxd/xxd.exe" ;
++ then mv -f "${src}/xxd/xxd.exe" "${dst}/xxdw32.exe" ; 
++elif  test -f "${src}/xxd.exe" ;
++ then mv -f "${src}/xxd.exe" "${dst}/xxdw32.exe" ; 
+ fi
+ # Uncomment return if the file is run through the command "source"
+ #return
+ exit
+ 
+ :win32
+-if exist mv.exe (set "mv=mv.exe -f") else (set "mv=move /y")
+-if exist ..\src\vim.exe %mv% ..\src\vim.exe ..\src\vimw32.exe
+-if exist ..\src\vim.pdb %mv% ..\src\vim.pdb ..\src\vimw32.pdb
+-if exist ..\src\gvim.exe %mv% ..\src\gvim.exe ..\src\gvim_ole.exe
+-if exist ..\src\gvim.pdb %mv% ..\src\gvim.pdb ..\src\gvim_ole.pdb
+-if exist ..\src\install.exe %mv% ..\src\install.exe ..\src\installw32.exe
+-if exist ..\src\uninstall.exe %mv% ..\src\uninstall.exe ..\src\uninstallw32.exe
+-if exist ..\src\tee\tee.exe %mv% ..\src\tee\tee.exe ..\src\teew32.exe
+-if exist ..\src\xxd\xxd.exe %mv% ..\src\xxd\xxd.exe ..\src\xxdw32.exe
+-set "mv="
++SetLocal
++if exist mv.exe (set "mv=mv.exe -f") else (set "mv=move /Y")
++if ""=="%~1" (set "src=..\src") else (set "src=%~1")
++if ""=="%~2" (set "dst=%src%") else (set "dst=%~2")
++if exist "%src%\vim.exe" %mv% "%src%\vim.exe" "%dst%\vimw32.exe"
++if exist "%src%\vim.pdb" %mv% "%src%\vim.pdb" "%dst%\vimw32.pdb"
++if exist "%src%\gvim.exe" %mv% "%src%\gvim.exe" "%dst%\gvim_ole.exe"
++if exist "%src%\gvim.pdb" %mv% "%src%\gvim.pdb" "%dst%\gvim_ole.pdb"
++if exist "%src%\install.exe" %mv% "%src%\install.exe" "%dst%\installw32.exe"
++if exist "%src%\uninstall.exe" (
++    %mv% "%src%\uninstall.exe" "%dst%\uninstallw32.exe"
++)
++if exist "%src%\tee\tee.exe" (%mv% "%src%\tee\tee.exe" "%dst%\teew32.exe"
++    ) else (if exist "%src%\tee.exe" %mv% "%src%\tee.exe" "%dst%\teew32.exe"
++)
++if exist "%src%\xxd\xxd.exe" (%mv% "%src%\xxd\xxd.exe" "%dst%\xxdw32.exe"
++    ) else (if exist "%src%\xxd.exe" %mv% "%src%\xxd.exe" "%dst%\xxdw32.exe"
++)
++EndLocal
+ goto:EOF
