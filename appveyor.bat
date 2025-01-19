@@ -343,8 +343,10 @@ nmake.exe -lf Make_mvc.mak @auto\nmake\vimdll-huge.cfg || exit 1
 
 @rem Build translations
 pushd po
+
 nmake.exe -lf Make_mvc.mak "GETTEXT_PATH=%DEPENDENCIES%\gettext%BIT%" ^
  "VIMRUNTIME=..\..\runtime" install-all || exit 1
+
 popd
 
 :check_executable
@@ -441,6 +443,7 @@ ren vim\runtime %VIM_DIR%
 7z.exe a -r -mx=9 -xr@exclist.txt gvim_%VER_NUM%_%ARCH%.zip vim\%VIM_DIR%
 
 ren vim\%VIM_DIR% runtime
+
 
 @rem Create installer
 
