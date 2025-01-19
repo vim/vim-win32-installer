@@ -261,7 +261,6 @@ nmake.exe -f Make_mvc.mak ^
 	|| exit 1
 :: Build translations
 pushd po
-@rem nmake.exe -f Make_mvc.mak GETTEXT_PATH=%CYGWIN_DIR%\bin VIMRUNTIME=..\..\runtime install-all || exit 1
 nmake.exe -f Make_mvc.mak "GETTEXT_PATH=%DEPENDENCIES%\gettext%BIT%" "VIMRUNTIME=..\..\runtime" install-all || exit 1
 popd
 
@@ -347,10 +346,6 @@ xcopy ..\runtime ..\vim\%dir% /Y /E /V /I /H /R /Q /EXCLUDE:..\..\exclist.txt
 7z.exe a -mx=9 ..\..\gvim_%VER_NUM%_%ARCH%.zip ..\vim
 
 :: Create installer
-@rem %CYGWIN_DIR%\bin\bash -lc "cd $(cygpath '%APPVEYOR_BUILD_FOLDER%')/vim/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
-pushd ..\runtime\doc
-nmake.exe -f Make_mvc.mak uganda.nsis.txt || exit 1
-popd
 
 copy gvim.exe gvim_ole.exe
 copy vim.exe vimw32.exe
@@ -360,17 +355,14 @@ copy install.exe installw32.exe
 copy uninstall.exe uninstallw32.exe
 pushd ..\nsis
 
-:: Disable UPX
-@rem Disabled by default. To enable /DHAVE_UPX=1 on makensis.exe
-@rem sed -i '/^\(!define HAVE_UPX\)/d' gvim.nsi
-
-7z.exe x -y icons.zip > nul
 if /I "%ARCH%"=="x64" (
 	set WIN64=1
 ) else (
 	set WIN64=0
 )
-"%ProgramFiles(x86)%\NSIS\makensis.exe" /INPUTCHARSET UTF8 /DVIMRT=..\runtime /DGETTEXT=%DEPENDENCIES% /DWIN64=%WIN64% /DINCLUDE_LIBGCC=%INCLUDE_LIBGCC% /DPATCHLEVEL=%PATCHLEVEL% gvim.nsi "/XOutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe"
+nmake.exe -lf Make_mvc.mak "X=OutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe" ^
+ "WIN64=%WIN64%" "VIMRT=..\runtime" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
+ "GETTEXT=%DEPENDENCIES%" "SRC=%TEMP%"
 popd
 
 :: Create zipfile for signing with signpath.io
