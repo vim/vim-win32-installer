@@ -51,10 +51,10 @@ rem set "PYTHON_64_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/python
 set "PYTHON_32_DIR=C:\python%PYTHON_VER%"
 set "PYTHON_64_DIR=C:\python%PYTHON_VER%-x64"
 SetLocal EnableDelayedExpansion
-set "PYTHON_URL=!PYTHON_%BIT%_URL!"
+rem set "PYTHON_URL=!PYTHON_%BIT%_URL!"
 set "PYTHON_DIR=!PYTHON_%BIT%_DIR!"
 EndLocal & (
-  set "PYTHON_URL=%PYTHON_URL%"
+  rem set "PYTHON_URL=%PYTHON_URL%"
   set "PYTHON_DIR=%PYTHON_DIR%"
 )
 
