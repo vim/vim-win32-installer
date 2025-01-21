@@ -11,7 +11,7 @@ body:
 
         If you want to report an issue of Vim itself, please go to the [main repository](https://github.com/vim/vim/issues/new/choose).
         If you want ask a user question about Vim itself, please go to the [vim_use mailinglist](https://groups.google.com/g/vim_use) or use [vi.stackexchange.com](https://vi.stackexchange.com/).
-        If you want to report an issue about anti-virus/malware reports, please check the [wiki](https://github.com/vim/vim-win32-installer/wiki#the-installer-contains-a-virustrojanermalware-what-should-i-do) first and report to your anti-virus vendor.
+        **If you want to report an issue about anti-virus/malware reports, please check the [wiki](https://github.com/vim/vim-win32-installer/wiki#the-installer-contains-a-virustrojanermalware-what-should-i-do) first and report to your anti-virus vendor**.
   - type: textarea
     attributes:
       label: Steps to reproduce
