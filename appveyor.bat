@@ -299,10 +299,10 @@ call :downloadfile "%LIBSODIUM_URL%" downloads\libsodium.zip
 7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
 if /I "%ARCH%"=="x64" (
   mklink /H vim\src\libsodium.dll ^
-  %SODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll
+    %SODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll
 ) else (
   mklink /H vim\src\libsodium.dll ^
-  %SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll
+    %SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll
 )
 
 @rem Show PATH for debugging
@@ -345,7 +345,7 @@ nmake.exe -lf Make_mvc.mak @auto\nmake\vimdll-huge.cfg || exit 1
 pushd po
 
 nmake.exe -lf Make_mvc.mak "GETTEXT_PATH=%DEPENDENCIES%\gettext%BIT%" ^
- "VIMRUNTIME=..\..\runtime" install-all || exit 1
+  "VIMRUNTIME=..\..\runtime" install-all || exit 1
 
 popd
 
@@ -372,14 +372,14 @@ cd %APPVEYOR_BUILD_FOLDER%
 
 @rem Check if we need to copy libgcc_s_sjlj-1.dll.
 "%VCToolsInstallDir%bin\HostX86\x86\dumpbin.exe" ^
-/DEPENDENTS %DEPENDENCIES%\gettext32\libintl-8.dll | ^
-findstr /LC:"libgcc_s_sjlj-1.dll" && set "INCLUDE_LIBGCC=1" || set "INCLUDE_LIBGCC=0"
+  /DEPENDENTS %DEPENDENCIES%\gettext32\libintl-8.dll | findstr ^
+  /LC:"libgcc_s_sjlj-1.dll" && set "INCLUDE_LIBGCC=1" || set "INCLUDE_LIBGCC=0"
 
 mkdir vim\runtime\GvimExt64
 mkdir vim\runtime\GvimExt32
 
 @rem Build both 64- and 32-bit versions of gvimext.dll for the installer
-start "" /W cmd /C "%VCVARSALL% x64 && cd vim\src\GvimExt && nmake.exe -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+start "" /W cmd /C "%VCVARSALL% x64 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type vim\src\gvimext.log
 mklink /H vim\runtime\GvimExt64\gvimext.dll vim\src\GvimExt\gvimext.dll
 mklink /H vim\runtime\GvimExt64\README.txt vim\src\GvimExt\README.txt
@@ -387,7 +387,7 @@ mklink /H vim\runtime\GvimExt64\gvimext.inf vim\src\GvimExt\gvimext.inf
 mklink /H vim\runtime\GvimExt64\GvimExt.reg vim\src\GvimExt\GvimExt.reg
 ren vim\src\GvimExt\gvimext.dll gvimext64.dll
 
-start "" /W cmd /C "%VCVARSALL% x86 && cd vim\src\GvimExt && nmake.exe -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+start "" /W cmd /C "%VCVARSALL% x86 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type vim\src\gvimext.log
 mklink /H vim\runtime\GvimExt32\gvimext.dll vim\src\GvimExt\gvimext.dll
 mklink /H vim\runtime\GvimExt32\README.txt vim\src\GvimExt\README.txt
@@ -412,21 +412,21 @@ mklink /H vim\runtime\libiconv-2.dll %DEPENDENCIES%\gettext%BIT%\libiconv-2.dll
 mklink /H vim\runtime\libintl-8.dll %DEPENDENCIES%\gettext%BIT%\libintl-8.dll
 if "%INCLUDE_LIBGCC%-%BIT%"=="1-32" (
   mklink /H vim\runtime\libgcc_s_sjlj-1.dll ^
-  %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
+    %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
 )
 
 mklink /H vim\runtime\GvimExt64\libiconv-2.dll ^
-%DEPENDENCIES%\gettext64\libiconv-2.dll
+  %DEPENDENCIES%\gettext64\libiconv-2.dll
 mklink /H vim\runtime\GvimExt64\libintl-8.dll ^
-%DEPENDENCIES%\gettext64\libintl-8.dll
+  %DEPENDENCIES%\gettext64\libintl-8.dll
 
 mklink /H vim\runtime\GvimExt32\libiconv-2.dll ^
-%DEPENDENCIES%\gettext32\libiconv-2.dll
+  %DEPENDENCIES%\gettext32\libiconv-2.dll
 mklink /H vim\runtime\GvimExt32\libintl-8.dll ^
-%DEPENDENCIES%\gettext32\libintl-8.dll
+  %DEPENDENCIES%\gettext32\libintl-8.dll
 if "%INCLUDE_LIBGCC%"=="1" (
   mklink /H vim\runtime\GvimExt32\libgcc_s_sjlj-1.dll ^
-  %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
+    %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
 )
 
 mklink /H vim\runtime\libsodium.dll vim\src\libsodium.dll
@@ -458,8 +458,9 @@ if /I "%ARCH%"=="x64" (
 )
 
 nmake.exe -lf Make_mvc.mak "X=OutFile ..\..\gvim_%VER_NUM%_%ARCH%.exe" ^
- "WIN64=%WIN64%" "VIMSRC=..\runtime" "VIMRT=..\runtime" "VIMTOOLS=..\runtime" ^
- "GETTEXT=%DEPENDENCIES%" "SRC=..\runtime" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" || exit 1
+  "GETTEXT=%DEPENDENCIES%" "VIMSRC=..\runtime" "VIMRT=..\runtime" ^
+  "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" "SRC=..\runtime" "WIN64=%WIN64%" ^
+  "VIMTOOLS=..\runtime" || exit 1
 
 popd
 
@@ -502,14 +503,14 @@ call :get_release_id
 
 @rem Turn off the draft status.
 curl -# -X PATCH -H "Authorization: token %auth_token%" ^
- -H "Accept: application/vnd.github.v3+json" ^
- "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%" ^
- -d "{\"draft\": false}"
+  -H "Accept: application/vnd.github.v3+json" ^
+  "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%" ^
+  -d "{\"draft\": false}"
 goto :eof
 
 
 :onfailure_x64
-goto:eof
+goto :eof
 :onfailure_x86
 :: ----------------------------------------------------------------------
 @rem Delete the release when x86 is failed.
@@ -520,8 +521,8 @@ call :get_release_id
 
 @rem Delete the release.
 curl -# -X DELETE -H "Authorization: token %auth_token%" ^
- -H "Accept: application/vnd.github.v3+json" ^
- "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%"
+  -H "Accept: application/vnd.github.v3+json" ^
+  "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%"
 goto :eof
 
 
@@ -533,8 +534,8 @@ set "PS=powershell.exe"
 set "PSFLAGS=-NoLogo -NoProfile -Command"
 
 curl -# -H "Authorization: token %auth_token%" ^
- -H "Accept: application/vnd.github.v3+json" ^
- "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
+  -H "Accept: application/vnd.github.v3+json" ^
+  "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
 1> nul %PS% %PSFLAGS% ((Get-Content .\releases.json -Raw ^| ^
   ConvertFrom-Json) ^| Where-Object name -EQ '%TAG_NAME%').id ^| ^
   New-Item .\release_id.txt -Force"
@@ -552,7 +553,7 @@ curl -# -f -L %~1 -o %2 && exit /B
 
 if ERRORLEVEL 1 (
   rem Retry once.
-curl -f -L %~1 -o %2 || exit 1
+  curl -f -L %~1 -o %2 || exit 1
 )
 @goto :eof
 
