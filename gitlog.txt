@@ -1,1 +1,1 @@
-* [9.1.1048](https://github.com/vim/vim/commit/df098fedbc2c481e91ea7e6207dab90359a92cc3): crash after scrolling and pasting in silent Ex mode\n* [9.1.1047](https://github.com/vim/vim/commit/613d0bc128a86870ed978f08981becc619f95d58): Makefiles uses non-portable syntax
+* [9.1.1050](https://github.com/vim/vim/commit/efc41a5958bf25b352e0916af5f57dafbbb44f17): too many strlen() calls in os\_unix.c\n* [9.1.1049](https://github.com/vim/vim/commit/f400a0cc41113eb75516bdd7f38aeaa15208ba2c): insert-completed items are always sorted
