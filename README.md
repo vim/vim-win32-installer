@@ -3,7 +3,7 @@
 [![Latest GitHub Release](https://img.shields.io/github/v/release/vim/vim-win32-installer)](https://github.com/vim/vim-win32-installer/releases/latest)
 
 
-# Vim Installer and Archives (Win32 and Win64)
+# Vim Installer and Archives (Win32, Win64, ARM64)
 
 This is a project for building Nightly and Stable Vim Windows build snapshots
 automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
@@ -16,6 +16,9 @@ or 64bit versions (`_x64`). To install it, extract the archive and update your
 PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
+
+## ARM64
+ARM64 builds is currently being worked on. Will occassionally be provided until it is fully automatic.
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
