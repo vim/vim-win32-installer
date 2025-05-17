@@ -535,6 +535,19 @@ type release_id.txt
 for /F "delims=" %%I in (release_id.txt) do set "REL_ID=%%I"
 goto :eof
 
+:clean_x64
+:clean_x86
+:: ----------------------------------------------------------------------
+@rem clean up artifacts
+pushd %DEPENDENCIES%
+rd /s /q *
+popd
+pushd vim
+git clean -xdf
+git reset --hard
+popd
+git reset --hard
+goto :eof
 
 :downloadfile
 :: ----------------------------------------------------------------------
