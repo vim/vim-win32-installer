@@ -212,7 +212,7 @@ goto :skiptcl
 rem call :downloadfile "%TCL_URL%" downloads\tcl-%BIT%.zip
 rem 7z.exe x downloads\tcl-%BIT%.zip -o%DEPENDENCIES%\ > nul || exit 1
 rem move /Y %DEPENDENCIES%\tcltk-%TCL_VER_LONG%.10-barebones-%ARCH% %TCL_DIR%
-rem mklink /H vim\src\%TCL_DLL% %TCL_DIR%\bin\%TCL_DLL%
+rem call :mklink "vim\src\%TCL_DLL%" "%TCL_DIR%\bin\%TCL_DLL%"
 :skiptcl
 
 @rem Python2
@@ -277,11 +277,11 @@ call :downloadfile "%GETTEXT_64_URL%" downloads\gettext64.zip
 call :downloadfile "%WINPTY_URL%" downloads\winpty.zip
 7z.exe x -y downloads\winpty.zip -o%WINPTY_DIR% > nul || exit 1
 if /I "%ARCH%"=="x64" (
-  mklink /H vim\src\winpty64.dll %WINPTY_DIR%\x64\bin\winpty.dll
-  mklink /H vim\src\winpty-agent.exe %WINPTY_DIR%\x64\bin\winpty-agent.exe
+  call :mklink "vim\src\winpty64.dll" "%WINPTY_DIR%\x64\bin\winpty.dll"
+  call :mklink "vim\src\winpty-agent.exe" "%WINPTY_DIR%\x64\bin\winpty-agent.exe"
 ) else (
-  mklink /H vim\src\winpty32.dll %WINPTY_DIR%\ia32\bin\winpty.dll
-  mklink /H vim\src\winpty-agent.exe %WINPTY_DIR%\ia32\bin\winpty-agent.exe
+  call :mklink "vim\src\winpty32.dll" "%WINPTY_DIR%\ia32\bin\winpty.dll"
+  call :mklink "vim\src\winpty-agent.exe" "%WINPTY_DIR%\ia32\bin\winpty-agent.exe"
 )
 
 @rem Install UPX
@@ -294,18 +294,15 @@ rem 7z.exe e -y downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
 call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
 7z.exe x -y downloads\shellexecasuser.zip ^
   -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
-mklink /H "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" ^
-  %DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll
+call :mklink "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll"
 
 @rem Install Libsodium
 call :downloadfile "%LIBSODIUM_URL%" downloads\libsodium.zip
 7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
 if /I "%ARCH%"=="x64" (
-  mklink /H vim\src\libsodium.dll ^
-    %SODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll
+  call :mklink "vim\src\libsodium.dll" "%SODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll"
 ) else (
-  mklink /H vim\src\libsodium.dll ^
-    %SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll
+  call :mklink "vim\src\libsodium.dll" "%SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll"
 )
 
 @echo off
@@ -373,58 +370,52 @@ mkdir vim\runtime\GvimExt32
 @rem Build both 64- and 32-bit versions of gvimext.dll for the installer
 start "" /W cmd /C "%VCVARSALL% x64 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
 type vim\src\gvimext.log
-mklink /H vim\runtime\GvimExt64\gvimext.dll vim\src\GvimExt\gvimext.dll
-mklink /H vim\runtime\GvimExt64\README.txt vim\src\GvimExt\README.txt
-mklink /H vim\runtime\GvimExt64\gvimext.inf vim\src\GvimExt\gvimext.inf
-mklink /H vim\runtime\GvimExt64\GvimExt.reg vim\src\GvimExt\GvimExt.reg
+call :mklink "vim\runtime\GvimExt64\gvimext.dll" "vim\src\GvimExt\gvimext.dll"
+call :mklink "vim\runtime\GvimExt64\README.txt" "vim\src\GvimExt\README.txt"
+call :mklink "vim\runtime\GvimExt64\gvimext.inf" "vim\src\GvimExt\gvimext.inf"
+call :mklink "vim\runtime\GvimExt64\GvimExt.reg" "vim\src\GvimExt\GvimExt.reg"
 ren vim\src\GvimExt\gvimext.dll gvimext64.dll
 
 start "" /W cmd /C "%VCVARSALL% x86 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
 type vim\src\gvimext.log
-mklink /H vim\runtime\GvimExt32\gvimext.dll vim\src\GvimExt\gvimext.dll
-mklink /H vim\runtime\GvimExt32\README.txt vim\src\GvimExt\README.txt
-mklink /H vim\runtime\GvimExt32\gvimext.inf vim\src\GvimExt\gvimext.inf
-mklink /H vim\runtime\GvimExt32\GvimExt.reg vim\src\GvimExt\GvimExt.reg
+call :mklink "vim\runtime\GvimExt32\gvimext.dll" "vim\src\GvimExt\gvimext.dll"
+call :mklink "vim\runtime\GvimExt32\README.txt" "vim\src\GvimExt\README.txt"
+call :mklink "vim\runtime\GvimExt32\gvimext.inf" "vim\src\GvimExt\gvimext.inf"
+call :mklink "vim\runtime\GvimExt32\GvimExt.reg" "vim\src\GvimExt\GvimExt.reg"
 
-mklink /H vim\runtime\README.txt vim\README.txt
-mklink /H vim\runtime\LICENSE.txt vim\LICENSE
-mklink /H vim\runtime\uninstall.txt vim\uninstall.txt
-mklink /H vim\runtime\vimtutor.bat vim\vimtutor.bat
-mklink /H vim\runtime\vim.ico vim\src\vim.ico
-mklink /H vim\runtime\gvim.exe vim\src\gvim.exe
-mklink /H vim\runtime\install.exe vim\src\install.exe
-mklink /H vim\runtime\tee.exe vim\src\tee\tee.exe
-mklink /H vim\runtime\vim%BIT%.dll vim\src\vim%BIT%.dll
-mklink /H vim\runtime\vim.exe vim\src\vim.exe
-mklink /H vim\runtime\vimrun.exe vim\src\vimrun.exe
-mklink /H vim\runtime\uninstall.exe vim\src\uninstall.exe
-mklink /H vim\runtime\xxd.exe vim\src\xxd\xxd.exe
+call :mklink "vim\runtime\README.txt" "vim\README.txt"
+call :mklink "vim\runtime\LICENSE.txt" "vim\LICENSE"
+call :mklink "vim\runtime\uninstall.txt" "vim\uninstall.txt"
+call :mklink "vim\runtime\vimtutor.bat" "vim\vimtutor.bat"
+call :mklink "vim\runtime\vim.ico" "vim\src\vim.ico"
+call :mklink "vim\runtime\gvim.exe" "vim\src\gvim.exe"
+call :mklink "vim\runtime\install.exe" "vim\src\install.exe"
+call :mklink "vim\runtime\tee.exe" "vim\src\tee\tee.exe"
+call :mklink "vim\runtime\vim%BIT%.dll" "vim\src\vim%BIT%.dll"
+call :mklink "vim\runtime\vim.exe" "vim\src\vim.exe"
+call :mklink "vim\runtime\vimrun.exe" "vim\src\vimrun.exe"
+call :mklink "vim\runtime\uninstall.exe" "vim\src\uninstall.exe"
+call :mklink "vim\runtime\xxd.exe" "vim\src\xxd\xxd.exe"
 
-mklink /H vim\runtime\libiconv-2.dll %DEPENDENCIES%\gettext%BIT%\libiconv-2.dll
-mklink /H vim\runtime\libintl-8.dll %DEPENDENCIES%\gettext%BIT%\libintl-8.dll
+call :mklink "vim\runtime\libiconv-2.dll" "%DEPENDENCIES%\gettext%BIT%\libiconv-2.dll"
+call :mklink "vim\runtime\libintl-8.dll" "%DEPENDENCIES%\gettext%BIT%\libintl-8.dll"
 if "%INCLUDE_LIBGCC%-%BIT%"=="1-32" (
-  mklink /H vim\runtime\libgcc_s_sjlj-1.dll ^
-    %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
+ call :mklink "vim\runtime\libgcc_s_sjlj-1.dll" "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
 )
 
-mklink /H vim\runtime\GvimExt64\libiconv-2.dll ^
-  %DEPENDENCIES%\gettext64\libiconv-2.dll
-mklink /H vim\runtime\GvimExt64\libintl-8.dll ^
-  %DEPENDENCIES%\gettext64\libintl-8.dll
+call :mklink "vim\runtime\GvimExt64\libiconv-2.dll" "%DEPENDENCIES%\gettext64\libiconv-2.dll"
+call :mklink "vim\runtime\GvimExt64\libintl-8.dll" "%DEPENDENCIES%\gettext64\libintl-8.dll"
 
-mklink /H vim\runtime\GvimExt32\libiconv-2.dll ^
-  %DEPENDENCIES%\gettext32\libiconv-2.dll
-mklink /H vim\runtime\GvimExt32\libintl-8.dll ^
-  %DEPENDENCIES%\gettext32\libintl-8.dll
+call :mklink "vim\runtime\GvimExt32\libiconv-2.dll" "%DEPENDENCIES%\gettext32\libiconv-2.dll"
+call :mklink "vim\runtime\GvimExt32\libintl-8.dll" "%DEPENDENCIES%\gettext32\libintl-8.dll"
 if "%INCLUDE_LIBGCC%"=="1" (
-  mklink /H vim\runtime\GvimExt32\libgcc_s_sjlj-1.dll ^
-    %DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll
+  call :mklink "vim\runtime\GvimExt32\libgcc_s_sjlj-1.dll" "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
 )
 
-mklink /H vim\runtime\libsodium.dll vim\src\libsodium.dll
-mklink /H vim\runtime\diff.exe .\diff.exe
-mklink /H vim\runtime\winpty%BIT%.dll vim\src\winpty%BIT%.dll
-mklink /H vim\runtime\winpty-agent.exe vim\src\winpty-agent.exe
+call :mklink "vim\runtime\libsodium.dll" "vim\src\libsodium.dll"
+call :mklink "vim\runtime\diff.exe" ".\diff.exe"
+call :mklink "vim\runtime\winpty%BIT%.dll" "vim\src\winpty%BIT%.dll"
+call :mklink "vim\runtime\winpty-agent.exe" "vim\src\winpty-agent.exe"
 
 set "VIM_DIR=vim%MAJOR%%MINOR%"
 ren vim\runtime %VIM_DIR%
@@ -561,6 +552,11 @@ if ERRORLEVEL 1 (
 )
 @goto :eof
 
+:mklink
+@rem call :mklink "linkname" "target"
+if exist %1 exit /B
+mklink /H %1 %2
+@goto :eof
 EndLocal
 
 @rem vim:ft=dosbatch:ts=8:sts=2:sw=2:noet:
