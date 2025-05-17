@@ -261,6 +261,9 @@ call :downloadfile "%RACKET_URL%" downloads\racket-%BIT%.tgz
 move %DEPENDENCIES%\racket %RACKET_DIR%
 type NUL > %RACKET_DIR%\include\bc_suffix.h
 
+@rem Install additional packages for Racket
+raco.exe pkg install -i --auto r5rs-lib
+
 @rem Install libintl.dll and iconv.dll
 call :downloadfile "%GETTEXT_32_URL%" downloads\gettext32.zip
 7z.exe e -y downloads\gettext32.zip ^
@@ -305,9 +308,6 @@ if /I "%ARCH%"=="x64" (
 
 @rem Show PATH for debugging
 @ echo:%Path:;=&echo:%
-
-@rem Install additional packages for Racket
-raco.exe pkg install -i --auto r5rs-lib
 
 @echo off
 goto :eof
