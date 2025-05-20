@@ -5,7 +5,10 @@
 
 SetLocal
 
-cd %APPVEYOR_BUILD_FOLDER%
+if defined APPVEYOR_BUILD_FOLDER (
+  cd %APPVEYOR_BUILD_FOLDER%
+  set "DEPENDENCIES=%APPVEYOR_BUILD_FOLDER%\dependencies"
+)
 
 if not defined APPVEYOR_REPO_TAG_NAME (
   for /F %%I in ('git describe --tags --always --abbrev^=0') do set "TAG_NAME=%%I"
@@ -27,8 +30,6 @@ if /I "%ARCH%"=="x64" (
 ) else (
   set "BIT=32"
 )
-set "DEPENDENCIES=%APPVEYOR_BUILD_FOLDER%\dependencies"
-
 :: -------- setting variables ----------------------------------------------
 :: Download URLs, local dirs and versions
 
@@ -145,7 +146,6 @@ set "CYGWIN_DIR=c:\cygwin64"
 :: ----------------------------------------------------------------------
 
 @rem Update PATH
-
 path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%LUA_DIR%;%RUBY_DIR%\bin;^
 %RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib;%TCL_DIR%;^
 %TCL_LIBRARY%;%Path%
@@ -165,7 +165,6 @@ exit 1
 :install_x64
 :: ----------- installing dependencies ------------------------------------------
 echo TAG_NAME: %TAG_NAME%
-@echo on
 
 @rem Get Vim source code
 git submodule update --init --depth 20
@@ -251,7 +250,6 @@ call :downloadfile "%RUBY_SRC_URL%" downloads\ruby_src.zip
 move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
-@echo on
 nmake.exe -l .config.h.time || exit 1
 xcopy /S /Y .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
@@ -262,6 +260,9 @@ call :downloadfile "%RACKET_URL%" downloads\racket-%BIT%.tgz
   -o%DEPENDENCIES%\
 move %DEPENDENCIES%\racket %RACKET_DIR%
 type NUL > %RACKET_DIR%\include\bc_suffix.h
+
+@rem Install additional packages for Racket
+raco.exe pkg install -i --auto r5rs-lib
 
 @rem Install libintl.dll and iconv.dll
 call :downloadfile "%GETTEXT_32_URL%" downloads\gettext32.zip
@@ -307,20 +308,12 @@ if /I "%ARCH%"=="x64" (
     %SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll
 )
 
-@rem Show PATH for debugging
-@ echo:%Path:;=&echo:%
-
-@rem Install additional packages for Racket
-raco.exe pkg install -i --auto r5rs-lib
-
 @echo off
 goto :eof
-
 
 :build_x86
 :build_x64
 :: -------- building the program -------------------------------------------
-@echo on
 cd vim\src
 
 @ if not exist .\auto\nmake mkdir .\auto\nmake
@@ -362,15 +355,12 @@ type ver.txt
 start "" /W .\gvim.exe -u NONE -S ..\..\if_ver.vim -c quit
 type if_ver.txt
 
-@echo off
 goto :eof
 
 :package_x86
 :package_x64
 :: -------- creating packages ----------------------------------------------
-
-@echo on
-cd %APPVEYOR_BUILD_FOLDER%
+if defined APPVEYOR_BUILD_FOLDER ( cd %APPVEYOR_BUILD_FOLDER% )
 
 @rem Check if we need to copy libgcc_s_sjlj-1.dll.
 "%VCToolsInstallDir%bin\HostX86\x86\dumpbin.exe" ^
@@ -480,7 +470,6 @@ goto :eof
 :test_x86
 :test_x64
 :: -------- testing the build ----------------------------------------------
-@echo on
 
 set "PLTCOLLECTS=%RACKET_DIR%\collects"
 set "PLTCONFIGDIR=%RACKET_DIR%\etc"
