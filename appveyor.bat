@@ -49,15 +49,15 @@ set "PERL_DIR=%DEPENDENCIES%\perl%PERL_VER%-%ARCH%"
 set "PYTHON_VER=27"
 set "PYTHON_RELEASE=2.7.18"
 @rem To test on a local machine if Python 2.7 is not installed
-rem set "PYTHON_32_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/python-%PYTHON_RELEASE%.msi"
-rem set "PYTHON_64_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/python-%PYTHON_RELEASE%.amd64.msi"
+set "PYTHON_32_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/python-%PYTHON_RELEASE%.msi"
+set "PYTHON_64_URL=https://www.python.org/ftp/python/%PYTHON_RELEASE%/python-%PYTHON_RELEASE%.amd64.msi"
 set "PYTHON_32_DIR=C:\python%PYTHON_VER%"
 set "PYTHON_64_DIR=C:\python%PYTHON_VER%-x64"
 SetLocal EnableDelayedExpansion
-rem set "PYTHON_URL=!PYTHON_%BIT%_URL!"
+set "PYTHON_URL=!PYTHON_%BIT%_URL!"
 set "PYTHON_DIR=!PYTHON_%BIT%_DIR!"
 EndLocal & (
-  rem set "PYTHON_URL=%PYTHON_URL%"
+  set "PYTHON_URL=%PYTHON_URL%"
   set "PYTHON_DIR=%PYTHON_DIR%"
 )
 
@@ -215,12 +215,12 @@ rem move /Y %DEPENDENCIES%\tcltk-%TCL_VER_LONG%.10-barebones-%ARCH% %TCL_DIR%
 rem mklink /H vim\src\%TCL_DLL% %TCL_DIR%\bin\%TCL_DLL%
 :skiptcl
 
-goto :skippython2
 @rem Python2
-@rem To test on a local machine if Python 2.7 is not installed
-rem call :downloadfile "%PYTHON_URL%" downloads\python-%BIT%.msi
-rem start "" /W downloads\python-%BIT%.msi ^
-rem   /qn TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature,PrependPath
+IF exist %PYTHON_DIR% goto :skippython2
+@rem only install if it is not installed
+call :downloadfile "%PYTHON_URL%" downloads\python-%BIT%.msi
+start "" /W downloads\python-%BIT%.msi ^
+  /qn TARGETDIR=%PYTHON_DIR% ADDLOCAL=DefaultFeature,PrependPath
 :skippython2
 
 @rem Python3
