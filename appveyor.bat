@@ -8,7 +8,7 @@ SetLocal
 cd %APPVEYOR_BUILD_FOLDER%
 
 if not defined APPVEYOR_REPO_TAG_NAME (
-  for /F %%I in ('git describe --tags --abbrev^=0') do set "TAG_NAME=%%I"
+  for /F %%I in ('git describe --tags --always --abbrev^=0') do set "TAG_NAME=%%I"
 ) else (
   set "TAG_NAME=%APPVEYOR_REPO_TAG_NAME%"
 )
