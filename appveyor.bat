@@ -1,5 +1,7 @@
 @echo off
-:: Batch file for building/testing Vim on AppVeyor
+:: This batch file was supposed to be used to build Vim for Windows on Appveyor.
+:: However, now it will also be used for building an ARM64 version on Github CI,
+:: so the name is no longer hundert percent correct.  Oh well....
 
 SetLocal
 
