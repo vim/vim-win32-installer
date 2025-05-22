@@ -3,7 +3,7 @@
 [![Latest GitHub Release](https://img.shields.io/github/v/release/vim/vim-win32-installer)](https://github.com/vim/vim-win32-installer/releases/latest)
 
 
-# Vim Installer and Archives (Win32, Win64, ARM64)
+# Vim Installer and Vim Zip-Archives (Win32, Win64, ARM64)
 
 This is a project for building Nightly and Stable Vim Windows build snapshots
 automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
@@ -41,7 +41,10 @@ You can find those interperters here:
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.
 
-For Python 3, Vim is compiled against Python 3.12 using [Stable ABI](https://docs.python.org/3.12/c-api/stable.html), and this allows you to use Python 3.8 or any later version. See also `:help python3-stable-abi`.
+For Python 3, Vim is compiled against Python 3.12 using [Stable
+ABI](https://docs.python.org/3.12/c-api/stable.html), and this allows you to
+use Python 3.8 or any later version. See also
+[`:help python3-stable-abi`](https://vimhelp.org/if_pyth.txt.html#python3-stable-abi)
 
 Additionally the binaries include the new terminal feature for Vim and
 therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
@@ -76,7 +79,11 @@ occasionaly. If there haven't been any signed
 releases for a long time, feel free to request a new one by creating an
 [issue](https://github.com/vim/vim-win32-installer/issues) here.
 
-Thanks to [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=vim) for providing a free code signing service and to the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=vim) for a free code signing certificate to sign the builds.
+Thanks to
+[SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=vim)
+for providing a free code signing service and to the [SignPath
+Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=vim)
+for a free code signing certificate to sign the builds.
 
 ## Winget 
 The nightly builds will be automatically uploaded and submitted to the [winget
