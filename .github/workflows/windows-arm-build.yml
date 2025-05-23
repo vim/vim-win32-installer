@@ -1,8 +1,8 @@
-name: Build Vim for Windows ARM
+name: Build Vim for Windows ARM (on Release)
 
 on:
-  push:
-    tags:
+  release:
+    types: [published]
 
 permissions:
   id-token: write # needed for attestion
