@@ -129,6 +129,7 @@ jobs:
           done
 
       - name: Post Summary
+        shell: bash
         run: |
           echo "## ✅ Windows ARM Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
