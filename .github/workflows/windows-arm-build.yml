@@ -94,6 +94,22 @@ jobs:
           subject-name: arm64-windows-zip-archive.zip
           subject-digest: sha256:${{ steps.upload-zip.outputs.artifact-digest }}
 
+      - name: upload Zip File for Signpath
+        id:   upload-unsigned-zip
+        uses: actions/upload-artifact@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: arm64-windows-unsigned-zip-archive.zip
+          path: |
+            unsigned*.zip
+
+      - name: Attest Zip File for Signpath
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: arm64-windows-zip-archive.zip
+          subject-digest: sha256:${{ steps.upload-unsigned-zip.outputs.artifact-digest }}
+
       # the release will be created by the appveyor CI, so we need to wait
       # until it exists before trying to push our release artifacts
       - name: Wait for Github Release
@@ -127,6 +143,15 @@ jobs:
           for i in gvim*.exe gvim*.zip; do
             gh release upload "$GH_TAG_NAME" "$i" --clobber
           done
+
+      - name: SignPath code signing
+        uses: SignPath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
+          project-slug: vim-win32-installer
+          signing-policy-slug: release-signing
+          github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
 
       - name: Post Summary
         shell: bash

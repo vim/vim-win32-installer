@@ -102,10 +102,14 @@ deploy:
         Signed 32-bit installer (*If you don't know what to use, use this one*)
       * [![gvim_$(VIMVER)_x64_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.exe)
         Signed 64-bit installer
+      * [![gvim_$(VIMVER)_arm64_signed.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_arm64_signed.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_arm64_signed.exe)
+        Signed ARM64-bit installer
       * [![gvim_$(VIMVER)_x86_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86_signed.zip)
         Signed 32-bit zip archive
       * [![gvim_$(VIMVER)_x64_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x64_signed.zip)
         Signed 64-bit zip archive
+      * [![gvim_$(VIMVER)_arm64_signed.zip](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_arm64_signed.zip.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_arm64_signed.zip)
+        Signed ARM64-bit zip archive
       -->
       #### :unlock: Unsigned Files:
       * [![gvim_$(VIMVER)_x86.exe](https://img.shields.io/github/downloads/$(APPVEYOR_REPO_NAME)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe.svg?label=downloads&logo=vim)]($(URL)/$(APPVEYOR_REPO_TAG_NAME)/gvim_$(VIMVER)_x86.exe)
