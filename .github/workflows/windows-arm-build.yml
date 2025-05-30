@@ -100,9 +100,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: arm64-windows-unsigned-zip-archive.zip
+          name: arm64-windows-unsigned-archive
           path: |
-            unsigned*.zip
+            gvim*arm64.*
 
       - name: Attest Zip File for Signpath
         uses: actions/attest-build-provenance@v2
