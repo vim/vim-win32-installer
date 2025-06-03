@@ -9,5 +9,5 @@ jobs:
       - uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: vim.vim.nightly
-          installers-regex: 'gvim.*(x64|x86).exe$'
+          installers-regex: 'gvim.*(x64|x86|arm64).exe$'
           token: ${{ secrets.WINGET_TOKEN }}
