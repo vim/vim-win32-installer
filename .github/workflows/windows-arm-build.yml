@@ -152,6 +152,7 @@ jobs:
           project-slug: vim-win32-installer
           signing-policy-slug: release-signing
           github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
+          wait-for-completion: false
 
       - name: Post Summary
         shell: bash
