@@ -1,7 +1,11 @@
 name: Publish to WinGet Stable
+
+# Wait for the Workflow Publish to Winget to be completed
 on:
-  release:
-    types: [released]
+  workflow_run:
+    workflows: ["Publish to WinGet"]
+    types: [completed]
+
 jobs:
   check-update-job:
     runs-on: ubuntu-latest
