@@ -1,7 +1,11 @@
 name: Publish to WinGet
+
+# Only run after the Arm Artifacts have been uploaded
 on:
-  release:
-    types: [released]
+  workflow_run:
+    workflows: ["Build Vim for Windows ARM (on Release)"]
+    types: [completed]
+
 jobs:
   publish:
     runs-on: ubuntu-latest
