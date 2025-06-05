@@ -12,20 +12,27 @@ jobs:
 
     outputs:
       needs_update: ${{ steps.check-updates.outputs.result }}
+      version: ${{ steps.get-version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           path: repo
+          fetch-depth: 0  # Needed to fetch all tags
+
+      - name: Get latest tag
+        id: get-version
+        run: |
+          cd repo
+          git fetch --tags
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "Latest tag: $latest_tag"
+          echo "version=${latest_tag#v}" >> "$GITHUB_OUTPUT"
 
       - name: Check updates
         id: check-updates
         run: |
           cd repo
-          #  only for debugging
-          #
-          #  bash -x scripts/get_last_windows_release.sh "$URL" || true
-          #  bash -x scripts/do_next_stable_release.sh || true
           echo "result=$(scripts/do_next_stable_release.sh $URL)" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,3 +48,4 @@ jobs:
           identifier: vim.vim
           installers-regex: 'gvim.*(x64|x86|arm64).exe$'
           token: ${{ secrets.WINGET_TOKEN }}
+          version: ${{ needs.check-update-job.outputs.version }}

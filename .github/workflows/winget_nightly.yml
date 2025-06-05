@@ -10,8 +10,23 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: vedantmgoyal9/winget-releaser@main
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed to fetch all tags
+
+      - name: Get latest tag
+        id: get-version
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "Latest tag: $latest_tag"
+          echo "version=${latest_tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Run winget-releaser
+        uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: vim.vim.nightly
           installers-regex: 'gvim.*(x64|x86|arm64).exe$'
+          version: ${{ steps.get-version.outputs.version }}
           token: ${{ secrets.WINGET_TOKEN }}
