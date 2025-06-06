@@ -18,13 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: repo
           fetch-depth: 0  # Needed to fetch all tags
 
       - name: Get latest tag
         id: get-version
         run: |
-          cd repo
           git fetch --tags
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Latest tag: $latest_tag"
@@ -34,7 +32,6 @@ jobs:
       - name: Check updates
         id: check-updates
         run: |
-          cd repo
           echo "result=$(scripts/do_next_stable_release.sh $URL)" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
