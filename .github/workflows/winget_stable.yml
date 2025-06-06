@@ -36,6 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: "https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/v/vim/vim"
+          REF_NAME: ${{ steps.get-version.outputs.tag }}
 
   publish-winget-stable:
     runs-on: ubuntu-latest
