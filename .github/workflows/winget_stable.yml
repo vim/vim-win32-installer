@@ -13,6 +13,7 @@ jobs:
     outputs:
       needs_update: ${{ steps.check-updates.outputs.result }}
       version: ${{ steps.get-version.outputs.version }}
+      tag: ${{ steps.get-version.outputs.tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +29,7 @@ jobs:
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Latest tag: $latest_tag"
           echo "version=${latest_tag#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=${latest_tag}" >> "$GITHUB_OUTPUT"
 
       - name: Check updates
         id: check-updates
@@ -49,3 +51,4 @@ jobs:
           installers-regex: 'gvim.*(x64|x86|arm64).exe$'
           token: ${{ secrets.WINGET_TOKEN }}
           version: ${{ needs.check-update-job.outputs.version }}
+          release-tag: ${{ needs.check-update-job.outputs.tag }}
