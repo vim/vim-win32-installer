@@ -22,6 +22,7 @@ jobs:
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Latest tag: $latest_tag"
           echo "version=${latest_tag#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=${latest_tag}" >> "$GITHUB_OUTPUT"
 
       - name: Run winget-releaser
         uses: vedantmgoyal9/winget-releaser@main
@@ -29,4 +30,5 @@ jobs:
           identifier: vim.vim.nightly
           installers-regex: 'gvim.*(x64|x86|arm64).exe$'
           version: ${{ steps.get-version.outputs.version }}
+          release-tag: ${{ steps.get-version.outputs.tag }}
           token: ${{ secrets.WINGET_TOKEN }}
