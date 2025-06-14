@@ -58,6 +58,12 @@ if git diff --exit-code > /dev/null; then
 	exit 0
 fi
 
+# Check if the latest tag already exists (e.g. only runtime file updates)
+if git rev-parse -q --verify "$vimver" >/dev/null; then
+  echo "No new Vim tag, exiting"
+  exit 0
+fi
+
 # Commit the change and push it
 # replace newline by \n
 echo "$vimlog_md" | sed -e ':a;N;$!ba;s/\n/\\n/g' > gitlog.txt
