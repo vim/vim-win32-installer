@@ -11,7 +11,9 @@ if defined APPVEYOR_BUILD_FOLDER (
 )
 
 if not defined APPVEYOR_REPO_TAG_NAME (
-  for /F %%I in ('git describe --tags --always --abbrev^=0') do set "TAG_NAME=%%I"
+  for /F %%I in ('git describe --tags --always --abbrev^=0') do (
+    set "TAG_NAME=%%I"
+  )
 ) else (
   set "TAG_NAME=%APPVEYOR_REPO_TAG_NAME%"
 )
@@ -111,7 +113,7 @@ set "RUBY_DIR=%DEPENDENCIES%\Ruby%RUBY_VER%-%ARCH%"
 @rem Tcl
 set "TCL_VER_LONG=8.6"
 set "TCL_VER=%TCL_VER_LONG:.=%"
-@rem See the “:install” section
+@rem See the ":install" section
 rem set "TCL_32_URL=https://sourceforge.net/projects/magicsplat/files/barebones-tcl/tcltk-%TCL_VER_LONG%.10-barebones-x86.zip/download"
 rem set "TCL_64_URL=https://sourceforge.net/projects/magicsplat/files/barebones-tcl/tcltk-%TCL_VER_LONG%.10-barebones-x64.zip/download"
 rem SetLocal EnableDelayedExpansion
@@ -133,23 +135,26 @@ set "WINPTY_DIR=%DEPENDENCIES%\winpty"
 set "WINPTY_VCPKG=%VCPKG_ROOT%\packages\winpty_arm64-windows"
 
 @rem UPX
-@rem set "UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip"
+rem set "UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip"
 
 @rem ShellExecAsUser
 set "SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip"
 
 @rem Libsodium
-set "LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/1.0.20-RELEASE/libsodium-1.0.20-msvc.zip"
-set "LIBSODIUM_SOURCE=https://github.com/jedisct1/libsodium/archive/refs/tags/1.0.20-RELEASE.zip"
-set "SODIUM_DIR=%DEPENDENCIES%\libsodium"
+set "LIBSODIUM_VER=1.0.20"
+set "LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/%LIBSODIUM_VER%-RELEASE/libsodium-%LIBSODIUM_VER%-msvc.zip"
+set "LIBSODIUM_SOURCE=https://github.com/jedisct1/libsodium/archive/refs/tags/%LIBSODIUM_VER%-RELEASE.zip"
+set "LIBSODIUM_DIR=%DEPENDENCIES%\libsodium"
 
 @rem Cygwin
-set "CYGWIN_URL=https://cygwin.com/setup-x86_64.exe"
-set "CYGWIN_DIR=c:\cygwin64"
+rem set "CYGWIN_URL=https://cygwin.com/setup-x86_64.exe"
+rem set "CYGWIN_DIR=c:\cygwin64"
 
 :: ----------------------------------------------------------------------
 
 @rem Update PATH
+@rem Do not add spaces before and after the '^' character, without indentation
+@rem on the new line.
 path %PYTHON_DIR%;%PYTHON3_DIR%;%PERL_DIR%\bin;%LUA_DIR%;%RUBY_DIR%\bin;^
 %RUBY_DIR%\bin\ruby_builtin_dlls;%RACKET_DIR%;%RACKET_DIR%\lib;%TCL_DIR%;^
 %TCL_LIBRARY%;%Path%
@@ -182,10 +187,11 @@ popd
 if not exist downloads mkdir downloads
 if not exist dependencies mkdir dependencies
 
-where vcpkg >nul 2>&1
-if %errorlevel% equ 0 goto :skipvcpkg
+@rem /Q Returns only the exit code, without displaying the list of matched
+@rem	files. (Quiet mode)
+where.exe /Q vcpkg && goto :skipvcpkg
 
-@rem Install vcpkg for ARM64
+@rem Install vcpkg for ARM64 if not installed
 if /I "%PLATFORM%" == "arm64" (
   if not exist %DEPENDENCIES%\vcpkg (
     pushd %DEPENDENCIES%
@@ -197,8 +203,8 @@ if /I "%PLATFORM%" == "arm64" (
 )
 :skipvcpkg
 
-goto :skipcygwin
 @rem It's not necessary right now
+goto :skipcygwin
 @rem Update cygwin and add dependencies
 rem if not exist %CYGWIN_DIR% mkdir %CYGWIN_DIR%
 rem call :downloadfile %CYGWIN_URL% %CYGWIN_DIR%\setup-x86_64.exe
@@ -217,8 +223,6 @@ call :downloadfile "%PERL_URL%" downloads\perl-%BIT%.zip
 7z.exe x -y downloads\perl-%BIT%.zip perl -o%DEPENDENCIES%\ > nul || exit 1
 move /Y %DEPENDENCIES%\perl %PERL_DIR%
 
-goto :skiptcl
-@rem Tcl
 @rem In VS2019 and VS2022 32-bit builds normally.
 @rem In VS2022 64-bit one generates an error:
 @rem "fatal error C1047: The object or library file
@@ -228,10 +232,12 @@ goto :skiptcl
 @rem It's possible, for example, to remove the “/GL” switch when building the
 @rem 64-bit one.
 @rem In general, it must be solved somehow.
+goto :skiptcl
+@rem Tcl
 rem call :downloadfile "%TCL_URL%" downloads\tcl-%BIT%.zip
 rem 7z.exe x downloads\tcl-%BIT%.zip -o%DEPENDENCIES%\ > nul || exit 1
 rem move /Y %DEPENDENCIES%\tcltk-%TCL_VER_LONG%.10-barebones-%ARCH% %TCL_DIR%
-rem call :mklink "vim\src\%TCL_DLL%" "%TCL_DIR%\bin\%TCL_DLL%"
+rem call :mkhlink "vim\src\%TCL_DLL%" "%TCL_DIR%\bin\%TCL_DLL%"
 :skiptcl
 
 @rem Python2
@@ -258,7 +264,8 @@ if /I "%PLATFORM%" == "arm64" goto :skipruby
 @rem Download RubyInstaller binary
 call :downloadfile "%RUBY_URL%" downloads\ruby-%BIT%.7z
 7z.exe x -y downloads\ruby-%BIT%.7z -o%DEPENDENCIES%\ > nul || exit 1
-move %DEPENDENCIES%\rubyinstaller-%RUBY_RELEASE%-%ARCH% %RUBY_DIR% > nul || exit 1
+move %DEPENDENCIES%\rubyinstaller-%RUBY_RELEASE%-%ARCH% ^
+  %RUBY_DIR% > nul || exit 1
 
 @rem RubyInstaller is built by MinGW, so we cannot use header files from it.
 @rem Download the source files and generate config.h for MSVC.
@@ -271,7 +278,7 @@ move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
 nmake.exe -l .config.h.time || exit 1
-xcopy /S /Y .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
+xcopy.exe /S /Y .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 popd
 :skipruby
 
@@ -303,54 +310,65 @@ if /I "%PLATFORM%" == "arm64" (
 @rem Install winpty
 if /I "%PLATFORM%" == "arm64" (
   call :vcpkg winpty
-  call :mklink "vim\src\winpty64.dll" "%WINPTY_VCPKG%\bin\winpty.dll"
-  call :mklink "vim\src\winpty-agent.exe" "%WINPTY_VCPKG%\tools\winpty\winpty-agent.exe"
+  call :mkhlink "vim\src\winpty64.dll" "%WINPTY_VCPKG%\bin\winpty.dll"
+  call :mkhlink "vim\src\winpty-agent.exe" ^
+    "%WINPTY_VCPKG%\tools\winpty\winpty-agent.exe"
 ) else (
   call :downloadfile "%WINPTY_URL%" downloads\winpty.zip
   7z.exe x -y downloads\winpty.zip -o%WINPTY_DIR% > nul || exit 1
   if /I "%ARCH%"=="x64" (
-    call :mklink "vim\src\winpty64.dll" "%WINPTY_DIR%\x64\bin\winpty.dll"
-    call :mklink "vim\src\winpty-agent.exe" "%WINPTY_DIR%\x64\bin\winpty-agent.exe"
+    call :mkhlink "vim\src\winpty64.dll" "%WINPTY_DIR%\x64\bin\winpty.dll"
+    call :mkhlink "vim\src\winpty-agent.exe" ^
+      "%WINPTY_DIR%\x64\bin\winpty-agent.exe"
   ) else (
-    call :mklink "vim\src\winpty32.dll" "%WINPTY_DIR%\ia32\bin\winpty.dll"
-    call :mklink "vim\src\winpty-agent.exe" "%WINPTY_DIR%\ia32\bin\winpty-agent.exe"
+    call :mkhlink "vim\src\winpty32.dll" "%WINPTY_DIR%\ia32\bin\winpty.dll"
+    call :mkhlink "vim\src\winpty-agent.exe" ^
+      "%WINPTY_DIR%\ia32\bin\winpty-agent.exe"
   )
 )
 
-@rem Install UPX
 @rem This is disabled, because UPX is known to be flagged as
 @rem supsicious by AV vendors
+goto :skipupx
+@rem Install UPX
 rem call :downloadfile %UPX_URL% downloads\upx.zip
 rem 7z.exe e -y downloads\upx.zip *\upx.exe -ovim\nsis > nul || exit 1
+:skipupx
 
 @rem Install ShellExecAsUser
 call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
 7z.exe x -y downloads\shellexecasuser.zip ^
   -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
-call :mklink "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll"
+call :mkhlink ^
+  "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" ^
+  "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll"
 
 @rem Install Libsodium
 if /I NOT "%PLATFORM%" == "arm64" (
   call :downloadfile "%LIBSODIUM_URL%" downloads\libsodium.zip
   7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
   if /I "%ARCH%"=="x64" (
-    call :mklink "vim\src\libsodium.dll" "%SODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll"
+    call :mkhlink "vim\src\libsodium.dll" ^
+      "%LIBSODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll"
   ) else (
-    call :mklink "vim\src\libsodium.dll" "%SODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll"
+    call :mkhlink "vim\src\libsodium.dll" ^
+      "%LIBSODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll"
   )
 ) else (
   @rem "Compile Libsodium"
   call :downloadfile "%LIBSODIUM_SOURCE%" downloads\libsodium.zip
-  7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul
-  move /Y %DEPENDENCIES%\libsodium-1.0.20-RELEASE %DEPENDENCIES%\libsodium
-  pushd %SODIUM_DIR%\builds\msvc\build\
-  msbuild /m /v:q /p:Configuration=DynRelease /p:Platform=ARM64 ..\vs2022\libsodium.sln
+  7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
+  move /Y %DEPENDENCIES%\libsodium-%LIBSODIUM_VER%-RELEASE %LIBSODIUM_DIR%
+  pushd %LIBSODIUM_DIR%\builds\msvc\build\
+  msbuild.exe /m /v:q /p:Configuration=DynRelease /p:Platform=ARM64 ^
+    ..\vs2022\libsodium.sln
   popd
-  xcopy /E /I /H /Y %SODIUM_DIR%\src\libsodium\include %SODIUM_DIR%\include > nul
-  call :mklink "vim\src\libsodium.dll" "%SODIUM_DIR%\bin\ARM64\Release\v143\dynamic\libsodium.dll"
+  xcopy.exe /E /I /H /Y %LIBSODIUM_DIR%\src\libsodium\include ^
+    %LIBSODIUM_DIR%\include > nul
+  call :mkhlink "vim\src\libsodium.dll" ^
+    "%LIBSODIUM_DIR%\bin\ARM64\Release\v143\dynamic\libsodium.dll"
 )
 
-@echo off
 goto :eof
 
 :build_x86
@@ -375,18 +393,15 @@ if /I NOT "%PLATFORM%" == "arm64" (
   @ echo:"MZSCHEME_VER=%MZSCHEME_VER%">> .\auto\nmake\vimdll-huge.cfg
   @ echo:"MZSCHEME=%RACKET_DIR%">> .\auto\nmake\vimdll-huge.cfg
 )
-@ echo:"SODIUM=%SODIUM_DIR%">> .\auto\nmake\vimdll-huge.cfg
-@ echo:>> .\auto\nmake\vimdll-huge.cfg
+@ echo:"SODIUM=%LIBSODIUM_DIR%">> .\auto\nmake\vimdll-huge.cfg
 
 @rem Build GUI/CUI version
 nmake.exe -lf Make_mvc.mak @auto\nmake\vimdll-huge.cfg || exit 1
 
 @rem Build translations
 pushd po
-
 nmake.exe -lf Make_mvc.mak "GETTEXT_PATH=%DEPENDENCIES%\gettext%BIT%" ^
   "VIMRUNTIME=..\..\runtime" install-all || exit 1
-
 popd
 
 :check_executable
@@ -409,9 +424,9 @@ if defined APPVEYOR_BUILD_FOLDER ( cd %APPVEYOR_BUILD_FOLDER% )
 
 @rem Check if we need to copy libgcc_s_sjlj-1.dll.
 if /I NOT "%PLATFORM%"=="arm64" (
-"%VCToolsInstallDir%bin\HostX86\x86\dumpbin.exe" ^
-  /DEPENDENTS %DEPENDENCIES%\gettext32\libintl-8.dll | findstr ^
-  /LC:"libgcc_s_sjlj-1.dll" && set "INCLUDE_LIBGCC=1" || set "INCLUDE_LIBGCC=0"
+  "%VCToolsInstallDir%bin\HostX86\x86\dumpbin.exe" ^
+    /DEPENDENTS %DEPENDENCIES%\gettext32\libintl-8.dll | findstr ^
+    /LC:"libgcc_s_sjlj-1.dll" && set "INCLUDE_LIBGCC=1" || set "INCLUDE_LIBGCC=0"
 ) else set "INCLUDE_LIBGCC=0"
 
 mkdir vim\runtime\GvimExt64
@@ -420,67 +435,84 @@ mkdir vim\runtime\GvimExt32
 if /I "%PLATFORM%"=="arm64" (
   @rem Building ARM64 version of gvimext.dll for the installer
   pushd vim\src\GvimExt
-  nmake.exe -lf Make_mvc.mak clean all > ..\gvimext.log"
+  nmake.exe -lf Make_mvc.mak "CPU=ARM64" clean all > ..\gvimext.log"
   popd
   type vim\src\gvimext.log
-  call :mklink "vim\runtime\GvimExt64\gvimext.dll" "vim\src\GvimExt\gvimext.dll"
-  call :mklink "vim\runtime\GvimExt64\README.txt" "vim\src\GvimExt\README.txt"
-  call :mklink "vim\runtime\GvimExt64\gvimext.inf" "vim\src\GvimExt\gvimext.inf"
-  call :mklink "vim\runtime\GvimExt64\GvimExt.reg" "vim\src\GvimExt\GvimExt.reg"
+  call :mkhlink "vim\runtime\GvimExt64\gvimext.dll" ^
+    "vim\src\GvimExt\gvimext.dll"
+  call :mkhlink "vim\runtime\GvimExt64\README.txt" "vim\src\GvimExt\README.txt"
+  call :mkhlink "vim\runtime\GvimExt64\gvimext.inf" ^
+    "vim\src\GvimExt\gvimext.inf"
+  call :mkhlink "vim\runtime\GvimExt64\GvimExt.reg" ^
+    "vim\src\GvimExt\GvimExt.reg"
   copy /Y vim\src\GvimExt\gvimext.dll vim\src\GvimExt\gvimext64.dll
 
-  copy /y %ICONV_VCPKG%\bin\iconv-2.dll vim\runtime\libiconv-2.dll
-  copy /y %INTL_VCPKG%\bin\intl-8.dll vim\runtime\libintl-8.dll
-  call :mklink "vim\runtime\GvimExt64\libiconv-2.dll" "vim\runtime\libiconv-2.dll"
-  call :mklink "vim\runtime\GvimExt64\libintl-8.dll" "vim\runtime\libintl-8.dll"
+  copy /Y %ICONV_VCPKG%\bin\iconv-2.dll vim\runtime\libiconv-2.dll
+  copy /Y %INTL_VCPKG%\bin\intl-8.dll vim\runtime\libintl-8.dll
+  call :mkhlink "vim\runtime\GvimExt64\libiconv-2.dll" ^
+    "vim\runtime\libiconv-2.dll"
+  call :mkhlink "vim\runtime\GvimExt64\libintl-8.dll" ^
+    "vim\runtime\libintl-8.dll"
 
 ) else (
   @rem Build both 64- and 32-bit versions of gvimext.dll for the installer
   start "" /W cmd /C "%VCVARSALL% x64 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
   type vim\src\gvimext.log
-  call :mklink "vim\runtime\GvimExt64\gvimext.dll" "vim\src\GvimExt\gvimext.dll"
-  call :mklink "vim\runtime\GvimExt64\README.txt" "vim\src\GvimExt\README.txt"
-  call :mklink "vim\runtime\GvimExt64\gvimext.inf" "vim\src\GvimExt\gvimext.inf"
-  call :mklink "vim\runtime\GvimExt64\GvimExt.reg" "vim\src\GvimExt\GvimExt.reg"
+  call :mkhlink "vim\runtime\GvimExt64\gvimext.dll" ^
+    "vim\src\GvimExt\gvimext.dll"
+  call :mkhlink "vim\runtime\GvimExt64\README.txt" "vim\src\GvimExt\README.txt"
+  call :mkhlink "vim\runtime\GvimExt64\gvimext.inf" ^
+    "vim\src\GvimExt\gvimext.inf"
+  call :mkhlink "vim\runtime\GvimExt64\GvimExt.reg" ^
+    "vim\src\GvimExt\GvimExt.reg"
   ren vim\src\GvimExt\gvimext.dll gvimext64.dll
 
   start "" /W cmd /C "%VCVARSALL% x86 && cd vim\src\GvimExt && nmake.exe -lf Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
   type vim\src\gvimext.log
-  call :mklink "vim\runtime\GvimExt32\gvimext.dll" "vim\src\GvimExt\gvimext.dll"
-  call :mklink "vim\runtime\GvimExt32\README.txt" "vim\src\GvimExt\README.txt"
-  call :mklink "vim\runtime\GvimExt32\gvimext.inf" "vim\src\GvimExt\gvimext.inf"
-  call :mklink "vim\runtime\GvimExt32\GvimExt.reg" "vim\src\GvimExt\GvimExt.reg"
+  call :mkhlink "vim\runtime\GvimExt32\gvimext.dll" ^
+    "vim\src\GvimExt\gvimext.dll"
+  call :mkhlink "vim\runtime\GvimExt32\README.txt" "vim\src\GvimExt\README.txt"
+  call :mkhlink "vim\runtime\GvimExt32\gvimext.inf" ^
+    "vim\src\GvimExt\gvimext.inf"
+  call :mkhlink "vim\runtime\GvimExt32\GvimExt.reg" ^
+    "vim\src\GvimExt\GvimExt.reg"
 
-  call :mklink "vim\runtime\libiconv-2.dll" "%DEPENDENCIES%\gettext%BIT%\libiconv-2.dll"
-  call :mklink "vim\runtime\libintl-8.dll" "%DEPENDENCIES%\gettext%BIT%\libintl-8.dll"
+  call :mkhlink "vim\runtime\libiconv-2.dll" ^
+    "%DEPENDENCIES%\gettext%BIT%\libiconv-2.dll"
+  call :mkhlink "vim\runtime\libintl-8.dll" ^
+    "%DEPENDENCIES%\gettext%BIT%\libintl-8.dll"
   if "%INCLUDE_LIBGCC%-%BIT%"=="1-32" (
-    call :mklink "vim\runtime\libgcc_s_sjlj-1.dll" "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
+    call :mkhlink "vim\runtime\libgcc_s_sjlj-1.dll" ^
+      "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
   )
 
-  call :mklink "vim\runtime\GvimExt32\libiconv-2.dll" "%DEPENDENCIES%\gettext32\libiconv-2.dll"
-  call :mklink "vim\runtime\GvimExt32\libintl-8.dll" "%DEPENDENCIES%\gettext32\libintl-8.dll"
+  call :mkhlink "vim\runtime\GvimExt32\libiconv-2.dll" ^
+    "%DEPENDENCIES%\gettext32\libiconv-2.dll"
+  call :mkhlink "vim\runtime\GvimExt32\libintl-8.dll" ^
+    "%DEPENDENCIES%\gettext32\libintl-8.dll"
   if "%INCLUDE_LIBGCC%"=="1" (
-    call :mklink "vim\runtime\GvimExt32\libgcc_s_sjlj-1.dll" "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
+    call :mkhlink "vim\runtime\GvimExt32\libgcc_s_sjlj-1.dll" ^
+      "%DEPENDENCIES%\gettext32\libgcc_s_sjlj-1.dll"
   )
 )
 
-call :mklink "vim\runtime\README.txt" "vim\README.txt"
-call :mklink "vim\runtime\LICENSE.txt" "vim\LICENSE"
-call :mklink "vim\runtime\uninstall.txt" "vim\uninstall.txt"
-call :mklink "vim\runtime\vimtutor.bat" "vim\vimtutor.bat"
-call :mklink "vim\runtime\vim.ico" "vim\src\vim.ico"
-call :mklink "vim\runtime\gvim.exe" "vim\src\gvim.exe"
-call :mklink "vim\runtime\install.exe" "vim\src\install.exe"
-call :mklink "vim\runtime\tee.exe" "vim\src\tee\tee.exe"
-call :mklink "vim\runtime\vim%BIT%.dll" "vim\src\vim%BIT%.dll"
-call :mklink "vim\runtime\vim.exe" "vim\src\vim.exe"
-call :mklink "vim\runtime\vimrun.exe" "vim\src\vimrun.exe"
-call :mklink "vim\runtime\uninstall.exe" "vim\src\uninstall.exe"
-call :mklink "vim\runtime\xxd.exe" "vim\src\xxd\xxd.exe"
-call :mklink "vim\runtime\libsodium.dll" "vim\src\libsodium.dll"
-call :mklink "vim\runtime\diff.exe" ".\diff.exe"
-call :mklink "vim\runtime\winpty%BIT%.dll" "vim\src\winpty%BIT%.dll"
-call :mklink "vim\runtime\winpty-agent.exe" "vim\src\winpty-agent.exe"
+call :mkhlink "vim\runtime\README.txt" "vim\README.txt"
+call :mkhlink "vim\runtime\LICENSE.txt" "vim\LICENSE"
+call :mkhlink "vim\runtime\uninstall.txt" "vim\uninstall.txt"
+call :mkhlink "vim\runtime\vimtutor.bat" "vim\vimtutor.bat"
+call :mkhlink "vim\runtime\vim.ico" "vim\src\vim.ico"
+call :mkhlink "vim\runtime\gvim.exe" "vim\src\gvim.exe"
+call :mkhlink "vim\runtime\install.exe" "vim\src\install.exe"
+call :mkhlink "vim\runtime\tee.exe" "vim\src\tee\tee.exe"
+call :mkhlink "vim\runtime\vim%BIT%.dll" "vim\src\vim%BIT%.dll"
+call :mkhlink "vim\runtime\vim.exe" "vim\src\vim.exe"
+call :mkhlink "vim\runtime\vimrun.exe" "vim\src\vimrun.exe"
+call :mkhlink "vim\runtime\uninstall.exe" "vim\src\uninstall.exe"
+call :mkhlink "vim\runtime\xxd.exe" "vim\src\xxd\xxd.exe"
+call :mkhlink "vim\runtime\libsodium.dll" "vim\src\libsodium.dll"
+call :mkhlink "vim\runtime\diff.exe" ".\diff.exe"
+call :mkhlink "vim\runtime\winpty%BIT%.dll" "vim\src\winpty%BIT%.dll"
+call :mkhlink "vim\runtime\winpty-agent.exe" "vim\src\winpty-agent.exe"
 
 set "VIM_DIR=vim%MAJOR%%MINOR%"
 ren vim\runtime %VIM_DIR%
@@ -528,7 +560,6 @@ echo:Creating Signpath Zip Archive
 7z.exe a -mx=1 unsigned-gvim_%VER_NUM%_%CUSTOM%.zip ^
   gvim_%VER_NUM%_%CUSTOM%.zip gvim*.exe
 
-@echo off
 goto :eof
 
 :test_x86
@@ -542,9 +573,7 @@ nmake.exe -lf Make_mvc.mak "VIMPROG=..\gvim.exe" || exit 1
 nmake.exe -lf Make_mvc.mak clean
 nmake.exe -lf Make_mvc.mak "VIMPROG=..\vim.exe" || exit 1
 
-@echo off
 goto :eof
-
 
 :onsuccess_x64
 goto :eof
@@ -557,12 +586,11 @@ if not defined APPVEYOR_REPO_TAG_NAME goto :eof
 call :get_release_id
 
 @rem Turn off the draft status.
-curl -# -X PATCH -H "Authorization: token %auth_token%" ^
+curl.exe -# -X PATCH -H "Authorization: token %auth_token%" ^
   -H "Accept: application/vnd.github.v3+json" ^
   "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%" ^
   -d "{\"draft\": false}"
 goto :eof
-
 
 :onfailure_x64
 goto :eof
@@ -575,28 +603,9 @@ if not defined APPVEYOR_REPO_TAG_NAME goto :eof
 call :get_release_id
 
 @rem Delete the release.
-curl -# -X DELETE -H "Authorization: token %auth_token%" ^
+curl.exe -# -X DELETE -H "Authorization: token %auth_token%" ^
   -H "Accept: application/vnd.github.v3+json" ^
   "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases/%REL_ID%"
-goto :eof
-
-
-:get_release_id
-:: ----------------------------------------------------------------------
-@rem Get the ID of the release. Set the result to %REL_ID%.
-
-set "PS=powershell.exe"
-set "PSFLAGS=-NoLogo -NoProfile -Command"
-
-curl -# -H "Authorization: token %auth_token%" ^
-  -H "Accept: application/vnd.github.v3+json" ^
-  "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
-1> nul %PS% %PSFLAGS% ((Get-Content .\releases.json -Raw ^| ^
-  ConvertFrom-Json) ^| Where-Object name -EQ '%TAG_NAME%').id ^| ^
-  New-Item .\release_id.txt -Force"
-
-type release_id.txt
-for /F "delims=" %%I in (release_id.txt) do set "REL_ID=%%I"
 goto :eof
 
 :clean_x64
@@ -613,28 +622,45 @@ popd
 git reset --hard
 goto :eof
 
+:: -------- staff -------------------------------------------------------
 :downloadfile
-:: ----------------------------------------------------------------------
 @rem call :downloadfile <URL> <localfile>
 if exist %2 exit /B
-curl -# -f -L %~1 -o %2 && exit /B
-
-if ERRORLEVEL 1 (
-  rem Retry once.
-  curl -f -L %~1 -o %2 || exit 1
-)
+curl.exe -# -f -L %~1 -o %2 && exit /B
+@rem Retry once.
+curl.exe -f -L %~1 -o %2 && exit /B || exit 1
 @goto :eof
 
 :vcpkg
 @rem call :vcpkg package
-vcpkg --vcpkg-root="%VCPKG_ROOT%" install %1:arm64-windows && exit /B
+vcpkg --vcpkg-root="%VCPKG_ROOT%" install %1:arm64-windows && exit /B || exit 1
 @goto :eof
 
-:mklink
-@rem call :mklink "linkname" "target"
+@rem Creates Hard Links
+:mkhlink
+@rem call :mkhlink "linkname" "target"
 if exist %1 exit /B
-mklink /H %1 %2
+mklink /H %1 %2 && exit /B || exit 1
 @goto :eof
+
+:get_release_id
+@rem Get the ID of the release. Set the result to %REL_ID%.
+
+set "PS=powershell.exe"
+set "PSFLAGS=-NoLogo -NoProfile -Command"
+
+curl.exe -# -H "Authorization: token %auth_token%" ^
+  -H "Accept: application/vnd.github.v3+json" ^
+  "https://api.github.com/repos/%APPVEYOR_REPO_NAME%/releases" > releases.json
+1> nul %PS% %PSFLAGS% ((Get-Content .\releases.json -Raw ^| ^
+  ConvertFrom-Json) ^| Where-Object name -EQ '%TAG_NAME%').id ^| ^
+  New-Item .\release_id.txt -Force"
+
+type release_id.txt
+for /F "delims=" %%I in (release_id.txt) do set "REL_ID=%%I"
+exit /B
+goto :eof
+
 EndLocal
 
 @rem vim:ft=dosbatch:ts=8:sts=2:sw=2:noet:
