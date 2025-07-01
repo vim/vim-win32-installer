@@ -541,14 +541,16 @@ pushd vim\nsis
 
 if /I "%ARCH%"=="x64" (
   set WIN64=1
+  if /I "%PLATFORM%"=="arm64" set ARM64=1
 ) else (
   set WIN64=0
+  set ARM64=0
 )
 
 nmake.exe -lf Make_mvc.mak "X=OutFile ..\..\gvim_%VER_NUM%_%CUSTOM%.exe" ^
   "GETTEXT=%DEPENDENCIES%" "VIMSRC=..\runtime" "VIMRT=..\runtime" ^
   "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" "SRC=..\runtime" "WIN64=%WIN64%" ^
-  "VIMTOOLS=..\runtime" || exit 1
+  "ARM64=%ARM64%" "VIMTOOLS=..\runtime" || exit 1
 
 popd
 
