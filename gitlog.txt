@@ -1,1 +1,1 @@
-* [runtime(vim): Update base syntax, fix :map termination in :command RHS](https://github.com/vim/vim/commit/b88f9e4a04ce9fb70abb7cdae17688aa4f49c8c9)
+* [runtime(vim): Update base syntax, match Neovim builtin functions](https://github.com/vim/vim/commit/ee865249b1edd56e297f12025e11defb6a4bf445)\n* [runtime(vim): Update base syntax, fix :map termination in :command RHS](https://github.com/vim/vim/commit/b88f9e4a04ce9fb70abb7cdae17688aa4f49c8c9)
