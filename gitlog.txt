@@ -1,1 +1,1 @@
-* [runtime(doc): Add :defe\[r\] shortname spec and tag](https://github.com/vim/vim/commit/e8bbdb90e449959dba9f3b270a78321e2cf1fae8)
+* [runtime(doc): tweak documentation style](https://github.com/vim/vim/commit/450d59145e8675e608611a37db5f722ae31e041d)\n* [runtime(doc): Add :defe\[r\] shortname spec and tag](https://github.com/vim/vim/commit/e8bbdb90e449959dba9f3b270a78321e2cf1fae8)
