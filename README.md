@@ -36,7 +36,7 @@ You can find those interperters here:
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8 or later
 * [Racket](https://download.racket-lang.org/) 8.7 (BC)
-* [RubyInstaller](http://rubyinstaller.org/downloads/) 3.2
+* [RubyInstaller](http://rubyinstaller.org/downloads/) 3.3
 
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.
