@@ -102,10 +102,10 @@ set "RACKET_DIR=%DEPENDENCIES%\racket%RACKET_VER%-%ARCH%"
 set "MZSCHEME_VER=%RACKET_VER%"
 
 @rem Ruby
-set "RUBY_VER=32"
-set "RUBY_API_VER_LONG=3.2.0"
-set "RUBY_BRANCH=ruby_3_2"
-set "RUBY_RELEASE=3.2.2-1"
+set "RUBY_VER=34"
+set "RUBY_API_VER_LONG=3.4.0"
+set "RUBY_BRANCH=ruby_3_4"
+set "RUBY_RELEASE=3.4.8-1"
 set "RUBY_SRC_URL=https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip"
 set "RUBY_URL=https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z"
 set "RUBY_DIR=%DEPENDENCIES%\Ruby%RUBY_VER%-%ARCH%"
@@ -270,10 +270,8 @@ move %DEPENDENCIES%\rubyinstaller-%RUBY_RELEASE%-%ARCH% ^
 @rem RubyInstaller is built by MinGW, so we cannot use header files from it.
 @rem Download the source files and generate config.h for MSVC.
 call :downloadfile "%RUBY_SRC_URL%" downloads\ruby_src.zip
-@rem Extract the files only we needed to reduce the building time.
-7z.exe x -y downloads\ruby_src.zip */bin */include */enc/Makefile.in */win32 ^
-  */common.mk -ir!version.h -xr!README.* -xr!*/win32/*.c -xr!*/win32/*.h ^
-  -o.. > nul || exit 1
+@rem Extract all files
+7z.exe x -y downloads\ruby_src.zip -o.. > nul || exit 1
 move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
 pushd ..\ruby
 call win32\configure.bat
