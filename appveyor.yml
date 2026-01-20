@@ -132,7 +132,7 @@ deploy:
       <details>
       <summary>Interface Information</summary>
 
-      * [Strawberry Perl](http://strawberryperl.com/) 5.32
+      * [Strawberry Perl](http://strawberryperl.com/) 5.38
       <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
       * [Python](https://www.python.org/downloads/) 2.7

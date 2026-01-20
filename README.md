@@ -30,7 +30,7 @@ a working Lua installation). This means, those interpreters have to be
 installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interperters here:
 
-* [Strawberry Perl](http://strawberryperl.com/) 5.32
+* [Strawberry Perl](http://strawberryperl.com/) 5.38
 * <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
