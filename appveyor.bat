@@ -42,10 +42,20 @@ set "LUA_URL=https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win
 set "LUA_DIR=%DEPENDENCIES%\Lua%LUA_VER%-%ARCH%"
 
 @rem Perl
-set "PERL_VER=532"
-set "PERL_RELEASE=5.32.1.1"
-set "PERL_URL=https://strawberryperl.com/download/%PERL_RELEASE%/strawberry-perl-%PERL_RELEASE%-%BIT%bit-portable.zip"
-set "PERL_DIR=%DEPENDENCIES%\perl%PERL_VER%-%ARCH%"
+set "PERL_VER=538"
+SetLocal EnableDelayedExpansion
+
+if /I "%ARCH%"=="x64" (
+  set "PERL_RELEASE=5.38.2.2"
+  set "PERL_RELEASE_SHORT=!PERL_VER!22"
+) else (
+  set "PERL_RELEASE=5.38.2.1"
+  set "PERL_RELEASE_SHORT=!PERL_VER!2"
+)
+EndLocal & (
+  set "PERL_URL=https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_%PERL_RELEASE_SHORT%_%BIT%bit/strawberry-perl-%PERL_RELEASE%-%BIT%bit-portable.zip"
+  set "PERL_DIR=%DEPENDENCIES%\perl%PERL_VER%-%ARCH%"
+)
 
 @rem Python2
 set "PYTHON_VER=27"
