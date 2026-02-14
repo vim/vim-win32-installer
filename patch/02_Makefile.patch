@@ -1,0 +1,25 @@
+diff --git a/src/Make_mvc.mak b/src/Make_mvc.mak
+index a59b083e7..eb5e2e728 100644
+--- a/src/Make_mvc.mak
++++ b/src/Make_mvc.mak
+@@ -527,7 +527,7 @@ CON_LIB = $(CON_LIB) /DELAYLOAD:comdlg32.dll /DELAYLOAD:ole32.dll DelayImp.lib
+ #VIMRCLOC = somewhere
+ #VIMRUNTIMEDIR = somewhere
+ 
+-CFLAGS = -c /W3 /GF /nologo -I. -Iproto -DHAVE_PATHDEF -DWIN32 -DHAVE_STDINT_H \
++CFLAGS = -c /W3 /GF /nologo -I. -Iproto -DNDEBUG -DHAVE_PATHDEF -DWIN32 -DHAVE_STDINT_H \
+ 	$(CSCOPE_DEFS) $(TERM_DEFS) $(SOUND_DEFS) $(NETBEANS_DEFS) \
+ 	$(NBDEBUG_DEFS) $(XPM_DEFS) $(SOD_DEFS) $(SOD_INC) $(CHANNEL_DEFS) \
+ 	$(DEFINES) $(CI_CFLAGS) -DWINVER=$(WINVER) -D_WIN32_WINNT=$(WINVER) \
+@@ -1922,9 +1922,9 @@ $(PATHDEF_SRC): Make_mvc.mak
+ 	@ echo char_u *all_lflags = \
+ 		(char_u *)"$(LINK:\=\\) $(LINKARGS1:\=\\) $(E_LINKARGS2)"; \
+ 		>> $(PATHDEF_SRC)
+-	@ echo char_u *compiled_user = (char_u *)"$(USERNAME)"; \
++	@ echo char_u *compiled_user = (char_u *)"Chrisian Brabandt <cb"; \
+ 		>> $(PATHDEF_SRC)
+-	@ echo char_u *compiled_sys = (char_u *)"$(USERDOMAIN)"; \
++	@ echo char_u *compiled_sys = (char_u *)"256bit.org>"; \
+ 		>> $(PATHDEF_SRC)
+ 
+ # End Custom Build
