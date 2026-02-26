@@ -73,7 +73,7 @@ jobs:
             gvim*.exe
 
       - name: Attest Installer
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: arm64-windows-installer.exe
           subject-digest: sha256:${{ steps.upload-installer.outputs.artifact-digest }}
@@ -89,7 +89,7 @@ jobs:
             gvim*.zip
 
       - name: Attest Zip File
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: arm64-windows-zip-archive.zip
           subject-digest: sha256:${{ steps.upload-zip.outputs.artifact-digest }}
@@ -105,7 +105,7 @@ jobs:
             gvim*arm64.*
 
       - name: Attest Zip File for Signpath
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: arm64-windows-zip-archive.zip
           subject-digest: sha256:${{ steps.upload-unsigned-zip.outputs.artifact-digest }}
