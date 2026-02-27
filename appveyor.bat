@@ -27,6 +27,13 @@ for /F "delims=.-+ tokens=1-3" %%I in ("%VER_NUM%") do (
   set "PATCHLEVEL=%%K"
 )
 
+:: PATCHLEVEL comes from tags like v9.2.0068.
+:: rc (and the C preprocessor) treat 0-prefixed numbers as octal, so 0068 breaks.
+:: Keep the original padded patchlevel, but normalize PATCHLEVEL to a plain decimal number.
+set "PATCHLEVEL_PADDED=%PATCHLEVEL%"
+for /F "tokens=* delims=0" %%P in ("%PATCHLEVEL_PADDED%") do set "PATCHLEVEL=%%P"
+if not defined PATCHLEVEL set "PATCHLEVEL=0"
+
 if /I "%ARCH%"=="x64" (
   set "BIT=64"
 ) else (
