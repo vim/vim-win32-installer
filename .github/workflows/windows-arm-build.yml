@@ -64,7 +64,7 @@ jobs:
 
       - name: upload Installer
         id:   upload-installer
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -80,7 +80,7 @@ jobs:
 
       - name: upload Zip File
         id:   upload-zip
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -96,7 +96,7 @@ jobs:
 
       - name: upload Zip File for Signpath
         id:   upload-unsigned-zip
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
