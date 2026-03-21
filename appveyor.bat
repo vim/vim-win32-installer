@@ -194,7 +194,6 @@ echo TAG_NAME: %TAG_NAME%
 
 @rem Get Vim source code
 git submodule update --init --depth 20
-git submodule update --remote
 
 @rem Apply experimental patches
 pushd vim
