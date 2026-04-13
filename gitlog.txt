@@ -1,1 +1,1 @@
-* [9.2.0340](https://github.com/vim/vim/commit/efedcd1e6f369e1dcc92ae0cc2c4c8020f08738e): pum\_redraw() may cause flicker\n* [Fix a few typos](https://github.com/vim/vim/commit/dc4734448bd06247747fd9dd6ca8e75cfdd95030)\n* [9.2.0339](https://github.com/vim/vim/commit/105d65e29b636981b2a92cd0205b19f85951d770): regexp: nfa\_regmatch() allocates and frees too often
+* [Revert "runtime(jjdescription): allow to configure summary width"](https://github.com/vim/vim/commit/86dcb1878cdbd0a8af61664b14f034398e319026)
