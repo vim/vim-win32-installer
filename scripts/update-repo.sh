@@ -24,6 +24,9 @@ if [ ! -d vim/src ]; then
 fi
 git submodule update
 
+# get the latest tags
+git fetch --tags
+
 # get the last released commit id from this repo
 curl -s https://api.github.com/repos/vim/vim-win32-installer/releases/latest -o latest.json
 vimoldver=$(cat latest.json | python -c 'import sys; from json import loads as l; print(l(sys.stdin.read())["body"])' | sed -n -e '/.*(https:\/\/github\.com\/vim\/vim\/commit\/\([0-9a-f]*\)).*/{s//\1/;p;q}')
