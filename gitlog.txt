@@ -1,1 +1,1 @@
-* [9.2.0389](https://github.com/vim/vim/commit/44f707da6a06b8310bfe23f5477c7653215e1230): DECRQM still leaves stray "pp" on Apple Terminal.app\n* [9.2.0388](https://github.com/vim/vim/commit/f194676c936d9f3a8479a72afbbe9f244039e27e): strange indent in update\_topline()
+* [translation(ru): Fix typo in "може" to "можете" in lang/README.ru.txt](https://github.com/vim/vim/commit/0f9218851dc91a855c3d186ccd05f550907cf37e)\n* [9.2.0390](https://github.com/vim/vim/commit/521eac1877355d408c8c57bc31947cc86f31f41d): filetype: some Beancount files are not recognized
