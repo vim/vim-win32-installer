@@ -141,8 +141,12 @@ set "TCL_DLL=tcl%TCL_VER%t.dll"
 set "TCL_LIBRARY=%TCL_DIR%\lib\tcl%TCL_VER_LONG%"
 
 @rem Gettext
-set "GETTEXT_32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.23-v1.17/gettext0.23-iconv1.17-shared-32.zip"
-set "GETTEXT_64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.23-v1.17/gettext0.23-iconv1.17-shared-64.zip"
+@rem For x86/x64
+set "GETTEXT_VER=1.0"
+set "ICONV_VER=1.19"
+set "GETTEXT_32_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v%GETTEXT_VER%-v%ICONV_VER%/gettext%GETTEXT_VER%-iconv%ICONV_VER%-shared-32.zip"
+set "GETTEXT_64_URL=https://github.com/mlocati/gettext-iconv-windows/releases/download/v%GETTEXT_VER%-v%ICONV_VER%/gettext%GETTEXT_VER%-iconv%ICONV_VER%-shared-64.zip"
+@rem For ARM64
 set "INTL_VCPKG=%VCPKG_ROOT%\packages\gettext-libintl_arm64-windows"
 set "ICONV_VCPKG=%VCPKG_ROOT%\packages\libiconv_arm64-windows"
 
@@ -309,16 +313,16 @@ raco.exe pkg install -i --auto r5rs-lib
 :skipracket
 
 @rem Install libintl.dll and iconv.dll
-call :downloadfile "%GETTEXT_32_URL%" downloads\gettext32.zip
-7z.exe e -y downloads\gettext32.zip ^
-  -o%DEPENDENCIES%\gettext32 > nul || exit 1
-
-call :downloadfile "%GETTEXT_64_URL%" downloads\gettext64.zip
-7z.exe e -y downloads\gettext64.zip ^
-  -o%DEPENDENCIES%\gettext64 > nul || exit 1
-
 if /I "%PLATFORM%" == "arm64" (
   call :vcpkg gettext
+) else (
+  call :downloadfile "%GETTEXT_32_URL%" downloads\gettext32.zip
+  7z.exe e -y downloads\gettext32.zip ^
+    -o%DEPENDENCIES%\gettext32 > nul || exit 1
+
+  call :downloadfile "%GETTEXT_64_URL%" downloads\gettext64.zip
+  7z.exe e -y downloads\gettext64.zip ^
+    -o%DEPENDENCIES%\gettext64 > nul || exit 1
 )
 
 @rem Install winpty
