@@ -35,8 +35,9 @@ jobs:
     #  with:
     #    ref: ${{inputs.base_commit}}
 
-    - name: update
-      run: |
-        git config --local user.name "$USER_NAME"
-        git config --local user.email "$USER_EMAIL"
-        ./scripts/update-repo.sh
+      # XXX: Disable
+    #- name: update
+    #  run: |
+    #    git config --local user.name "$USER_NAME"
+    #    git config --local user.email "$USER_EMAIL"
+    #    ./scripts/update-repo.sh
