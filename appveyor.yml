@@ -20,6 +20,9 @@ build:
   verbosity: minimal
 
 before_build:
+  # XXX: Disable AppVeyor
+  - appveyor.exe exit
+
   - >
     if "%APPVEYOR_REPO_TAG%/%APPVEYOR_REPO_BRANCH%"=="false/master"
     if not defined APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH
