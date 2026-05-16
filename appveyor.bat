@@ -158,9 +158,8 @@ rem set "UPX_URL=https://github.com/upx/upx/releases/download/v3.94/upx394w.zip"
 set "SHELLEXECASUSER_URL=https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip"
 
 @rem Libsodium
-set "LIBSODIUM_VER=1.0.20"
+set "LIBSODIUM_VER=1.0.22"
 set "LIBSODIUM_URL=https://github.com/jedisct1/libsodium/releases/download/%LIBSODIUM_VER%-RELEASE/libsodium-%LIBSODIUM_VER%-msvc.zip"
-set "LIBSODIUM_SOURCE=https://github.com/jedisct1/libsodium/archive/refs/tags/%LIBSODIUM_VER%-RELEASE.zip"
 set "LIBSODIUM_DIR=%DEPENDENCIES%\libsodium"
 
 @rem Cygwin
@@ -358,29 +357,17 @@ call :mkhlink ^
   "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll"
 
 @rem Install Libsodium
-if /I NOT "%PLATFORM%" == "arm64" (
-  call :downloadfile "%LIBSODIUM_URL%" downloads\libsodium.zip
-  7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
-  if /I "%ARCH%"=="x64" (
-    call :mkhlink "vim\src\libsodium.dll" ^
-      "%LIBSODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll"
-  ) else (
-    call :mkhlink "vim\src\libsodium.dll" ^
-      "%LIBSODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll"
-  )
-) else (
-  @rem "Compile Libsodium"
-  call :downloadfile "%LIBSODIUM_SOURCE%" downloads\libsodium.zip
-  7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
-  move /Y %DEPENDENCIES%\libsodium-%LIBSODIUM_VER%-RELEASE %LIBSODIUM_DIR%
-  pushd %LIBSODIUM_DIR%\builds\msvc\build\
-  msbuild.exe /m /v:q /p:Configuration=DynRelease /p:Platform=ARM64 ^
-    ..\vs2022\libsodium.sln
-  popd
-  xcopy.exe /E /I /H /Y %LIBSODIUM_DIR%\src\libsodium\include ^
-    %LIBSODIUM_DIR%\include > nul
+call :downloadfile "%LIBSODIUM_URL%" downloads\libsodium.zip
+7z.exe x -y downloads\libsodium.zip -o%DEPENDENCIES%\ > nul || exit 1
+if /I "%PLATFORM%" == "arm64" (
   call :mkhlink "vim\src\libsodium.dll" ^
-    "%LIBSODIUM_DIR%\bin\ARM64\Release\v143\dynamic\libsodium.dll"
+    "%LIBSODIUM_DIR%\ARM64\Release\v143\dynamic\libsodium.dll"
+) else if /I "%ARCH%"=="x64" (
+  call :mkhlink "vim\src\libsodium.dll" ^
+    "%LIBSODIUM_DIR%\x64\Release\v143\dynamic\libsodium.dll"
+) else (
+  call :mkhlink "vim\src\libsodium.dll" ^
+    "%LIBSODIUM_DIR%\Win32\Release\v143\dynamic\libsodium.dll"
 )
 
 goto :eof
