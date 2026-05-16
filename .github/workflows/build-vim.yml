@@ -19,12 +19,16 @@ on:
         type: string
 
 permissions:
+  id-token: write # needed for attestion
+  attestations: write
+  artifact-metadata: write
   contents: read
 
 env:
   VIMREPO: https://github.com/vim/vim
-  DEPENDENCIES: C:\dependencies
-  GETTEXT_PATH: D:\msys64\usr\bin
+  DEPENDENCIES: 'C:\dependencies'
+  VCPKG_ROOT: 'C:\vcpkg'
+  GETTEXT_PATH: 'C:\dependencies\msys64\usr\bin'  # msgfmt, etc.
 
   # Account for committing
   USER_NAME: "github-actions[bot]"
@@ -38,7 +42,7 @@ env:
   LUA_VER_DOT: '5.4'
   LUA_RELEASE: 5.4.8
   LUA_URL: https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win%BITS%_dllw6_lib.zip
-  LUA_DIR: '%DEPENDENCIES%\Lua'
+  LUA_DIR: 'C:\dependencies\Lua'
 
   # Perl
   PERL_VER_DOT_32: '5.38'
@@ -46,10 +50,10 @@ env:
   PERL_RELEASE_NODOT_32: '5382'
   PERL_URL_32: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_%PERL_RELEASE_NODOT_32%_%BITS%bit/strawberry-perl-%PERL_RELEASE%-%BITS%bit-portable.zip
 
-  PERL_VER_DOT_64: '5.42'
-  PERL_RELEASE_64: '5.42.2.1'
+  PERL_VER_DOT_64: '5.38'
+  PERL_RELEASE_64: '5.38.2.2'
   PERL_URL_64: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_%PERL_RELEASE_NODOT%_%BITS%bit/strawberry-perl-%PERL_RELEASE%-%BITS%bit-portable.zip
-  PERL_DIR: '%DEPENDENCIES%\Strawberry\perl'
+  PERL_DIR: 'C:\dependencies\Strawberry\perl'
 
   # Python 2
   # Disabled. Do we need it?
@@ -58,15 +62,14 @@ env:
   PYTHON3_VER_DOT: '3.12'
   PYTHON3_RELEASE: '3.12.10'
   PYTHON3_URL: https://www.python.org/ftp/python/%PYTHON3_RELEASE%/python-%PYTHON3_RELEASE%%PYARCH%.exe
-  PYTHON3_DIR: '%DEPENDENCIES%\python3'
+  PYTHON3_DIR: 'C:\dependencies\python3'
 
   # Racket
   RACKET_VER: 3m_dcgt6o
   RACKET_RELEASE: '8.7'
-  RACKET_32_URL: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz"
-  RACKET_64_URL: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz"
-  RACKET_DIR: '%DEPENDENCIES%\racket'
-  MZSCHEME_VER: '%RACKET_VER%'
+  RACKET_URL_32: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
+  RACKET_URL_64: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
+  RACKET_DIR: 'C:\dependencies\racket'
 
   # Ruby
   RUBY_VER_DOT: '3.4'
@@ -74,7 +77,7 @@ env:
   RUBY_RELEASE: 3.4.9-1
   RUBY_SRC_URL: https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
   RUBY_URL: https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z
-  RUBY_DIR: '%DEPENDENCIES%\rubyinstaller'
+  RUBY_DIR: 'C:\dependencies\rubyinstaller'
 
   # TCL
   # Disabled. There are no prebuilt binaries for Windows.
@@ -86,21 +89,29 @@ env:
   # gettext
   GETTEXT_VER: '1.0'
   ICONV_VER: '1.19'
-  GETTEXT_URL: https://github.com/mlocati/gettext-iconv-windows/releases/download/v%GETTEXT_VER%-v%ICONV_VER%/gettext%GETTEXT_VER%-iconv%ICONV_VER%-shared-%BITS%.zip
+  GETTEXT_32_URL: https://github.com/mlocati/gettext-iconv-windows/releases/download/v%GETTEXT_VER%-v%ICONV_VER%/gettext%GETTEXT_VER%-iconv%ICONV_VER%-shared-32.zip
+  GETTEXT_64_URL: https://github.com/mlocati/gettext-iconv-windows/releases/download/v%GETTEXT_VER%-v%ICONV_VER%/gettext%GETTEXT_VER%-iconv%ICONV_VER%-shared-64.zip
+  #INTL_VCPKG: 'C:\vcpkg\packages\gettext-libintl_arm64-windows'
+  #ICONV_VCPKG: 'C:\vcpkg\libiconv_arm64-windows'
+  GETTEXT_DIR: 'C:\dependencies\gettext'
 
   # winpty
   WINPTY_URL: https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
+  WINPTY_VCPKG: 'C:\vcpkg\packages\winpty_arm64-windows'
+
+  # ShellExecAsUser
+  SHELLEXECASUSER_URL: https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
 
   # libsodium
   SODIUM_RELEASE: '1.0.22'
   SODIUM_VC_VER: 'v143'
   SODIUM_URL: https://download.libsodium.org/libsodium/releases/libsodium-%SODIUM_RELEASE%-stable-msvc.zip
-  SODIUM_DIR: '%DEPENDENCIES%\libsodium'
+  SODIUM_DIR: 'C:\dependencies\libsodium'
 
 
   # Skip pattern
-  # FIXME: Test_mswin_event_mouse is too flaky and fails too often.
-  TEST_SKIP_PAT: 'Test_mswin_event_mouse'
+  # FIXME: Some tests are flaky and often fail.
+  TEST_SKIP_PAT: 'Test_mswin_event_mouse\|Test_channel_dap_mode\|Test_terminal_composing_unicode\|Test_gui_lowlevel_keyevent\|Test_QWERTY_Ctrl_minus\|Test_mswin_event_character_keys\|Test_mswin_event_function_keys\|Test_mswin_event_movement_keys\|Test_terminal_version\|Test_system_list_arg'
 
   # Escape sequences
   COL_RED: "\x1b[31m"
@@ -142,7 +153,7 @@ jobs:
             bits: 64
             #cygreg: registry
             #pyreg: ""
-            sys: ''
+            sys: clangarm64
             os: windows-11-arm
 
     outputs:
@@ -175,6 +186,7 @@ jobs:
 
         # Racket
         echo "RACKET_URL=${RACKET_URL_${{ matrix.bits }}}" >> $GITHUB_ENV
+        echo "MZSCHEME_VER=${RACKET_VER}" >> $GITHUB_ENV
 
         # Ruby
         echo "RUBY_VER=${RUBY_VER_DOT//./}" >> $GITHUB_ENV
@@ -219,6 +231,8 @@ jobs:
           exit 0
         fi
 
+        echo "${{ github.run_id }}" > package/artifacts/run_id.txt
+
         cd vim
         latesttag=$(git describe --tags --abbrev=0)
         echo "ref=${latesttag:1}" >> $GITHUB_OUTPUT
@@ -249,16 +263,19 @@ jobs:
       shell: bash
       run: |
         if git diff --exit-code HEAD vimver.txt; then
+          # No updates found.
           echo ${COL_YELLOW}No updates.${COL_RESET}
           if [ "${{ github.event_name }}" = 'pull_request' ]; then
             # Don't skip on pull_request even if there are no updates.
             echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=yes" >> $GITHUB_OUTPUT
           else
+            # No updates. Skip all.
             echo "skip=yes" >> $GITHUB_OUTPUT
             echo "skip_release=yes" >> $GITHUB_OUTPUT
           fi
         else
+          # Updates found
           if [ "${{ github.ref_name }}" = 'master' ] || [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
             echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=no" >> $GITHUB_OUTPUT
@@ -273,7 +290,7 @@ jobs:
       shell: bash
       run: |
         cd vim
-        for i in ../patches/*.patch; do
+        for i in ../patch/*.patch; do
           if [[ $i =~ \*.patch ]]; then
             break
           fi
@@ -281,13 +298,34 @@ jobs:
         done
 
     - uses: msys2/setup-msys2@v2
-      if: false  # steps.check.outputs.skip == 'no' && matrix.arch != 'arm64'
+      if: steps.check.outputs.skip == 'no'
       with:
-        update: true
-        location: D:\
+        update: false
+        location: C:\dependencies
         msystem: ${{ matrix.sys }}
-        install: gettext
-        pacboy: libiconv:p gettext-runtime:p
+        #install: gettext
+        #pacboy: libiconv:p gettext-runtime:p
+
+    - name: Update msys2 (1st)
+      if: steps.check.outputs.skip == 'no'
+      shell: msys2 {0}
+      continue-on-error: true
+      run: |
+        # https://www.msys2.org/docs/updating/#potential-issues
+        #pacman-key --refresh-keys
+
+        # Reset sync databases in case of a corrupted cached state
+        rm -f /var/lib/pacman/sync/*.db /var/lib/pacman/sync/*.db.sig
+        pacman --noconfirm -Sy msys2-keyring
+        pacman --noconfirm -Suuy
+
+    - name: Update msys2 (2nd)
+      if: steps.check.outputs.skip == 'no'
+      shell: msys2 {0}
+      run: |
+        pacman --noconfirm -Suuy
+        pacman --noconfirm -S --needed gettext pactoys
+        pacboy --noconfirm -S libiconv:p gettext-runtime:p
 
 #    # See: https://github.com/nelsonjchen/reverse-rdp-windows-github-actions
 #    # To check the endpoint: ngrok dashboard > Universal Gateway > Endpoints
@@ -312,19 +350,22 @@ jobs:
         echo %LUA_RELEASE%>> urls.txt
         echo %PERL_RELEASE%>> urls.txt
         echo %PYTHON3_RELEASE%>> urls.txt
-        echo %RUBY_RELEASE%>> urls.txt
-        if defined GETTEXT_URL (
-          echo %GETTEXT_URL%>> urls.txt
+        if NOT "${{ matrix.arch }}"=="arm64" (
+          echo %RUBY_RELEASE%>> urls.txt
+          echo %GETTEXT_32_URL%>> urls.txt
+          echo %GETTEXT_64_URL%>> urls.txt
+          echo %WINPTY_URL%>> urls.txt
         )
-        echo %WINPTY_URL%>> urls.txt
         echo %SODIUM_RELEASE%>> urls.txt
 
     - name: Cache downloaded files
       if: steps.check.outputs.skip == 'no'
       uses: actions/cache@v5
       with:
-        path: downloads
-        key: ${{ runner.os }}-${{ matrix.bits }}-${{ hashFiles('urls.txt') }}
+        path: |
+          ${{ env.VCPKG_ROOT }}
+          downloads
+        key: ${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('urls.txt') }}
 
     - name: Download dependencies
       if: steps.check.outputs.skip == 'no'
@@ -338,6 +379,7 @@ jobs:
         ) else (
           set PYARCH=-${{ matrix.vcarch }}
         )
+        if not exist %DEPENDENCIES% md %DEPENDENCIES%
 
         echo %COL_GREEN%Download Lua%COL_RESET%
         call :downloadfile %LUA_URL% downloads\lua.zip
@@ -352,39 +394,83 @@ jobs:
         call :downloadfile %PYTHON3_URL% downloads\python3.exe
         start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR% Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
 
-        echo %COL_GREEN%Download Ruby%COL_RESET%
-        call :downloadfile %RUBY_URL% downloads\ruby.7z
-        7z x downloads\ruby.7z -oD:\ > nul || exit 1
-        move D:\rubyinstaller-%RUBY_RELEASE%-${{ matrix.arch }} %RUBY_DIR% > nul || exit 1
-
-        echo %COL_GREEN%Download Ruby source%COL_RESET%
-        call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
-        :: Extract the files only we needed to reduce the building time.
-        7z x downloads\ruby_src.zip */bin */common.mk */enc/Makefile.in */include */spec/ruby/optional/capi/ext/*_spec.c */version.h */win32 -xr!README.* -xr!*/win32/*.c -xr!*/win32/*.h -o.. > nul || exit 1
-        move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
-
-        if defined GETTEXT_URL (
-          echo %COL_GREEN%Download gettext%COL_RESET%
-          call :downloadfile %GETTEXT_URL% downloads\gettext.zip
-          7z e -y downloads\gettext.zip -o%GETTEXT_DIR% > nul || exit 1
+        if "${{ matrix.arch }}"=="arm64" (
+          echo %COL_YELLOW%Skip downloading Racket%COL_RESET%
         ) else (
+          echo %COL_GREEN%Download Racket%COL_RESET%
+          call :downloadfile %RACKET_URL% downloads\racket-%BITS%.tgz
+          7z.exe x -tgzip -so downloads\racket-%BITS%.tgz | 7z.exe x -y -aoa -si -ttar ^
+            -o%DEPENDENCIES%\
+          rem move %DEPENDENCIES%\racket %RACKET_DIR%
+          type NUL > %RACKET_DIR%\include\bc_suffix.h
+
+          rem Install additional packages for Racket
+          %RACKET_DIR%\raco.exe pkg install -i --auto r5rs-lib
+        )
+
+        if "${{ matrix.arch }}"=="arm64" (
+          echo %COL_YELLOW%Skip downloading Ruby%COL_RESET%
+        ) else (
+          echo %COL_GREEN%Download Ruby%COL_RESET%
+          call :downloadfile %RUBY_URL% downloads\ruby.7z
+          7z x downloads\ruby.7z -o%DEPENDENCIES% > nul || exit 1
+          move %DEPENDENCIES%\rubyinstaller-%RUBY_RELEASE%-${{ matrix.arch }} %RUBY_DIR% > nul || exit 1
+
+          echo %COL_GREEN%Download Ruby source%COL_RESET%
+          call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
+          rem Extract the files only we needed to reduce the building time.
+          7z x downloads\ruby_src.zip */bin */common.mk */enc/Makefile.in */include */spec/ruby/optional/capi/ext/*_spec.c */version.h */win32 -xr!README.* -xr!*/win32/*.c -xr!*/win32/*.h -o.. > nul || exit 1
+          move ..\ruby-%RUBY_BRANCH% ..\ruby > nul || exit 1
+        )
+
+        if "${{ matrix.arch }}"=="arm64" (
           echo %COL_GREEN%Prepare gettext%COL_RESET%
           md %GETTEXT_DIR%
-          copy /Y D:\msys64\${{ matrix.sys }}\bin\libiconv-2.dll %GETTEXT_DIR%
-          copy /Y D:\msys64\${{ matrix.sys }}\bin\libintl-8.dll %GETTEXT_DIR%
-          if "${{ matrix.sys }}"=="mingw32" copy /Y D:\msys64\${{ matrix.sys }}\bin\libgcc_s_dw2-1.dll %GETTEXT_DIR%
+          md %GETTEXT_DIR%64
+          copy /Y C:\dependencies\msys64\${{ matrix.sys }}\bin\libiconv-2.dll %GETTEXT_DIR% || exit 1
+          copy /Y C:\dependencies\msys64\${{ matrix.sys }}\bin\libintl-8.dll %GETTEXT_DIR% || exit 1
+          copy /Y %GETTEXT_DIR%\libiconv-2.dll %GETTEXT_DIR%64 || exit 1
+          copy /Y %GETTEXT_DIR%\libintl-8.dll %GETTEXT_DIR%64 || exit 1
+          rem Work around for nsis installer
+          rem md %GETTEXT_DIR%32
+          rem copy /Y %GETTEXT_DIR%\libiconv-2.dll %GETTEXT_DIR%32 || exit 1
+          rem copy /Y %GETTEXT_DIR%\libintl-8.dll %GETTEXT_DIR%32 || exit 1
+        ) else (
+          echo %COL_GREEN%Download gettext%COL_RESET%
+          call :downloadfile %GETTEXT_32_URL% downloads\gettext32.zip
+          rem Extract without directories
+          7z e -y downloads\gettext32.zip -o%GETTEXT_DIR%32 > nul || exit 1
+          call :downloadfile %GETTEXT_64_URL% downloads\gettext64.zip
+          rem Extract without directories
+          7z e -y downloads\gettext64.zip -o%GETTEXT_DIR%64 > nul || exit 1
+          md %GETTEXT_DIR%
+          copy /Y %GETTEXT_DIR%%BITS%\libiconv-2.dll %GETTEXT_DIR% || exit 1
+          copy /Y %GETTEXT_DIR%%BITS%\libintl-8.dll %GETTEXT_DIR% || exit 1
+          if exist %GETTEXT_DIR%%BITS%\libgcc_s_sjlj-1.dll copy %GETTEXT_DIR%%BITS%\libgcc_s_sjlj-1.dll %GETTEXT_DIR% || exit 1
         )
 
         echo %COL_GREEN%Download winpty%COL_RESET%
-        call :downloadfile %WINPTY_URL% downloads\winpty.zip
-        7z x -y downloads\winpty.zip -oD:\winpty > nul || exit 1
-        copy /Y D:\winpty\${{ matrix.warch }}\bin\winpty.dll        vim\src\winpty${{ matrix.bits }}.dll
-        copy /Y D:\winpty\${{ matrix.warch }}\bin\winpty-agent.exe  vim\src\
+        if "${{ matrix.arch }}"=="arm64" (
+          call :vcpkg winpty
+          copy /Y %WINPTY_VCPKG%\bin\winpty.dll                 vim\src\winpty${{ matrix.bits }}.dll
+          copy /Y %WINPTY_VCPKG%\tools\winpty\winpty-agent.exe  vim\src\
+        ) else (
+          call :downloadfile %WINPTY_URL% downloads\winpty.zip
+          7z x -y downloads\winpty.zip -o%DEPENDENCIES%\winpty > nul || exit 1
+          copy /Y %DEPENDENCIES%\winpty\${{ matrix.warch }}\bin\winpty.dll        vim\src\winpty${{ matrix.bits }}.dll
+          copy /Y %DEPENDENCIES%\winpty\${{ matrix.warch }}\bin\winpty-agent.exe  vim\src\
+        )
+
+        echo %COL_GREEN%Download ShellExecAsUser%COL_RESET%
+        call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
+        7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
+        copy /Y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
+          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll"
 
         echo %COL_GREEN%Download libsodium%COL_RESET%
         call :downloadfile %SODIUM_URL% downloads\libsodium.zip
-        7z x -y downloads\libsodium.zip -oD:\ > nul || exit 1
-        copy /Y D:\libsodium\${{ matrix.sodiumarch }}\Release\%SODIUM_VC_VER%\dynamic\libsodium.dll  vim\src\
+        7z x -y downloads\libsodium.zip -o%DEPENDENCIES% > nul || exit 1
+        copy /Y %DEPENDENCIES%\libsodium\${{ matrix.sodiumarch }}\Release\%SODIUM_VC_VER%\dynamic\libsodium.dll  vim\src\
 
         goto :eof
 
@@ -392,12 +478,13 @@ jobs:
         :: call :downloadfile <URL> <localfile>
         echo Downloading: %1
         if not exist %2 (
-          curl -f -L %1 -o %2
+          curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors %1 -o %2 || exit 1
         )
-        if ERRORLEVEL 1 (
-          rem Retry once.
-          curl -f -L %1 -o %2 || exit 1
-        )
+        goto :eof
+
+        :vcpkg
+        :: call :vcpkg package
+        vcpkg --vcpkg-root="%VCPKG_ROOT%" install %1:arm64-windows || exit 1
         goto :eof
 
     - name: Create Ruby's config.h
@@ -418,6 +505,14 @@ jobs:
         patchlevel=$(sed -n -e '/included_patches/{n;n;n;s/ *\([0-9]*\).*/\1/p;q}' version.c)
         sed -i -e "s/^\(# define VIM_VERSION_PATCHLEVEL\s\+\).*/\1$patchlevel/" version.h
 
+        # Set MAJOR, MINOR, PATCHLEVEL, PATCHLEVEL_PADDED
+        major=$(grep -o -P '#define VIM_VERSION_MAJOR\s+\K[0-9]+' version.h)
+        minor=$(grep -o -P '#define VIM_VERSION_MINOR\s+\K[0-9]+' version.h)
+        echo "MAJOR=${major}" >> $GITHUB_ENV
+        echo "MINOR=${minor}" >> $GITHUB_ENV
+        echo "PATCHLEVEL=${patchlevel}" >> $GITHUB_ENV
+        echo "PATCHLEVEL_PADDED=$(printf '%04d' ${patchlevel})" >> $GITHUB_ENV
+
     - name: Copy src directory to src2
       if: steps.check.outputs.skip == 'no'
       shell: cmd
@@ -431,15 +526,29 @@ jobs:
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
         cd vim\src
+
+        :: Create config
+        if not exist auto\nmake mkdir auto\nmake
+        copy /Y ..\..\vimdll-huge.cfg auto\nmake\
+        echo "PERL_VER=%PERL_VER%">> auto\nmake\vimdll-huge.cfg
+        echo "PERL=%PERL_DIR%">> auto\nmake\vimdll-huge.cfg
+        echo "PYTHON3_VER=%PYTHON3_VER%">> auto\nmake\vimdll-huge.cfg
+        echo "PYTHON3=%PYTHON3_DIR%">> auto\nmake\vimdll-huge.cfg
+        echo "LUA_VER=%LUA_VER%">> auto\nmake\vimdll-huge.cfg
+        echo "LUA=%LUA_DIR%">> auto\nmake\vimdll-huge.cfg
+        rem Not supported for ARM64
+        if NOT "${{ matrix.arch }}"=="arm64" (
+          rem echo "PYTHON=%PYTHON_DIR%">> auto\nmake\vimdll-huge.cfg
+          echo "RUBY_VER=%RUBY_VER%">> auto\nmake\vimdll-huge.cfg
+          echo "RUBY_API_VER_LONG=%RUBY_API_VER_LONG%">> auto\nmake\vimdll-huge.cfg
+          echo "RUBY=%RUBY_DIR%">> auto\nmake\vimdll-huge.cfg
+          echo "MZSCHEME_VER=%MZSCHEME_VER%">> auto\nmake\vimdll-huge.cfg
+          echo "MZSCHEME=%RACKET_DIR%">> auto\nmake\vimdll-huge.cfg
+        )
+        echo:"SODIUM=%SODIUM_DIR%">> auto\nmake\vimdll-huge.cfg
+
         rem Build gvim/vim with VIMDLL
-        nmake -nologo -f Make_mvc.mak ^
-          GUI=yes IME=yes ICONV=yes VIMDLL=yes ^
-          DYNAMIC_LUA=yes LUA=%LUA_DIR% ^
-          DYNAMIC_PERL=yes PERL=%PERL_DIR% ^
-          DYNAMIC_PYTHON3=yes PYTHON3=%PYTHON3_DIR% DYNAMIC_PYTHON3_STABLE_ABI=yes ^
-          DYNAMIC_RUBY=yes RUBY=%RUBY_DIR% RUBY_MSVCRT_NAME=msvcrt ^
-          SODIUM=%SODIUM_DIR% ^
-          || exit 1
+        nmake -nologo -f Make_mvc.mak @auto\nmake\vimdll-huge.cfg || exit 1
         if not exist vim${{ matrix.bits }}.dll (
           echo %COL_RED%Build failure.%COL_RESET%
           exit 1
@@ -452,9 +561,12 @@ jobs:
       if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        set "PLTCOLLECTS=%RACKET_DIR%\collects"
+        set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         cd vim\src
         echo.
+        start "" /wait .\gvim -silent -register
         echo %COL_GREEN%gvim version:%COL_RESET%
         start /wait .\gvim -u NONE -c "redir @a | ver | put a | 1,3d | wq!" ver.txt
         type ver.txt || exit 1
@@ -465,18 +577,58 @@ jobs:
         .\vim --not-a-term -u NONE -S ..\..\scripts\if_ver.vim -c quit
         type if_ver.txt
 
+    - name: Build GvimExt
+      if: steps.check.outputs.skip == 'no'
+      shell: cmd
+      run: |
+        mkdir vim\runtime\GvimExt64
+
+        if "${{ matrix.arch }}"=="arm64" (
+          call vim\src\msvc-latest ${{ matrix.vcarch }}
+          pushd vim\src\GvimExt
+          nmake.exe -nologo -f Make_mvc.mak CPU=ARM64 clean all || exit 1
+          popd
+          robocopy vim\src\GvimExt vim\runtime\GvimExt64 ^
+            gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
+          if ERRORLEVEL 8 exit 1
+          copy /Y vim\src\GvimExt\gvimext.dll vim\src\GvimExt\gvimext64.dll || exit 1
+        ) else (
+          rem Build both 64- and 32-bit versions of gvimext.dll for the installer
+
+          rem x64
+          start "" /wait cmd /C "vim\src\msvc-latest x64 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
+          type vim\src\gvimext.log
+          robocopy vim\src\GvimExt vim\runtime\GvimExt64 ^
+            gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
+          if ERRORLEVEL 8 exit 1
+          copy /Y vim\src\GvimExt\gvimext.dll vim\src\GvimExt\gvimext64.dll || exit 1
+
+          rem x86
+          mkdir vim\runtime\GvimExt32
+          start "" /wait cmd /C "vim\src\msvc-latest x86 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
+          type vim\src\gvimext.log
+          robocopy vim\src\GvimExt vim\runtime\GvimExt32 ^
+            gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
+          if ERRORLEVEL 8 exit 1
+        )
+        rem robocopy returns a non-zero error code even on success.
+        exit 0
+
 #    - name: Wait for RDP
 #      if: steps.check.outputs.skip == 'no'
 #      shell: cmd
 #      run: |
 #        ping -n 3600 localhost>nul
 
-    - name: Test and show the result of testing gVim
-      if: steps.check.outputs.skip == 'no'
+    - name: Test gvim/vim and show the result of gvim tests
+      #if: steps.check.outputs.skip == 'no'
+      if: false # XXX DEBUG
       shell: cmd
       timeout-minutes: 15
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        set "PLTCOLLECTS=%RACKET_DIR%\collects"
+        set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         call vim\src\msvc-latest ${{ matrix.vcarch }}
         cd vim
 
@@ -488,12 +640,15 @@ jobs:
         nmake -nologo -f Make_mvc.mak VIMPROG=..\gvim || exit 1
         cd ..
 
-    - name: Show the result of testing Vim
-      if: steps.check.outputs.skip == 'no'
+    - name: Show the result of vim tests
+      #if: steps.check.outputs.skip == 'no'
+      if: false # XXX DEBUG
       shell: cmd
       timeout-minutes: 10
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        set "PLTCOLLECTS=%RACKET_DIR%\collects"
+        set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         call vim\src\msvc-latest ${{ matrix.vcarch }}
         echo %COL_GREEN%Wait for vim tests to finish.%COL_RESET%
         cd vim\src2\testdir
@@ -513,14 +668,24 @@ jobs:
           exit 1
         )
 
-    - name: Package
+    - name: Package (zip)
       if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
+
         cd package
-        set DEST=vim-kt-win${{ matrix.bits }}
+
+        set VIM_DIR=vim%MAJOR%%MINOR%
+        set PKG=vim-package-${{ matrix.arch }}
+        set DEST=%PKG%\vim\%VIM_DIR%
+        echo VIM_DIR=%VIM_DIR%>> %GITHUB_ENV%
+        echo PKG=%PKG%>> %GITHUB_ENV%
+
         md %DEST%
+
+        robocopy ..\vim\runtime %DEST% /E /NP /NFL /NDL
+        if ERRORLEVEL 8 exit 1
         copy ..\vim\src\*.pdb     . || exit 1
         copy ..\vim\src\*vim*.exe %DEST% || exit 1
         copy ..\vim\src\vim*.dll  %DEST% || exit 1
@@ -528,55 +693,98 @@ jobs:
         copy ..\vim\src\xxd\*.exe %DEST% || exit 1
         copy ..\vim\src\libsodium.dll %DEST% || exit 1
         copy ..\vim\src\winpty*   %DEST% || exit 1
-        copy ..\vim\LICENSE       %DEST% || exit 1
-        copy ..\README.md         %DEST% || exit 1
-        copy %LUA_DIR%\lua*.dll   %DEST% || exit 1
+        copy ..\vim\README.txt    %DEST% || exit 1
+        copy ..\vim\LICENSE       %DEST%\LICENSE.txt || exit 1
+        copy ..\vim\uninstall.txt %DEST% || exit 1
+        copy ..\vim\vimtutor.bat  %DEST% || exit 1
+        copy ..\vim\src\vim.ico   %DEST% || exit 1
+        copy ..\vim\src\install.exe %DEST% || exit 1
+        copy ..\vim\src\uninstall.exe %DEST% || exit 1
+        copy ..\diff.exe          %DEST% || exit 1
+        rem copy %LUA_DIR%\lua*.dll   %DEST% || exit 1
+
         copy %GETTEXT_DIR%\libiconv-2.dll %DEST% || exit 1
         copy %GETTEXT_DIR%\libintl-8.dll  %DEST% || exit 1
         :: Check if libgcc_s_*.dll is required
-        dumpbin /DEPENDENTS %GETTEXT_DIR%\libintl-8.dll | findstr /R "libgcc_s_.*\.dll"
-        if not ERRORLEVEL 1 (
-          if defined GETTEXT_URL (
+        set INCLUDE_LIBGCC=0
+        if NOT "${{ matrix.arch }}"=="arm64" (
+          dumpbin /DEPENDENTS %GETTEXT_DIR%32\libintl-8.dll | findstr /R "libgcc_s_.*\.dll" && set INCLUDE_LIBGCC=1
+        )
+        if "${{ matrix.arch }}"=="x86" (
+          if "%INCLUDE_LIBGCC%" EQU 1 (
             if exist %GETTEXT_DIR%\libgcc_s_sjlj-1.dll copy %GETTEXT_DIR%\libgcc_s_sjlj-1.dll %DEST% || exit 1
-          ) else (
-            if exist %GETTEXT_DIR%\libgcc_s_dw2-1.dll copy %GETTEXT_DIR%\libgcc_s_dw2-1.dll %DEST% || exit 1
           )
         )
-        robocopy ..\vim\runtime %DEST%\runtime /E /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        rd /S /Q %DEST%\runtime\syntax\testdir
-        md %DEST%\runtime\pack\dist-kt\start
-        :: Don't copy hidden files
-        robocopy ..\contrib\autofmt   %DEST%\runtime\pack\dist-kt\start\autofmt   /E /XA:H /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        del /Q %DEST%\runtime\pack\dist-kt\start\autofmt\.git*
-        robocopy ..\contrib\vimdoc-ja %DEST%\runtime\pack\dist-kt\start\vimdoc-ja /E /XA:H /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        del /Q %DEST%\runtime\pack\dist-kt\start\vimdoc-ja\.git*
-        robocopy ..\contrib\vim-mild  %DEST%\runtime\pack\dist-kt\start\vim-mild  /E /XA:H /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        rem del /Q %DEST%\runtime\pack\dist-kt\start\vim-mild\.git*
-        robocopy ..\vim\.git\patches   %DEST%\patches   /E /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        rd /S /Q %DEST%\patches\.git %DEST%\patches\scripts
-        del /Q %DEST%\patches\.git* %DEST%\patches\appveyor.yml
-
-        :: Create some links (7-zip doesn't store hardlinks as links, though.)
-        mklink /h %DEST%\gvimdiff.exe %DEST%\gvim.exe
-        mklink /h %DEST%\vimdiff.exe %DEST%\vim.exe
+        copy %GETTEXT_DIR%64\libiconv-2.dll %DEST%\GvimExt64 || exit 1
+        copy %GETTEXT_DIR%64\libintl-8.dll  %DEST%\GvimExt64 || exit 1
+        if NOT "${{ matrix.arch }}"=="arm64" (
+          copy %GETTEXT_DIR%32\libiconv-2.dll %DEST%\GvimExt32 || exit 1
+          copy %GETTEXT_DIR%32\libintl-8.dll  %DEST%\GvimExt32 || exit 1
+          if "%INCLUDE_LIBGCC%" EQU 1 (
+            if exist %GETTEXT_DIR%32\libgcc_s_sjlj-1.dll copy %GETTEXT_DIR%32\libgcc_s_sjlj-1.dll %DEST% || exit 1
+          )
+        )
+        rem Parentheses are required. Otherwise the number is interpreted as a file descriptor.
+        (echo INCLUDE_LIBGCC=%INCLUDE_LIBGCC%)>> %GITHUB_ENV%
 
         rem md artifacts
-        set BASENAME=vim-kt-${{ steps.changelog.outputs.ref }}-${{ steps.init.outputs.date }}-win${{ matrix.bits }}
-        7z a -mx=9 artifacts\%BASENAME%.zip %DEST% || exit 1
-        7z a -mx=9 artifacts\%BASENAME%.7z  %DEST% || exit 1
-        7z a -mx=9 artifacts\%BASENAME%-pdb.7z *.pdb || exit 1
+        set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
+        cd %PKG%
+        7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\unsigned_%BASENAME%.zip vim || exit 1
+        cd ..
+        7z a -mx=9 artifacts\%BASENAME%_pdb.7z *.pdb || exit 1
+
+    - name: Package (installer)
+      if: steps.check.outputs.skip == 'no'
+      shell: cmd
+      run: |
+        call vim\src\msvc-latest ${{ matrix.vcarch }}
+
+        if NOT "${{ matrix.arch }}"=="arm64" (
+          winget upgrade --disable-interactivity --accept-source-agreements
+          winget install -e --id NSIS.NSIS --disable-interactivity --accept-package-agreements
+        )
+
+        rem Install ShellExecAsUser
+        7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
+        copy /y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
+          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll"
+
+        set INST=vim-installer-${{ matrix.arch }}
+        set DEST_INST=%INST%\vim\%VIM_DIR%
+        robocopy package\%PKG% package\%INST% /E /NP /NFL /NDL
+        if ERRORLEVEL 8 exit 1
+        robocopy vim\src\GvimExt package\%DEST_INST%\GvimExt /E /NP /NFL /NDL
+        if ERRORLEVEL 8 exit 1
+
+        cd vim\nsis
+
+        set WIN64=0
+        set ARM64=0
+
+        if "${{ matrix.arch }}"=="x64" set WIN64=1
+        if "${{ matrix.arch }}"=="arm64" set ARM64=1
+
+        set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
+        nmake.exe -nologo -f Make_mvc.mak ^
+          "X=OutFile ..\..\package\artifacts\unsigned_%BASENAME%.exe" ^
+          "SRC=..\..\package\%DEST_INST%" "VIMTOOLS=..\..\package\%DEST_INST%" ^
+          "VIMSRC=..\..\package\%DEST_INST%" "VIMRT=..\..\package\%DEST_INST%" ^
+          "GETTEXT=%DEPENDENCIES%" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
+          "WIN64=%WIN64%" "ARM64=%ARM64%" || exit 1
 
     - name: Upload Artifact
       if: steps.check.outputs.skip == 'no'
       uses: actions/upload-artifact@v7
       with:
-        name: vim-kt-win${{ matrix.bits }}
+        name: vim-package-${{ matrix.arch }}
         path: ./package/artifacts
+
+    - name: Attest
+      if: steps.check.outputs.skip == 'no'
+      uses: actions/attest@v4
+      with:
+        subject-path: ./package/artifacts
 
   release:
     runs-on: ubuntu-latest
@@ -589,11 +797,13 @@ jobs:
     steps:
     - uses: actions/checkout@v6
       if: github.event_name != 'workflow_dispatch'
+      with:
+        ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
     - uses: actions/checkout@v6
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
-        ssh-key: ${{ secrets.VIM_KT_DEPLOY_KEY }}
+        ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
 
     - name: Checkout and update submodules
       run: |
@@ -603,17 +813,23 @@ jobs:
           git -C $i checkout master
         done
 
-    - name: Download Artifact (win32)
+    - name: Download Artifact (x86)
       uses: actions/download-artifact@v8
       with:
-        name: vim-kt-win32
-        path: vim-kt-win32
+        name: vim-package-x86
+        path: vim-package-x86
 
-    - name: Download Artifact (win64)
+    - name: Download Artifact (x64)
       uses: actions/download-artifact@v8
       with:
-        name: vim-kt-win64
-        path: vim-kt-win64
+        name: vim-package-x64
+        path: vim-package-x64
+
+    - name: Download Artifact (arm64)
+      uses: actions/download-artifact@v8
+      with:
+        name: vim-package-arm64
+        path: vim-package-arm64
 
     - name: Get changelog
       id: changelog
@@ -621,7 +837,7 @@ jobs:
         cat << EOF > changelog.md
         ### Changes:
 
-        $(cat vim-kt-win64/changelog.md)
+        $(cat vim-package-x64/changelog.md)
 
         ### Compiled with:
 
@@ -632,9 +848,9 @@ jobs:
         * [Python](https://www.python.org/downloads/) ${{ env.PYTHON3_VER_DOT }}
         * [RubyInstaller](https://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
         EOF
-        latesttag=$(cat vim-kt-win64/latesttag.txt)
+        latesttag=$(cat vim-package-x64/latesttag.txt)
         echo "tag=${latesttag}" >> $GITHUB_OUTPUT
-        cp vim-kt-win64/latesttag.txt vimver.txt
+        cp vim-package-x64/latesttag.txt vimver.txt
 
     - name: Commit and push
       id: commit
@@ -646,17 +862,18 @@ jobs:
           echo ${COL_YELLOW}No updates.${COL_RESET}
           exit 1  # This should not happen.
         fi
-        cp vim-kt-win64/latestrev.txt vimrev.txt
+        cp vim-package-x64/latestrev.txt vimrev.txt
         git config --local user.name "$USER_NAME"
         git config --local user.email "$USER_EMAIL"
         git commit -a \
           -m "Update Vim to ${{ steps.changelog.outputs.tag }}" \
-          -m "$(head -n 50 vim-kt-win64/changelog.txt)"
+          -m "$(head -n 50 vim-package-x64/changelog.txt)"
         git tag "${{ steps.changelog.outputs.tag }}"
         git push origin HEAD --tags
 
     - name: Create Release
       uses: softprops/action-gh-release@v3
+      if: github.repository == 'vim/vim-win32-installer'  # XXX
       with:
         tag_name: ${{ steps.changelog.outputs.tag }}
         name: ${{ steps.changelog.outputs.tag }}
@@ -664,11 +881,14 @@ jobs:
         draft: true   # XXX
         prerelease: false
         files: |
-          ./vim-kt-win32/vim-kt-*-*-win32.zip
-          ./vim-kt-win32/vim-kt-*-*-win32.7z
-          ./vim-kt-win32/vim-kt-*-*-win32-pdb.7z
-          ./vim-kt-win64/vim-kt-*-*-win64.zip
-          ./vim-kt-win64/vim-kt-*-*-win64.7z
-          ./vim-kt-win64/vim-kt-*-*-win64-pdb.7z
+          ./vim-package-x86/gvim_*.exe
+          ./vim-package-x86/gvim_*.zip
+          ./vim-package-x86/gvim_*_pdb.7z
+          ./vim-package-x64/gvim_*.exe
+          ./vim-package-x64/gvim_*.zip
+          ./vim-package-x64/gvim_*_pdb.7z
+          ./vim-package-arm64/gvim_*.exe
+          ./vim-package-arm64/gvim_*.zip
+          ./vim-package-arm64/gvim_*_pdb.7z
 
 # vim: ts=2 sw=2 sts=2 et
