@@ -861,10 +861,15 @@ jobs:
     - name: Get changelog
       id: changelog
       run: |
+        latesttag=$(cat vim-package-x64/latesttag.txt)
+        ref=${latesttag:1}
+        echo "tag=${latesttag}" >> $GITHUB_OUTPUT
+        cp vim-package-x64/latesttag.txt vimver.txt
+
         URL=https://github.com/${{ github.repository }}/releases/download
 
         cat << EOF > changelog.md
-        [![v${{ steps.changelog.outputs.ref }}](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/total.svg)](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.changelog.outputs.ref }})
+        [![${latesttag}](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/total.svg)](https://github.com/${{ github.repository }}/releases/tag/${latesttag})
         Nightly Vim Windows build snapshots ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
         **If you do not know what to use, use the 32bit installer (use the signed one, if available).**
@@ -880,37 +885,37 @@ jobs:
         ### Files:
         <!--  commented out, because will only be enabled once the signed files are uploaded manually.
         #### :lock: Signed Files:
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe)
+        * [![gvim_${ref}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_signed.exe)
           Signed 32-bit installer (*If you don't know what to use, use this one*)
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe)
+        * [![gvim_${ref}_x64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_signed.exe)
           Signed 64-bit installer
-        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe)
+        * [![gvim_${ref}_arm64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_signed.exe)
           Signed ARM64-bit installer
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip)
+        * [![gvim_${ref}_x86_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_signed.zip)
           Signed 32-bit zip archive
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip)
+        * [![gvim_${ref}_x64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_signed.zip)
           Signed 64-bit zip archive
-        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip)
+        * [![gvim_${ref}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_signed.zip)
           Signed ARM64-bit zip archive
         -->
         #### :unlock: Unsigned Files:
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x86.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.exe)
+        * [![gvim_${ref}_x86.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86.exe)
           32-bit installer (*If you don't know what to use, use this one*)
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.exe)
+        * [![gvim_${ref}_x64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64.exe)
           64-bit installer
-        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.exe)
+        * [![gvim_${ref}_arm64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64.exe)
           ARM64-bit installer
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x86.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.zip)
+        * [![gvim_${ref}_x86.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86.zip)
           32-bit zip archive
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.zip)
+        * [![gvim_${ref}_x64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64.zip)
           64-bit zip archive
-        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.zip)
+        * [![gvim_${ref}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64.zip)
           ARM 64-bit zip archive
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip)
+        * [![gvim_${ref}_x86_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_pdb.zip)
           pdb files for debugging the corresponding 32-bit executable
-        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip)
+        * [![gvim_${ref}_x64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_pdb.zip)
           pdb files for debugging the corresponding 64-bit executable
-        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip)
+        * [![gvim_${ref}_arm64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_pdb.zip)
           pdb files for debugging the corresponding ARM 64-bit executable
 
         <details>
@@ -928,10 +933,6 @@ jobs:
 
         See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
         EOF
-
-        latesttag=$(cat vim-package-x64/latesttag.txt)
-        echo "tag=${latesttag}" >> $GITHUB_OUTPUT
-        cp vim-package-x64/latesttag.txt vimver.txt
 
     - name: Commit and push
       id: commit
