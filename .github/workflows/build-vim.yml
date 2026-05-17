@@ -261,6 +261,8 @@ jobs:
     - name: Check changes
       id: check
       shell: bash
+      env:
+        SIGNPATH_API_TOKEN: secrets.SIGNPATH_API_TOKEN
       run: |
         if git diff --exit-code HEAD vimver.txt; then
           # No updates found.
@@ -283,6 +285,13 @@ jobs:
             echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=yes" >> $GITHUB_OUTPUT
           fi
+        fi
+
+        if [ "${{ github.repository }}" = "vim/vim-win32-installer" ] \
+           && [ -n "${SIGNPATH_API_TOKEN}" ]; then
+          echo "signing=yes" >> $GITHUB_OUTPUT
+        else
+          echo "signing=no" >> $GITHUB_OUTPUT
         fi
 
     - name: Apply experimental patches
@@ -782,7 +791,7 @@ jobs:
         path: ./package/artifacts
 
     - name: SignPath code signing
-      if: steps.check.outputs.skip == 'no' && github.repository == 'vim/vim-win32-installer'
+      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
       id: signpath-code-signing
       uses: SignPath/github-action-submit-signing-request@v2.2
       with:
@@ -793,8 +802,8 @@ jobs:
         github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
         wait-for-completion: true
 
-    - name: SignPath code signing
-      if: steps.check.outputs.skip == 'no' && github.repository == 'vim/vim-win32-installer'
+    - name: Download signed files
+      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
       shell: bash
       run: |
         curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors -O \
