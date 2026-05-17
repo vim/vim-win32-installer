@@ -959,7 +959,7 @@ jobs:
         tag_name: ${{ steps.changelog.outputs.tag }}
         name: ${{ steps.changelog.outputs.tag }}
         body_path: changelog.md
-        draft: true   # XXX: should be false when merging to master
+        draft: false
         prerelease: false
         files: |
           ./vim-package-x86/gvim_*.exe
