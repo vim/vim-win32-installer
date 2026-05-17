@@ -739,7 +739,7 @@ jobs:
         rem md artifacts
         set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
         cd %PKG%
-        7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\unsigned_%BASENAME%.zip vim || exit 1
+        7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\%BASENAME%.zip vim || exit 1
         cd ..
         7z a -mx=9 artifacts\%BASENAME%_pdb.7z *.pdb || exit 1
 
@@ -776,7 +776,7 @@ jobs:
 
         set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
         nmake.exe -nologo -f Make_mvc.mak ^
-          "X=OutFile ..\..\package\artifacts\unsigned_%BASENAME%.exe" ^
+          "X=OutFile ..\..\package\artifacts\%BASENAME%.exe" ^
           "SRC=..\..\package\%DEST_INST%" "VIMTOOLS=..\..\package\%DEST_INST%" ^
           "VIMSRC=..\..\package\%DEST_INST%" "VIMRT=..\..\package\%DEST_INST%" ^
           "GETTEXT=%DEPENDENCIES%" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
@@ -800,20 +800,20 @@ jobs:
         project-slug: vim-win32-installer
         signing-policy-slug: release-signing
         github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
-        wait-for-completion: true
+        wait-for-completion: false  # true doesn't seem to work
 
     - name: Download signed files
-      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
+      if: false  # steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
       shell: bash
       run: |
-        curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors -O \
+        curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors \
           -H "Autorization: Bearer ${{ secrets.SIGNPATH_API_TOKEN }}" \
-          "${{ steps.signpath-code-signing.outputs.signed-artifact-download-url }}"
+          "${{ steps.signpath-code-signing.outputs.signed-artifact-download-url }}" \
+          -o artifact.zip
+        unzip artifact.zip
         ls -l
-        for i in *.zip; do
-          unzip $i
-        done
-        ls -l
+
+    # TODO: Create an installer using with signed files, then upload to SignPath again.
 
     - name: Attest
       if: steps.check.outputs.skip == 'no'
@@ -882,7 +882,11 @@ jobs:
 
         $(cat vim-package-x64/changelog.md)
 
+        <!--
+        _This release includes signed files_
+        -->
         ### Files:
+        <!--  commented out, because will only be enabled once the signed files are uploaded manually.
         #### :lock: Signed Files:
         * [![gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe)
           Signed 32-bit installer (*If you don't know what to use, use this one*)
@@ -896,6 +900,26 @@ jobs:
           Signed 64-bit zip archive
         * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip)
           Signed ARM64-bit zip archive
+        -->
+        #### :unlock: Unsigned Files:
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x86.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.exe)
+          32-bit installer (*If you don't know what to use, use this one*)
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.exe)
+          64-bit installer
+        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.exe)
+          ARM64-bit installer
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x86.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86.zip)
+          32-bit zip archive
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64.zip)
+          64-bit zip archive
+        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64.zip)
+          ARM 64-bit zip archive
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_pdb.zip)
+          pdb files for debugging the corresponding 32-bit executable
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_pdb.zip)
+          pdb files for debugging the corresponding 64-bit executable
+        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_pdb.zip)
+          pdb files for debugging the corresponding ARM 64-bit executable
 
         <details>
         <summary>Interface Information</summary>
@@ -938,12 +962,11 @@ jobs:
 
     - name: Create Release
       uses: softprops/action-gh-release@v3
-      if: github.repository == 'vim/vim-win32-installer'  # XXX
       with:
         tag_name: ${{ steps.changelog.outputs.tag }}
         name: ${{ steps.changelog.outputs.tag }}
         body_path: changelog.md
-        draft: true   # XXX
+        draft: true   # XXX: should be false when merging to master
         prerelease: false
         files: |
           ./vim-package-x86/gvim_*.exe
