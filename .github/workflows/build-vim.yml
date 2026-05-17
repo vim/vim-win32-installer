@@ -840,14 +840,6 @@ jobs:
         ref: ${{inputs.base_commit}}
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
 
-    - name: Checkout and update submodules
-      run: |
-        # Checkout the lastest version, ignore error
-        git submodule update --init --depth 1 || true
-        for i in contrib/*/; do
-          git -C $i checkout master
-        done
-
     - name: Download Artifact (x86)
       uses: actions/download-artifact@v8
       with:
