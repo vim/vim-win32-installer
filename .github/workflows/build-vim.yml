@@ -630,8 +630,7 @@ jobs:
 #        ping -n 3600 localhost>nul
 
     - name: Test gvim/vim and show the result of gvim tests
-      #if: steps.check.outputs.skip == 'no'
-      if: false # XXX DEBUG
+      if: steps.check.outputs.skip == 'no'
       shell: cmd
       timeout-minutes: 15
       run: |
@@ -650,8 +649,7 @@ jobs:
         cd ..
 
     - name: Show the result of vim tests
-      #if: steps.check.outputs.skip == 'no'
-      if: false # XXX DEBUG
+      if: steps.check.outputs.skip == 'no'
       shell: cmd
       timeout-minutes: 10
       run: |
