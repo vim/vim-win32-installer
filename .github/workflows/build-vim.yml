@@ -972,4 +972,22 @@ jobs:
           ./vim-package-arm64/gvim_*.zip
           ./vim-package-arm64/gvim_*_pdb.7z
 
+    - name: Post Summary
+      run: |
+        echo "## ✅ Windows Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Tag:** \`${{ steps.changelog.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "**Repository:** \`${{ github.repository }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "**Artifacts Uploaded:**" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-x86/run_id.txt))" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-x64/run_id.txt))" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-arm64/run_id.txt))" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Release Status:**" >> $GITHUB_STEP_SUMMARY
+        echo "- 🔁 Waited for tag \`${{ steps.changelog.outputs.tag }}\` to become available as a release" >> $GITHUB_STEP_SUMMARY
+        echo "- 📦 Uploaded artifacts to the release via \`gh release upload\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Security Provenance:**" >> $GITHUB_STEP_SUMMARY
+        echo "- 🔒 Attested \`x86 packages\`, \`x64 packages\`,  and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)" >> $GITHUB_STEP_SUMMARY
+
 # vim: ts=2 sw=2 sts=2 et
