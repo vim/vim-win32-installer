@@ -834,20 +834,50 @@ jobs:
     - name: Get changelog
       id: changelog
       run: |
+        URL=https://github.com/${{ github.repository }}/releases/download
+
         cat << EOF > changelog.md
+        [![v${{ steps.changelog.outputs.ref }}](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/total.svg)](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.changelog.outputs.ref }})
+        Nightly Vim Windows build snapshots ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
+
+        **If you do not know what to use, use the 32bit installer (use the signed one, if available).**
+
+        Signed releases will occasionally be provided on a best effort approach.
         ### Changes:
 
         $(cat vim-package-x64/changelog.md)
 
-        ### Compiled with:
+        ### Files:
+        #### :lock: Signed Files:
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.exe)
+          Signed 32-bit installer (*If you don't know what to use, use this one*)
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.exe)
+          Signed 64-bit installer
+        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.exe)
+          Signed ARM64-bit installer
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x86_signed.zip)
+          Signed 32-bit zip archive
+        * [![gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_x64_signed.zip)
+          Signed 64-bit zip archive
+        * [![gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/v${{ steps.changelog.outputs.ref }}/gvim_${{ steps.changelog.outputs.ref }}_arm64_signed.zip)
+          Signed ARM64-bit zip archive
 
+        <details>
+        <summary>Interface Information</summary>
+
+        * [Strawberry Perl](http://strawberryperl.com/) ${{ env.PERL_VER_DOT_64 }}
+        <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
         * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) ${{ env.LUA_VER_DOT }}
-        * [Strawberry Perl](https://strawberryperl.com/):
-          - 32-bit: ${{ env.PERL_VER_DOT_32 }}
-          - 64-bit: ${{ env.PERL_VER_DOT_64 }}
-        * [Python](https://www.python.org/downloads/) ${{ env.PYTHON3_VER_DOT }}
-        * [RubyInstaller](https://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
+        <!-- * [Python](https://www.python.org/downloads/) 2.7 -->
+        * [Python3](https://www.python.org/downloads/) 3.8 or later
+        * [Racket](https://download.racket-lang.org/) ${{ env.RACKET_RELEASE }} (BC)
+        * [RubyInstaller](http://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
+        * [libsodium](https://download.libsodium.org/libsodium/) ${{ env.SODIUM_RELEASE }}
+        </details>
+
+        See the [README](https://github.com/vim/vim-win32-installer/blob/master/README.md) for detail.
         EOF
+
         latesttag=$(cat vim-package-x64/latesttag.txt)
         echo "tag=${latesttag}" >> $GITHUB_OUTPUT
         cp vim-package-x64/latesttag.txt vimver.txt
