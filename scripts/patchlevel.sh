@@ -1,7 +1,0 @@
-#!/bin/sh
-
-PATCHLEVEL_NR=$((10#$PATCHLEVEL))
-
-sed -i \
-  -e "s/^# define VIM_VERSION_PATCHLEVEL\t\+0/#define VIM_VERSION_PATCHLEVEL $PATCHLEVEL_NR/" \
-  -e "s/#define VIM_VERSION_PATCHLEVEL_STR.*/#define VIM_VERSION_PATCHLEVEL_STR \"$PATCHLEVEL\"/" ./version.h
