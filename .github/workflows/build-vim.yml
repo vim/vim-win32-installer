@@ -901,11 +901,11 @@ jobs:
           64-bit zip archive
         * [![gvim_${ref}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64.zip)
           ARM 64-bit zip archive
-        * [![gvim_${ref}_x86_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_pdb.zip)
+        * [![gvim_${ref}_x86_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_pdb.7z)
           pdb files for debugging the corresponding 32-bit executable
-        * [![gvim_${ref}_x64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_pdb.zip)
+        * [![gvim_${ref}_x64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_pdb.7z)
           pdb files for debugging the corresponding 64-bit executable
-        * [![gvim_${ref}_arm64_pdb.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_pdb.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_pdb.zip)
+        * [![gvim_${ref}_arm64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_pdb.7z)
           pdb files for debugging the corresponding ARM 64-bit executable
 
         <details>
