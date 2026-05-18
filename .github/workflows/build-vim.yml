@@ -56,7 +56,11 @@ env:
   PERL_DIR: 'C:\dependencies\Strawberry\perl'
 
   # Python 2
-  # Disabled. Do we need it?
+  PYTHON2_VER_DOT: '2.7'
+  PYTHON2_RELEASE: '2.7.18'
+  PYTHON2_URL_32: https://www.python.org/ftp/python/%PYTHON2_RELEASE%/python-%PYTHON2_RELEASE%.msi
+  PYTHON2_URL_64: https://www.python.org/ftp/python/%PYTHON2_RELEASE%/python-%PYTHON2_RELEASE%.amd64.msi
+  PYTHON2_DIR: 'C:\dependencies\python2'
 
   # Python 3
   PYTHON3_VER_DOT: '3.12'
@@ -178,6 +182,8 @@ jobs:
         echo "PERL_URL=${PERL_URL_${{ matrix.bits }}}" >> $GITHUB_ENV
 
         # Python 2
+        echo "PYTHON2_VER=${PYTHON2_VER_DOT//./}" >> $GITHUB_ENV
+        echo "PYTHON2_URL=${PYTHON2_URL_${{ matrix.bits }}}" >> $GITHUB_ENV
 
         # Python 3
         echo "PYTHON3_VER=${PYTHON3_VER_DOT//./}" >> $GITHUB_ENV
@@ -364,6 +370,7 @@ jobs:
         echo %PERL_RELEASE%>> urls.txt
         echo %PYTHON3_RELEASE%>> urls.txt
         if NOT "${{ matrix.arch }}"=="arm64" (
+          echo %PYTHON2_RELEASE%>> urls.txt
           echo %RUBY_RELEASE%>> urls.txt
           echo %GETTEXT_32_URL%>> urls.txt
           echo %GETTEXT_64_URL%>> urls.txt
@@ -402,6 +409,11 @@ jobs:
         call :downloadfile %PERL_URL% downloads\perl.zip
         :: Extract only the "perl" folder.
         7z x downloads\perl.zip perl -o%PERL_DIR%\.. > nul || exit 1
+
+        echo %COL_GREEN%Download Python2%COL_RESET%
+        call :downloadfile %PYTHON2_URL% downloads\python2.msi
+        start "" /wait downloads\python2.msi ^
+          /qn TARGETDIR=%PYTHON2_DIR% ADDLOCAL=DefaultFeature,PrependPath
 
         echo %COL_GREEN%Download Python3%COL_RESET%
         call :downloadfile %PYTHON3_URL% downloads\python3.exe
@@ -551,7 +563,8 @@ jobs:
         echo "LUA=%LUA_DIR%">> auto\nmake\vimdll-huge.cfg
         rem Not supported for ARM64
         if NOT "${{ matrix.arch }}"=="arm64" (
-          rem echo "PYTHON=%PYTHON_DIR%">> auto\nmake\vimdll-huge.cfg
+          echo "PYTHON=%PYTHON2_DIR%">> auto\nmake\vimdll-huge.cfg
+          echo "PYTHON_VER=%PYTHON2_VER%">> auto\nmake\vimdll-huge.cfg
           echo "RUBY_VER=%RUBY_VER%">> auto\nmake\vimdll-huge.cfg
           echo "RUBY_API_VER_LONG=%RUBY_API_VER_LONG%">> auto\nmake\vimdll-huge.cfg
           echo "RUBY=%RUBY_DIR%">> auto\nmake\vimdll-huge.cfg
@@ -574,7 +587,7 @@ jobs:
       if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
         set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         cd vim\src
@@ -638,7 +651,7 @@ jobs:
       shell: cmd
       timeout-minutes: 15
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
         set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -657,7 +670,7 @@ jobs:
       shell: cmd
       timeout-minutes: 10
       run: |
-        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
+        path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
         set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -914,7 +927,7 @@ jobs:
         * [Strawberry Perl](http://strawberryperl.com/) ${{ env.PERL_VER_DOT_64 }}
         <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
         * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) ${{ env.LUA_VER_DOT }}
-        <!-- * [Python](https://www.python.org/downloads/) 2.7 -->
+        * [Python2](https://www.python.org/downloads/) 2.7
         * [Python3](https://www.python.org/downloads/) 3.8 or later
         * [Racket](https://download.racket-lang.org/) ${{ env.RACKET_RELEASE }} (BC)
         * [RubyInstaller](http://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
