@@ -226,7 +226,7 @@ jobs:
       id: changelog
       shell: bash
       run: |
-        mkdir package/artifacts
+        mkdir -p package/artifacts/info
         if [ ! -d vim ] || [ "$(git -C vim tag)" = "" ]; then
           exit 0
         fi
@@ -234,9 +234,9 @@ jobs:
         cd vim
         latesttag=$(git describe --tags --abbrev=0)
         echo "ref=${latesttag:1}" >> $GITHUB_OUTPUT
-        echo $latesttag > ../package/artifacts/latesttag.txt
+        echo $latesttag > ../package/artifacts/info/latesttag.txt
         echo $latesttag > ../vimver.txt
-        git rev-parse HEAD > ../package/artifacts/latestrev.txt
+        git rev-parse HEAD > ../package/artifacts/info/latestrev.txt
         oldrev=$(cat ../vimrev.txt)
         if git log --format='format:' $oldrev > /dev/null 2>&1; then
           logopt=$oldrev..HEAD
@@ -249,12 +249,12 @@ jobs:
           sed -e 's/[][_*^<`\\]/\\&/g' \
               -e "s#^\([0-9a-f]*\) patch \([0-9.a-z]*\)#* [\2]($commiturl\1)#" \
               -e "s#^\([0-9a-f]*\) \(.*\)#* [\2]($commiturl\1)#" | \
-          tee ../package/artifacts/changelog.md
+          tee ../package/artifacts/info/changelog.md
         echo
         echo "ChangeLog in text:"
         git log --format='format:* %s' $logopt | \
           sed -e 's/^\* patch /* /g' | \
-          tee ../package/artifacts/changelog.txt
+          tee ../package/artifacts/info/changelog.txt
 
     - name: Check changes
       id: check
@@ -732,12 +732,12 @@ jobs:
         rem Parentheses are required. Otherwise the number is interpreted as a file descriptor.
         (echo INCLUDE_LIBGCC=%INCLUDE_LIBGCC%)>> %GITHUB_ENV%
 
-        rem md artifacts
+        md artifacts\files
         set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
         cd %PKG%
-        7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\%BASENAME%.zip vim || exit 1
+        7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\files\%BASENAME%.zip vim || exit 1
         cd ..
-        7z a -mx=9 artifacts\%BASENAME%_pdb.7z *.pdb || exit 1
+        7z a -mx=9 artifacts\files\%BASENAME%_pdb.7z *.pdb || exit 1
 
     - name: Package (installer)
       if: steps.check.outputs.skip == 'no'
@@ -772,19 +772,19 @@ jobs:
 
         set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
         nmake.exe -nologo -f Make_mvc.mak ^
-          "X=OutFile ..\..\package\artifacts\%BASENAME%.exe" ^
+          "X=OutFile ..\..\package\artifacts\files\%BASENAME%.exe" ^
           "SRC=..\..\package\%DEST_INST%" "VIMTOOLS=..\..\package\%DEST_INST%" ^
           "VIMSRC=..\..\package\%DEST_INST%" "VIMRT=..\..\package\%DEST_INST%" ^
           "GETTEXT=%DEPENDENCIES%" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
           "WIN64=%WIN64%" "ARM64=%ARM64%" || exit 1
 
-    - name: Upload Artifact
+    - name: Upload Artifact (files)
       if: steps.check.outputs.skip == 'no'
       id: upload-unsigned-zip
       uses: actions/upload-artifact@v7
       with:
         name: vim-package-${{ matrix.arch }}
-        path: ./package/artifacts
+        path: ./package/artifacts/files
 
     - name: SignPath code signing
       if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
@@ -798,16 +798,12 @@ jobs:
         github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
         wait-for-completion: false  # true doesn't seem to work
 
-    - name: Download signed files
-      if: false  # steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
+    - name: Save code signing info
+      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
       shell: bash
       run: |
-        curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors \
-          -H "Autorization: Bearer ${{ secrets.SIGNPATH_API_TOKEN }}" \
-          "${{ steps.signpath-code-signing.outputs.signed-artifact-download-url }}" \
-          -o artifact.zip
-        unzip artifact.zip
-        ls -l
+        echo "${{ steps.signpath-code-signing.outputs.signing-request-id }}" | tee package/artifacts/info/signing-request-id.txt
+        echo "${{ steps.signpath-code-signing.outputs.signing-request-web-url }}" | tee package/artifacts/info/signing-request-web-url.txt
 
     # TODO: Create an installer using with signed files, then upload to SignPath again.
 
@@ -815,7 +811,14 @@ jobs:
       if: steps.check.outputs.skip == 'no'
       uses: actions/attest@v4
       with:
-        subject-path: ./package/artifacts
+        subject-path: ./package/artifacts/files
+
+    - name: Upload Artifact (info)
+      if: steps.check.outputs.skip == 'no'
+      uses: actions/upload-artifact@v7
+      with:
+        name: info-${{ matrix.arch }}
+        path: ./package/artifacts/info
 
   release:
     runs-on: ubuntu-latest
@@ -836,31 +839,16 @@ jobs:
         ref: ${{inputs.base_commit}}
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
 
-    - name: Download Artifact (x86)
+    - name: Download all artifacts
       uses: actions/download-artifact@v8
-      with:
-        name: vim-package-x86
-        path: vim-package-x86
-
-    - name: Download Artifact (x64)
-      uses: actions/download-artifact@v8
-      with:
-        name: vim-package-x64
-        path: vim-package-x64
-
-    - name: Download Artifact (arm64)
-      uses: actions/download-artifact@v8
-      with:
-        name: vim-package-arm64
-        path: vim-package-arm64
 
     - name: Get changelog
       id: changelog
       run: |
-        latesttag=$(cat vim-package-x64/latesttag.txt)
+        latesttag=$(cat info-x64/latesttag.txt)
         ref=${latesttag:1}
         echo "tag=${latesttag}" >> $GITHUB_OUTPUT
-        cp vim-package-x64/latesttag.txt vimver.txt
+        cp info-x64/latesttag.txt vimver.txt
 
         URL=https://github.com/${{ github.repository }}/releases/download
 
@@ -873,7 +861,7 @@ jobs:
         Signed releases will occasionally be provided on a best effort approach.
         ### Changes:
 
-        $(cat vim-package-x64/changelog.md)
+        $(cat info-x64/changelog.md)
 
         <!--
         _This release includes signed files_
@@ -940,12 +928,12 @@ jobs:
           echo ${COL_YELLOW}No updates.${COL_RESET}
           exit 1  # This should not happen.
         fi
-        cp vim-package-x64/latestrev.txt vimrev.txt
+        cp info-x64/latestrev.txt vimrev.txt
         git config --local user.name "$USER_NAME"
         git config --local user.email "$USER_EMAIL"
         git commit -a \
           -m "Update Vim to ${{ steps.changelog.outputs.tag }}" \
-          -m "$(head -n 50 vim-package-x64/changelog.txt)"
+          -m "$(head -n 50 info-x64/changelog.txt)"
         git tag "${{ steps.changelog.outputs.tag }}"
         git push origin HEAD --tags
 
@@ -970,20 +958,27 @@ jobs:
 
     - name: Post Summary
       run: |
-        echo "## ✅ Windows Build Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Tag:** \`${{ steps.changelog.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
-        echo "**Repository:** \`${{ github.repository }}\`" >> $GITHUB_STEP_SUMMARY
-        echo "**Artifacts Uploaded:**" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Release Status:**" >> $GITHUB_STEP_SUMMARY
-        echo "- 🔁 Waited for tag \`${{ steps.changelog.outputs.tag }}\` to become available as a release" >> $GITHUB_STEP_SUMMARY
-        echo "- 📦 Uploaded artifacts to the release via \`gh release upload\`" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Security Provenance:**" >> $GITHUB_STEP_SUMMARY
-        echo "- 🔒 Attested \`x86 packages\`, \`x64 packages\`,  and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)" >> $GITHUB_STEP_SUMMARY
+        cat << EOF >> $GITHUB_STEP_SUMMARY
+        ## ✅ Windows Build Summary
+
+        **Tag:** \`${{ steps.changelog.outputs.tag }}\`
+        **Repository:** \`${{ github.repository }}\`
+        **Artifacts Uploaded:**
+        - 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        - 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        - 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+        **Release Status:**
+        - 🔁 Waited for tag \`${{ steps.changelog.outputs.tag }}\` to become available as a release
+        - 📦 Uploaded artifacts to the release via \`softprops/action-gh-release\`
+
+        **Security Provenance:**
+        - 🔒 Attested \`x86 packages\`, \`x64 packages\`,  and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)
+
+        **Code signing submitted:**
+        - 🟨 x86 packages: [$(cat info-x86/signing-request-id.txt)]($(cat info-x86/signing-request-web-url.txt))
+        - 🟩 x64 packages: [$(cat info-x64/signing-request-id.txt)]($(cat info-x64/signing-request-web-url.txt))
+        - 🟦 arm64 packages: [$(cat info-arm64/signing-request-id.txt)]($(cat info-arm64/signing-request-web-url.txt))
+        EOF
 
 # vim: ts=2 sw=2 sts=2 et
