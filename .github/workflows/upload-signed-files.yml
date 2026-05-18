@@ -1,9 +1,9 @@
 name: Upload signed files
 
 on:
-  push:
-    branches:
-      - 'upload-signed-files' # XXX: for debugging
+  #push:
+  #  branches:
+  #    - 'upload-signed-files' # XXX: for debugging
   workflow_dispatch:
     inputs:
       run_id:
@@ -30,9 +30,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
             RUN_ID=${{ inputs.run_id }}
-          else
-            # XXX: For debugging
-            RUN_ID=26016790078
+          #else
+          #  # XXX: For debugging
+          #  RUN_ID=26016790078
           fi
 
           gh run download ${RUN_ID} -p "info-*"
@@ -81,19 +81,23 @@ jobs:
         run: |
           TAG=$(cat info-x64/latesttag.txt)
 
+          # Original release notes
           echo '---------------'
           gh release view "${TAG}" --json body | jq -r .body | tee body.md
           echo '---------------'
+
           # Remove comments
           sed -i -e '/^<!--$/d' -e '/^-->/d' -e '/^<!--  *commented out,/d' body.md
+
+          # Updated release notes
           echo '---------------'
           cat body.md
           echo '---------------'
 
-          #for i in package/gvim*.exe gvim*.zip; do
-          #  gh release upload "${TAG}" "$i" --clobber
-          #done
-          #gh release edit "${TAG}" -F body.md
+          for i in package/gvim*.exe gvim*.zip; do
+            gh release upload "${TAG}" "$i" --clobber
+          done
+          gh release edit "${TAG}" -F body.md
 
 
 # vim: ts=2 sw=2 sts=2 et
