@@ -40,7 +40,7 @@ env:
 
   # Lua
   LUA_VER_DOT: '5.4'
-  LUA_RELEASE: 5.4.8
+  LUA_RELEASE: '5.4.8'
   LUA_URL: https://downloads.sourceforge.net/luabinaries/lua-%LUA_RELEASE%_Win%BITS%_dllw6_lib.zip
   LUA_DIR: 'C:\dependencies\Lua'
 
@@ -77,8 +77,8 @@ env:
 
   # Ruby
   RUBY_VER_DOT: '3.4'
-  RUBY_API_VER_LONG: 3.4.0
-  RUBY_RELEASE: 3.4.9-1
+  RUBY_API_VER_LONG: '3.4.0'
+  RUBY_RELEASE: '3.4.9-1'
   RUBY_SRC_URL: https://github.com/ruby/ruby/archive/%RUBY_BRANCH%.zip
   RUBY_URL: https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-%RUBY_RELEASE%/rubyinstaller-%RUBY_RELEASE%-%ARCH%.7z
   RUBY_DIR: 'C:\dependencies\rubyinstaller'
@@ -815,7 +815,7 @@ jobs:
         project-slug: vim-win32-installer
         signing-policy-slug: release-signing
         github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
-        wait-for-completion: false  # true doesn't seem to work
+        wait-for-completion: false  # true doesn't seem to work. Manual approval is required.
 
     - name: Save code signing info
       if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
