@@ -94,7 +94,7 @@ jobs:
           cat body.md
           echo '---------------'
 
-          for i in package/gvim*.exe gvim*.zip; do
+          for i in package/gvim*.exe package/gvim*.zip; do
             gh release upload "${TAG}" "$i" --clobber
           done
           gh release edit "${TAG}" -F body.md
