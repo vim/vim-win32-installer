@@ -1,0 +1,103 @@
+name: Upload signed files
+
+on:
+  #push:
+  #  branches:
+  #    - 'upload-signed-files' # XXX: for debugging
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'GitHub Actions run_id when created the corresponding release'
+        required: true
+        type: string
+
+permissions:
+  id-token: write # needed for attestion
+  attestations: write
+  contents: write  # to update a release
+
+jobs:
+  upload-signed-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download build info
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+            RUN_ID=${{ inputs.run_id }}
+          #else
+          #  # XXX: For debugging
+          #  RUN_ID=26016790078
+          fi
+
+          gh run download ${RUN_ID} -p "info-*"
+
+      - name: Download signed files
+        shell: bash
+        env:
+          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+          ORGANIZATION_ID: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
+        run: |
+          mkdir package
+
+          for arch in x86 x64 arm64; do
+            SIGNING_REQUEST_ID=$(cat info-${arch}/signing-request-id.txt)
+            curl -f -H "Authorization: Bearer ${SIGNPATH_API_TOKEN}" \
+                 -o ${arch}.zip \
+                 https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests/${SIGNING_REQUEST_ID}/SignedArtifact
+            unzip ${arch}.zip -d package
+          done
+
+          rm package/*_pdb.*
+
+          # rename to *_signed.*
+          for i in package/gvim_*; do
+            n=$(echo "$i" | sed -e 's/\(gvim_.*\)\.\(exe\|zip\)/\1_signed.\2/')
+            mv "$i" "$n"
+          done
+
+          ls -l package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: signed-package
+          path: ./package
+
+      - name: Attest
+        uses: actions/attest@v4
+        with:
+          subject-path: ./package
+
+      - name: Update release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(cat info-x64/latesttag.txt)
+
+          # Original release notes
+          echo '---------------'
+          gh release view "${TAG}" --json body | jq -r .body | tee body.md
+          echo '---------------'
+
+          # Remove comments
+          sed -i -e '/^<!--$/d' -e '/^-->/d' -e '/^<!--  *commented out,/d' body.md
+
+          # Updated release notes
+          echo '---------------'
+          cat body.md
+          echo '---------------'
+
+          for i in package/gvim*.exe gvim*.zip; do
+            gh release upload "${TAG}" "$i" --clobber
+          done
+          gh release edit "${TAG}" -F body.md
+
+
+# vim: ts=2 sw=2 sts=2 et
