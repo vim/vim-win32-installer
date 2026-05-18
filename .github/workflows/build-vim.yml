@@ -231,8 +231,6 @@ jobs:
           exit 0
         fi
 
-        echo "${{ github.run_id }}" > package/artifacts/run_id.txt
-
         cd vim
         latesttag=$(git describe --tags --abbrev=0)
         echo "ref=${latesttag:1}" >> $GITHUB_OUTPUT
@@ -977,9 +975,9 @@ jobs:
         echo "**Tag:** \`${{ steps.changelog.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
         echo "**Repository:** \`${{ github.repository }}\`" >> $GITHUB_STEP_SUMMARY
         echo "**Artifacts Uploaded:**" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-x86/run_id.txt))" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-x64/run_id.txt))" >> $GITHUB_STEP_SUMMARY
-        echo "- 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/$(cat vim-package-arm64/run_id.txt))" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**Release Status:**" >> $GITHUB_STEP_SUMMARY
         echo "- 🔁 Waited for tag \`${{ steps.changelog.outputs.tag }}\` to become available as a release" >> $GITHUB_STEP_SUMMARY
