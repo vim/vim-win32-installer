@@ -43,8 +43,6 @@ jobs:
           SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
           ORGANIZATION_ID: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
         run: |
-          mkdir package
-
           for arch in x86 x64 arm64; do
             SIGNING_REQUEST_ID=$(cat info-${arch}/signing-request-id.txt)
             curl -f -H "Authorization: Bearer ${SIGNPATH_API_TOKEN}" \
@@ -67,7 +65,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: signed-package
-          path: ./package
+          path: |
+            ./package/*.exe
+            ./package/*.zip
 
       - name: Attest
         uses: actions/attest@v4
