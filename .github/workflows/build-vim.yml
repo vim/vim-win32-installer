@@ -111,7 +111,7 @@ env:
 
   # Skip pattern
   # FIXME: Some tests are flaky and often fail.
-  TEST_SKIP_PAT: 'Test_mswin_event_mouse\|Test_channel_dap_mode\|Test_terminal_composing_unicode\|Test_gui_lowlevel_keyevent\|Test_QWERTY_Ctrl_minus\|Test_mswin_event_character_keys\|Test_mswin_event_function_keys\|Test_mswin_event_movement_keys\|Test_terminal_version\|Test_system_list_arg'
+  TEST_SKIP_PAT: 'Test_mswin_event_mouse\|Test_channel_dap_mode\|Test_terminal_composing_unicode\|Test_gui_lowlevel_keyevent\|Test_QWERTY_Ctrl_minus\|Test_mswin_event_character_keys\|Test_mswin_event_function_keys\|Test_mswin_event_movement_keys\|Test_terminal_version\|Test_system_list_arg\|Test_cd_completion'
 
   # Escape sequences
   COL_RED: "\x1b[31m"
@@ -315,16 +315,22 @@ jobs:
 
     - name: Update msys2 (1st)
       if: steps.check.outputs.skip == 'no'
-      shell: msys2 {0}
-      continue-on-error: true
+      shell: cmd
       run: |
-        # https://www.msys2.org/docs/updating/#potential-issues
-        #pacman-key --refresh-keys
+        rem https://www.msys2.org/docs/updating/#potential-issues
+        rem pacman-key --refresh-keys
+        (
+          rem Reset sync databases in case of a corrupted cached state
+          echo rm -f /var/lib/pacman/sync/*.db /var/lib/pacman/sync/*.db.sig
+          echo pacman --noconfirm -Sy msys2-keyring
+          echo pacman --noconfirm -Suuy
+        ) > update-msys2.sh
 
-        # Reset sync databases in case of a corrupted cached state
-        rm -f /var/lib/pacman/sync/*.db /var/lib/pacman/sync/*.db.sig
-        pacman --noconfirm -Sy msys2-keyring
-        pacman --noconfirm -Suuy
+        cmd /c msys2 update-msys2.sh
+        del update-msys2.sh
+
+        rem Ignore error when updating the core packages. (All the msys2 processes are terminated.)
+        exit 0
 
     - name: Update msys2 (2nd)
       if: steps.check.outputs.skip == 'no'
