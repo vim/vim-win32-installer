@@ -14,7 +14,7 @@ on:
 permissions:
   id-token: write # needed for attestion
   attestations: write
-  contents: write  # to update a release
+  contents: write # to update a release
 
 jobs:
   upload-signed-files:
@@ -35,7 +35,7 @@ jobs:
           #  RUN_ID=26016790078
           fi
 
-          gh run download ${RUN_ID} -p "info-*"
+          gh run download ${RUN_ID} --name "info"
 
       - name: Download signed files
         shell: bash
@@ -43,13 +43,11 @@ jobs:
           SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
           ORGANIZATION_ID: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
         run: |
-          for arch in x86 x64 arm64; do
-            SIGNING_REQUEST_ID=$(cat info-${arch}/signing-request-id.txt)
-            curl -f -H "Authorization: Bearer ${SIGNPATH_API_TOKEN}" \
-                 -o ${arch}.zip \
-                 https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests/${SIGNING_REQUEST_ID}/SignedArtifact
-            unzip ${arch}.zip -d package
-          done
+          SIGNING_REQUEST_ID=$(cat info/signing-request-id.txt)
+          curl -f -H "Authorization: Bearer ${SIGNPATH_API_TOKEN}" \
+               -o package.zip \
+               https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests/${SIGNING_REQUEST_ID}/SignedArtifact
+          unzip package.zip -d package
 
           rm package/*_pdb.*
 
@@ -66,20 +64,20 @@ jobs:
         with:
           name: signed-package
           path: |
-            ./package/*.exe
-            ./package/*.zip
+            ./package/gvim_*.exe
+            ./package/gvim_*.zip
 
       - name: Attest
         uses: actions/attest@v4
         with:
-          subject-path: ./package
+          subject-path: ./package/gvim_*
 
       - name: Update release
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG=$(cat info-x64/latesttag.txt)
+          TAG=$(cat info/latesttag.txt)
 
           # Original release notes
           echo '---------------'
@@ -99,5 +97,24 @@ jobs:
           done
           gh release edit "${TAG}" -F body.md
 
+      - name: Post Summary
+        run: |
+          TAG=$(cat info/latesttag.txt)
+
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+          ## ✅ Windows Build Summary
+
+          **Tag:** \`${TAG}\`
+          **Repository:** \`${{ github.repository }}\`
+          **Artifacts Uploaded:**
+          - 🟩 [signed x86/x64/arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          **Release Status:**
+          - ✨ Updated the release: [\`${TAG}\`](https://github.com/${{ github.repository }}/releases/tag/${TAG})
+          - 📦 Uploaded artifacts to the release via \`gh release upload\`"
+
+          **Security Provenance:**
+          - 🔒 Attested \`signed x86/x64/arm64 packages\` using [actions/attest](https://github.com/actions/attest)
+          EOF
 
 # vim: ts=2 sw=2 sts=2 et

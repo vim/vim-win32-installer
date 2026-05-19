@@ -163,6 +163,7 @@ jobs:
 
     outputs:
       skip_release: ${{ steps.check.outputs.skip_release }}
+      signing: ${{ steps.check.outputs.signing }}
 
     steps:
     - name: Initalize
@@ -803,32 +804,10 @@ jobs:
 
     - name: Upload Artifact (files)
       if: steps.check.outputs.skip == 'no'
-      id: upload-unsigned-zip
       uses: actions/upload-artifact@v7
       with:
         name: vim-package-${{ matrix.arch }}
         path: ./package/artifacts/files
-
-    - name: SignPath code signing
-      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
-      id: signpath-code-signing
-      uses: SignPath/github-action-submit-signing-request@v2.2
-      with:
-        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-        organization-id: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
-        project-slug: vim-win32-installer
-        signing-policy-slug: release-signing
-        github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
-        wait-for-completion: false  # true doesn't seem to work. Manual approval is required.
-
-    - name: Save code signing info
-      if: steps.check.outputs.skip == 'no' && steps.check.outputs.signing == 'yes'
-      shell: bash
-      run: |
-        echo "${{ steps.signpath-code-signing.outputs.signing-request-id }}" | tee package/artifacts/info/signing-request-id.txt
-        echo "${{ steps.signpath-code-signing.outputs.signing-request-web-url }}" | tee package/artifacts/info/signing-request-web-url.txt
-
-    # TODO: Create an installer using with signed files, then upload to SignPath again.
 
     - name: Attest
       if: steps.check.outputs.skip == 'no'
@@ -864,6 +843,55 @@ jobs:
 
     - name: Download all artifacts
       uses: actions/download-artifact@v8
+
+    - name: Copy files for code signing
+      if: needs.build.outputs.signing == 'yes'
+      shell: bash
+      run: |
+        mkdir -p package/artifacts/files
+        # Copy all the required files to a single directory
+        cp vim-package-*/gvim_*.{exe,zip} package/artifacts/files
+
+    - name: Upload Artifact (for code signing)
+      if: needs.build.outputs.signing == 'yes'
+      id: upload-unsigned-zip
+      uses: actions/upload-artifact@v7
+      with:
+        name: vim-package-for-signing
+        path: ./package/artifacts/files
+
+    - name: SignPath code signing
+      if: needs.build.outputs.signing == 'yes'
+      id: signpath-code-signing
+      uses: SignPath/github-action-submit-signing-request@v2.2
+      with:
+        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        organization-id: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
+        project-slug: vim-win32-installer
+        signing-policy-slug: release-signing
+        github-artifact-id: '${{ steps.upload-unsigned-zip.outputs.artifact-id }}'
+        wait-for-completion: false  # true doesn't seem to work. Manual approval is required.
+
+    - name: Save code signing info
+      if: needs.build.outputs.signing == 'yes'
+      shell: bash
+      run: |
+        mkdir -p package/artifacts/info
+        cp info-x64/* package/artifacts/info
+
+        echo "${{ steps.signpath-code-signing.outputs.signing-request-id }}" \
+          | tee package/artifacts/info/signing-request-id.txt
+        echo "${{ steps.signpath-code-signing.outputs.signing-request-web-url }}" \
+          | tee package/artifacts/info/signing-request-web-url.txt
+
+    - name: Upload Artifact (signing info)
+      if: needs.build.outputs.signing == 'yes'
+      uses: actions/upload-artifact@v7
+      with:
+        name: info
+        path: ./package/artifacts/info
+
+    # TODO: Create an installer using with signed files, then upload to SignPath again.
 
     - name: Get changelog
       id: changelog
@@ -981,10 +1009,12 @@ jobs:
 
     - name: Post Summary
       run: |
+        TAG=${{ steps.changelog.outputs.tag }}
+
         cat << EOF >> $GITHUB_STEP_SUMMARY
         ## ✅ Windows Build Summary
 
-        **Tag:** \`${{ steps.changelog.outputs.tag }}\`
+        **Tag:** \`${TAG}\`
         **Repository:** \`${{ github.repository }}\`
         **Artifacts Uploaded:**
         - 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -992,16 +1022,14 @@ jobs:
         - 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
         **Release Status:**
-        - 🔁 Waited for tag \`${{ steps.changelog.outputs.tag }}\` to become available as a release
+        - 🆕 Created a new release: [\`${TAG}\`](https://github.com/${{ github.repository }}/releases/tag/${TAG})
         - 📦 Uploaded artifacts to the release via \`softprops/action-gh-release\`
 
         **Security Provenance:**
-        - 🔒 Attested \`x86 packages\`, \`x64 packages\`,  and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)
+        - 🔒 Attested \`x86 packages\`, \`x64 packages\`, and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)
 
         **Code signing submitted:**
-        - 🟨 x86 packages: [$(cat info-x86/signing-request-id.txt)]($(cat info-x86/signing-request-web-url.txt))
-        - 🟩 x64 packages: [$(cat info-x64/signing-request-id.txt)]($(cat info-x64/signing-request-web-url.txt))
-        - 🟦 arm64 packages: [$(cat info-arm64/signing-request-id.txt)]($(cat info-arm64/signing-request-web-url.txt))
+        - 🟩 x86/x64/arm64 packages: [$(cat package/artifacts/info/signing-request-id.txt)]($(cat package/artifacts/info/signing-request-web-url.txt))
         EOF
 
 # vim: ts=2 sw=2 sts=2 et
