@@ -9,6 +9,7 @@ on:
 jobs:
   check-update-job:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     outputs:
       needs_update: ${{ steps.check-updates.outputs.result }}

@@ -19,6 +19,7 @@ on:
         type: string
 
 permissions:
+  actions: write # to cancel a workflow run
   id-token: write # needed for attestion
   attestations: write
   artifact-metadata: write
@@ -214,12 +215,15 @@ jobs:
 
     - name: Checkout Vim
       shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         if ! git clone ${VIMREPO}.git --shallow-exclude="$(cat vimver.txt)"; then
           # No new commits since the version written in vimver.txt.
           if [ "${{ github.event_name }}" = 'pull_request' ]; then
             git clone ${VIMREPO}.git --depth=5
           else
+            gh run cancel "${{ github.run_id }}"
             exit 0
           fi
         fi
