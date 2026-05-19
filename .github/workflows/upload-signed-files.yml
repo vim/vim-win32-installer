@@ -117,7 +117,7 @@ jobs:
 
           **Release Status:**
           - ✨ Updated the release: [\`${TAG}\`](https://github.com/${{ github.repository }}/releases/tag/${TAG})
-          - 📦 Uploaded artifacts to the release via \`gh release upload\`"
+          - 📦 Uploaded artifacts to the release via \`gh release upload\`
 
           **Security Provenance:**
           - 🔒 Attested \`signed x86/x64/arm64 packages\` using [actions/attest](https://github.com/actions/attest)
