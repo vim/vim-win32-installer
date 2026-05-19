@@ -39,7 +39,7 @@ jobs:
           #  RUN_ID=26016790078
           fi
 
-          gh run download ${RUN_ID} --name "info"
+          gh run download ${RUN_ID} --name "info" --dir info
 
       - name: Download signed files
         shell: bash
