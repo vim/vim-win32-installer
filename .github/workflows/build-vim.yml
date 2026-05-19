@@ -810,7 +810,7 @@ jobs:
         path: ./package/artifacts/files
 
     - name: Attest
-      if: steps.check.outputs.skip == 'no'
+      if: steps.check.outputs.skip == 'no' && github.event_name != 'pull_request'
       uses: actions/attest@v4
       with:
         subject-path: ./package/artifacts/files
