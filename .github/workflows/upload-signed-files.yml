@@ -1,5 +1,9 @@
 name: Upload signed files
 
+# This workflow should be executed manually after a release has been created
+# and SignPath code signing has been approved.
+# run_id for the corresponding release must be specified.
+
 on:
   #push:
   #  branches:
@@ -92,9 +96,11 @@ jobs:
           cat body.md
           echo '---------------'
 
+          # Upload the signed files
           for i in package/gvim*.exe package/gvim*.zip; do
             gh release upload "${TAG}" "$i" --clobber
           done
+          # Update the release notes
           gh release edit "${TAG}" -F body.md
 
       - name: Post Summary
