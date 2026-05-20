@@ -16,7 +16,7 @@ on:
         type: string
 
 permissions:
-  id-token: write # needed for attestion
+  id-token: write # needed for attestation
   attestations: write
   contents: write # to update a release
 
