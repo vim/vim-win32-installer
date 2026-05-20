@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - vimrev.txt
+      - vimver.txt
   pull_request:
   schedule:
     - cron: '0 22 * * *'
@@ -20,7 +23,7 @@ on:
 
 permissions:
   actions: write # to cancel a workflow run
-  id-token: write # needed for attestion
+  id-token: write # needed for attestation
   attestations: write
   artifact-metadata: write
   contents: read
@@ -166,7 +169,7 @@ jobs:
       signing: ${{ steps.check.outputs.signing }}
 
     steps:
-    - name: Initalize
+    - name: Initialize
       id: init
       shell: bash
       run: |
