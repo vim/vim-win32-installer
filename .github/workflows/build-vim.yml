@@ -271,27 +271,25 @@ jobs:
       id: check
       shell: bash
       env:
-        SIGNPATH_API_TOKEN: secrets.SIGNPATH_API_TOKEN
+        SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        GH_TOKEN: ${{ github.token }}
       run: |
         if git diff --exit-code HEAD vimver.txt; then
           # No updates found.
           echo ${COL_YELLOW}No updates.${COL_RESET}
           if [ "${{ github.event_name }}" = 'pull_request' ]; then
             # Don't skip on pull_request even if there are no updates.
-            echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=yes" >> $GITHUB_OUTPUT
           else
-            # No updates. Skip all.
-            echo "skip=yes" >> $GITHUB_OUTPUT
-            echo "skip_release=yes" >> $GITHUB_OUTPUT
+            # No updates. Cancel the workflow.
+            gh run cancel "${{ github.run_id }}"
+            exit 0
           fi
         else
           # Updates found
           if [ "${{ github.ref_name }}" = 'master' ] || [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
-            echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=no" >> $GITHUB_OUTPUT
           else
-            echo "skip=no" >> $GITHUB_OUTPUT
             echo "skip_release=yes" >> $GITHUB_OUTPUT
           fi
         fi
@@ -304,7 +302,6 @@ jobs:
         fi
 
     - name: Apply experimental patches
-      if: steps.check.outputs.skip == 'no'
       shell: bash
       run: |
         cd vim
@@ -316,7 +313,6 @@ jobs:
         done
 
     - uses: msys2/setup-msys2@v2
-      if: steps.check.outputs.skip == 'no'
       with:
         update: false
         location: C:\dependencies
@@ -325,7 +321,6 @@ jobs:
         #pacboy: libiconv:p gettext-runtime:p
 
     - name: Update msys2 (1st)
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         rem https://www.msys2.org/docs/updating/#potential-issues
@@ -344,7 +339,6 @@ jobs:
         exit 0
 
     - name: Update msys2 (2nd)
-      if: steps.check.outputs.skip == 'no'
       shell: msys2 {0}
       run: |
         pacman --noconfirm -Suuy
@@ -367,7 +361,6 @@ jobs:
 #        Start-Process .\ngrok\ngrok.exe -ArgumentList "tcp 3389"
 
     - name: Create a list of download URLs
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         type NUL > urls.txt
@@ -384,7 +377,6 @@ jobs:
         echo %SODIUM_RELEASE%>> urls.txt
 
     - name: Cache downloaded files
-      if: steps.check.outputs.skip == 'no'
       uses: actions/cache@v5
       with:
         path: |
@@ -393,7 +385,6 @@ jobs:
         key: ${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('urls.txt') }}
 
     - name: Download dependencies
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         path C:\Program Files\7-Zip;%path%
@@ -518,7 +509,7 @@ jobs:
         goto :eof
 
     - name: Create Ruby's config.h
-      if: steps.check.outputs.skip == 'no' && matrix.arch != 'arm64'
+      if: matrix.arch != 'arm64'
       shell: cmd
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -528,7 +519,6 @@ jobs:
         xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 
     - name: Update patchlevel
-      if: steps.check.outputs.skip == 'no'
       shell: bash
       run: |
         cd vim/src
@@ -544,14 +534,12 @@ jobs:
         echo "PATCHLEVEL_PADDED=$(printf '%04d' ${patchlevel})" >> $GITHUB_ENV
 
     - name: Copy src directory to src2
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         cd vim
         xcopy src src2\ /E > nul
 
     - name: Build
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -589,7 +577,6 @@ jobs:
         nmake -nologo -f Make_mvc.mak install-all
 
     - name: Check version
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
@@ -609,7 +596,6 @@ jobs:
         type if_ver.txt
 
     - name: Build GvimExt
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         mkdir vim\runtime\GvimExt64
@@ -646,13 +632,11 @@ jobs:
         exit 0
 
 #    - name: Wait for RDP
-#      if: steps.check.outputs.skip == 'no'
 #      shell: cmd
 #      run: |
 #        ping -n 3600 localhost>nul
 
     - name: Test gvim/vim and show the result of gvim tests
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       timeout-minutes: 15
       run: |
@@ -671,7 +655,6 @@ jobs:
         cd ..
 
     - name: Show the result of vim tests
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       timeout-minutes: 10
       run: |
@@ -698,7 +681,6 @@ jobs:
         )
 
     - name: Package (zip)
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -764,7 +746,6 @@ jobs:
         7z a -mx=9 artifacts\files\%BASENAME%_pdb.7z *.pdb || exit 1
 
     - name: Package (installer)
-      if: steps.check.outputs.skip == 'no'
       shell: cmd
       run: |
         call vim\src\msvc-latest ${{ matrix.vcarch }}
@@ -803,20 +784,12 @@ jobs:
           "WIN64=%WIN64%" "ARM64=%ARM64%" || exit 1
 
     - name: Upload Artifact (files)
-      if: steps.check.outputs.skip == 'no'
       uses: actions/upload-artifact@v7
       with:
         name: vim-package-${{ matrix.arch }}
         path: ./package/artifacts/files
 
-    - name: Attest
-      if: steps.check.outputs.skip == 'no' && github.event_name != 'pull_request'
-      uses: actions/attest@v4
-      with:
-        subject-path: ./package/artifacts/files
-
     - name: Upload Artifact (info)
-      if: steps.check.outputs.skip == 'no'
       uses: actions/upload-artifact@v7
       with:
         name: info-${{ matrix.arch }}
@@ -843,6 +816,11 @@ jobs:
 
     - name: Download all artifacts
       uses: actions/download-artifact@v8
+
+    - name: Attest
+      uses: actions/attest@v4
+      with:
+        subject-path: ./package/artifacts/files
 
     - name: Copy files for code signing
       if: needs.build.outputs.signing == 'yes'
@@ -1017,19 +995,24 @@ jobs:
         **Tag:** \`${TAG}\`
         **Repository:** \`${{ github.repository }}\`
         **Artifacts Uploaded:**
-        - 🟨 [x86 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-        - 🟩 [x64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-        - 🟦 [arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        - 🟩 [x86/x64/arm64 packages](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
         **Release Status:**
         - 🆕 Created a new release: [\`${TAG}\`](https://github.com/${{ github.repository }}/releases/tag/${TAG})
         - 📦 Uploaded artifacts to the release via \`softprops/action-gh-release\`
 
         **Security Provenance:**
-        - 🔒 Attested \`x86 packages\`, \`x64 packages\`, and \`arm64 packages\` using [actions/attest](https://github.com/actions/attest)
+        - 🔒 Attested x86/x64/arm64 packages using [actions/attest](https://github.com/actions/attest)
 
-        **Code signing submitted:**
+        **(For admin) Code signing submitted:**
         - 🟩 x86/x64/arm64 packages: [$(cat package/artifacts/info/signing-request-id.txt)]($(cat package/artifacts/info/signing-request-web-url.txt))
+
+        **(For admin) Upload signed files:**
+        To upload the signed files to the release, run the following command after approval of SignPath code signing:
+        ```
+        gh workflow run upload-signed-files.yml -f run_id=${{ github.run_id }}
+        ```
+        Or, go to the [Upload signed files](https://github.com/vim/vim-win32-installer/actions/workflows/upload-signed-files.yml) workflow page and run it manually by setting run_id to ${{ github.run_id }}.
         EOF
 
 # vim: ts=2 sw=2 sts=2 et
