@@ -23,9 +23,6 @@ on:
 
 permissions:
   actions: write # to cancel a workflow run
-  id-token: write # needed for attestation
-  attestations: write
-  artifact-metadata: write
   contents: read
 
 env:
@@ -366,18 +363,19 @@ jobs:
     - name: Create a list of download URLs
       shell: cmd
       run: |
-        type NUL > urls.txt
-        echo %LUA_RELEASE%>> urls.txt
-        echo %PERL_RELEASE%>> urls.txt
-        echo %PYTHON3_RELEASE%>> urls.txt
-        if NOT "${{ matrix.arch }}"=="arm64" (
-          echo %PYTHON2_RELEASE%>> urls.txt
-          echo %RUBY_RELEASE%>> urls.txt
-          echo %GETTEXT_32_URL%>> urls.txt
-          echo %GETTEXT_64_URL%>> urls.txt
-          echo %WINPTY_URL%>> urls.txt
-        )
-        echo %SODIUM_RELEASE%>> urls.txt
+        (
+          echo %LUA_RELEASE%
+          echo %PERL_RELEASE%
+          echo %PYTHON3_RELEASE%
+          if NOT "${{ matrix.arch }}"=="arm64" (
+            echo %PYTHON2_RELEASE%
+            echo %RUBY_RELEASE%
+            echo %GETTEXT_32_URL%
+            echo %GETTEXT_64_URL%
+            echo %WINPTY_URL%
+          )
+          echo %SODIUM_RELEASE%
+        ) > urls.txt
 
     - name: Cache downloaded files
       uses: actions/cache@v5
@@ -804,6 +802,9 @@ jobs:
     if: needs.build.outputs.skip_release == 'no'
 
     permissions:
+      id-token: write # needed for attestation
+      attestations: write
+      artifact-metadata: write
       contents: write # to create release
 
     steps:
