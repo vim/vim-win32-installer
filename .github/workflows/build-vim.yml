@@ -977,6 +977,7 @@ jobs:
         body_path: changelog.md
         draft: false
         prerelease: false
+        token: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
         files: |
           ./vim-package-x86/gvim_*.exe
           ./vim-package-x86/gvim_*.zip
