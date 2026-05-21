@@ -1023,10 +1023,10 @@ jobs:
 
         **(For admin) Upload signed files:**
         To upload the signed files to the release, run the following command after approval of SignPath code signing:
-        ```
+        \`\`\`
         gh workflow run upload-signed-files.yml -f run_id=${{ github.run_id }}
-        ```
-        Or, go to the [Upload signed files](https://github.com/vim/vim-win32-installer/actions/workflows/upload-signed-files.yml) workflow page and run it manually by setting run_id to ${{ github.run_id }}.
+        \`\`\`
+        Or, go to the [Upload signed files](https://github.com/vim/vim-win32-installer/actions/workflows/upload-signed-files.yml) workflow page and run it manually by setting \`run_id\` to \`${{ github.run_id }}\`.
         EOF
 
 # vim: ts=2 sw=2 sts=2 et
