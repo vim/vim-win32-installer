@@ -808,15 +808,24 @@ jobs:
       contents: write # to create release
 
     steps:
+    #- name: Generate token
+    #  id: app-token
+    #  uses: actions/create-github-app-token@v3
+    #  with:
+    #    client-id: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_CLIENT_ID }}
+    #    private-key: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_PRIVATE_KEY }}
+
     - uses: actions/checkout@v6
       if: github.event_name != 'workflow_dispatch'
       with:
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
+        #token: ${{ steps.app-token.outputs.token }}
     - uses: actions/checkout@v6
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
+        #token: ${{ steps.app-token.outputs.token }}
 
     - name: Download all artifacts
       uses: actions/download-artifact@v8
@@ -978,7 +987,7 @@ jobs:
         body_path: changelog.md
         draft: false
         prerelease: false
-        token: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
+        #token: ${{ steps.app-token.outputs.token }}
         files: |
           ./vim-package-x86/gvim_*.exe
           ./vim-package-x86/gvim_*.zip

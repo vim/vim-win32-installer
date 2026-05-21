@@ -2,17 +2,17 @@ name: Publish to WinGet
 
 # Only run after the release have been published
 on:
-  release:
-    types: [published]
-  #workflow_run:
-  #  workflows: ["Build Vim"]
-  #  branches: [master]
-  #  types: [completed]
+  #release:
+  #  types: [published]
+  workflow_run:
+    workflows: ["Build Vim"]
+    branches: [master]
+    types: [completed]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repository
