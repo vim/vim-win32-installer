@@ -125,8 +125,126 @@ env:
   COL_RESET: "\x1b[m"
 
 jobs:
+  check-updates:
+    runs-on: ubuntu-slim
+
+    outputs:
+      continue: ${{ steps.check.outputs.continue }}
+      create-release: ${{ steps.check.outputs.create-release }}
+      signing: ${{ steps.check.outputs.signing }}
+
+    steps:
+    - uses: actions/checkout@v6
+      if: github.event_name != 'workflow_dispatch'
+    - uses: actions/checkout@v6
+      if: github.event_name == 'workflow_dispatch'
+      with:
+        ref: ${{inputs.base_commit}}
+
+    - name: Checkout Vim
+      shell: bash
+      run: |
+        if ! git clone ${VIMREPO}.git --shallow-exclude="$(cat vimver.txt)"; then
+          # No new commits since the version written in vimver.txt.
+          if [ "${{ github.event_name }}" = 'pull_request' ]; then
+            git clone ${VIMREPO}.git --depth=5
+          else
+            exit 0
+          fi
+        fi
+        if [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
+          git -C vim checkout "${{inputs.tag}}"
+        fi
+        git -C vim log -4 --color=always
+
+    - name: Get changelog
+      id: changelog
+      shell: bash
+      run: |
+        mkdir -p package/artifacts/info
+        if [ ! -d vim ]; then
+          # No new commits.
+          exit 0
+        fi
+
+        cd vim
+        git rev-parse HEAD > ../package/artifacts/info/latestrev.txt
+        if [ "$(git tag)" = "" ]; then
+          # No new tags.
+          cp ../vimver.txt ../package/artifacts/info/latesttag.txt
+          exit 0
+        fi
+
+        latesttag=$(git describe --tags --abbrev=0)
+        echo $latesttag > ../package/artifacts/info/latesttag.txt
+        echo $latesttag > ../vimver.txt
+        oldrev=$(cat ../vimrev.txt)
+        if git log --format='format:' $oldrev > /dev/null 2>&1; then
+          logopt=$oldrev..HEAD
+        else
+          logopt=--
+        fi
+        commiturl=${VIMREPO}/commit/
+        echo "ChangeLog in Markdown:"
+        git log --format='format:%H %s' $logopt | \
+          sed -e 's/[][_*^<`\\]/\\&/g' \
+              -e "s#^\([0-9a-f]*\) patch \([0-9.a-z]*\)#* [\2]($commiturl\1)#" \
+              -e "s#^\([0-9a-f]*\) \(.*\)#* [\2]($commiturl\1)#" | \
+          tee ../package/artifacts/info/changelog.md
+        echo
+        echo "ChangeLog in text:"
+        git log --format='format:* %s' $logopt | \
+          sed -e 's/^\* patch /* /g' | \
+          tee ../package/artifacts/info/changelog.txt
+
+    - name: Check changes
+      id: check
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        if git diff --exit-code HEAD vimver.txt; then
+          # No updates found.
+          echo ${COL_YELLOW}No updates.${COL_RESET}
+          if [ "${{ github.event_name }}" = 'pull_request' ]; then
+            # Don't skip on pull_request even if there are no updates.
+            echo "continue=yes" >> $GITHUB_OUTPUT
+            echo "create-release=no" >> $GITHUB_OUTPUT
+          else
+            # No updates. Cancel the workflow.
+            echo "continue=no" >> $GITHUB_OUTPUT
+            echo "create-release=no" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+        else
+          # Updates found
+          if [ "${{ github.ref_name }}" = 'master' ] || [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
+            echo "continue=yes" >> $GITHUB_OUTPUT
+            echo "create-release=yes" >> $GITHUB_OUTPUT
+          else
+            echo "continue=yes" >> $GITHUB_OUTPUT
+            echo "create-release=no" >> $GITHUB_OUTPUT
+          fi
+        fi
+
+        if [ "${{ github.repository }}" = "vim/vim-win32-installer" ] \
+           && [ -n "${SIGNPATH_API_TOKEN}" ]; then
+          echo "signing=yes" >> $GITHUB_OUTPUT
+        else
+          echo "signing=no" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Upload repository information
+      uses: actions/upload-artifact@v7
+      with:
+        name: repo-info
+        path: ./package/artifacts/info
+
+
   build:
+    needs: [check-updates]
     runs-on: ${{ matrix.os }}
+    if: needs.check-updates.outputs.continue == 'yes'
 
     strategy:
       fail-fast: false
@@ -214,92 +332,22 @@ jobs:
       with:
         ref: ${{inputs.base_commit}}
 
+    - name: Download repository information
+      uses: actions/download-artifact@v8
+      with:
+        name: repo-info
+        path: repo-info
+
     - name: Checkout Vim
       shell: bash
-      env:
-        GH_TOKEN: ${{ github.token }}
       run: |
         if ! git clone ${VIMREPO}.git --shallow-exclude="$(cat vimver.txt)"; then
           # No new commits since the version written in vimver.txt.
           if [ "${{ github.event_name }}" = 'pull_request' ]; then
             git clone ${VIMREPO}.git --depth=5
-          else
-            gh run cancel "${{ github.run_id }}"
-            exit 0
           fi
         fi
-        if [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
-          git -C vim checkout "${{inputs.tag}}"
-        fi
-        git -C vim log -4 --color=always
-
-    - name: Get changelog
-      id: changelog
-      shell: bash
-      run: |
-        mkdir -p package/artifacts/info
-        if [ ! -d vim ] || [ "$(git -C vim tag)" = "" ]; then
-          exit 0
-        fi
-
-        cd vim
-        latesttag=$(git describe --tags --abbrev=0)
-        echo "ref=${latesttag:1}" >> $GITHUB_OUTPUT
-        echo $latesttag > ../package/artifacts/info/latesttag.txt
-        echo $latesttag > ../vimver.txt
-        git rev-parse HEAD > ../package/artifacts/info/latestrev.txt
-        oldrev=$(cat ../vimrev.txt)
-        if git log --format='format:' $oldrev > /dev/null 2>&1; then
-          logopt=$oldrev..HEAD
-        else
-          logopt=--
-        fi
-        commiturl=${VIMREPO}/commit/
-        echo "ChangeLog in Markdown:"
-        git log --format='format:%H %s' $logopt | \
-          sed -e 's/[][_*^<`\\]/\\&/g' \
-              -e "s#^\([0-9a-f]*\) patch \([0-9.a-z]*\)#* [\2]($commiturl\1)#" \
-              -e "s#^\([0-9a-f]*\) \(.*\)#* [\2]($commiturl\1)#" | \
-          tee ../package/artifacts/info/changelog.md
-        echo
-        echo "ChangeLog in text:"
-        git log --format='format:* %s' $logopt | \
-          sed -e 's/^\* patch /* /g' | \
-          tee ../package/artifacts/info/changelog.txt
-
-    - name: Check changes
-      id: check
-      shell: bash
-      env:
-        SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        if git diff --exit-code HEAD vimver.txt; then
-          # No updates found.
-          echo ${COL_YELLOW}No updates.${COL_RESET}
-          if [ "${{ github.event_name }}" = 'pull_request' ]; then
-            # Don't skip on pull_request even if there are no updates.
-            echo "skip_release=yes" >> $GITHUB_OUTPUT
-          else
-            # No updates. Cancel the workflow.
-            gh run cancel "${{ github.run_id }}"
-            exit 0
-          fi
-        else
-          # Updates found
-          if [ "${{ github.ref_name }}" = 'master' ] || [ "${{github.event_name}}" = 'workflow_dispatch' ]; then
-            echo "skip_release=no" >> $GITHUB_OUTPUT
-          else
-            echo "skip_release=yes" >> $GITHUB_OUTPUT
-          fi
-        fi
-
-        if [ "${{ github.repository }}" = "vim/vim-win32-installer" ] \
-           && [ -n "${SIGNPATH_API_TOKEN}" ]; then
-          echo "signing=yes" >> $GITHUB_OUTPUT
-        else
-          echo "signing=no" >> $GITHUB_OUTPUT
-        fi
+        git -C vim checkout "$(cat repo-info/latestrev.txt)"
 
     - name: Apply experimental patches
       shell: bash
@@ -520,6 +568,7 @@ jobs:
         xcopy /s .ext\include %RUBY_DIR%\include\ruby-%RUBY_API_VER_LONG%
 
     - name: Update patchlevel
+      id: patchlevel
       shell: bash
       run: |
         cd vim/src
@@ -532,7 +581,10 @@ jobs:
         echo "MAJOR=${major}" >> $GITHUB_ENV
         echo "MINOR=${minor}" >> $GITHUB_ENV
         echo "PATCHLEVEL=${patchlevel}" >> $GITHUB_ENV
-        echo "PATCHLEVEL_PADDED=$(printf '%04d' ${patchlevel})" >> $GITHUB_ENV
+        patchlevel_padded=$(printf '%04d' ${patchlevel})
+        echo "PATCHLEVEL_PADDED=${patchlevel_padded}" >> $GITHUB_ENV
+
+        echo "ver=${major}.${minor}.${patchlevel_padded}" >> $GITHUB_OUTPUT
 
     - name: Copy src directory to src2
       shell: cmd
@@ -740,7 +792,7 @@ jobs:
         (echo INCLUDE_LIBGCC=%INCLUDE_LIBGCC%)>> %GITHUB_ENV%
 
         md artifacts\files
-        set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
+        set BASENAME=gvim_${{ steps.patchlevel.outputs.ver }}_${{ matrix.arch }}
         cd %PKG%
         7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\files\%BASENAME%.zip vim || exit 1
         cd ..
@@ -776,7 +828,7 @@ jobs:
         if "${{ matrix.arch }}"=="x64" set WIN64=1
         if "${{ matrix.arch }}"=="arm64" set ARM64=1
 
-        set BASENAME=gvim_${{ steps.changelog.outputs.ref }}_${{ matrix.arch }}
+        set BASENAME=gvim_${{ steps.patchlevel.outputs.ver }}_${{ matrix.arch }}
         nmake.exe -nologo -f Make_mvc.mak ^
           "X=OutFile ..\..\package\artifacts\files\%BASENAME%.exe" ^
           "SRC=..\..\package\%DEST_INST%" "VIMTOOLS=..\..\package\%DEST_INST%" ^
@@ -784,22 +836,17 @@ jobs:
           "GETTEXT=%DEPENDENCIES%" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
           "WIN64=%WIN64%" "ARM64=%ARM64%" || exit 1
 
-    - name: Upload Artifact (files)
+    - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
         name: vim-package-${{ matrix.arch }}
         path: ./package/artifacts/files
 
-    - name: Upload Artifact (info)
-      uses: actions/upload-artifact@v7
-      with:
-        name: info-${{ matrix.arch }}
-        path: ./package/artifacts/info
 
   release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: needs.build.outputs.skip_release == 'no'
+    runs-on: ubuntu-slim
+    needs: [check-updates, build]
+    if: needs.check-updates.outputs.create-release == 'yes'
 
     permissions:
       id-token: write # needed for attestation
@@ -836,7 +883,7 @@ jobs:
         subject-path: ./vim-package-*/gvim_*
 
     - name: Copy files for code signing
-      if: needs.build.outputs.signing == 'yes'
+      if: needs.check-updates.outputs.signing == 'yes'
       shell: bash
       run: |
         mkdir -p package/artifacts/files
@@ -844,7 +891,7 @@ jobs:
         cp vim-package-*/gvim_*.{exe,zip} package/artifacts/files
 
     - name: Upload Artifact (for code signing)
-      if: needs.build.outputs.signing == 'yes'
+      if: needs.check-updates.outputs.signing == 'yes'
       id: upload-unsigned-zip
       uses: actions/upload-artifact@v7
       with:
@@ -852,7 +899,7 @@ jobs:
         path: ./package/artifacts/files
 
     - name: SignPath code signing
-      if: needs.build.outputs.signing == 'yes'
+      if: needs.check-updates.outputs.signing == 'yes'
       id: signpath-code-signing
       uses: SignPath/github-action-submit-signing-request@v2.2
       with:
@@ -864,11 +911,11 @@ jobs:
         wait-for-completion: false  # true doesn't seem to work. Manual approval is required.
 
     - name: Save code signing info
-      if: needs.build.outputs.signing == 'yes'
+      if: needs.check-updates.outputs.signing == 'yes'
       shell: bash
       run: |
         mkdir -p package/artifacts/info
-        cp info-x64/* package/artifacts/info
+        cp repo-info/* package/artifacts/info
 
         echo "${{ steps.signpath-code-signing.outputs.signing-request-id }}" \
           | tee package/artifacts/info/signing-request-id.txt
@@ -876,7 +923,7 @@ jobs:
           | tee package/artifacts/info/signing-request-web-url.txt
 
     - name: Upload Artifact (signing info)
-      if: needs.build.outputs.signing == 'yes'
+      if: needs.check-updates.outputs.signing == 'yes'
       uses: actions/upload-artifact@v7
       with:
         name: info
@@ -887,10 +934,10 @@ jobs:
     - name: Get changelog
       id: changelog
       run: |
-        latesttag=$(cat info-x64/latesttag.txt)
-        ref=${latesttag:1}
+        latesttag=$(cat repo-info/latesttag.txt)
+        ver=${latesttag#v}
         echo "tag=${latesttag}" >> $GITHUB_OUTPUT
-        cp info-x64/latesttag.txt vimver.txt
+        cp repo-info/latesttag.txt vimver.txt
 
         URL=https://github.com/${{ github.repository }}/releases/download
 
@@ -903,7 +950,7 @@ jobs:
         Signed releases will occasionally be provided on a best effort approach.
         ### Changes:
 
-        $(cat info-x64/changelog.md)
+        $(cat repo-info/changelog.md)
 
         <!--
         _This release includes signed files_
@@ -911,37 +958,37 @@ jobs:
         ### Files:
         <!--  commented out, because will only be enabled once the signed files are uploaded manually.
         #### :lock: Signed Files:
-        * [![gvim_${ref}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_signed.exe)
+        * [![gvim_${ver}_x86_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x86_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x86_signed.exe)
           Signed 32-bit installer (*If you don't know what to use, use this one*)
-        * [![gvim_${ref}_x64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_signed.exe)
+        * [![gvim_${ver}_x64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x64_signed.exe)
           Signed 64-bit installer
-        * [![gvim_${ref}_arm64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_signed.exe)
+        * [![gvim_${ver}_arm64_signed.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_arm64_signed.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_arm64_signed.exe)
           Signed ARM64-bit installer
-        * [![gvim_${ref}_x86_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_signed.zip)
+        * [![gvim_${ver}_x86_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x86_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x86_signed.zip)
           Signed 32-bit zip archive
-        * [![gvim_${ref}_x64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_signed.zip)
+        * [![gvim_${ver}_x64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x64_signed.zip)
           Signed 64-bit zip archive
-        * [![gvim_${ref}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_signed.zip)
+        * [![gvim_${ver}_arm64_signed.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_arm64_signed.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_arm64_signed.zip)
           Signed ARM64-bit zip archive
         -->
         #### :unlock: Unsigned Files:
-        * [![gvim_${ref}_x86.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86.exe)
+        * [![gvim_${ver}_x86.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x86.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x86.exe)
           32-bit installer (*If you don't know what to use, use this one*)
-        * [![gvim_${ref}_x64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64.exe)
+        * [![gvim_${ver}_x64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x64.exe)
           64-bit installer
-        * [![gvim_${ref}_arm64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64.exe)
+        * [![gvim_${ver}_arm64.exe](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_arm64.exe.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_arm64.exe)
           ARM64-bit installer
-        * [![gvim_${ref}_x86.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86.zip)
+        * [![gvim_${ver}_x86.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x86.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x86.zip)
           32-bit zip archive
-        * [![gvim_${ref}_x64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64.zip)
+        * [![gvim_${ver}_x64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x64.zip)
           64-bit zip archive
-        * [![gvim_${ref}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64.zip)
+        * [![gvim_${ver}_arm64.zip](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_arm64.zip.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_arm64.zip)
           ARM 64-bit zip archive
-        * [![gvim_${ref}_x86_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x86_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x86_pdb.7z)
+        * [![gvim_${ver}_x86_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x86_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x86_pdb.7z)
           pdb files for debugging the corresponding 32-bit executable
-        * [![gvim_${ref}_x64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_x64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_x64_pdb.7z)
+        * [![gvim_${ver}_x64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_x64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_x64_pdb.7z)
           pdb files for debugging the corresponding 64-bit executable
-        * [![gvim_${ref}_arm64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ref}_arm64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ref}_arm64_pdb.7z)
+        * [![gvim_${ver}_arm64_pdb.7z](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/gvim_${ver}_arm64_pdb.7z.svg?label=downloads&logo=vim)](${URL}/${latesttag}/gvim_${ver}_arm64_pdb.7z)
           pdb files for debugging the corresponding ARM 64-bit executable
 
         <details>
@@ -970,12 +1017,12 @@ jobs:
           echo ${COL_YELLOW}No updates.${COL_RESET}
           exit 1  # This should not happen.
         fi
-        cp info-x64/latestrev.txt vimrev.txt
+        cp repo-info/latestrev.txt vimrev.txt
         git config --local user.name "$USER_NAME"
         git config --local user.email "$USER_EMAIL"
         git commit -a \
           -m "Update Vim to ${{ steps.changelog.outputs.tag }}" \
-          -m "$(head -n 50 info-x64/changelog.txt)"
+          -m "$(head -n 50 repo-info/changelog.txt)"
         git tag "${{ steps.changelog.outputs.tag }}"
         git push origin HEAD --tags
 

@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   upload-signed-files:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - uses: actions/checkout@v6
@@ -102,13 +102,12 @@ jobs:
         with:
           name: signed-package
           path: |
-            ./package/gvim_*.exe
-            ./package/gvim_*.zip
+            ./package/gvim_*_signed.*
 
       - name: Attest
         uses: actions/attest@v4
         with:
-          subject-path: ./package/gvim_*
+          subject-path: ./package/gvim_*_signed.*
 
       - name: Update release
         shell: bash
@@ -131,7 +130,7 @@ jobs:
           echo '---------------'
 
           # Upload the signed files
-          for i in package/gvim*.exe package/gvim*.zip; do
+          for i in package/gvim_*_signed.*; do
             gh release upload "${TAG}" "$i" --clobber
           done
           # Update the release notes
