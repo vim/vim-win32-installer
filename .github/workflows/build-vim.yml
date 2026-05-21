@@ -894,7 +894,7 @@ jobs:
 
         URL=https://github.com/${{ github.repository }}/releases/download
 
-        cat << EOF > changelog.md
+        cat << EOF > release_notes.md
         [![${latesttag}](https://img.shields.io/github/downloads/${{ github.repository }}/${latesttag}/total.svg)](https://github.com/${{ github.repository }}/releases/tag/${latesttag})
         Nightly Vim Windows build snapshots ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
@@ -984,7 +984,7 @@ jobs:
       with:
         tag_name: ${{ steps.changelog.outputs.tag }}
         name: ${{ steps.changelog.outputs.tag }}
-        body_path: changelog.md
+        body_path: release_notes.md
         draft: false
         prerelease: false
         #token: ${{ steps.app-token.outputs.token }}

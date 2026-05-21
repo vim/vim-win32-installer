@@ -18,7 +18,7 @@ additional extensions (e.g. Edit with Vim menu).
 The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
 
 ## ARM64
-ARM64 builds is currently being worked on. Will occassionally be provided until it is fully automatic.
+ARM64 builds is currently being worked on. Will occasionally be provided until it is fully automatic.
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
@@ -28,7 +28,7 @@ without it, but some Plugin might need this additional dependency. (e.g.
 installation and [Neocomplete](https://github.com/Shougo/neocomplete.vim) needs
 a working Lua installation). This means, those interpreters have to be
 installed in addition to Vim. Without it Vim won't be able to use that feature!
-You can find those interperters here:
+You can find those interpreters here:
 
 * [Strawberry Perl](http://strawberryperl.com/) 5.38
 * <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
@@ -75,7 +75,7 @@ will then be tested against the test suite.
 ## Signed Builds
 Creating a signed binary and installer still requires manual effort, therefore
 not every release will be signed. They will be provided on a best effort basis
-occasionaly. If there haven't been any signed
+occasionally. If there haven't been any signed
 releases for a long time, feel free to request a new one by creating an
 [issue](https://github.com/vim/vim-win32-installer/issues) here.
 
