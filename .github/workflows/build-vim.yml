@@ -824,7 +824,7 @@ jobs:
     - name: Attest
       uses: actions/attest@v4
       with:
-        subject-path: ./package/artifacts/files
+        subject-path: ./vim-package-*/gvim_*
 
     - name: Copy files for code signing
       if: needs.build.outputs.signing == 'yes'
