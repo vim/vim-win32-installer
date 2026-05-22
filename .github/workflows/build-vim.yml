@@ -201,6 +201,7 @@ jobs:
       id: check
       shell: bash
       env:
+        SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
         GH_TOKEN: ${{ github.token }}
       run: |
         if git diff --exit-code HEAD vimver.txt; then
