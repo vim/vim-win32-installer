@@ -116,7 +116,7 @@ env:
 
   # Skip pattern
   # FIXME: Some tests are flaky and often fail.
-  TEST_SKIP_PAT: 'Test_mswin_event_mouse\|Test_terminal_composing_unicode\|Test_gui_lowlevel_keyevent\|Test_QWERTY_Ctrl_minus\|Test_mswin_event_character_keys\|Test_mswin_event_function_keys\|Test_mswin_event_movement_keys\|Test_terminal_version\|Test_cd_completion'
+  TEST_SKIP_PAT: ''
 
   # Escape sequences
   COL_RED: "\x1b[31m"
