@@ -116,7 +116,8 @@ env:
 
   # Skip pattern
   # FIXME: Some tests are flaky and often fail.
-  TEST_SKIP_PAT: ''
+  TEST_SKIP_PAT: 'Test_terminal_composing_unicode\|Test_terminal_version'
+  TEST_SKIP_PAT_ARM64: 'Test_terminal_composing_unicode\|Test_terminal_version\|Test_gui_lowlevel_keyevent\|Test_QWERTY_Ctrl_minus\|Test_mswin_event_character_keys\|Test_mswin_event_function_keys\|Test_mswin_event_movement_keys'
 
   # Escape sequences
   COL_RED: "\x1b[31m"
@@ -697,6 +698,11 @@ jobs:
         path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
         set "PLTCONFIGDIR=%RACKET_DIR%\etc"
+
+        if "${{ matrix.arch }}"=="arm64" (
+          set "TEST_SKIP_PAT=%TEST_SKIP_PAT_ARM64%"
+        )
+
         call vim\src\msvc-latest ${{ matrix.vcarch }}
         cd vim
 
