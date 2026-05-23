@@ -9,12 +9,13 @@ on:
     types: [completed]
 
 permissions:
+  actions: write # to cancel a workflow run
   contents: write # to update wiki
 
 env:
   # Account for committing
-  USER_NAME: "vim-win32-installer CI"
-  USER_EMAIL: "k-takata@users.noreply.github.com"
+  USER_NAME: "github-actions[bot]"
+  USER_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
 
   # Escape sequences
   COL_RED: "\x1b[31m"
@@ -39,16 +40,18 @@ jobs:
 
     - name: Update Release List
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ github.token }}
       run: |
-        cd main
-        latest=$(cat vimver.txt)
-        cd ../wiki
+        cd wiki
         ../main/scripts/update-release-list.py
         git add Releases-in-*.md
         if git diff HEAD --quiet; then
           echo ${COL_YELLOW}No updates.${COL_RESET}
+          gh run cancel "${{ github.run_id }}" --repo "${{ github.repository }}"
+          exit 0
         else
+          latest=$(cat ../main/vimver.txt)
           git config --local user.name ${USER_NAME}
           git config --local user.email ${USER_EMAIL}
           git commit -a -m "Update Release List to ${latest}"
