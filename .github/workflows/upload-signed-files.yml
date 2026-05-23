@@ -40,7 +40,7 @@ jobs:
           gh release view "${TAG}" --json assets | \
             jq -r .assets[].url | grep "_signed\.\(exe\|zip\)" | \
             tee signed_files.txt
-          if [ "$(wc -l signed_files.txt)" -eq 6 ]; then
+          if [ "$(wc -l < signed_files.txt)" -eq 6 ]; then
             echo "Signed files have already been uploaded."
             exit 1
           fi
