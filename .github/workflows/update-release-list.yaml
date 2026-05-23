@@ -26,7 +26,7 @@ env:
 jobs:
   update:
     runs-on: ubuntu-slim
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.repository_owner == 'vim' && github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - uses: actions/checkout@v6
