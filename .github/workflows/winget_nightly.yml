@@ -5,8 +5,8 @@ on:
   #release:
   #  types: [published]
   workflow_run:
-    workflows: ["Build Vim"]
-    branches: [master]
+    workflows: ["Update Release List"]
+    #branches: [master]
     types: [completed]
 
 jobs:

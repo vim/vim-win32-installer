@@ -5,9 +5,6 @@ name: Upload signed files
 # run_id for the corresponding release must be specified.
 
 on:
-  #push:
-  #  branches:
-  #    - 'upload-signed-files' # XXX: for debugging
   workflow_dispatch:
     inputs:
       run_id:
@@ -32,14 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
-            RUN_ID=${{ inputs.run_id }}
-          #else
-          #  # XXX: For debugging
-          #  RUN_ID=26016790078
-          fi
-
-          gh run download ${RUN_ID} --name "info" --dir info
+          gh run download "${{ inputs.run_id }}" --name "info" --dir info
 
       - name: Download signed files
         shell: bash

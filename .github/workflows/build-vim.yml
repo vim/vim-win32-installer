@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag name (in vim repo) to run'
+        description: 'Tag name (in vim repo) to create a release'
         required: true
         type: string
       base_commit:
@@ -28,8 +28,8 @@ permissions:
 env:
   VIMREPO: https://github.com/vim/vim
   DEPENDENCIES: 'C:\dependencies'
-  VCPKG_ROOT: 'C:\vcpkg'
   GETTEXT_PATH: 'C:\dependencies\msys64\usr\bin'  # msgfmt, etc.
+  VCPKG_ROOT: 'C:\vcpkg'
 
   # Account for committing
   USER_NAME: "github-actions[bot]"
@@ -280,10 +280,6 @@ jobs:
             sys: clangarm64
             os: windows-11-arm
 
-    outputs:
-      skip_release: ${{ steps.check.outputs.skip_release }}
-      signing: ${{ steps.check.outputs.signing }}
-
     steps:
     - name: Initialize
       id: init
@@ -364,7 +360,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         update: false
-        location: C:\dependencies
+        location: ${{ env.DEPENDENCIES }}
         msystem: ${{ matrix.sys }}
         #install: gettext
         #pacboy: libiconv:p gettext-runtime:p
@@ -472,8 +468,7 @@ jobs:
           echo %COL_GREEN%Download Racket%COL_RESET%
           call :downloadfile %RACKET_URL% downloads\racket-%BITS%.tgz
           7z.exe x -tgzip -so downloads\racket-%BITS%.tgz | 7z.exe x -y -aoa -si -ttar ^
-            -o%DEPENDENCIES%\
-          rem move %DEPENDENCIES%\racket %RACKET_DIR%
+            -o%RACKET_DIR%\..
           type NUL > %RACKET_DIR%\include\bc_suffix.h
 
           rem Install additional packages for Racket
@@ -485,8 +480,8 @@ jobs:
         ) else (
           echo %COL_GREEN%Download Ruby%COL_RESET%
           call :downloadfile %RUBY_URL% downloads\ruby.7z
-          7z x downloads\ruby.7z -o%DEPENDENCIES% > nul || exit 1
-          move %DEPENDENCIES%\rubyinstaller-%RUBY_RELEASE%-${{ matrix.arch }} %RUBY_DIR% > nul || exit 1
+          7z x downloads\ruby.7z -o%RUBY_DIR%\.. > nul || exit 1
+          move %RUBY_DIR%\..\rubyinstaller-%RUBY_RELEASE%-${{ matrix.arch }} %RUBY_DIR% > nul || exit 1
 
           echo %COL_GREEN%Download Ruby source%COL_RESET%
           call :downloadfile %RUBY_SRC_URL% downloads\ruby_src.zip
@@ -499,8 +494,8 @@ jobs:
           echo %COL_GREEN%Prepare gettext%COL_RESET%
           md %GETTEXT_DIR%
           md %GETTEXT_DIR%64
-          copy /Y C:\dependencies\msys64\${{ matrix.sys }}\bin\libiconv-2.dll %GETTEXT_DIR% || exit 1
-          copy /Y C:\dependencies\msys64\${{ matrix.sys }}\bin\libintl-8.dll %GETTEXT_DIR% || exit 1
+          copy /Y %DEPENDENCIES%\msys64\${{ matrix.sys }}\bin\libiconv-2.dll %GETTEXT_DIR% || exit 1
+          copy /Y %DEPENDENCIES%\msys64\${{ matrix.sys }}\bin\libintl-8.dll %GETTEXT_DIR% || exit 1
           copy /Y %GETTEXT_DIR%\libiconv-2.dll %GETTEXT_DIR%64 || exit 1
           copy /Y %GETTEXT_DIR%\libintl-8.dll %GETTEXT_DIR%64 || exit 1
           rem Work around for nsis installer
@@ -541,8 +536,8 @@ jobs:
 
         echo %COL_GREEN%Download libsodium%COL_RESET%
         call :downloadfile %SODIUM_URL% downloads\libsodium.zip
-        7z x -y downloads\libsodium.zip -o%DEPENDENCIES% > nul || exit 1
-        copy /Y %DEPENDENCIES%\libsodium\${{ matrix.sodiumarch }}\Release\%SODIUM_VC_VER%\dynamic\libsodium.dll  vim\src\
+        7z x -y downloads\libsodium.zip -o%SODIUM_DIR%\.. > nul || exit 1
+        copy /Y %SODIUM_DIR%\${{ matrix.sodiumarch }}\Release\%SODIUM_VC_VER%\dynamic\libsodium.dll  vim\src\
 
         goto :eof
 
@@ -603,23 +598,25 @@ jobs:
         :: Create config
         if not exist auto\nmake mkdir auto\nmake
         copy /Y ..\..\vimdll-huge.cfg auto\nmake\
-        echo "PERL_VER=%PERL_VER%">> auto\nmake\vimdll-huge.cfg
-        echo "PERL=%PERL_DIR%">> auto\nmake\vimdll-huge.cfg
-        echo "PYTHON3_VER=%PYTHON3_VER%">> auto\nmake\vimdll-huge.cfg
-        echo "PYTHON3=%PYTHON3_DIR%">> auto\nmake\vimdll-huge.cfg
-        echo "LUA_VER=%LUA_VER%">> auto\nmake\vimdll-huge.cfg
-        echo "LUA=%LUA_DIR%">> auto\nmake\vimdll-huge.cfg
-        rem Not supported for ARM64
-        if NOT "${{ matrix.arch }}"=="arm64" (
-          echo "PYTHON=%PYTHON2_DIR%">> auto\nmake\vimdll-huge.cfg
-          echo "PYTHON_VER=%PYTHON2_VER%">> auto\nmake\vimdll-huge.cfg
-          echo "RUBY_VER=%RUBY_VER%">> auto\nmake\vimdll-huge.cfg
-          echo "RUBY_API_VER_LONG=%RUBY_API_VER_LONG%">> auto\nmake\vimdll-huge.cfg
-          echo "RUBY=%RUBY_DIR%">> auto\nmake\vimdll-huge.cfg
-          echo "MZSCHEME_VER=%MZSCHEME_VER%">> auto\nmake\vimdll-huge.cfg
-          echo "MZSCHEME=%RACKET_DIR%">> auto\nmake\vimdll-huge.cfg
-        )
-        echo:"SODIUM=%SODIUM_DIR%">> auto\nmake\vimdll-huge.cfg
+        (
+          echo "PERL_VER=%PERL_VER%"
+          echo "PERL=%PERL_DIR%"
+          echo "PYTHON3_VER=%PYTHON3_VER%"
+          echo "PYTHON3=%PYTHON3_DIR%"
+          echo "LUA_VER=%LUA_VER%"
+          echo "LUA=%LUA_DIR%"
+          rem Not supported for ARM64
+          if NOT "${{ matrix.arch }}"=="arm64" (
+            echo "PYTHON=%PYTHON2_DIR%"
+            echo "PYTHON_VER=%PYTHON2_VER%"
+            echo "RUBY_VER=%RUBY_VER%"
+            echo "RUBY_API_VER_LONG=%RUBY_API_VER_LONG%"
+            echo "RUBY=%RUBY_DIR%"
+            echo "MZSCHEME_VER=%MZSCHEME_VER%"
+            echo "MZSCHEME=%RACKET_DIR%"
+          )
+          echo "SODIUM=%SODIUM_DIR%"
+        ) >> auto\nmake\vimdll-huge.cfg
 
         rem Build gvim/vim with VIMDLL
         nmake -nologo -f Make_mvc.mak @auto\nmake\vimdll-huge.cfg || exit 1
@@ -638,8 +635,8 @@ jobs:
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
         set "PLTCONFIGDIR=%RACKET_DIR%\etc"
         cd vim\src
-        echo.
         start "" /wait .\gvim -silent -register
+        echo.
         echo %COL_GREEN%gvim version:%COL_RESET%
         start /wait .\gvim -u NONE -c "redir @a | ver | put a | 1,3d | wq!" ver.txt
         type ver.txt || exit 1
