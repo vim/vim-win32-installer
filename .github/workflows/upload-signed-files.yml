@@ -5,6 +5,9 @@ name: Upload signed files
 # run_id for the corresponding release must be specified.
 
 on:
+  #push:
+  #  branches:
+  #    - 'upload-signed-files' # XXX: for debugging
   workflow_dispatch:
     inputs:
       run_id:
@@ -29,18 +32,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh run download "${{ inputs.run_id }}" --name "info" --dir info
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+            RUN_ID=${{ inputs.run_id }}
+          #else
+          #  # XXX: For debugging
+          #  RUN_ID=26345580501
+          fi
+
+          gh run download "${RUN_ID}" --name "info" --dir info
 
       - name: Check if signed files have been uploaded
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPLOAD_FILE_COUNT: 6
         run: |
           TAG=$(cat info/latesttag.txt)
           gh release view "${TAG}" --json assets | \
-            jq -r .assets[].url | grep "_signed\.\(exe\|zip\)" | \
+            jq -r .assets[].url | grep "_signed\.\(exe\|zip\)" || true | \
             tee signed_files.txt
-          if [ "$(wc -l < signed_files.txt)" -eq 6 ]; then
+          if [ "$(wc -l < signed_files.txt)" -eq "${UPLOAD_FILE_COUNT}" ]; then
             echo "Signed files have already been uploaded."
             exit 1
           fi
