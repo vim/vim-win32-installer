@@ -223,7 +223,7 @@ jobs:
         else
           # Updates found
           if { [ "${{ github.ref_name }}" = 'master' ] || [ "${{github.event_name}}" = 'workflow_dispatch' ]; } \
-              && [ "${{ github.repository_owner }}" = 'vim']; then
+              && [ "${{ github.repository_owner }}" = 'vim' ]; then
             echo "continue=yes" >> $GITHUB_OUTPUT
             echo "create-release=yes" >> $GITHUB_OUTPUT
           else
