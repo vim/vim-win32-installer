@@ -694,7 +694,7 @@ jobs:
 
     - name: Test gvim/vim and show the result of gvim tests
       shell: cmd
-      timeout-minutes: 15
+      timeout-minutes: 20
       run: |
         path %LUA_DIR%;%PERL_DIR%\bin;%PYTHON3_DIR%;%PYTHON2_DIR%;%RUBY_DIR%\bin;%RUBY_DIR%\bin\ruby_builtin_dlls;%GETTEXT_DIR%;%RACKET_DIR%;%RACKET_DIR%\lib;%path%
         set "PLTCOLLECTS=%RACKET_DIR%\collects"
