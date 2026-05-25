@@ -70,8 +70,8 @@ env:
   PYTHON3_DIR: 'C:\dependencies\python3'
 
   # Racket
-  RACKET_VER: 3m_dcgt6o
-  RACKET_RELEASE: '8.7'
+  RACKET_VER: 3m_dif58g
+  RACKET_RELEASE: '8.17'
   RACKET_URL_32: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-i386-win32-bc.tgz
   RACKET_URL_64: https://users.cs.utah.edu/plt/installers/%RACKET_RELEASE%/racket-minimal-%RACKET_RELEASE%-x86_64-win32-bc.tgz
   RACKET_DIR: 'C:\dependencies\racket'
@@ -418,6 +418,7 @@ jobs:
           echo %PYTHON3_RELEASE%
           if NOT "${{ matrix.arch }}"=="arm64" (
             echo %PYTHON2_RELEASE%
+            echo %RACKET_RELEASE%
             echo %RUBY_RELEASE%
             echo %GETTEXT_32_URL%
             echo %GETTEXT_64_URL%
@@ -1007,7 +1008,7 @@ jobs:
         * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) ${{ env.LUA_VER_DOT }}
         * [Python2](https://www.python.org/downloads/) 2.7
         * [Python3](https://www.python.org/downloads/) 3.8 or later
-        * [Racket](https://download.racket-lang.org/) ${{ env.RACKET_RELEASE }} (BC)
+        * [Racket](https://download.racket-lang.org/releases/${{ env.RACKET_RELEASE }}/) ${{ env.RACKET_RELEASE }} (BC)
         * [RubyInstaller](http://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
         * [libsodium](https://download.libsodium.org/libsodium/) ${{ env.SODIUM_RELEASE }}
         </details>
