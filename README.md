@@ -9,16 +9,13 @@ This is a project for building Nightly and Stable Vim Windows build snapshots
 automatically ([more information](https://vim.fandom.com/wiki/Where_to_download_Vim)).
 
 [Download](https://github.com/vim/vim-win32-installer/releases/latest) and execute the
-most recent `gvim_x.y.pppp_x86.exe` file to install Vim (where `x.y` is the
-release version and `pppp` is the patch number). The exe files contain the
-(32bit) installer while the .zip files contain an archive of the 32bit (`_x86`)
-or 64bit versions (`_x64`). To install it, extract the archive and update your
+most recent `gvim_x.y.pppp_aaa.exe` file to install Vim (where `x.y` is the
+release version, `pppp` is the patch number, and `aaa` is the architecture).
+The exe files contain the installer while the .zip files contain an archive of each
+architecture. To install it, extract the archive and update your
 PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
-The `gvim...pdb.zip` file only contains the corresponding pdb files for debugging the binaries.
-
-## ARM64
-ARM64 builds is currently being worked on. Will occasionally be provided until it is fully automatic.
+The `gvim..._pdb.7z` file only contains the corresponding pdb files for debugging the binaries.
 
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
@@ -33,7 +30,7 @@ You can find those interpreters here:
 * [Strawberry Perl](http://strawberryperl.com/) 5.38
 * <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
-* [Python](https://www.python.org/downloads/) 2.7
+* [Python 2](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8 or later
 * [Racket](https://download.racket-lang.org/releases/8.17/) 8.17 (BC)
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.4
@@ -54,7 +51,7 @@ terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
 information.
 
 For supporting better encryption, it comes with the libsodium.dll from the
-[libsodium repository](https://github.com/jedisct1/libsodium/releases/1.0.19-RELEASE)
+[libsodium Web site](https://libsodium.org/).
 See the help at [:h 'cryptmethod'](https://vimhelp.org/options.txt.html#%27cryptmethod%27)
 for more details.
 
