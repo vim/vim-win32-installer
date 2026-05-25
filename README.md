@@ -35,7 +35,7 @@ You can find those interpreters here:
 * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
 * [Python](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8 or later
-* [Racket](https://download.racket-lang.org/) 8.7 (BC)
+* [Racket](https://download.racket-lang.org/releases/8.17/) 8.17 (BC)
 * [RubyInstaller](http://rubyinstaller.org/downloads/) 3.4
 
 Make sure that you install the same architecture (32bit/64bit) for those
