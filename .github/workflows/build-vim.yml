@@ -536,8 +536,9 @@ jobs:
         echo %COL_GREEN%Download ShellExecAsUser%COL_RESET%
         call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
         7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
+        mkdir "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
         copy /Y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
-          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll"
+          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" || exit 1
 
         echo %COL_GREEN%Download libsodium%COL_RESET%
         call :downloadfile %SODIUM_URL% downloads\libsodium.zip -z
