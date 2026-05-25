@@ -536,21 +536,25 @@ jobs:
         echo %COL_GREEN%Download ShellExecAsUser%COL_RESET%
         call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
         7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
+        mkdir "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
         copy /Y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
-          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll"
+          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" || exit 1
 
         echo %COL_GREEN%Download libsodium%COL_RESET%
-        call :downloadfile %SODIUM_URL% downloads\libsodium.zip
+        call :downloadfile %SODIUM_URL% downloads\libsodium.zip -z
         7z x -y downloads\libsodium.zip -o%SODIUM_DIR%\.. > nul || exit 1
         copy /Y %SODIUM_DIR%\${{ matrix.sodiumarch }}\Release\%SODIUM_VC_VER%\dynamic\libsodium.dll  vim\src\
 
         goto :eof
 
         :downloadfile
-        :: call :downloadfile <URL> <localfile>
+        :: call :downloadfile <URL> <localfile> [-z]
         echo Downloading: %1
-        if not exist %2 (
-          curl --fail -L --retry 2 --retry-delay 5 --retry-all-errors %1 -o %2 || exit 1
+        if "%3"=="-z" (
+          rem Compare the timestamp
+          curl --fail -L -R --retry 2 --retry-delay 5 --retry-all-errors %1 -o %2 -z %2 || exit 1
+        ) else if not exist %2 (
+          curl --fail -L -R --retry 2 --retry-delay 5 --retry-all-errors %1 -o %2 || exit 1
         )
         goto :eof
 
