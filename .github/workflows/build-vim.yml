@@ -942,6 +942,17 @@ jobs:
         name: info
         path: ./package/artifacts/info
 
+    - name: Trigger upload-signed-files
+      if: needs.check-updates.outputs.signing == 'yes'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Trigger upload-signed-files.yml.
+        # It is expected to fail due to waiting for approval.
+        gh workflow run upload-signed-files.yml -f run_id=${{ github.run_id }} | tee log.txt
+        grep '^https://' log.txt > upload-workflow-url.txt
+
     # TODO: Create an installer using with signed files, then upload to SignPath again.
 
     - name: Get changelog
@@ -1082,11 +1093,15 @@ jobs:
         - 🟩 x86/x64/arm64 packages: [$(cat package/artifacts/info/signing-request-id.txt)]($(cat package/artifacts/info/signing-request-web-url.txt))
 
         **(For admin) Upload signed files:**
-        To upload the signed files to the release, run the following command after approval of SignPath code signing:
+        The following workflow has been triggered to upload the signed files:
+        <$(cat upload-workflow-url.txt)>
+        It is expected to fail due to waiting for approval. Rerun it after approval of SignPath code signing.
+
+        Or, trigger a new workflow by running the following command after approval:
         \`\`\`
         gh workflow run upload-signed-files.yml -f run_id=${{ github.run_id }}
         \`\`\`
-        Or, go to the [Upload signed files](https://github.com/vim/vim-win32-installer/actions/workflows/upload-signed-files.yml) workflow page and run it manually by setting \`run_id\` to \`${{ github.run_id }}\`.
+        To trigger it from a browser, go to the [Upload signed files](https://github.com/vim/vim-win32-installer/actions/workflows/upload-signed-files.yml) workflow page and run it manually by setting \`run_id\` to \`${{ github.run_id }}\`.
         EOF
 
 # vim: ts=2 sw=2 sts=2 et

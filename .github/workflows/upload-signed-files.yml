@@ -75,7 +75,8 @@ jobs:
             echo "SignPath status: $status"
             case "$status" in
               WaitingForApproval)
-                echo "Not approved yet. Approve it first."
+                echo "Not approved yet. Approve it first:"
+                cat info/signing-request-web-url.txt
                 exit 1
                 ;;
               InProgress)
