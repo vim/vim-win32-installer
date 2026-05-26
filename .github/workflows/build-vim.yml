@@ -22,7 +22,6 @@ on:
         type: string
 
 permissions:
-  actions: write # to cancel a workflow run
   contents: read
 
 env:
@@ -860,6 +859,7 @@ jobs:
     if: needs.check-updates.outputs.create-release == 'yes'
 
     permissions:
+      actions: write # to trigger a workflow
       id-token: write # needed for attestation
       attestations: write
       artifact-metadata: write
