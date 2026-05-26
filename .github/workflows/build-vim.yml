@@ -674,8 +674,7 @@ jobs:
           rem Build both 64- and 32-bit versions of gvimext.dll for the installer
 
           rem x64
-          start "" /wait cmd /C "vim\src\msvc-latest x64 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=AMD64 clean all > ..\gvimext.log"
-          type vim\src\gvimext.log
+          cmd /C "vim\src\msvc-latest x64 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=AMD64 clean all"
           robocopy vim\src\GvimExt vim\runtime\GvimExt64 ^
             gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
           if ERRORLEVEL 8 exit 1
@@ -683,8 +682,7 @@ jobs:
 
           rem x86
           mkdir vim\runtime\GvimExt32
-          start "" /wait cmd /C "vim\src\msvc-latest x86 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=i386 clean all > ..\gvimext.log"
-          type vim\src\gvimext.log
+          cmd /C "vim\src\msvc-latest x86 && cd vim\src\GvimExt && nmake.exe -nologo -f Make_mvc.mak CPU=i386 clean all"
           robocopy vim\src\GvimExt vim\runtime\GvimExt32 ^
             gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
           if ERRORLEVEL 8 exit 1
