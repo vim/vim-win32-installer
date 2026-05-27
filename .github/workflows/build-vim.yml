@@ -1016,13 +1016,13 @@ jobs:
         <details>
         <summary>Interface Information</summary>
 
-        * [Strawberry Perl](http://strawberryperl.com/) ${{ env.PERL_VER_DOT_64 }}
-        <!-- * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6 -->
-        * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) ${{ env.LUA_VER_DOT }}
+        * [Strawberry Perl](https://strawberryperl.com/) ${{ env.PERL_VER_DOT_64 }}
+        <!-- * [ActiveTcl](https://www.activestate.com/activetcl/downloads) 8.6.6 -->
+        * [LuaBinaries](https://luabinaries.sourceforge.net/download.html) ${{ env.LUA_VER_DOT }}
         * [Python2](https://www.python.org/downloads/) 2.7
         * [Python3](https://www.python.org/downloads/) 3.8 or later
         * [Racket](https://download.racket-lang.org/releases/${{ env.RACKET_RELEASE }}/) ${{ env.RACKET_RELEASE }} (BC)
-        * [RubyInstaller](http://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
+        * [RubyInstaller](https://rubyinstaller.org/downloads/) ${{ env.RUBY_VER_DOT }}
         * [libsodium](https://download.libsodium.org/libsodium/) ${{ env.SODIUM_RELEASE }}
         </details>
 

@@ -27,13 +27,13 @@ a working Lua installation). This means, those interpreters have to be
 installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interpreters here:
 
-* [Strawberry Perl](http://strawberryperl.com/) 5.38
-* <del>[ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
-* [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.4
+* [Strawberry Perl](https://strawberryperl.com/) 5.38
+* <del>[ActiveTcl](https://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
+* [LuaBinaries](https://luabinaries.sourceforge.net/download.html) 5.4
 * [Python 2](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8 or later
 * [Racket](https://download.racket-lang.org/releases/8.17/) 8.17 (BC)
-* [RubyInstaller](http://rubyinstaller.org/downloads/) 3.4
+* [RubyInstaller](https://rubyinstaller.org/downloads/) 3.4
 
 Make sure that you install the same architecture (32bit/64bit) for those
 libraries that matches your Vim installation.
@@ -47,7 +47,7 @@ Additionally the binaries include the new terminal feature for Vim and
 therefore contain the winpty.dll (32bit or 64bit) and the winpty-agent.exe from
 the [winpty repository](https://github.com/rprichard/winpty). This feature is
 currently considered experimental. Read the help at [:h
-terminal.txt](http://vimhelp.appspot.com/terminal.txt.html) for more
+terminal.txt](https://vimhelp.org/terminal.txt.html) for more
 information.
 
 For supporting better encryption, it comes with the libsodium.dll from the
@@ -109,6 +109,6 @@ happen approximately every month.
 Most work was done by Ken Takata (@k-takata) and Christian Brabandt (@chrisbra).
 
 The Vim license applies (see [:h
-license](http://vimhelp.appspot.com/uganda.txt.html#license)) to all the build
+license](https://vimhelp.org/uganda.txt.html#license)) to all the build
 scripts in this repository. Note, that Vim is included as a submodule and comes
 with its own license (although is also released under the Vim license).
