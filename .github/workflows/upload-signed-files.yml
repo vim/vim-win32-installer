@@ -48,8 +48,8 @@ jobs:
           UPLOAD_FILE_COUNT: 6
         run: |
           TAG=$(cat info/latesttag.txt)
-          gh release view "${TAG}" --json assets | \
-            jq -r .assets[].url | grep "_signed\.\(exe\|zip\)" || true | \
+          gh release view "${TAG}" --json assets \
+            --jq '.assets[].url | select(test("_signed\\.(exe|zip)"))' | \
             tee signed_files.txt
           if [ "$(wc -l < signed_files.txt)" -eq "${UPLOAD_FILE_COUNT}" ]; then
             echo "Signed files have already been uploaded."
@@ -129,7 +129,7 @@ jobs:
 
           # Original release notes
           echo '---------------'
-          gh release view "${TAG}" --json body | jq -r .body | tee body.md
+          gh release view "${TAG}" --json body --jq '.body' | tee body.md
           echo '---------------'
 
           # Remove comments
