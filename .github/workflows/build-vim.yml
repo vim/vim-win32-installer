@@ -947,7 +947,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Trigger upload-signed-files.yml.
-        # It is expected to fail due to waiting for approval.
+        # The triggered workflow is expected to fail due to waiting for approval.
         gh workflow run upload-signed-files.yml -f run_id=${{ github.run_id }} | tee log.txt
         grep '^https://' log.txt > upload-workflow-url.txt
 
