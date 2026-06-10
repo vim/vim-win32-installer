@@ -103,8 +103,8 @@ env:
   WINPTY_URL: https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
   WINPTY_VCPKG: 'C:\vcpkg\packages\winpty_arm64-windows'
 
-  # ShellExecAsUser
-  SHELLEXECASUSER_URL: https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
+  # EnVar Plugin
+  ENVAR_URL: https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip
 
   # libsodium
   SODIUM_RELEASE: '1.0.22'
@@ -532,12 +532,8 @@ jobs:
           copy /Y %DEPENDENCIES%\winpty\${{ matrix.warch }}\bin\winpty-agent.exe  vim\src\
         )
 
-        echo %COL_GREEN%Download ShellExecAsUser%COL_RESET%
-        call :downloadfile "%SHELLEXECASUSER_URL%" downloads\shellexecasuser.zip
-        7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
-        mkdir "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode"
-        copy /Y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
-          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll" || exit 1
+        echo %COL_GREEN%Download EnVar Plugin%COL_RESET%
+        call :downloadfile "%ENVAR_URL%" downloads\EnVar_plugin.zip
 
         echo %COL_GREEN%Download libsodium%COL_RESET%
         call :downloadfile %SODIUM_URL% downloads\libsodium.zip -z
@@ -668,7 +664,6 @@ jobs:
           robocopy vim\src\GvimExt vim\runtime\GvimExt64 ^
             gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
           if ERRORLEVEL 8 exit 1
-          copy /Y vim\src\GvimExt\gvimext.dll vim\src\GvimExt\gvimext64.dll || exit 1
         ) else (
           rem Build both 64- and 32-bit versions of gvimext.dll for the installer
 
@@ -677,7 +672,6 @@ jobs:
           robocopy vim\src\GvimExt vim\runtime\GvimExt64 ^
             gvimext.dll gvimext.inf gvimext.reg README.txt /E /NP /NFL /NDL
           if ERRORLEVEL 8 exit 1
-          copy /Y vim\src\GvimExt\gvimext.dll vim\src\GvimExt\gvimext64.dll || exit 1
 
           rem x86
           mkdir vim\runtime\GvimExt32
@@ -743,6 +737,13 @@ jobs:
           exit 1
         )
 
+    - name: Build Vim launcher
+      shell: cmd
+      run: |
+        call vim\src\msvc-latest ${{ matrix.vcarch }}
+        cd vim-launcher
+        nmake -f Make_mvc.mak
+
     - name: Package (zip)
       shell: cmd
       run: |
@@ -756,48 +757,15 @@ jobs:
         echo VIM_DIR=%VIM_DIR%>> %GITHUB_ENV%
         echo PKG=%PKG%>> %GITHUB_ENV%
 
-        md %DEST%
+        copy ..\vim\src\*.pdb . || exit 1
 
-        robocopy ..\vim\runtime %DEST% /E /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        copy ..\vim\src\*.pdb     . || exit 1
-        copy ..\vim\src\*vim*.exe %DEST% || exit 1
-        copy ..\vim\src\vim*.dll  %DEST% || exit 1
-        copy ..\vim\src\tee\*.exe %DEST% || exit 1
-        copy ..\vim\src\xxd\*.exe %DEST% || exit 1
-        copy ..\vim\src\libsodium.dll %DEST% || exit 1
-        copy ..\vim\src\winpty*   %DEST% || exit 1
-        copy ..\vim\README.txt    %DEST% || exit 1
-        copy ..\vim\LICENSE       %DEST%\LICENSE.txt || exit 1
-        copy ..\vim\uninstall.txt %DEST% || exit 1
-        copy ..\vim\vimtutor.bat  %DEST% || exit 1
-        copy ..\vim\src\vim.ico   %DEST% || exit 1
-        copy ..\vim\src\install.exe %DEST% || exit 1
-        copy ..\vim\src\uninstall.exe %DEST% || exit 1
-        copy ..\diff.exe          %DEST% || exit 1
-        rem copy %LUA_DIR%\lua*.dll   %DEST% || exit 1
+        rem Prepare package directory
+        set VIM_SRC=..\vim
+        set DIFFEXE=..
+        set GETTEXT_TOP=C:\dependencies
+        call ..\scripts\prepare_package_dir.bat ^
+          "%DEST%" "%VIM_SRC%" "%DIFFEXE%" "%GETTEXT_TOP%" "${{ matrix.arch }}"
 
-        copy %GETTEXT_DIR%\libiconv-2.dll %DEST% || exit 1
-        copy %GETTEXT_DIR%\libintl-8.dll  %DEST% || exit 1
-        :: Check if libgcc_s_*.dll is required
-        set INCLUDE_LIBGCC=0
-        if NOT "${{ matrix.arch }}"=="arm64" (
-          dumpbin /DEPENDENTS %GETTEXT_DIR%32\libintl-8.dll | findstr /R "libgcc_s_.*\.dll" && set INCLUDE_LIBGCC=1
-        )
-        if "${{ matrix.arch }}"=="x86" (
-          if "%INCLUDE_LIBGCC%" EQU 1 (
-            if exist %GETTEXT_DIR%\libgcc_s_sjlj-1.dll copy %GETTEXT_DIR%\libgcc_s_sjlj-1.dll %DEST% || exit 1
-          )
-        )
-        copy %GETTEXT_DIR%64\libiconv-2.dll %DEST%\GvimExt64 || exit 1
-        copy %GETTEXT_DIR%64\libintl-8.dll  %DEST%\GvimExt64 || exit 1
-        if NOT "${{ matrix.arch }}"=="arm64" (
-          copy %GETTEXT_DIR%32\libiconv-2.dll %DEST%\GvimExt32 || exit 1
-          copy %GETTEXT_DIR%32\libintl-8.dll  %DEST%\GvimExt32 || exit 1
-          if "%INCLUDE_LIBGCC%" EQU 1 (
-            if exist %GETTEXT_DIR%32\libgcc_s_sjlj-1.dll copy %GETTEXT_DIR%32\libgcc_s_sjlj-1.dll %DEST% || exit 1
-          )
-        )
         rem Parentheses are required. Otherwise the number is interpreted as a file descriptor.
         (echo INCLUDE_LIBGCC=%INCLUDE_LIBGCC%)>> %GITHUB_ENV%
 
@@ -807,6 +775,14 @@ jobs:
         7z a -mx=9 -xr@..\..\exclist.txt ..\artifacts\files\%BASENAME%.zip vim || exit 1
         cd ..
         7z a -mx=9 artifacts\files\%BASENAME%_pdb.7z *.pdb || exit 1
+
+    - name: Download NsisMultiUser
+      uses: actions/checkout@v6
+      with:
+        #repository: Drizin/NsisMultiUser
+        repository: k-takata/NsisMultiUser
+        ref: for-vim
+        path: NsisMultiUser
 
     - name: Package (installer)
       shell: cmd
@@ -818,19 +794,13 @@ jobs:
           winget install -e --id NSIS.NSIS --disable-interactivity --accept-package-agreements
         )
 
-        rem Install ShellExecAsUser
-        7z.exe x -y downloads\shellexecasuser.zip -o%DEPENDENCIES%\shellexecasuser > nul || exit 1
-        copy /y "%DEPENDENCIES%\shellexecasuser\unicode\ShellExecAsUser.dll" ^
-          "%ProgramFiles(x86)%\NSIS\Plugins\x86-unicode\ShellExecAsUser.dll"
+        rem Install EnVar Plugin
+        7z.exe x -y downloads\EnVar_plugin.zip -o.\EnVar_plugin > nul || exit 1
 
-        set INST=vim-installer-${{ matrix.arch }}
-        set DEST_INST=%INST%\vim\%VIM_DIR%
-        robocopy package\%PKG% package\%INST% /E /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
-        robocopy vim\src\GvimExt package\%DEST_INST%\GvimExt /E /NP /NFL /NDL
-        if ERRORLEVEL 8 exit 1
+        rem Create license files for nsis
+        call msys2 scripts/create_nsis_lic_files.sh ./vim
 
-        cd vim\nsis
+        cd nsis
 
         set WIN64=0
         set ARM64=0
@@ -839,12 +809,21 @@ jobs:
         if "${{ matrix.arch }}"=="arm64" set ARM64=1
 
         set BASENAME=gvim_${{ steps.patchlevel.outputs.ver }}_${{ matrix.arch }}
-        nmake.exe -nologo -f Make_mvc.mak ^
-          "X=OutFile ..\..\package\artifacts\files\%BASENAME%.exe" ^
-          "SRC=..\..\package\%DEST_INST%" "VIMTOOLS=..\..\package\%DEST_INST%" ^
-          "VIMSRC=..\..\package\%DEST_INST%" "VIMRT=..\..\package\%DEST_INST%" ^
-          "GETTEXT=%DEPENDENCIES%" "INCLUDE_LIBGCC=%INCLUDE_LIBGCC%" ^
-          "WIN64=%WIN64%" "ARM64=%ARM64%" || exit 1
+
+        set PLUG_NSISMULTIUSER=..\NsisMultiUser
+        set PLUG_ENVAR=..\EnVar_plugin
+
+        "%ProgramFiles(x86)%\NSIS\makensis" ^
+          /INPUTCHARSET UTF8 ^
+          /DPLUG_NSISMULTIUSER=%PLUG_NSISMULTIUSER% ^
+          /DPLUG_ENVAR=%PLUG_ENVAR% ^
+          /DVIMBIN=..\package\%PKG%\vim\%VIM_DIR% ^
+          /DVIMRT=..\package\%PKG%\vim\%VIM_DIR% ^
+          /DINCLUDE_LIBGCC=%INCLUDE_LIBGCC% ^
+          /DWIN64=%WIN64% ^
+          /DARM64=%ARM64% ^
+          gvim.nsi ^
+          /X"OutFile ..\package\artifacts\files\%BASENAME%.exe"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
