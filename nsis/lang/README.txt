@@ -32,12 +32,12 @@ for the license file
 LicenseLangString page_lic_file 0 "${SRC}\lang\LICENSE.nsis.txt"
 
 for the readme.txt file
-LangString vim_readme_file 0 "${SRC}\README.txt"
+LangString vim_readme_file 0 "README.txt"
 
 Once you have the translations of these files, then set the values for these
 variables similarly to what is done in the other translation files.
-Translation files should be located in the "lang" subdirectory of the root
-directory. The name of the files is as follows: "README.xx.txt", where xx is the
+Translation files should be located in the "lang" subdirectory of the vim
+repository. The name of the files is as follows: "README.xx.txt", where xx is the
 language code according to ISO639.
 
 
@@ -61,3 +61,11 @@ There are two ways to test the installer in different languages:
    and apply it by double-clicking on it.
    After these steps, when you start the installer, a window with the installer
    language selection will also be displayed.
+
+
+The NsisMultiUsers plugin
+
+The gVim installer uses the NsisMultiUsers plugin, but it may lack some
+translations.
+Please send translations to https://github.com/Drizin/NsisMultiUser and/or
+https://github.com/k-takata/NsisMultiUser.
