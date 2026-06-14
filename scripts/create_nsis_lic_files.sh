@@ -1,6 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
+
+if [ -z "$1" ]; then
+  echo "usage: $0 <vimdir>"
+  exit 1
+fi
 
 VIMSRC=$1
 
@@ -10,7 +15,8 @@ rm -f LICENSE.*.nsis.txt
 
 for i in LICENSE.*.txt ../LICENSE; do
   # Convert to UTF-8 with BOM
-  target=$(basename $i .txt).nsis.txt
+  name=${i##*/}
+  target=${name%%.txt}.nsis.txt
   echo "Creating ${target}"
-  LC_ALL=C sed -e $'1s/^/\xef\xbb\xbf/' $i > ${target}
+  vim -es -c 'setl bomb' -c "wq! ++enc=utf-8 $target" "$i"
 done
