@@ -21,9 +21,8 @@ Characters in this case mean characters of the English alphabet.
 Once the message translation file is ready, it must be included in the
 "gvim.nsi" file.
 Find the line "# Include support for other languages:" in the file "gvim.nsi"
-and specify the name of the file with your translation below the line
-!if ${HAVE_MULTI_LANG}, similar to the entries already there. File names are
-specified in alphabetical order.
+and specify the name of the file with your translation, similar to the entries
+already there. File names are specified in alphabetical order.
 
 If you do not yet have a translated "LICENSE" file and/or a main "README.txt"
 file, set the following values:
@@ -37,8 +36,10 @@ LangString vim_readme_file 0 "README.txt"
 Once you have the translations of these files, then set the values for these
 variables similarly to what is done in the other translation files.
 Translation files should be located in the "lang" subdirectory of the vim
-repository. The name of the files is as follows: "README.xx.txt", where xx is the
-language code according to ISO639.
+repository. The name of the files is as follows: "README.xx.txt", where xx is
+the language code according to ISO639.
+
+Please also update the file ".github/MAINTAINERS".
 
 
 There are two ways to test the installer in different languages:
@@ -67,5 +68,7 @@ The NsisMultiUsers plugin
 
 The gVim installer uses the NsisMultiUsers plugin, but it may lack some
 translations.
-Please send translations to https://github.com/Drizin/NsisMultiUser and/or
-https://github.com/k-takata/NsisMultiUser.
+Please send translations to upstream:
+	https://github.com/Drizin/NsisMultiUser
+and/or to the fork:
+	https://github.com/k-takata/NsisMultiUser
