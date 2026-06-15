@@ -3,7 +3,7 @@ name: Publish to WinGet Stable
 # Wait for the Workflow Publish to Winget to be completed
 on:
   workflow_run:
-    workflows: ["Publish to WinGet"]
+    workflows: ["Upload signed files"]
     types: [completed]
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
       - uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: vim.vim
-          installers-regex: 'gvim.*(x64|x86|arm64).exe$'
+          installers-regex: 'gvim.*(x64|x86|arm64)_signed.exe$'
           token: ${{ secrets.WINGET_TOKEN }}
           version: ${{ needs.check-update-job.outputs.version }}
           release-tag: ${{ needs.check-update-job.outputs.tag }}
