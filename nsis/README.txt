@@ -14,9 +14,9 @@ Run the following commands in GitBash unless otherwise stated.
 	cd $WORKDIR
 	git clone https://github.com/vim/vim.git
 
-2. Clone the NsisMultiUser plugin (https://github.com/Drizin/NsisMultiUser)
-   into $WORKDIR.
-   We are using the forked version instead of the original one.
+2. Clone the NsisMultiUser plugin into $WORKDIR.
+   We are using the forked version instead of the original one
+   (https://github.com/Drizin/NsisMultiUser).
 
 	git clone https://github.com/k-takata/NsisMultiUser.git
 
