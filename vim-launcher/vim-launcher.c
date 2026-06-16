@@ -4,6 +4,7 @@
  */
 
 #include <windows.h>
+#include <shlwapi.h>
 
 #define TOLOWER_ASC(c) \
     (((c) < L'A' || (c) > L'Z') ? (c) : (c) + (L'a' - L'A'))
@@ -32,55 +33,11 @@ get_vim_path(WCHAR *path)
     }
 #ifndef FEAT_GUI
     // Replace "gvim.exe" with "vim.exe"
-    for (DWORD i = len / 2; i > 0; i--)
-    {
-	if (path[i] == L'\\')
-	{
-	    lstrcpyW(path + i + 1, L"vim.exe");
-	    break;
-	}
-    }
+    lstrcpyW(PathFindFileNameW(path), L"vim.exe");
 #endif
 }
 
-// Get command line arguments by skipping the executable name
-// Returns the pointer just after the exename. (includes leading space)
-    LPCWSTR
-get_cmd_args(LPCWSTR cmdline, LPCWSTR *exename)
-{
-    LPCWSTR p = cmdline;
-    BOOL inquote = FALSE;
-
-    *exename = p;
-    while (*p)
-    {
-	if (inquote)
-	{
-	    if (*p == L'"')
-	    {
-		inquote = FALSE;
-	    }
-	}
-	else
-	{
-	    if (*p == L'"')
-	    {
-		inquote = TRUE;
-	    }
-	    else if (*p == L' ' || *p == L'\t')
-	    {
-		return p;
-	    }
-	}
-	if (*p == L'\\')
-	{
-	    *exename = p + 1;
-	}
-	++p;
-    }
-    return p;
-}
-
+// Show an error message
     void
 error_msg(const char *msg)
 {
@@ -94,7 +51,7 @@ error_msg(const char *msg)
 }
 
 // Parse executable name
-// E.g. (g)vim(diff), (g)view, evim, egvim
+// E.g. (g)vim(diff), (g)view, e(g)vim
     WCHAR
 parse_exename(LPCWSTR exename)
 {
@@ -114,25 +71,18 @@ parse_exename(LPCWSTR exename)
     if (TOLOWER_ASC(p[0]) == L'g')
 	++p;	// GUI
 
-    if (TOLOWER_ASC(p[0]) == L'v'
-	    && TOLOWER_ASC(p[1]) == L'i')
+    if (StrCmpNIW(p, L"vim", 3) == 0)
     {
-	if (TOLOWER_ASC(p[2]) == L'm')
-	{
-	    // "vim"
-	    p += 3;
-	}
-	else if (TOLOWER_ASC(p[2]) == L'e'
-		&& TOLOWER_ASC(p[3]) == L'w')
-	{
-	    // "view"
-	    return L'R';    // read only mode
-	}
+	// "vim"
+	p += 3;
     }
-    if (TOLOWER_ASC(p[0]) == L'd'
-	    && TOLOWER_ASC(p[1]) == L'i'
-	    && TOLOWER_ASC(p[2]) == L'f'
-	    && TOLOWER_ASC(p[3]) == L'f')
+    else if (StrCmpNIW(p, L"view", 3) == 0)
+    {
+	// "view"
+	return L'R';    // read only mode
+    }
+
+    if (StrCmpNIW(p, L"diff", 3) == 0)
     {
 	// "diff"
 	return L'd';	    // diff mode
@@ -141,14 +91,50 @@ parse_exename(LPCWSTR exename)
     return 0;
 }
 
+// Check the -f (--nofork) option
+    BOOL
+check_nofork(LPCWSTR args)
+{
+    while (args[0] != L'\0')
+    {
+	int quote = 0;
+
+	if (args[0] == L'"')
+	{
+	    ++args;
+	    quote = 1;
+	}
+	if (StrCmpNW(args, L"-f", 2) == 0)
+	{
+	    // Other short options can be appended after "-f".
+	    // XXX: Should we check "f" following other options? (e.g. -gf)
+	    return TRUE;
+	}
+	else if (StrCmpNW(args, L"--nofork\"", 8 + quote) == 0)
+	{
+	    if (args[8 + quote] == L' ' || args[8 + quote] == L'\0')
+		return TRUE;
+	}
+	else if (StrCmpNW(args, L"--\"", 2 + quote) == 0)
+	{
+	    if (args[2 + quote] == L' ' || args[2 + quote] == L'\0')
+		break;
+	}
+	args = PathGetArgsW(args);
+    }
+
+    return FALSE;
+}
+
     int
 launch(void)
 {
     WCHAR path[MAX_PATH];
     WCHAR opt = 0;
-    LPCWSTR cmdline, args, exename;
+    LPCWSTR cmdline, args;
     LPWSTR buf;
     DWORD pathlen, argslen, len, optlen = 0;
+    BOOL nofork;
 
     get_vim_path(path);
     if (path[0] == L'\0')
@@ -159,13 +145,19 @@ launch(void)
 
     cmdline = GetCommandLineW();
     //OutputDebugStringW(cmdline);
-    args = get_cmd_args(cmdline, &exename);
+    args = PathGetArgsW(cmdline);
     //OutputDebugStringW(args);
-    opt = parse_exename(exename);
+    opt = parse_exename(PathFindFileNameW(cmdline));
+
+#ifdef FEAT_GUI
+    nofork = check_nofork(args);
+#else
+    nofork = TRUE;
+#endif
 
     pathlen = lstrlenW(path);
     argslen = lstrlenW(args);
-    len = pathlen + argslen + 3 + 3;    // option, two quotes and a NUL
+    len = pathlen + 1 + argslen + 3 + 3;    // option, two quotes and a NUL
 
     buf = (LPWSTR)LocalAlloc(LMEM_FIXED, len * sizeof(WCHAR));
     if (buf == NULL)
@@ -178,14 +170,15 @@ launch(void)
     buf[0] = L'"';
     lstrcpyW(buf + 1, path);
     buf[pathlen + 1] = L'"';
+    buf[pathlen + 2] = L' ';
     if (opt)
     {
-	buf[pathlen + 2] = L' ';
 	buf[pathlen + 3] = L'-';
 	buf[pathlen + 4] = opt;
+	buf[pathlen + 5] = L' ';
 	optlen = 3;
     }
-    lstrcpyW(buf + pathlen + 2 + optlen, args);
+    lstrcpyW(buf + pathlen + 3 + optlen, args);
     //OutputDebugStringW(buf);
 
     // Execute Vim
@@ -202,10 +195,14 @@ launch(void)
 	error_msg("Fail to execute Vim.");
 	return 1;
     }
-    // Wait for exit
-    WaitForSingleObject(pi.hProcess, INFINITE);
+
     DWORD exit = 0;
-    GetExitCodeProcess(pi.hProcess, &exit);
+    if (nofork)
+    {
+	// Wait for exit
+	WaitForSingleObject(pi.hProcess, INFINITE);
+	GetExitCodeProcess(pi.hProcess, &exit);
+    }
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
 

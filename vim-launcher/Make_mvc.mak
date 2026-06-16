@@ -7,7 +7,7 @@ all: gvim.exe vim.exe
 CFLAGS=/nologo /c /GS- /GF /O2 /W4
 LDFLAGS=/nologo /NODEFAULTLIB /MAP
 RCFLAGS=/nologo
-LIBS=kernel32.lib advapi32.lib user32.lib
+LIBS=kernel32.lib advapi32.lib user32.lib shlwapi.lib
 
 
 # GUI
