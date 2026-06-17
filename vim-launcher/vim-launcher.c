@@ -9,6 +9,12 @@
 #define TOLOWER_ASC(c) \
     (((c) < L'A' || (c) > L'Z') ? (c) : (c) + (L'a' - L'A'))
 
+// Like isalpha() but reject non-ASCII characters.  Can't be used with a
+// special key (negative value).
+#define ASCII_ISLOWER(c) ((unsigned)(c) - L'a' < 26)
+#define ASCII_ISUPPER(c) ((unsigned)(c) - L'A' < 26)
+#define ASCII_ISALPHA(c) (ASCII_ISUPPER(c) || ASCII_ISLOWER(c))
+
 
 // Get path of (g)vim.exe
     void
@@ -98,26 +104,30 @@ check_nofork(LPCWSTR args)
     while (args[0] != L'\0')
     {
 	int quote = 0;
+	LPCWSTR p = args;
 
 	if (args[0] == L'"')
 	{
-	    ++args;
+	    ++p;
 	    quote = 1;
 	}
-	if (StrCmpNW(args, L"-f", 2) == 0)
+	if (p[0] == L'-' && ASCII_ISALPHA(p[1]))
 	{
-	    // Other short options can be appended after "-f".
-	    // XXX: Should we check "f" following other options? (e.g. -gf)
-	    return TRUE;
+	    // short options
+	    while (++p, ASCII_ISALPHA(*p))
+	    {
+		if (*p == L'f')
+		    return TRUE;
+	    }
 	}
-	else if (StrCmpNW(args, L"--nofork\"", 8 + quote) == 0)
+	else if (StrCmpNW(p, L"--nofork\"", 8 + quote) == 0)
 	{
-	    if (args[8 + quote] == L' ' || args[8 + quote] == L'\0')
+	    if (p[8 + quote] == L' ' || p[8 + quote] == L'\0')
 		return TRUE;
 	}
-	else if (StrCmpNW(args, L"--\"", 2 + quote) == 0)
+	else if (StrCmpNW(p, L"--\"", 2 + quote) == 0)
 	{
-	    if (args[2 + quote] == L' ' || args[2 + quote] == L'\0')
+	    if (p[2 + quote] == L' ' || p[2 + quote] == L'\0')
 		break;
 	}
 	args = PathGetArgsW(args);
