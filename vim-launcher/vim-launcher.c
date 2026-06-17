@@ -154,13 +154,12 @@ launch(void)
 	return 1;
     }
 
-    WCHAR module[MAX_PATH];
-
     cmdline = GetCommandLineW();
     //OutputDebugStringW(cmdline);
     args = PathGetArgsW(cmdline);
     //OutputDebugStringW(args);
 
+    WCHAR module[MAX_PATH];
     if (GetModuleFileNameW(NULL, module, MAX_PATH) == 0)
 	opt = 0;
     else
