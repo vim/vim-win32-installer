@@ -100,7 +100,7 @@
       ${If} $4 <> 0
 	!insertmacro SelectSection ${section_id}
       ${Else}
-	!insertmacro UnSelectSection ${section_id}
+	!insertmacro UnselectSection ${section_id}
       ${EndIf}
     ${EndIf}
   !macroend

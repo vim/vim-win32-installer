@@ -64,9 +64,9 @@ There are two ways to test the installer in different languages:
    language selection will also be displayed.
 
 
-The NsisMultiUsers plugin
+The NsisMultiUser plugin
 
-The gVim installer uses the NsisMultiUsers plugin, but it may lack some
+The gVim installer uses the NsisMultiUser plugin, but it may lack some
 translations.
 Please send translations to upstream:
 	https://github.com/Drizin/NsisMultiUser

@@ -9,8 +9,7 @@ fi
 
 VIMSRC=$1
 
-cd $VIMSRC/lang
-
+cd "$VIMSRC/lang"
 rm -f LICENSE.*.nsis.txt
 
 for i in LICENSE.*.txt ../LICENSE; do

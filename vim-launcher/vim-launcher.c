@@ -51,8 +51,9 @@ error_msg(const char *msg)
     MessageBoxA(NULL, msg, "Vim launcher", MB_OK | MB_ICONERROR);
 #else
     HANDLE hStdErr = GetStdHandle(STD_ERROR_HANDLE);
-    WriteConsoleA(hStdErr, msg, lstrlenA(msg), NULL, NULL);
-    WriteConsoleA(hStdErr, "\r\n", 2, NULL, NULL);
+    DWORD written;
+    WriteFile(hStdErr, msg, (DWORD)lstrlenA(msg), &written, NULL);
+    WriteFile(hStdErr, "\r\n", 2, &written, NULL);
 #endif
 }
 
@@ -82,13 +83,13 @@ parse_exename(LPCWSTR exename)
 	// "vim"
 	p += 3;
     }
-    else if (StrCmpNIW(p, L"view", 3) == 0)
+    else if (StrCmpNIW(p, L"view", 4) == 0)
     {
 	// "view"
 	return L'R';    // read only mode
     }
 
-    if (StrCmpNIW(p, L"diff", 3) == 0)
+    if (StrCmpNIW(p, L"diff", 4) == 0)
     {
 	// "diff"
 	return L'd';	    // diff mode
@@ -153,11 +154,17 @@ launch(void)
 	return 1;
     }
 
+    WCHAR module[MAX_PATH];
+
     cmdline = GetCommandLineW();
     //OutputDebugStringW(cmdline);
     args = PathGetArgsW(cmdline);
     //OutputDebugStringW(args);
-    opt = parse_exename(PathFindFileNameW(cmdline));
+
+    if (GetModuleFileNameW(NULL, module, MAX_PATH) == 0)
+	opt = 0;
+    else
+	opt = parse_exename(PathFindFileNameW(module));
 
 #ifdef FEAT_GUI
     nofork = check_nofork(args);
@@ -202,7 +209,7 @@ launch(void)
     LocalFree(buf);
     if (!ret)
     {
-	error_msg("Fail to execute Vim.");
+	error_msg("Failed to execute Vim.");
 	return 1;
     }
 
@@ -246,7 +253,7 @@ wmain(int argc, wchar_t **argv)
 #endif
 
 // Use our own entry point and don't use the default CRT startup code to
-// reduce the size of (g)vim.exe.
+// reduce the size of the launcher executable.
 #ifdef FEAT_GUI
     void WINAPI
 wWinMainCRTStartup(void)

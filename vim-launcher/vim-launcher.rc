@@ -45,7 +45,7 @@ BEGIN
 	VALUE "CompanyName",		"Vim Developers"
 	VALUE "FileDescription",	"Vim launcher"
 	VALUE "FileVersion",		"1.0.0"
-	VALUE "InternalName",		"Vim launchar"
+	VALUE "InternalName",		"Vim launcher"
 	VALUE "LegalCopyright",		"Copyright \251 2026"
 	VALUE "LegalTrademarks",	"Vim"
 #ifdef FEAT_GUI
@@ -53,7 +53,7 @@ BEGIN
 #else
 	VALUE "OriginalFilename",	"vim.exe"
 #endif
-	VALUE "ProductName",		"Vim launchar"
+	VALUE "ProductName",		"Vim launcher"
 	VALUE "ProductVersion",		"1.0.0"
     END
   END
