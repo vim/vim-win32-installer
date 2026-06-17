@@ -1,0 +1,5 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\Software\Vim\Gvim]
+"path"="C:\\Users\\USERNAME\\AppData\\Local\\Programs\\Vim\\gvim.exe"
+

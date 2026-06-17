@@ -4,7 +4,7 @@ This is a very small program to launch Vim.
 
 This retrieves the path of (g)vim.exe from the registry for GvimExt:
     - `HKEY_CURRENT_USER\Software\Vim\Gvim`
-    - `HKEY_LOCAL_MACHINE\Software\Vim\Gvim`
+    - `HKEY_LOCAL_MACHINE\SOFTWARE\Vim\Gvim`
 
 
 ## Build
@@ -18,7 +18,8 @@ This will build `gvim.exe` and `vim.exe`.
 
 ## Aliases
 
-If Vim launcher is copied with a different name, it can work as an alias.
+If Vim launcher is copied (or hard-linked) with a different name, it can work
+as an alias.
 
 * gvim.exe
   - evim.exe or egvim.exe -- Easy mode (gvim -y)
@@ -27,6 +28,16 @@ If Vim launcher is copied with a different name, it can work as an alias.
 * vim.exe
   - view.exe -- Read-only mode (vim -R)
   - vimdiff.exe -- Diff mode (vim -d)
+
+
+## Example registry settings
+
+Normally, you don't need to update the registry settings manually. The NSIS
+installer sets them automatically.
+However, if you want to change them manually, see the following examples:
+
+* `example_current_user.reg`
+* `example_all_users.reg` (requires admin privileges)
 
 
 ## Icon
