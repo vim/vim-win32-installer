@@ -435,6 +435,7 @@ jobs:
         key: ${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('urls.txt') }}
 
     - name: Download dependencies
+      timeout-minutes: 15
       shell: cmd
       run: |
         path C:\Program Files\7-Zip;%path%
