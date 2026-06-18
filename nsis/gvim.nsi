@@ -582,6 +582,7 @@ SectionEnd
 
 ##########################################################
 SectionGroup $(str_group_cmdline) id_group_cmdline
+  # Vim launcher
   Section "$(str_section_launcher)" id_section_launcher
     SectionIn 3
 
@@ -619,6 +620,7 @@ SectionGroup $(str_group_cmdline) id_group_cmdline
     !endif
   SectionEnd
 
+  # Add to PATH
   Section "$(str_section_addpath)" id_section_addpath
     SectionIn 3
 
@@ -633,15 +635,17 @@ SectionGroupEnd
 
 ##########################################################
 SectionGroup $(str_group_icons) id_group_icons
+  # Desktop icons
   Section "$(str_section_desktop)" id_section_desktop
     SectionIn 1 3
 
     SetOutPath "%HOMEDRIVE%%HOMEPATH%"	; Set workdir for the shortcuts
-    CreateShortCut "$DESKTOP\gVim ${VERSION_SHORT}.lnk" "$INSTDIR\gvim.exe"
-    CreateShortCut "$DESKTOP\gVim Easy ${VERSION_SHORT}.lnk" "$INSTDIR\gvim.exe" "-y"
+    CreateShortCut "$DESKTOP\gVim ${VERSION_SHORT}.lnk"		  "$INSTDIR\gvim.exe"
+    CreateShortCut "$DESKTOP\gVim Easy ${VERSION_SHORT}.lnk"	  "$INSTDIR\gvim.exe" "-y"
     CreateShortCut "$DESKTOP\gVim Read-only ${VERSION_SHORT}.lnk" "$INSTDIR\gvim.exe" "-R"
   SectionEnd
 
+  # Start Menu
   Section "$(str_section_start_menu)" id_section_startmenu
     SectionIn 1 3
 
@@ -649,21 +653,21 @@ SectionGroup $(str_group_icons) id_group_icons
 
     SetOutPath "%HOMEDRIVE%%HOMEPATH%"	; Set workdir for the shortcuts
     ${If} ${SectionIsSelected} ${id_section_console}
-      CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim.lnk" "$INSTDIR\vim.exe"
+      CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim.lnk"		"$INSTDIR\vim.exe"
       CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim Read-only.lnk" "$INSTDIR\vim.exe" "-R"
-      CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim Diff.lnk" "$INSTDIR\vim.exe" "-d"
+      CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim Diff.lnk"	"$INSTDIR\vim.exe" "-d"
     ${EndIf}
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim.lnk" "$INSTDIR\gvim.exe"
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Easy.lnk" "$INSTDIR\gvim.exe" "-y"
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Read-only.lnk" "$INSTDIR\gvim.exe" "-R"
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Diff.lnk" "$INSTDIR\gvim.exe" "-d"
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Help.lnk" "$INSTDIR\gvim.exe" "-c h"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim.lnk"		"$INSTDIR\gvim.exe"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Easy.lnk"	"$INSTDIR\gvim.exe" "-y"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Read-only.lnk"	"$INSTDIR\gvim.exe" "-R"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\gVim Diff.lnk"	"$INSTDIR\gvim.exe" "-d"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Help.lnk"		"$INSTDIR\gvim.exe" "-c h"
 
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim tutor.lnk" "$INSTDIR\vimtutor.bat" \
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim tutor.lnk"	"$INSTDIR\vimtutor.bat" \
 	"" "" "" SW_SHOWMINIMIZED
 
     SetOutPath $0   ; Set workdir for the shortcuts
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Uninstall.lnk" "$0\uninstall-gui.exe"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Uninstall.lnk"	"$0\uninstall-gui.exe"
 
     WriteINIStr "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim Online.url" "InternetShortcut" "URL" \
 	"https://www.vim.org/"
@@ -864,6 +868,7 @@ Function CreatePluginDirs
 FunctionEnd
 
 SectionGroup $(str_group_plugin) id_group_plugin
+  # Create plugin dir in $HOME
   Section "$(str_section_plugin_home)" id_section_pluginhome
     SectionIn 1 3
 
@@ -873,6 +878,7 @@ SectionGroup $(str_group_plugin) id_group_plugin
     !insertmacro UAC_AsUser_Call Function CreatePluginDirs ${UAC_SYNCREGISTERS}
   SectionEnd
 
+  # Create plugin dir in $VIM
   Section "$(str_section_plugin_vim)" id_section_pluginvim
     SectionIn 3
 
@@ -1240,21 +1246,21 @@ FunctionEnd
 # Description for Installer Sections
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_old_ver}   $(str_desc_old_ver)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_exe}	    $(str_desc_exe)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_console}   $(str_desc_console)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_cmdline}	    $(str_desc_cmdline)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_launcher}  $(str_desc_launcher)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_addpath}   $(str_desc_addpath)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_icons}	    $(str_desc_icons)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_desktop}   $(str_desc_desktop)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_startmenu} $(str_desc_start_menu)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_editwith}  $(str_desc_edit_with)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_vimrc}	    $(str_desc_vim_rc)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_plugin}	    $(str_desc_plugin)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginhome} $(str_desc_plugin_home)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginvim} $(str_desc_plugin_vim)
-  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_nls}	    $(str_desc_nls)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_old_ver}     $(str_desc_old_ver)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_exe}	      $(str_desc_exe)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_console}     $(str_desc_console)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_cmdline}	      $(str_desc_cmdline)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_launcher}    $(str_desc_launcher)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_addpath}     $(str_desc_addpath)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_icons}	      $(str_desc_icons)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_desktop}     $(str_desc_desktop)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_startmenu}   $(str_desc_start_menu)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_editwith}    $(str_desc_edit_with)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_vimrc}	      $(str_desc_vim_rc)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_group_plugin}	      $(str_desc_plugin)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginhome}  $(str_desc_plugin_home)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_pluginvim}   $(str_desc_plugin_vim)
+  !insertmacro MUI_DESCRIPTION_TEXT ${id_section_nls}	      $(str_desc_nls)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -1501,4 +1507,4 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${id_unsection_rootdir}	$(str_desc_rm_rootdir)
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
-# vi:set ts=8 sw=2 sts=2 tw=90 wm=0 ft=nsis:
+# vi:set ts=8 sw=2 sts=2 tw=100 wm=0 ft=nsis:
