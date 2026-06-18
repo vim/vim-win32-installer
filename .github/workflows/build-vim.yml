@@ -459,11 +459,14 @@ jobs:
         echo %COL_GREEN%Download Python2%COL_RESET%
         call :downloadfile %PYTHON2_URL% downloads\python2.msi
         start "" /wait downloads\python2.msi ^
-          /qn TARGETDIR=%PYTHON2_DIR% ADDLOCAL=DefaultFeature,PrependPath
+          /qn TARGETDIR=%PYTHON2_DIR% ADDLOCAL=DefaultFeature,PrependPath || exit 1
 
         echo %COL_GREEN%Download Python3%COL_RESET%
         call :downloadfile %PYTHON3_URL% downloads\python3.exe
-        start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR% Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 InstallLauncherAllUsers=0
+        start /wait downloads\python3.exe /quiet TargetDir=%PYTHON3_DIR% ^
+          Include_pip=0 Include_tcltk=0 Include_test=0 Include_tools=0 ^
+          AssociateFiles=0 Shortcuts=0 Include_doc=0 Include_launcher=0 ^
+          InstallLauncherAllUsers=0 || exit 1
         copy /Y %PYTHON3_DIR%\python.exe %PYTHON3_DIR%\python3.exe
 
         if "${{ matrix.arch }}"=="arm64" (
@@ -471,11 +474,11 @@ jobs:
         ) else (
           echo %COL_GREEN%Download Racket%COL_RESET%
           call :downloadfile %RACKET_URL% downloads\racket-%BITS%.tgz
-          tar xf downloads\racket-%BITS%.tgz -C %RACKET_DIR%\..
+          tar xf downloads\racket-%BITS%.tgz -C %RACKET_DIR%\.. || exit 1
           type NUL > %RACKET_DIR%\include\bc_suffix.h
 
           rem Install additional packages for Racket
-          %RACKET_DIR%\raco.exe pkg install -i --auto r5rs-lib
+          %RACKET_DIR%\raco.exe pkg install -i --auto r5rs-lib || exit 1
         )
 
         if "${{ matrix.arch }}"=="arm64" (
