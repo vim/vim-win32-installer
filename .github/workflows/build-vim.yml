@@ -760,7 +760,8 @@ jobs:
         set DIFFEXE=..
         set GETTEXT_TOP=C:\dependencies
         call ..\scripts\prepare_package_dir.bat ^
-          "%DEST%" "%VIM_SRC%" "%DIFFEXE%" "%GETTEXT_TOP%" "${{ matrix.arch }}"
+          "%DEST%" "%VIM_SRC%" "%DIFFEXE%" "%GETTEXT_TOP%" "${{ matrix.arch }}" ^
+          || exit 1
 
         rem Parentheses are required. Otherwise the number is interpreted as a file descriptor.
         (echo INCLUDE_LIBGCC=%INCLUDE_LIBGCC%)>> %GITHUB_ENV%
@@ -786,15 +787,15 @@ jobs:
         call vim\src\msvc-latest ${{ matrix.vcarch }}
 
         if NOT "${{ matrix.arch }}"=="arm64" (
-          winget upgrade --disable-interactivity --accept-source-agreements
-          winget install -e --id NSIS.NSIS --disable-interactivity --accept-package-agreements
+          winget upgrade --disable-interactivity --accept-source-agreements || exit 1
+          winget install -e --id NSIS.NSIS --disable-interactivity --accept-package-agreements || exit 1
         )
 
         rem Install EnVar Plugin
         7z.exe x -y downloads\EnVar_plugin.zip -o.\EnVar_plugin > nul || exit 1
 
         rem Create license files for nsis
-        call msys2 scripts/create_nsis_lic_files.sh ./vim
+        call msys2 scripts/create_nsis_lic_files.sh ./vim || exit 1
 
         cd nsis
 
