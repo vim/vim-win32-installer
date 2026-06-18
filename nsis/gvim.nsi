@@ -446,7 +446,9 @@ Section "$(str_section_old_ver)" id_section_old_ver
   SetDetailsPrint lastused
 
   # We may have been put to the background when uninstall did something.
-  BringToFront
+  # -- If the user activates another window while running the uninstaller,
+  #    bringing the installer window to front might be unexpected.
+  #BringToFront
 SectionEnd
 
 ##########################################################
@@ -991,7 +993,7 @@ Section -post
   !insertmacro SaveSectionSelection $5 ${id_section_pluginvim}  "select_pluginvim"
   !insertmacro SaveSectionSelection $5 ${id_section_nls}        "select_nls"
 
-  BringToFront
+  #BringToFront
 SectionEnd
 
 ##########################################################
