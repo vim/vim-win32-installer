@@ -471,8 +471,7 @@ jobs:
         ) else (
           echo %COL_GREEN%Download Racket%COL_RESET%
           call :downloadfile %RACKET_URL% downloads\racket-%BITS%.tgz
-          7z.exe x -tgzip -so downloads\racket-%BITS%.tgz | 7z.exe x -y -aoa -si -ttar ^
-            -o%RACKET_DIR%\..
+          tar xf downloads\racket-%BITS%.tgz -C %RACKET_DIR%\..
           type NUL > %RACKET_DIR%\include\bc_suffix.h
 
           rem Install additional packages for Racket
