@@ -377,31 +377,6 @@ Function FindOldUninstaller
   Exch $0  ; put $0 on top of stack, restore $0 to original value
 FunctionEnd
 
-${StrLoc}
-
-# Check if Vim is already installed.
-# return: Installed directory. If not found, it will be empty.
-Function CheckOldVim
-  Push $0
-  Push $1
-
-  call FindOldUninstaller
-  Pop $0
-  ${If} $0 != ""
-    StrCpy $1 $0 1
-    ${If} $1 == '"'
-      StrCpy $0 $0 "" 1	      # Cut the first '"'
-      ${StrLoc} $1 $0 '"' ">" # Find the next '"'
-      StrCpy $0 $0 $1	      # Extract inside quotes
-    ${EndIf}
-    ${GetParent} $0 $0
-    ${GetParent} $0 $0
-  ${EndIf}
-
-  Pop $1
-  Exch $0  ; put $0 on top of stack, restore $0 to original value
-FunctionEnd
-
 Function LaunchApplication
   SetOutPath $INSTDIR
 
@@ -427,6 +402,8 @@ FunctionEnd
 
 ##########################################################
 # Installer Functions and Sections
+
+${StrLoc}
 
 Section "$(str_section_old_ver)" id_section_old_ver
   SectionIn 1 2 3 RO
@@ -1090,7 +1067,7 @@ Function PageComponentsPre
 
   ${If} $settings_loaded = 0
     # Check old versions after the installation mode is selected.
-    call CheckOldVim
+    call FindOldUninstaller
     Pop $3
     ${If} $3 == ""
       # No old versions of Vim found. Unselect and hide the section.
