@@ -152,7 +152,7 @@ ManifestSupportedOS \
 !define UNINST_REG_KEY_VIM    "${UNINST_REG_KEY}\${UNINST_REG_KEY_NAME}"
 !define GVIMEXT_CLSID	      "{51EEE242-AD87-11d3-9C1E-0090278BBD99}"
 !define VIMRUNTIME_DIR_NAME   "runtime"	  # "vim${VER_MAJOR}${VER_MINOR}"
-!define UNINSTALL_FILENAME    "${VIMRUNTIME_DIR_NAME}\uninstall-gui.exe"
+!define UNINSTALL_FILENAME    "uninstall-gui.exe"
 
 ; NsisMultiUser optional defines
 !define MULTIUSER_INSTALLMODE_ALLOW_BOTH_INSTALLATIONS 1
@@ -672,7 +672,7 @@ SectionGroup $(str_group_icons) id_group_icons
 	"" "" "" SW_SHOWMINIMIZED
 
     SetOutPath $0   ; Set workdir for the shortcuts
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Uninstall.lnk"	"$0\uninstall-gui.exe"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_AND_VER}\Uninstall.lnk"	"$INSTDIR\uninstall-gui.exe"
 
     WriteINIStr "$SMPROGRAMS\${PRODUCT_AND_VER}\Vim Online.url" "InternetShortcut" "URL" \
 	"https://www.vim.org/"
