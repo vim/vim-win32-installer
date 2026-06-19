@@ -137,9 +137,9 @@ jobs:
       signing: ${{ steps.check.outputs.signing }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name != 'workflow_dispatch'
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
@@ -325,9 +325,9 @@ jobs:
 #      run: |
 #        fsutil 8dot3name set D: 0
 
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name != 'workflow_dispatch'
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
@@ -873,12 +873,12 @@ jobs:
     #    client-id: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_CLIENT_ID }}
     #    private-key: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_PRIVATE_KEY }}
 
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name != 'workflow_dispatch'
       with:
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
         #token: ${{ steps.app-token.outputs.token }}
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
