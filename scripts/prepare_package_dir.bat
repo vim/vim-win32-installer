@@ -34,13 +34,20 @@ copy "%VIMSRC%\src\uninstall.exe" "%DEST%" || exit /b 1
 copy "%DIFFEXE%\diff.exe"     "%DEST%" || exit /b 1
 rem copy "%LUA_DIR%\lua*.dll"   "%DEST%" || exit /b 1
 
+:: Copy Vim launcher
+md "%DEST%\vim-launcher"
+copy "%VIMSRC%\..\vim-launcher\*.exe"     "%DEST%\vim-launcher" || exit /b 1
+copy "%VIMSRC%\..\vim-launcher\*.reg"     "%DEST%\vim-launcher" || exit /b 1
+copy "%VIMSRC%\..\vim-launcher\README.md" "%DEST%\vim-launcher" || exit /b 1
+
 :: Copy gettext for (g)vim.exe
 copy %GETTEXT_DIR%\libiconv-2.dll %DEST% || exit /b 1
 copy %GETTEXT_DIR%\libintl-8.dll  %DEST% || exit /b 1
 :: Check if libgcc_s_*.dll is required
 set INCLUDE_LIBGCC=0
 if NOT "%ARCH%"=="arm64" (
-  dumpbin /DEPENDENTS %GETTEXT32_DIR%\libintl-8.dll | findstr /R "libgcc_s_.*\.dll" && set INCLUDE_LIBGCC=1
+  dumpbin /DEPENDENTS %GETTEXT32_DIR%\libintl-8.dll ^
+    | findstr /R "libgcc_s_.*\.dll" && set INCLUDE_LIBGCC=1
 )
 if "%ARCH%"=="x86" (
   if "%INCLUDE_LIBGCC%" EQU 1 (

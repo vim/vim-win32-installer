@@ -1071,7 +1071,7 @@ jobs:
 
         **(For admin) Upload signed files:**
         The following workflow has been triggered to upload the signed files:
-        <$(cat upload-workflow-url.txt)>
+        - 🟨 <$(cat upload-workflow-url.txt)>
         It is expected to fail due to waiting for approval. Rerun it after approval of SignPath code signing.
 
         Or, trigger a new workflow by running the following command after approval:
