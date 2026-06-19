@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # NSIS file to create a self-installing exe for Vim.
 # It requires NSIS version 3.0 or later.
-# Last Change:	2026-06-10
+# Last Change:	2026-06-19
 #
 
 Unicode true  ; !include defaults to UTF-8 after Unicode True since 3.0 Alpha 2
@@ -405,6 +405,7 @@ FunctionEnd
 
 ${StrLoc}
 
+# Uninstall old version
 Section "$(str_section_old_ver)" id_section_old_ver
   SectionIn 1 2 3 RO
 
@@ -452,6 +453,7 @@ Section "$(str_section_old_ver)" id_section_old_ver
 SectionEnd
 
 ##########################################################
+# gVim and runtime files
 Section "$(str_section_exe)" id_section_exe
   SectionIn 1 2 3 RO
 
@@ -566,6 +568,7 @@ Section "$(str_section_exe)" id_section_exe
 SectionEnd
 
 ##########################################################
+# Console version
 Section "$(str_section_console)" id_section_console
   SectionIn 1 3
 
@@ -581,6 +584,7 @@ Section "$(str_section_console)" id_section_console
 SectionEnd
 
 ##########################################################
+# Command line support
 SectionGroup $(str_group_cmdline) id_group_cmdline
   # Vim launcher
   Section "$(str_section_launcher)" id_section_launcher
@@ -634,6 +638,7 @@ SectionGroup $(str_group_cmdline) id_group_cmdline
 SectionGroupEnd
 
 ##########################################################
+# Icons
 SectionGroup $(str_group_icons) id_group_icons
   # Desktop icons
   Section "$(str_section_desktop)" id_section_desktop
@@ -675,6 +680,7 @@ SectionGroup $(str_group_icons) id_group_icons
 SectionGroupEnd
 
 ##########################################################
+# Vim context menu
 Section "$(str_section_edit_with)" id_section_editwith
   SectionIn 1 3
 
@@ -747,6 +753,7 @@ Section "$(str_section_edit_with)" id_section_editwith
 SectionEnd
 
 ##########################################################
+# Create _vimrc
 Section "$(str_section_vim_rc)" id_section_vimrc
   SectionIn 1 3
 
@@ -841,6 +848,7 @@ Section "$(str_section_vim_rc)" id_section_vimrc
 SectionEnd
 
 ##########################################################
+# Create plugin dirs
 ${StrTok}
 
 !define PLUG_DIR_LIST "colors compiler doc ftdetect ftplugin indent keymap plugin syntax"
@@ -888,6 +896,7 @@ SectionGroup $(str_group_plugin) id_group_plugin
 SectionGroupEnd
 
 ##########################################################
+# Native Language Support
 Section "$(str_section_nls)" id_section_nls
   SectionIn 1 3
 
@@ -958,6 +967,7 @@ Section "$(str_section_nls)" id_section_nls
 SectionEnd
 
 ##########################################################
+# Post installation
 Section -post
   # Get estimated install size
   SectionGetSize ${id_section_exe} $3
@@ -1003,6 +1013,8 @@ Section -post
 SectionEnd
 
 ##########################################################
+# Callback functions
+
 Function .onInit
   # Process /? parameter
   ${GetParameters} $R0
