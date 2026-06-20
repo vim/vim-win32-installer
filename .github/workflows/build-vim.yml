@@ -365,7 +365,7 @@ jobs:
         update: false
         location: ${{ env.DEPENDENCIES }}
         msystem: ${{ matrix.sys }}
-        #install: gettext vim
+        #install: gettext vim ruby
         #pacboy: libiconv:p gettext-runtime:p
 
     - name: Update msys2 (1st)
@@ -390,7 +390,7 @@ jobs:
       shell: msys2 {0}
       run: |
         pacman --noconfirm -Suuy
-        pacman --noconfirm -S --needed gettext pactoys vim
+        pacman --noconfirm -S --needed gettext pactoys vim ruby   # vim depends on ruby unexpectedly
         pacboy --noconfirm -S libiconv:p gettext-runtime:p
 
 #    # See: https://github.com/nelsonjchen/reverse-rdp-windows-github-actions
