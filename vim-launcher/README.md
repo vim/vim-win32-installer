@@ -42,6 +42,8 @@ However, if you want to change them manually, see the following examples:
 
 ## Build
 
+If you have download the source code, run the following command:
+
 ```
 nmake -f Make_mvc.mak
 ```
@@ -51,4 +53,5 @@ This will build `gvim.exe` and `vim.exe`.
 
 ## Icon
 
-The icon file is copied from Vim v9.1.1818 to reduce the file size.
+This low-resolution icon file is copied from Vim v9.1.1818 to reduce the file
+size.
