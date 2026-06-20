@@ -54,4 +54,4 @@ This will build `gvim.exe` and `vim.exe`.
 ## Icon
 
 This low-resolution icon file is copied from Vim v9.1.1818 to reduce the file
-size.
+size and optimized by <https://github.com/k-takata/optico>.
