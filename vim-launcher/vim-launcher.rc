@@ -1,0 +1,64 @@
+// vi:set ts=8 sts=4 sw=4 noet:
+//
+// VIM - Vi IMproved	Vim launcher
+
+#include <winver.h>
+#include <winresrc.h>
+
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+//
+// Icons
+//
+IDR_VIM		ICON "vim-launcher.ico"
+
+//
+// WinXP theme support
+//
+#ifndef CREATEPROCESS_MANIFEST_RESOURCE_ID
+# define CREATEPROCESS_MANIFEST_RESOURCE_ID 1
+#endif
+#ifndef RT_MANIFEST
+# define RT_MANIFEST 24
+#endif
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "vim-launcher.manifest"
+
+//
+// Version
+//
+VS_VERSION_INFO		VERSIONINFO
+  FILEVERSION		1,0,0,0
+  PRODUCTVERSION	1,0,0,0
+  FILEFLAGSMASK		VS_FFI_FILEFLAGSMASK
+  FILEFLAGS		VS_FF_PRERELEASE
+  FILEOS		VOS__WINDOWS32
+  FILETYPE		VFT_APP
+  FILESUBTYPE		0x0L
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    // 0x0409 == U.S. English; 0x04E4 => Windows Multilingual
+    BLOCK "040904E4"
+    BEGIN
+	VALUE "CompanyName",		"Vim Developers"
+	VALUE "FileDescription",	"Vim launcher"
+	VALUE "FileVersion",		"1.0.0"
+	VALUE "InternalName",		"Vim launcher"
+	VALUE "LegalCopyright",		"Copyright \251 2026"
+	VALUE "LegalTrademarks",	"Vim"
+#ifdef FEAT_GUI
+	VALUE "OriginalFilename",	"gvim.exe"
+#else
+	VALUE "OriginalFilename",	"vim.exe"
+#endif
+	VALUE "ProductName",		"Vim launcher"
+	VALUE "ProductVersion",		"1.0.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+	VALUE "Translation", 0x409, 0x4E4
+  END
+END

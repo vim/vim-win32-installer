@@ -1,0 +1,27 @@
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners.
+# You can use github users with @user or email addresses
+
+# These owners will be the default owners for everything in the repo.
+#*	 @brammool
+
+# Order is important. The last matching pattern has the most precedence.
+# So if a pull request only touches javascript files, only these owners
+# will be requested to review.
+
+nsis/lang/danish.nsi			@scootergrisen
+nsis/lang/dutch.nsi
+nsis/lang/english.nsi
+nsis/lang/german.nsi			@chrisbra
+nsis/lang/greek.nsi			@chrislongros
+nsis/lang/italian.nsi
+nsis/lang/japanese.nsi			@k-takata @vim-jp
+nsis/lang/portuguesebr.nsi		@rffontenelle
+nsis/lang/russian.nsi			@RestorerZ
+nsis/lang/serbian.nsi
+nsis/lang/simpchinese.nsi		@mao-yining
+nsis/lang/swedish.nsi			@yeager
+nsis/lang/tradchinese.nsi
+nsis/lang/turkish.nsi
+
+# vim:ft=codeowners

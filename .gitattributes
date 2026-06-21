@@ -1,1 +1,2 @@
 *.bat text=auto eol=crlf
+*.reg text=auto eol=crlf
