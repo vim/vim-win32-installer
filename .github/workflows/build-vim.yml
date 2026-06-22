@@ -777,7 +777,7 @@ jobs:
         7z a -mx=9 artifacts\files\%BASENAME%_pdb.7z *.pdb || exit 1
 
     - name: Download NsisMultiUser
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         #repository: Drizin/NsisMultiUser
         repository: k-takata/NsisMultiUser
