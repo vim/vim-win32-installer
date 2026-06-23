@@ -845,12 +845,12 @@ jobs:
       contents: write # to create release
 
     steps:
-    #- name: Generate token
-    #  id: app-token
-    #  uses: actions/create-github-app-token@v3
-    #  with:
-    #    client-id: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_CLIENT_ID }}
-    #    private-key: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_PRIVATE_KEY }}
+    - name: Generate token
+      id: app-token
+      uses: actions/create-github-app-token@v3
+      with:
+        client-id: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_CLIENT_ID }}
+        private-key: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_PRIVATE_KEY }}
 
     - uses: actions/checkout@v7
       if: github.event_name != 'workflow_dispatch'
@@ -923,7 +923,8 @@ jobs:
       if: needs.check-updates.outputs.signing == 'yes'
       shell: bash
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
       run: |
         # Trigger upload-signed-files.yml.
         # The triggered workflow is expected to fail due to waiting for approval.
