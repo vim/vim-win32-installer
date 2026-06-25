@@ -37,3 +37,4 @@ jobs:
           version: ${{ steps.get-version.outputs.version }}
           release-tag: ${{ steps.get-version.outputs.tag }}
           token: ${{ secrets.WINGET_TOKEN }}
+          max-versions-to-keep: 200

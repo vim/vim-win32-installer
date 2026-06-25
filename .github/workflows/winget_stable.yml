@@ -51,3 +51,4 @@ jobs:
           token: ${{ secrets.WINGET_TOKEN }}
           version: ${{ needs.check-update-job.outputs.version }}
           release-tag: ${{ needs.check-update-job.outputs.tag }}
+          max-versions-to-keep: 100
