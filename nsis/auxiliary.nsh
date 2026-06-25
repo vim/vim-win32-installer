@@ -105,6 +105,15 @@
     ${EndIf}
   !macroend
 
+# Parse the command line option for _vimrc
+  !macro ParseCmdVimrc cmdline cmdopt out_var
+    ClearErrors
+    ${GetOptions} ${cmdline} ${cmdopt} $4
+    ${IfNot} ${Errors}
+      StrCpy ${out_var} $4
+    ${EndIf}
+  !macroend
+
 
 !endif # __AUXILIARY__NSH__
 # vi:set ts=8 sw=2 sts=2 tw=79 wm=0 ft=nsis:
