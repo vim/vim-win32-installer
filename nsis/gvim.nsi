@@ -1044,9 +1044,9 @@ Function LoadSelections
   !insertmacro ParseCmdSectionSelection $5 "/pluginhome=" ${id_section_pluginhome}
   !insertmacro ParseCmdSectionSelection $5 "/pluginvim="  ${id_section_pluginvim}
   !insertmacro ParseCmdSectionSelection $5 "/nls="	  ${id_section_nls}
-  ${GetOptions} $5 "/compat=" $vim_compat_stat
-  ${GetOptions} $5 "/keymap=" $vim_keymap_stat
-  ${GetOptions} $5 "/mouse="  $vim_mouse_stat
+  !insertmacro ParseCmdVimrc $5 "/compat=" $vim_compat_stat
+  !insertmacro ParseCmdVimrc $5 "/keymap=" $vim_keymap_stat
+  !insertmacro ParseCmdVimrc $5 "/mouse="  $vim_mouse_stat
   ClearErrors
 FunctionEnd
 
