@@ -1013,6 +1013,44 @@ Section -post
 SectionEnd
 
 ##########################################################
+# Load the section selections from the registry and the command line
+Function LoadSelections
+  !insertmacro MULTIUSER_GetCurrentUserString $5
+  # Load the selections from the registry (if any).
+  !insertmacro LoadSectionSelection $5 ${id_section_console}    "select_console"
+  !insertmacro LoadSectionSelection $5 ${id_section_launcher}   "select_launcher"
+  !insertmacro LoadSectionSelection $5 ${id_section_addpath}    "select_addpath"
+  !insertmacro LoadSectionSelection $5 ${id_section_desktop}    "select_desktop"
+  !insertmacro LoadSectionSelection $5 ${id_section_startmenu}  "select_startmenu"
+  !insertmacro LoadSectionSelection $5 ${id_section_editwith}   "select_editwith"
+  !insertmacro LoadSectionSelection $5 ${id_section_vimrc}      "select_vimrc"
+  !insertmacro LoadSectionSelection $5 ${id_section_pluginhome} "select_pluginhome"
+  !insertmacro LoadSectionSelection $5 ${id_section_pluginvim}  "select_pluginvim"
+  !insertmacro LoadSectionSelection $5 ${id_section_nls}        "select_nls"
+  # Load the default _vimrc settings from the registry (if any).
+  !insertmacro LoadDefaultVimrc $5 $vim_compat_stat "vim_compat"   "all"
+  !insertmacro LoadDefaultVimrc $5 $vim_keymap_stat "vim_keyremap" "default"
+  !insertmacro LoadDefaultVimrc $5 $vim_mouse_stat  "vim_mouse"    "default"
+
+  # Parse command line
+  ${GetParameters} $5
+  !insertmacro ParseCmdSectionSelection $5 "/console="	  ${id_section_console}
+  !insertmacro ParseCmdSectionSelection $5 "/launcher="	  ${id_section_launcher}
+  !insertmacro ParseCmdSectionSelection $5 "/addpath="	  ${id_section_addpath}
+  !insertmacro ParseCmdSectionSelection $5 "/desktop="	  ${id_section_desktop}
+  !insertmacro ParseCmdSectionSelection $5 "/startmenu="  ${id_section_startmenu}
+  !insertmacro ParseCmdSectionSelection $5 "/editwith="	  ${id_section_editwith}
+  !insertmacro ParseCmdSectionSelection $5 "/vimrc="	  ${id_section_vimrc}
+  !insertmacro ParseCmdSectionSelection $5 "/pluginhome=" ${id_section_pluginhome}
+  !insertmacro ParseCmdSectionSelection $5 "/pluginvim="  ${id_section_pluginvim}
+  !insertmacro ParseCmdSectionSelection $5 "/nls="	  ${id_section_nls}
+  ${GetOptions} $5 "/compat=" $vim_compat_stat
+  ${GetOptions} $5 "/keymap=" $vim_keymap_stat
+  ${GetOptions} $5 "/mouse="  $vim_mouse_stat
+  ClearErrors
+FunctionEnd
+
+##########################################################
 # Callback functions
 
 Function .onInit
@@ -1055,6 +1093,9 @@ Function .onInit
     # Select a language (or read from the registry).
     !insertmacro MUI_LANGDLL_DISPLAY
   ${EndIf}
+
+  # Load the selections for silent mode
+  Call LoadSelections
 
   StrCpy $settings_loaded 0
 FunctionEnd
@@ -1100,39 +1141,8 @@ Function PageComponentsPre
       #SectionSetText ${id_section_old_ver} $(str_desc_old_ver)
     ${EndIf}
 
-    !insertmacro MULTIUSER_GetCurrentUserString $5
-    # Load the selections from the registry (if any).
-    !insertmacro LoadSectionSelection $5 ${id_section_console}    "select_console"
-    !insertmacro LoadSectionSelection $5 ${id_section_launcher}   "select_launcher"
-    !insertmacro LoadSectionSelection $5 ${id_section_addpath}    "select_addpath"
-    !insertmacro LoadSectionSelection $5 ${id_section_desktop}    "select_desktop"
-    !insertmacro LoadSectionSelection $5 ${id_section_startmenu}  "select_startmenu"
-    !insertmacro LoadSectionSelection $5 ${id_section_editwith}   "select_editwith"
-    !insertmacro LoadSectionSelection $5 ${id_section_vimrc}      "select_vimrc"
-    !insertmacro LoadSectionSelection $5 ${id_section_pluginhome} "select_pluginhome"
-    !insertmacro LoadSectionSelection $5 ${id_section_pluginvim}  "select_pluginvim"
-    !insertmacro LoadSectionSelection $5 ${id_section_nls}        "select_nls"
-    # Load the default _vimrc settings from the registry (if any).
-    !insertmacro LoadDefaultVimrc $5 $vim_compat_stat "vim_compat"   "all"
-    !insertmacro LoadDefaultVimrc $5 $vim_keymap_stat "vim_keyremap" "default"
-    !insertmacro LoadDefaultVimrc $5 $vim_mouse_stat  "vim_mouse"    "default"
-
-    # Parse command line
-    ${GetParameters} $4
-    !insertmacro ParseCmdSectionSelection $4 "/console="    ${id_section_console}
-    !insertmacro ParseCmdSectionSelection $4 "/launcher="   ${id_section_launcher}
-    !insertmacro ParseCmdSectionSelection $4 "/addpath="    ${id_section_addpath}
-    !insertmacro ParseCmdSectionSelection $4 "/desktop="    ${id_section_desktop}
-    !insertmacro ParseCmdSectionSelection $4 "/startmenu="  ${id_section_startmenu}
-    !insertmacro ParseCmdSectionSelection $4 "/editwith="   ${id_section_editwith}
-    !insertmacro ParseCmdSectionSelection $4 "/vimrc="	    ${id_section_vimrc}
-    !insertmacro ParseCmdSectionSelection $4 "/pluginhome=" ${id_section_pluginhome}
-    !insertmacro ParseCmdSectionSelection $4 "/pluginvim="  ${id_section_pluginvim}
-    !insertmacro ParseCmdSectionSelection $4 "/nls="	    ${id_section_nls}
-    ${GetOptions} $4 "/compat=" $vim_compat_stat
-    ${GetOptions} $4 "/keymap=" $vim_keymap_stat
-    ${GetOptions} $4 "/mouse="  $vim_mouse_stat
-    ClearErrors
+    # Load the selections for interactive mode
+    Call LoadSelections
 
     StrCpy $settings_loaded 1
   ${EndIf}
