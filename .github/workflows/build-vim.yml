@@ -427,7 +427,7 @@ jobs:
         ) > urls.txt
 
     - name: Cache downloaded files
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: |
           ${{ env.VCPKG_ROOT }}
@@ -858,7 +858,7 @@ jobs:
       uses: actions/download-artifact@v8
 
     - name: Attest
-      uses: actions/attest@v4
+      uses: actions/attest@v4.1.0
       with:
         subject-path: ./vim-package-*/gvim_*
 
