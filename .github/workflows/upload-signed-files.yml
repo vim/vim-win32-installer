@@ -116,7 +116,7 @@ jobs:
             ./package/gvim_*_signed.*
 
       - name: Attest
-        uses: actions/attest@v4.1.0
+        uses: actions/attest@v4.1.1
         with:
           subject-path: ./package/gvim_*_signed.*
 
