@@ -17,7 +17,7 @@ jobs:
       tag: ${{ steps.get-version.outputs.tag }}
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 0  # Needed to fetch all tags
 
@@ -44,7 +44,7 @@ jobs:
     needs: check-update-job
     if: needs.check-update-job.outputs.needs_update == 'true'
     steps:
-      - uses: vedantmgoyal9/winget-releaser@main
+      - uses: vedantmgoyal9/winget-releaser@7bd472be23763def6e16bd06cc8b1cdfab0e2fd5
         with:
           identifier: vim.vim
           installers-regex: 'gvim.*(x64|x86|arm64)_signed.exe$'

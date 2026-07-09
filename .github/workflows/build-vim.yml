@@ -137,9 +137,9 @@ jobs:
       signing: ${{ steps.check.outputs.signing }}
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name != 'workflow_dispatch'
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
@@ -239,7 +239,7 @@ jobs:
         fi
 
     - name: Upload repository information
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: repo-info
         path: ./package/artifacts/info
@@ -325,15 +325,15 @@ jobs:
 #      run: |
 #        fsutil 8dot3name set D: 0
 
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name != 'workflow_dispatch'
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
 
     - name: Download repository information
-      uses: actions/download-artifact@v8
+      uses: actions/download-artifact@v8.0.1
       with:
         name: repo-info
         path: repo-info
@@ -360,7 +360,7 @@ jobs:
           git apply -v "$i"
         done
 
-    - uses: msys2/setup-msys2@v2
+    - uses: msys2/setup-msys2@v2.32.0
       with:
         update: false
         location: ${{ env.DEPENDENCIES }}
@@ -767,7 +767,7 @@ jobs:
         7z a -mx=9 artifacts\files\%BASENAME%_pdb.7z *.pdb || exit 1
 
     - name: Download NsisMultiUser
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.0
       with:
         #repository: Drizin/NsisMultiUser
         repository: k-takata/NsisMultiUser
@@ -816,7 +816,7 @@ jobs:
           /X"OutFile ..\package\artifacts\files\%BASENAME%.exe"
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: vim-package-${{ matrix.arch }}
         path: ./package/artifacts/files
@@ -837,17 +837,17 @@ jobs:
     steps:
     - name: Generate token
       id: app-token
-      uses: actions/create-github-app-token@v3
+      uses: actions/create-github-app-token@v3.2.0
       with:
         client-id: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_CLIENT_ID }}
         private-key: ${{ secrets.VIM_WIN32_INSTALLER_RELEASE_BOT_PRIVATE_KEY }}
 
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name != 'workflow_dispatch'
       with:
         ssh-key: ${{ secrets.VIM_WIN32_INSTALLER_DEPLOY_KEY }}
         #token: ${{ steps.app-token.outputs.token }}
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       if: github.event_name == 'workflow_dispatch'
       with:
         ref: ${{inputs.base_commit}}
@@ -855,7 +855,7 @@ jobs:
         #token: ${{ steps.app-token.outputs.token }}
 
     - name: Download all artifacts
-      uses: actions/download-artifact@v8
+      uses: actions/download-artifact@v8.0.1
 
     - name: Attest
       uses: actions/attest@v4.1.1
@@ -873,7 +873,7 @@ jobs:
     - name: Upload Artifact (for code signing)
       if: needs.check-updates.outputs.signing == 'yes'
       id: upload-unsigned-zip
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: vim-package-for-signing
         path: ./package/artifacts/files
@@ -904,7 +904,7 @@ jobs:
 
     - name: Upload Artifact (signing info)
       if: needs.check-updates.outputs.signing == 'yes'
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: info
         path: ./package/artifacts/info
@@ -1019,7 +1019,7 @@ jobs:
         git push origin HEAD --tags
 
     - name: Create Release
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v3.0.1
       with:
         tag_name: ${{ steps.changelog.outputs.tag }}
         name: ${{ steps.changelog.outputs.tag }}
