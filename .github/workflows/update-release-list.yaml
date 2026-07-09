@@ -29,11 +29,11 @@ jobs:
     if: ${{ github.repository_owner == 'vim' && github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       with:
         path: main
 
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.0
       with:
         repository: "${{ github.repository }}.wiki"
         path: wiki
