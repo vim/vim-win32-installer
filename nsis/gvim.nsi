@@ -615,7 +615,9 @@ SectionGroup $(str_group_cmdline) id_group_cmdline
 
     # Register the path in case the editwith menu is not installed.
     ${If} ${RunningX64}
+      SetRegView 64
       WriteRegStr SHCTX "Software\Vim\Gvim" "path" "$INSTDIR\${PROGEXE}"
+      SetRegView lastused
     ${EndIf}
     !if ! ${ARM64}
       SetRegView 32
@@ -711,9 +713,11 @@ Section "$(str_section_edit_with)" id_section_editwith
 
   # Register servers
   ${If} ${RunningX64}
+    SetRegView 64
     WriteRegStr SHCTX "Software\Classes\CLSID\${GVIMEXT_CLSID}" "" "Vim Shell Extension"
     WriteRegStr SHCTX "Software\Classes\CLSID\${GVIMEXT_CLSID}\InProcServer32" "" "$0\GvimExt64\gvimext.dll"
     WriteRegStr SHCTX "Software\Classes\CLSID\${GVIMEXT_CLSID}\InProcServer32" "ThreadingModel" "Apartment"
+    SetRegView lastused
   ${EndIf}
   !if ! ${ARM64}
     SetRegView 32
@@ -725,8 +729,10 @@ Section "$(str_section_edit_with)" id_section_editwith
 
   # Register context menu
   ${If} ${RunningX64}
+    SetRegView 64
     WriteRegStr SHCTX "Software\Classes\*\shellex\ContextMenuHandlers\gvim" "" "${GVIMEXT_CLSID}"
     WriteRegStr SHCTX "Software\Vim\Gvim" "path" "$INSTDIR\${PROGEXE}"
+    SetRegView lastused
   ${EndIf}
   !if ! ${ARM64}
     SetRegView 32
@@ -737,10 +743,12 @@ Section "$(str_section_edit_with)" id_section_editwith
 
   # Register openwith
   ${If} ${RunningX64}
+    SetRegView 64
     WriteRegStr SHCTX "Software\Classes\Applications\gvim.exe\shell\edit\command" "" '"$INSTDIR\${PROGEXE}" "%1"'
     WriteRegStr SHCTX "Software\Classes\.htm\OpenWithList\gvim.exe" "" ""
     WriteRegStr SHCTX "Software\Classes\.vim\OpenWithList\gvim.exe" "" ""
     WriteRegStr SHCTX "Software\Classes\*\OpenWithList\gvim.exe" "" ""
+    SetRegView lastused
   ${EndIf}
   !if ! ${ARM64}
     SetRegView 32
@@ -1308,6 +1316,7 @@ Section "un.$(str_unsection_register)" id_unsection_register
   DetailPrint "$(str_msg_unregistering)"
 
   ${If} ${RunningX64}
+    SetRegView 64
     DeleteRegKey SHCTX "Software\Classes\CLSID\${GVIMEXT_CLSID}"
     DeleteRegKey SHCTX "Software\Classes\*\shellex\ContextMenuHandlers\gvim"
     DeleteRegKey SHCTX "Software\Vim"
@@ -1315,6 +1324,7 @@ Section "un.$(str_unsection_register)" id_unsection_register
     DeleteRegKey SHCTX "Software\Classes\.htm\OpenWithList\gvim.exe"
     DeleteRegKey SHCTX "Software\Classes\.vim\OpenWithList\gvim.exe"
     DeleteRegKey SHCTX "Software\Classes\*\OpenWithList\gvim.exe"
+    SetRegView lastused
   ${EndIf}
   !if ! ${ARM64}
     SetRegView 32
