@@ -44,7 +44,7 @@ jobs:
     needs: check-update-job
     if: needs.check-update-job.outputs.needs_update == 'true'
     steps:
-      - uses: vedantmgoyal9/winget-releaser@7bd472be23763def6e16bd06cc8b1cdfab0e2fd5
+      - uses: vedantmgoyal9/winget-releaser@b3a5dae0047c6180023acba3f548c55fdf6b7193
         with:
           identifier: vim.vim
           installers-regex: 'gvim.*(x64|x86|arm64)_signed.exe$'
