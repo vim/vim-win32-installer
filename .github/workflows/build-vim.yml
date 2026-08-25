@@ -881,7 +881,7 @@ jobs:
     - name: SignPath code signing
       if: needs.check-updates.outputs.signing == 'yes'
       id: signpath-code-signing
-      uses: SignPath/github-action-submit-signing-request@v2.2
+      uses: SignPath/github-action-submit-signing-request@v2.3
       with:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: 47c0047c-0c1d-42b2-a16c-4ea6907dc813
