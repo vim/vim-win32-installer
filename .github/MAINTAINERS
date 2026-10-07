@@ -12,6 +12,7 @@
 nsis/lang/danish.nsi			@scootergrisen
 nsis/lang/dutch.nsi
 nsis/lang/english.nsi
+nsis/lang/french.nsi			@scresto09
 nsis/lang/german.nsi			@chrisbra
 nsis/lang/greek.nsi			@chrislongros
 nsis/lang/italian.nsi

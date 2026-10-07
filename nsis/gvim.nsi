@@ -280,6 +280,7 @@ Page custom SetCustom ValidateCustom
 # Include support for other languages:
 !include "lang\danish.nsi"
 !include "lang\dutch.nsi"
+!include "lang\french.nsi"
 !include "lang\german.nsi"
 !include "lang\greek.nsi"
 !include "lang\italian.nsi"
