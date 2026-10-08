@@ -360,7 +360,7 @@ jobs:
           git apply -v "$i"
         done
 
-    - uses: msys2/setup-msys2@v2.32.0
+    - uses: msys2/setup-msys2@v2.33.0
       with:
         update: false
         location: ${{ env.DEPENDENCIES }}
