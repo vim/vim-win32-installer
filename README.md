@@ -20,7 +20,7 @@ The `gvim..._pdb.7z` file only contains the corresponding pdb files for debuggin
 If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
-[Gundo](https://github.com/sjl/gundo.vim) needs a working Python2 installation,
+[Gundo](https://github.com/sjl/gundo.vim) needs a working Python2.4+ installation,
 [Command-T](https://github.com/wincent/command-t) needs a working Ruby
 installation and [Neocomplete](https://github.com/Shougo/neocomplete.vim) needs
 a working Lua installation). This means, those interpreters have to be
