@@ -868,7 +868,7 @@ jobs:
       run: |
         mkdir -p package/artifacts/files
         # Copy all the required files to a single directory
-        cp vim-package-*/gvim_*.{exe,zip} package/artifacts/files
+        cp vim-package-{arm64,x64,x86}/gvim_*.{exe,zip} package/artifacts/files
 
     - name: Upload Artifact (for code signing)
       if: needs.check-updates.outputs.signing == 'yes'
