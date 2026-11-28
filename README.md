@@ -17,7 +17,7 @@ PATH variable. The installer will do that automatically and provide some
 additional extensions (e.g. Edit with Vim menu).
 The `gvim..._pdb.7z` file only contains the corresponding pdb files for debugging the binaries.
 
-If you need a dynamic interface to Perl, Python2, Python3, Ruby, <del>TCL,</del> Lua or
+If you need a dynamic interface to Perl, Python2, Python3, Ruby, Lua or
 Racket/MzScheme, make sure you also install the following. Vim will work
 without it, but some Plugin might need this additional dependency. (e.g.
 [Gundo](https://github.com/sjl/gundo.vim) needs a working Python2.4+ installation,
@@ -28,7 +28,6 @@ installed in addition to Vim. Without it Vim won't be able to use that feature!
 You can find those interpreters here:
 
 * [Strawberry Perl](https://strawberryperl.com/) 5.38
-* <del>[ActiveTcl](https://www.activestate.com/activetcl/downloads) 8.6.6</del> (currently disabled)
 * [LuaBinaries](https://luabinaries.sourceforge.net/download.html) 5.4
 * [Python 2](https://www.python.org/downloads/) 2.7
 * [Python 3](https://www.python.org/downloads/) 3.8 or later
